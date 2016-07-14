@@ -1,18 +1,20 @@
-var util = require('util')
-var http = require('http')
-var path = require('path')
-var ecstatic = require('ecstatic')
-var ioServer:SocketIO.Server = require('socket.io')
+var util = require('util');
+var http = require('http');
+var path = require('path');
+var ecstatic = require('ecstatic');
+var ioServer:SocketIO.Server = require('socket.io');
 
-var Player = require('./Player')
+//require('./cPlayer');
+import {cPlayer} from './cPlayer';
+
+//var Player:cPlayer = require('./cPlayer')
+
 
 var port = process.env.PORT || 8080
 
-/* ************************************************
-** GAME VARIABLES
-************************************************ */
+// variables del juego
 var socket	// Socket controller
-var players	// Array of connected players
+var players:cPlayer[]	// Array of connected players
 
 /* ************************************************
 ** GAME INITIALISATION
@@ -30,23 +32,13 @@ var server = http.createServer(
 })
 
 function init () {
-  // Create an empty array to store players
+  //aca van los jugadores
   players = []
 
-  // Attach Socket.IO to server
   socket = ioServer.listen(server)
-
-  // Start listening for events
-  setEventHandlers()
-}
-
-/* ************************************************
-** GAME EVENT HANDLERS
-************************************************ */
-var setEventHandlers = function () {
-  // Socket.IO
   socket.sockets.on('connection', onSocketConnection)
 }
+
 
 // New socket connection
 function onSocketConnection (client) {
@@ -60,6 +52,19 @@ function onSocketConnection (client) {
 
   // Listen for move player message
   client.on('move player', onMovePlayer)
+
+  //Listen for mouses click
+  client.on('mouse click', onMouseClick) 
+}
+
+//on mouse click 
+function onMouseClick(data) {
+  
+  var player:cPlayer = playerByXY(data.x,data.y);
+  if (player != null) {
+    util.log('Player has click: ' + player.id)
+  }
+
 }
 
 // Socket client has disconnected
@@ -75,7 +80,7 @@ function onClientDisconnect () {
   }
 
   // Remove player from players array
-  players.splice(players.indexOf(removePlayer), 1)
+  //players.splice(players.indexOf(removePlayer), 1)
 
   // Broadcast removed player to connected socket clients
   this.broadcast.emit('remove player', {id: this.id})
@@ -84,17 +89,17 @@ function onClientDisconnect () {
 // New player has joined
 function onNewPlayer (data) {
   // Create a new player
-  var newPlayer = new Player(data.x, data.y)
-  newPlayer.id = this.id
-
+  var newPlayer:cPlayer = new cPlayer(data.x, data.y,this.id)
+  
   // Broadcast new player to connected socket clients
-  this.broadcast.emit('new player', {id: newPlayer.id, x: newPlayer.getX(), y: newPlayer.getY()})
+  this.broadcast.emit('new player', {id: newPlayer.id, x: newPlayer.x, y: newPlayer.y})
 
   // Send existing players to the new player
-  var i, existingPlayer
+  var i:number;
+  var existingPlayer: cPlayer;
   for (i = 0; i < players.length; i++) {
     existingPlayer = players[i]
-    this.emit('new player', {id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY()})
+    this.emit('new player', {id: existingPlayer.id, x: existingPlayer.x, y: existingPlayer.y})
   }
 
   // Add new player to the players array
@@ -113,24 +118,37 @@ function onMovePlayer (data) {
   }
 
   // Update player position
-  movePlayer.setX(data.x)
-  movePlayer.setY(data.y)
+  movePlayer.x = data.x;
+  movePlayer.y = data.y;
 
   // Broadcast updated position to connected socket clients
-  this.broadcast.emit('move player', {id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY()})
+  this.broadcast.emit('move player', {id: movePlayer.id, x: movePlayer.x, y: movePlayer.y})
 }
 
 /* ************************************************
 ** GAME HELPER FUNCTIONS
 ************************************************ */
 // Find player by ID
-function playerById (id) {
-  var i
+function playerById (id:Text): cPlayer {
+  var i:number;
+  
   for (i = 0; i < players.length; i++) {
-    if (players[i].id === id) {
-      return players[i]
-    }
+      if (players[i].id === id) {
+        return players[i];
+      }
   }
 
-  return false
+  return null
+}
+
+function playerByXY (x:number,y:number): cPlayer {
+  var i:number;
+  
+  for (i = 0; i < players.length; i++) {
+      if (players[i].x === x && players[i].y === y) {
+        return players[i];
+      }
+  }
+
+  return null
 }

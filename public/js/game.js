@@ -39,7 +39,7 @@ var SimpleGame = (function () {
         this.playerData = new cThisPlayerData();
         this.OtherPlayerData = [];
         // To cotrol the mouses events
-        this.game.input.onDown.add(SimpleGame.prototype.mouseDown);
+        this.game.input.onDown.add(SimpleGame.prototype.mouseDown, this);
         this.game.input.addMoveCallback(SimpleGame.prototype.mouseMove, this);
         //  Our tiled scrolling background
         this.map = this.game.add.tilemap('map');
@@ -149,7 +149,9 @@ var SimpleGame = (function () {
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 32, 64, 'rgb(0,0,0)');
     };
     SimpleGame.prototype.mouseDown = function (event) {
-        //alert("Mouse is down " + event.button);
+        var tileX = this.layer.getTileX(this.game.input.activePointer.worldX);
+        var tileY = this.layer.getTileY(this.game.input.activePointer.worldY);
+        this.socket.emit('mouse click', { x: tileX, y: tileY });
     };
     SimpleGame.prototype.mouseMove = function (pointer, x, y, a) {
         this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;

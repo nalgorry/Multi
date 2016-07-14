@@ -73,7 +73,7 @@ class SimpleGame {
         this.OtherPlayerData = [];
 
         // To cotrol the mouses events
-        this.game.input.onDown.add(SimpleGame.prototype.mouseDown);
+        this.game.input.onDown.add(SimpleGame.prototype.mouseDown,this);
         this.game.input.addMoveCallback(SimpleGame.prototype.mouseMove,this);
 
         //  Our tiled scrolling background
@@ -222,7 +222,11 @@ class SimpleGame {
     }
 
     mouseDown(event:MouseEvent) {
-        //alert("Mouse is down " + event.button);
+        
+        var tileX:number = this.layer.getTileX(this.game.input.activePointer.worldX);
+        var tileY:number = this.layer.getTileY(this.game.input.activePointer.worldY);
+
+        this.socket.emit('mouse click', { x: tileX, y: tileY });
     }
 
     mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {

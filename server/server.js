@@ -1,13 +1,14 @@
+"use strict";
 var util = require('util');
 var http = require('http');
 var path = require('path');
 var ecstatic = require('ecstatic');
 var ioServer = require('socket.io');
-var Player = require('./Player');
+//require('./cPlayer');
+var cPlayer_1 = require('./cPlayer');
+//var Player:cPlayer = require('./cPlayer')
 var port = process.env.PORT || 8080;
-/* ************************************************
-** GAME VARIABLES
-************************************************ */
+// variables del juego
 var socket; // Socket controller
 var players; // Array of connected players
 /* ************************************************
@@ -21,20 +22,11 @@ var server = http.createServer(ecstatic({ root: path.resolve(__dirname, '../publ
     init();
 });
 function init() {
-    // Create an empty array to store players
+    //aca van los jugadores
     players = [];
-    // Attach Socket.IO to server
     socket = ioServer.listen(server);
-    // Start listening for events
-    setEventHandlers();
-}
-/* ************************************************
-** GAME EVENT HANDLERS
-************************************************ */
-var setEventHandlers = function () {
-    // Socket.IO
     socket.sockets.on('connection', onSocketConnection);
-};
+}
 // New socket connection
 function onSocketConnection(client) {
     util.log('New player has connnnected: ' + client.id);
@@ -44,6 +36,15 @@ function onSocketConnection(client) {
     client.on('new player', onNewPlayer);
     // Listen for move player message
     client.on('move player', onMovePlayer);
+    //Listen for mouses click
+    client.on('mouse click', onMouseClick);
+}
+//on mouse click 
+function onMouseClick(data) {
+    var player = playerByXY(data.x, data.y);
+    if (player != null) {
+        util.log('Player has click: ' + player.id);
+    }
 }
 // Socket client has disconnected
 function onClientDisconnect() {
@@ -55,22 +56,22 @@ function onClientDisconnect() {
         return;
     }
     // Remove player from players array
-    players.splice(players.indexOf(removePlayer), 1);
+    //players.splice(players.indexOf(removePlayer), 1)
     // Broadcast removed player to connected socket clients
     this.broadcast.emit('remove player', { id: this.id });
 }
 // New player has joined
 function onNewPlayer(data) {
     // Create a new player
-    var newPlayer = new Player(data.x, data.y);
-    newPlayer.id = this.id;
+    var newPlayer = new cPlayer_1.cPlayer(data.x, data.y, this.id);
     // Broadcast new player to connected socket clients
-    this.broadcast.emit('new player', { id: newPlayer.id, x: newPlayer.getX(), y: newPlayer.getY() });
+    this.broadcast.emit('new player', { id: newPlayer.id, x: newPlayer.x, y: newPlayer.y });
     // Send existing players to the new player
-    var i, existingPlayer;
+    var i;
+    var existingPlayer;
     for (i = 0; i < players.length; i++) {
         existingPlayer = players[i];
-        this.emit('new player', { id: existingPlayer.id, x: existingPlayer.getX(), y: existingPlayer.getY() });
+        this.emit('new player', { id: existingPlayer.id, x: existingPlayer.x, y: existingPlayer.y });
     }
     // Add new player to the players array
     players.push(newPlayer);
@@ -85,10 +86,10 @@ function onMovePlayer(data) {
         return;
     }
     // Update player position
-    movePlayer.setX(data.x);
-    movePlayer.setY(data.y);
+    movePlayer.x = data.x;
+    movePlayer.y = data.y;
     // Broadcast updated position to connected socket clients
-    this.broadcast.emit('move player', { id: movePlayer.id, x: movePlayer.getX(), y: movePlayer.getY() });
+    this.broadcast.emit('move player', { id: movePlayer.id, x: movePlayer.x, y: movePlayer.y });
 }
 /* ************************************************
 ** GAME HELPER FUNCTIONS
@@ -101,5 +102,14 @@ function playerById(id) {
             return players[i];
         }
     }
-    return false;
+    return null;
+}
+function playerByXY(x, y) {
+    var i;
+    for (i = 0; i < players.length; i++) {
+        if (players[i].x === x && players[i].y === y) {
+            return players[i];
+        }
+    }
+    return null;
 }
