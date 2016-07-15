@@ -39,7 +39,6 @@ function init () {
   socket.sockets.on('connection', onSocketConnection)
 }
 
-
 // New socket connection
 function onSocketConnection (client) {
   util.log('New player has connnnected: ' + client.id)
@@ -62,7 +61,8 @@ function onMouseClick(data) {
   
   var player:cPlayer = playerByXY(data.x,data.y);
   if (player != null) {
-    util.log('Player has click: ' + player.id)
+    player.playerLife -= 10;
+    util.log('Player has click: ' + player.playerLife)
   }
 
 }
@@ -80,9 +80,8 @@ function onClientDisconnect () {
   }
 
   // Remove player from players array
-  //players.splice(players.indexOf(removePlayer), 1)
+  players.splice(players.indexOf(removePlayer), 1)
 
-  // Broadcast removed player to connected socket clients
   this.broadcast.emit('remove player', {id: this.id})
 }
 
@@ -90,14 +89,13 @@ function onClientDisconnect () {
 function onNewPlayer (data) {
   // Create a new player
   var newPlayer:cPlayer = new cPlayer(data.x, data.y,this.id)
+  newPlayer.playerLife = 100;
   
-  // Broadcast new player to connected socket clients
   this.broadcast.emit('new player', {id: newPlayer.id, x: newPlayer.x, y: newPlayer.y})
 
-  // Send existing players to the new player
   var i:number;
   var existingPlayer: cPlayer;
-  for (i = 0; i < players.length; i++) {
+  for (i = 0; i < players.length; i++) { // Send existing players to the new player
     existingPlayer = players[i]
     this.emit('new player', {id: existingPlayer.id, x: existingPlayer.x, y: existingPlayer.y})
   }
@@ -121,14 +119,10 @@ function onMovePlayer (data) {
   movePlayer.x = data.x;
   movePlayer.y = data.y;
 
-  // Broadcast updated position to connected socket clients
   this.broadcast.emit('move player', {id: movePlayer.id, x: movePlayer.x, y: movePlayer.y})
 }
 
-/* ************************************************
-** GAME HELPER FUNCTIONS
-************************************************ */
-// Find player by ID
+
 function playerById (id:Text): cPlayer {
   var i:number;
   

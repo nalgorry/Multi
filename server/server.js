@@ -43,7 +43,8 @@ function onSocketConnection(client) {
 function onMouseClick(data) {
     var player = playerByXY(data.x, data.y);
     if (player != null) {
-        util.log('Player has click: ' + player.id);
+        player.playerLife -= 10;
+        util.log('Player has click: ' + player.playerLife);
     }
 }
 // Socket client has disconnected
@@ -56,17 +57,15 @@ function onClientDisconnect() {
         return;
     }
     // Remove player from players array
-    //players.splice(players.indexOf(removePlayer), 1)
-    // Broadcast removed player to connected socket clients
+    players.splice(players.indexOf(removePlayer), 1);
     this.broadcast.emit('remove player', { id: this.id });
 }
 // New player has joined
 function onNewPlayer(data) {
     // Create a new player
     var newPlayer = new cPlayer_1.cPlayer(data.x, data.y, this.id);
-    // Broadcast new player to connected socket clients
+    newPlayer.playerLife = 100;
     this.broadcast.emit('new player', { id: newPlayer.id, x: newPlayer.x, y: newPlayer.y });
-    // Send existing players to the new player
     var i;
     var existingPlayer;
     for (i = 0; i < players.length; i++) {
@@ -88,13 +87,8 @@ function onMovePlayer(data) {
     // Update player position
     movePlayer.x = data.x;
     movePlayer.y = data.y;
-    // Broadcast updated position to connected socket clients
     this.broadcast.emit('move player', { id: movePlayer.id, x: movePlayer.x, y: movePlayer.y });
 }
-/* ************************************************
-** GAME HELPER FUNCTIONS
-************************************************ */
-// Find player by ID
 function playerById(id) {
     var i;
     for (i = 0; i < players.length; i++) {

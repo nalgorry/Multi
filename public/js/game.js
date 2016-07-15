@@ -208,13 +208,21 @@ var SimpleGame = (function () {
     };
     // Remove player
     SimpleGame.prototype.onRemovePlayer = function (data) {
-        //var removePlayer = playerById(data.id)
-        // Player not found
-        //if (!removePlayer) {
-        //    console.log('Player not found: ', data.id)
-        //    return
-        //}
-        //removePlayer.player.kill()
+        var playerToRemove = SimpleGame.prototype.playerById(this, data.id);
+        if (playerToRemove != null) {
+            playerToRemove.removePlayer();
+            this.OtherPlayerData.splice(this.OtherPlayerData.indexOf(playerToRemove), 1);
+        }
+        console.log(playerToRemove);
+    };
+    SimpleGame.prototype.playerById = function (simpleGame, id) {
+        var i;
+        for (i = 0; i < simpleGame.OtherPlayerData.length; i++) {
+            if (simpleGame.OtherPlayerData[i].id === id) {
+                return simpleGame.OtherPlayerData[i];
+            }
+        }
+        return null;
     };
     return SimpleGame;
 }()); //fin

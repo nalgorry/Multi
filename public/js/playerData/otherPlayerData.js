@@ -18,5 +18,8 @@ var cOtherPlayerData = (function (_super) {
         this.game.add.tween(this.playerSprite).to({ x: data.x * 32 + 16 }, 230, Phaser.Easing.Linear.None, true, 0);
         this.game.add.tween(this.playerSprite).to({ y: data.y * 32 + 16 }, 230, Phaser.Easing.Linear.None, true, 0);
     };
+    cOtherPlayerData.prototype.removePlayer = function () {
+        this.playerSprite.kill();
+    };
     return cOtherPlayerData;
 }(cPlayerData));

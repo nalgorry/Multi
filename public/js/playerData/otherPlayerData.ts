@@ -20,4 +20,8 @@ class cOtherPlayerData extends cPlayerData {
 
     }
 
+    public removePlayer() {
+        this.playerSprite.kill();
+    }
+
 }

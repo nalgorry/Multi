@@ -222,7 +222,7 @@ class SimpleGame {
     }
 
     mouseDown(event:MouseEvent) {
-        
+
         var tileX:number = this.layer.getTileX(this.game.input.activePointer.worldX);
         var tileY:number = this.layer.getTileY(this.game.input.activePointer.worldY);
 
@@ -300,16 +300,28 @@ class SimpleGame {
 
     // Remove player
     onRemovePlayer (data) {
-    //var removePlayer = playerById(data.id)
 
-    // Player not found
-    //if (!removePlayer) {
-    //    console.log('Player not found: ', data.id)
-    //    return
-    //}
+        var playerToRemove = SimpleGame.prototype.playerById(this,data.id);
 
-    //removePlayer.player.kill()
+        if (playerToRemove != null) {
+            playerToRemove.removePlayer()
+            this.OtherPlayerData.splice(this.OtherPlayerData.indexOf(playerToRemove), 1)
+        }
 
+        console.log(playerToRemove);
+
+    }
+
+    playerById (simpleGame:SimpleGame,id:Text): cOtherPlayerData {
+        var i:number;
+        
+        for (i = 0; i < simpleGame.OtherPlayerData.length; i++) {
+            if (simpleGame.OtherPlayerData[i].id === id) {
+                return simpleGame.OtherPlayerData[i];
+            }
+        }
+
+        return null
     }
 
 
