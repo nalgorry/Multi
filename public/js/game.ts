@@ -34,7 +34,7 @@ class SimpleGame {
     preload() {
         this.game.load.tilemap('map', 'assets/maze.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', 'assets/tiles.png');
-        this.game.load.image('player', 'assets/car.png');
+        this.game.load.image('player', 'assets/fermat8.png');
         this.game.load.image('logo', 'assets/phaser.png');
         this.game.load.image('bat', 'assets/bat.png');
         this.game.load.image('tree', 'assets/tree.jpg');
@@ -90,12 +90,16 @@ class SimpleGame {
         
         this.playerData.playerSprite = this.game.add.sprite(0, 0, 'player');
         this.playerData.playerSprite.anchor.set(0.5);
-
         this.game.add.sprite(500, 500, 'tree');
 
         this.game.physics.arcade.enable(this.playerData.playerSprite);
         
         this.playerData.playerSprite.body.collideWorldBounds = true;
+        this.playerData.playerSprite.body.width =32;
+        this.playerData.playerSprite.body.height =32;
+        this.playerData.playerSprite.body.offset.y =32;
+                
+        console.log(this.playerData.playerSprite.body)
         
         this.game.camera.follow(this.playerData.playerSprite);
 
@@ -164,7 +168,7 @@ class SimpleGame {
                 if (this.playerData.playerSprite.body.x%this.gridSize != 0) 
                 {
                     var velocidad1:number = this.speedplayer/60;
-                    var velocidad2:number = Math.abs(this.layer.getTileX(this.playerData.playerSprite.x) * this.gridSize - this.playerData.playerSprite.body.x); 
+                    var velocidad2:number = Math.abs(this.layer.getTileX(this.playerData.playerSprite.body.x + this.gridSize/2) * this.gridSize - this.playerData.playerSprite.body.x); 
 
                     this.playerData.playerSprite.body.x += this.lastMoveX * Math.min(velocidad1,velocidad2);
 
@@ -178,7 +182,7 @@ class SimpleGame {
                 if (this.playerData.playerSprite.body.y%this.gridSize != 0) 
                 {
                     var velocidad1:number = this.speedplayer/60;
-                    var velocidad2:number = Math.abs(this.layer.getTileY(this.playerData.playerSprite.y) * this.gridSize - this.playerData.playerSprite.body.y); 
+                    var velocidad2:number = Math.abs(this.layer.getTileY(this.playerData.playerSprite.body.y + this.gridSize/2) * this.gridSize - this.playerData.playerSprite.body.y); 
 
                     this.playerData.playerSprite.body.y += this.lastMoveY * Math.min(velocidad1,velocidad2);
                 } else {
@@ -207,8 +211,8 @@ class SimpleGame {
     }
 
     render() {
-        this.game.debug.cameraInfo(this.game.camera, 32, 32);
-        this.game.debug.spriteCoords(this.playerData.playerSprite, 32, 500);
+        //this.game.debug.cameraInfo(this.game.camera, 32, 32);
+        //this.game.debug.spriteCoords(this.playerData.playerSprite, 32, 500);
         
         var x = this.layer.getTileX(this.playerData.playerSprite.body.x);
         var y = this.layer.getTileY(this.playerData.playerSprite.body.y);
@@ -218,6 +222,9 @@ class SimpleGame {
 
         //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 32, 48, 'rgb(0,0,0)');
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 32, 64, 'rgb(0,0,0)');
+
+        this.game.debug.bodyInfo(this.playerData.playerSprite, 32, 32);
+        this.game.debug.body(this.playerData.playerSprite);
 
     }
 
