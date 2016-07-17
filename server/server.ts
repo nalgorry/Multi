@@ -53,16 +53,20 @@ function onSocketConnection (client) {
   client.on('move player', onMovePlayer)
 
   //Listen for mouses click
-  client.on('mouse click', onMouseClick) 
+  client.on('mouse click', onMouseClick)
+
 }
 
 //on mouse click 
 function onMouseClick(data) {
   
   var player:cPlayer = playerByXY(data.x,data.y);
+  var damage:number = Math.round(Math.random()*10+2);
+  
   if (player != null) {
-    player.playerLife -= 10;
+    player.playerLife -= damage;
     util.log('Player has click: ' + player.playerLife)
+    this.broadcast.emit('player git', {id: player.id, x: player.x, y: player.y,damage:damage})
   }
 
 }
@@ -115,7 +119,6 @@ function onMovePlayer (data) {
     return
   }
 
-  // Update player position
   movePlayer.x = data.x;
   movePlayer.y = data.y;
 
@@ -123,7 +126,7 @@ function onMovePlayer (data) {
 }
 
 
-function playerById (id:Text): cPlayer {
+function playerById (id:string): cPlayer {
   var i:number;
   
   for (i = 0; i < players.length; i++) {

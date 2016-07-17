@@ -61,6 +61,9 @@ class SimpleGame {
         // Player removed message received
         this.socket.on('remove player', SimpleGame.prototype.onRemovePlayer.bind(this));
 
+        // Player removed message received
+        this.socket.on('player git', SimpleGame.prototype.onPlayerGit.bind(this));
+
         //para medir los tiempos
         this.game.time.advancedTiming = true;
         
@@ -97,10 +100,10 @@ class SimpleGame {
         this.playerData.playerSprite.body.collideWorldBounds = true;
         this.playerData.playerSprite.body.width =32;
         this.playerData.playerSprite.body.height =32;
-        this.playerData.playerSprite.body.offset.y =32;
-                
-        console.log(this.playerData.playerSprite.body)
+        this.playerData.playerSprite.body.offset.y =this.playerData.playerSprite.height - 32 ;
         
+        this.playerData.life = 100;
+
         this.game.camera.follow(this.playerData.playerSprite);
 
         //esto controla el teclado
@@ -220,11 +223,13 @@ class SimpleGame {
         
         this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
 
+        this.game.debug.text("vida: " + this.playerData.life.toString(),100,100)
+
         //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 32, 48, 'rgb(0,0,0)');
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 32, 64, 'rgb(0,0,0)');
 
-        this.game.debug.bodyInfo(this.playerData.playerSprite, 32, 32);
-        this.game.debug.body(this.playerData.playerSprite);
+        //this.game.debug.bodyInfo(this.playerData.playerSprite, 32, 32);
+        //this.game.debug.body(this.playerData.playerSprite);
 
     }
 
@@ -244,6 +249,9 @@ class SimpleGame {
     // Socket connected
     public onSocketConnected()  {
         console.log('Connected to socket server');
+
+        this.playerData.idServer = "/#" + this.socket.id;
+        console.log(this.playerData.idServer);
 
         this.socket.emit('new player', { x: this.layer.getTileX(this.playerData.playerSprite.x), y: this.layer.getTileY(this.playerData.playerSprite.y) });
     }
@@ -266,13 +274,6 @@ class SimpleGame {
         newPlayer.IniciarJugador();
 
         this.OtherPlayerData.push(newPlayer);
-        
-        // Avoid possible duplicate players
-        //var duplicate = playerById(data.id)
-        //if (duplicate) {
-        //   console.log('Duplicate player!')
-        //   return
-        //}
 
     }
 
@@ -288,21 +289,21 @@ class SimpleGame {
             }
         }
 
-        console.log(movedPlayer);
-
         movedPlayer.MoverJugador(data)
 
-        //var movePlayer = this.playerById(data.id)
+    }
 
-        //Player not found
-        //if (!movePlayer) {
-        //    console.log('Player not found: ', data.id)
-        //    return
-        //}
+     // Move player
+    onPlayerGit (data) {
+        console.log (data.damage);
 
-        // Update player position
-        //movePlayer.player.x = data.x
-        //movePlayer.player.y = data.y
+        console.log(data.id );
+        console.log(this.playerData.idServer);
+        if (data.id === this.playerData.idServer) {
+            this.playerData.life -= data.damage;
+            console.log("entra");
+        }
+
     }
 
     // Remove player

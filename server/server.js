@@ -42,9 +42,11 @@ function onSocketConnection(client) {
 //on mouse click 
 function onMouseClick(data) {
     var player = playerByXY(data.x, data.y);
+    var damage = Math.round(Math.random() * 10 + 2);
     if (player != null) {
-        player.playerLife -= 10;
+        player.playerLife -= damage;
         util.log('Player has click: ' + player.playerLife);
+        this.broadcast.emit('player git', { id: player.id, x: player.x, y: player.y, damage: damage });
     }
 }
 // Socket client has disconnected
@@ -84,7 +86,6 @@ function onMovePlayer(data) {
         util.log('Player not found: ' + this.id);
         return;
     }
-    // Update player position
     movePlayer.x = data.x;
     movePlayer.y = data.y;
     this.broadcast.emit('move player', { id: movePlayer.id, x: movePlayer.x, y: movePlayer.y });
