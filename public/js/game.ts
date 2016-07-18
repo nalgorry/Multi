@@ -5,21 +5,20 @@ class SimpleGame {
     land: Phaser.TileSprite;
     layer: Phaser.TilemapLayer;
     cursors: Phaser.CursorKeys;
-    bat: Phaser.Sprite;
+    
     marker; //to get the mouse
+    
+    //esto genera los vampiros
     Enemies: Phaser.Group;
+    bat: Phaser.Sprite;
+
     socket:SocketIOClient.Socket; // Socket connection
 
-    playerData: cThisPlayerData;
-    OtherPlayerData: cOtherPlayerData[];
+    dataPlayer: cThisPlayerData; //clase que controla al jugador
+    dataOtherPlayers: cOtherPlayerData[]; //clase que controla los demas jugadores
     
     //variables creadas por mi
     gridSize: number;
-    speedplayer: number;
-    //para poder acomodar en el centro de cada cuadrado
-    lastMove: number;
-    lastMoveX: number;
-    lastMoveY: number;
 
     constructor() {
         this.game = new Phaser.Game(800, 600, Phaser.CANVAS, 'content', 
@@ -69,11 +68,6 @@ class SimpleGame {
         
         //inicio parametros del juego
         this.gridSize = 32;
-        this.speedplayer = 150;
-        this.lastMoveX = 0;
-        this.lastMoveY = 0;
-        this.playerData = new cThisPlayerData();
-        this.OtherPlayerData = [];
 
         // To cotrol the mouses events
         this.game.input.onDown.add(SimpleGame.prototype.mouseDown,this);
@@ -91,20 +85,13 @@ class SimpleGame {
         this.game.world.setBounds(0, 0, 1920, 1920);
         //this.game.world.centerX
         
-        this.playerData.playerSprite = this.game.add.sprite(0, 0, 'player');
-        this.playerData.playerSprite.anchor.set(0.5);
-        this.game.add.sprite(500, 500, 'tree');
+        //inicio el jugador principal
+        this.dataPlayer = new cThisPlayerData();
+        this.dataPlayer.game = this.game;
+        this.dataPlayer.startPlayer();
 
-        this.game.physics.arcade.enable(this.playerData.playerSprite);
-        
-        this.playerData.playerSprite.body.collideWorldBounds = true;
-        this.playerData.playerSprite.body.width =32;
-        this.playerData.playerSprite.body.height =32;
-        this.playerData.playerSprite.body.offset.y =this.playerData.playerSprite.height - 32 ;
-        
-        this.playerData.life = 100;
-
-        this.game.camera.follow(this.playerData.playerSprite);
+        //inicio los jugadores enemigos
+        this.dataOtherPlayers = [];
 
         //esto controla el teclado
         this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -131,105 +118,28 @@ class SimpleGame {
 
     update() {
 
-        this.game.physics.arcade.collide(this.playerData.playerSprite, this.layer);
-
-        this.playerData.playerSprite.body.velocity.x = 0;
-        this.playerData.playerSprite.body.velocity.y = 0;
-
-        var seMueveX:Boolean = false;
-        var seMueveY:Boolean = false;
+        this.game.physics.arcade.collide(this.dataPlayer.playerSprite, this.layer);
+        this.dataPlayer.updatePlayer(this.cursors,this.layer,this.socket);
         
-        //me fijo si tengo que mover el jugador
-        if (this.cursors.up.isDown)
-        {
-            this.playerData.playerSprite.body.velocity.y = -this.speedplayer;
-            seMueveY = true;
-            this.lastMoveY = -1;
-        }
-        else if (this.cursors.down.isDown)
-        {
-            this.playerData.playerSprite.body.velocity.y = this.speedplayer;
-            seMueveY = true;
-            this.lastMoveY = 1;
-        }
-        else if (this.cursors.left.isDown)
-        {
-            this.playerData.playerSprite.body.velocity.x = -this.speedplayer;
-            seMueveX = true;
-            this.lastMoveX = -1;
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.playerData.playerSprite.body.velocity.x = this.speedplayer;
-            seMueveX = true;
-            this.lastMoveX = 1;
-        }
-
-        //si dejo de moverse, me fijo hasta donde llego y lo acomodo en la grilla
-        if (seMueveX == false) {
-            if (this.lastMoveX != 0) {
-                if (this.playerData.playerSprite.body.x%this.gridSize != 0) 
-                {
-                    var velocidad1:number = this.speedplayer/60;
-                    var velocidad2:number = Math.abs(this.layer.getTileX(this.playerData.playerSprite.body.x + this.gridSize/2) * this.gridSize - this.playerData.playerSprite.body.x); 
-
-                    this.playerData.playerSprite.body.x += this.lastMoveX * Math.min(velocidad1,velocidad2);
-
-                } else {
-                    this.lastMoveX = 0;
-                }
-            }
-        }
-        if (seMueveY == false) {
-            if (this.lastMoveY != 0) {
-                if (this.playerData.playerSprite.body.y%this.gridSize != 0) 
-                {
-                    var velocidad1:number = this.speedplayer/60;
-                    var velocidad2:number = Math.abs(this.layer.getTileY(this.playerData.playerSprite.body.y + this.gridSize/2) * this.gridSize - this.playerData.playerSprite.body.y); 
-
-                    this.playerData.playerSprite.body.y += this.lastMoveY * Math.min(velocidad1,velocidad2);
-                } else {
-                    this.lastMoveY = 0;
-                }
-            }
-        }
-
-        //Me fijo si cambio la posicion y si es asi emito la nueva posicion
-        this.playerData.tileX = this.layer.getTileX(this.playerData.playerSprite.x);
-        this.playerData.tileY = this.layer.getTileY(this.playerData.playerSprite.y);
-
-        if (this.playerData.tileX != this.playerData.lastSendTileX || this.playerData.tileY != this.playerData.lastSendTileY) {
-            
-            this.playerData.lastSendTileX = this.playerData.tileX;
-            this.playerData.lastSendTileY = this.playerData.tileY;
-            
-            this.socket.emit('move player', { x: this.playerData.tileX, y: this.playerData.tileY });
-        } 
-
-        //muevo los enemigos
-        this.Enemies.forEach(function (Enemy: Character) {
-            // setup movements and animations
-        }, this);
-
     }
 
     render() {
         //this.game.debug.cameraInfo(this.game.camera, 32, 32);
-        //this.game.debug.spriteCoords(this.playerData.playerSprite, 32, 500);
+        //this.game.debug.spriteCoords(this.dataPlayer.playerSprite, 32, 500);
         
-        var x = this.layer.getTileX(this.playerData.playerSprite.body.x);
-        var y = this.layer.getTileY(this.playerData.playerSprite.body.y);
+        var x = this.layer.getTileX(this.dataPlayer.playerSprite.body.x);
+        var y = this.layer.getTileY(this.dataPlayer.playerSprite.body.y);
         var tile = this.map.getTile(x,y,this.layer);
         
         this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
 
-        this.game.debug.text("vida: " + this.playerData.life.toString(),100,100)
+        this.game.debug.text("vida: " + this.dataPlayer.life.toString(),100,100)
 
         //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 32, 48, 'rgb(0,0,0)');
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 32, 64, 'rgb(0,0,0)');
 
-        //this.game.debug.bodyInfo(this.playerData.playerSprite, 32, 32);
-        //this.game.debug.body(this.playerData.playerSprite);
+        this.game.debug.bodyInfo(this.dataPlayer.playerSprite, 32, 32);
+        this.game.debug.body(this.dataPlayer.playerSprite);
 
     }
 
@@ -250,10 +160,10 @@ class SimpleGame {
     public onSocketConnected()  {
         console.log('Connected to socket server');
 
-        this.playerData.idServer = "/#" + this.socket.id;
-        console.log(this.playerData.idServer);
+        this.dataPlayer.idServer = "/#" + this.socket.id;
+        console.log(this.dataPlayer.idServer);
 
-        this.socket.emit('new player', { x: this.layer.getTileX(this.playerData.playerSprite.x), y: this.layer.getTileY(this.playerData.playerSprite.y) });
+        this.socket.emit('new player', { x: this.layer.getTileX(this.dataPlayer.playerSprite.x), y: this.layer.getTileY(this.dataPlayer.playerSprite.y) });
     }
 
     // Socket disconnected
@@ -273,7 +183,7 @@ class SimpleGame {
         newPlayer.tileY = data.y;
         newPlayer.IniciarJugador();
 
-        this.OtherPlayerData.push(newPlayer);
+        this.dataOtherPlayers.push(newPlayer);
 
     }
 
@@ -282,9 +192,9 @@ class SimpleGame {
         
         // Find player by ID
         var movedPlayer:cOtherPlayerData;
-        for (var i = 0; i < this.OtherPlayerData.length; i++) {
-            if (this.OtherPlayerData[i].id === data.id) {
-                movedPlayer = this.OtherPlayerData[i];
+        for (var i = 0; i < this.dataOtherPlayers.length; i++) {
+            if (this.dataOtherPlayers[i].id === data.id) {
+                movedPlayer = this.dataOtherPlayers[i];
                 break;
             }
         }
@@ -298,9 +208,9 @@ class SimpleGame {
         console.log (data.damage);
 
         console.log(data.id );
-        console.log(this.playerData.idServer);
-        if (data.id === this.playerData.idServer) {
-            this.playerData.life -= data.damage;
+        console.log(this.dataPlayer.idServer);
+        if (data.id === this.dataPlayer.idServer) {
+            this.dataPlayer.life -= data.damage;
             console.log("entra");
         }
 
@@ -313,7 +223,7 @@ class SimpleGame {
 
         if (playerToRemove != null) {
             playerToRemove.removePlayer()
-            this.OtherPlayerData.splice(this.OtherPlayerData.indexOf(playerToRemove), 1)
+            this.dataOtherPlayers.splice(this.dataOtherPlayers.indexOf(playerToRemove), 1)
         }
 
         console.log(playerToRemove);
@@ -323,9 +233,9 @@ class SimpleGame {
     playerById (simpleGame:SimpleGame,id:Text): cOtherPlayerData {
         var i:number;
         
-        for (i = 0; i < simpleGame.OtherPlayerData.length; i++) {
-            if (simpleGame.OtherPlayerData[i].id === id) {
-                return simpleGame.OtherPlayerData[i];
+        for (i = 0; i < simpleGame.dataOtherPlayers.length; i++) {
+            if (simpleGame.dataOtherPlayers[i].id === id) {
+                return simpleGame.dataOtherPlayers[i];
             }
         }
 
