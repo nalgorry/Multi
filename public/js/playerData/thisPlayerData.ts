@@ -8,7 +8,7 @@ class cThisPlayerData extends cPlayerData {
     private speedplayer: number = 150;
     private lastMoveX: number = 0;
     private lastMoveY: number = 0;
-    private gridSize: number = 32;
+    private gridSize: number = 50;
     
     constructor() {
         super();    
@@ -22,9 +22,9 @@ class cThisPlayerData extends cPlayerData {
         this.game.physics.arcade.enable(this.playerSprite);
         
         this.playerSprite.body.collideWorldBounds = true;
-        this.playerSprite.body.width =32;
-        this.playerSprite.body.height =32;
-        this.playerSprite.body.offset.y =this.playerSprite.height - 32 ;
+        this.playerSprite.body.width =50;
+        this.playerSprite.body.height =50;
+        this.playerSprite.body.offset.y =this.playerSprite.height - 50 ;
         
         this.life = 100; //esto vendria de algun server no?
 

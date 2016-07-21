@@ -15,10 +15,10 @@ class SimpleGame {
     socket:SocketIOClient.Socket; // Socket connection
 
     dataPlayer: cThisPlayerData; //clase que controla al jugador
-    dataOtherPlayers: cOtherPlayerData[]; //clase que controla los demas jugadores
+    dataGame: cDataGame; //aca van todos los datos relacionados con el juego
+    controlOtherPlayers: cControlOtherPlayers;
     
     //variables creadas por mi
-    gridSize: number;
 
     constructor() {
         this.game = new Phaser.Game(800, 600, Phaser.CANVAS, 'content', 
@@ -32,7 +32,7 @@ class SimpleGame {
 
     preload() {
         this.game.load.tilemap('map', 'assets/maze.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('tiles', 'assets/tiles.png');
+        this.game.load.image('tiles', 'assets/tiles2.png');
         this.game.load.image('player', 'assets/fermat8.png');
         this.game.load.image('logo', 'assets/phaser.png');
         this.game.load.image('bat', 'assets/bat.png');
@@ -67,7 +67,8 @@ class SimpleGame {
         this.game.time.advancedTiming = true;
         
         //inicio parametros del juego
-        this.gridSize = 32;
+        this.dataGame = new cDataGame();
+        this.dataGame.gridSize = 50;
 
         // To cotrol the mouses events
         this.game.input.onDown.add(SimpleGame.prototype.mouseDown,this);
@@ -91,7 +92,11 @@ class SimpleGame {
         this.dataPlayer.startPlayer();
 
         //inicio los jugadores enemigos
-        this.dataOtherPlayers = [];
+        this.controlOtherPlayers = new cControlOtherPlayers;
+
+        
+        this.controlOtherPlayers.arrayPlayers = [];
+
 
         //esto controla el teclado
         this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -99,7 +104,7 @@ class SimpleGame {
         //  Para hacer un recuadro donde esta el mouse
         this.marker = this.game.add.graphics(0,0);
         this.marker.lineStyle(2, 0xffffff, 1);
-        this.marker.drawRect(0, 0, 32, 32);
+        this.marker.drawRect(0, 0, 50, 50);
 
         // create 8 bats
         this.Enemies = this.game.add.group();
@@ -124,8 +129,8 @@ class SimpleGame {
     }
 
     render() {
-        //this.game.debug.cameraInfo(this.game.camera, 32, 32);
-        //this.game.debug.spriteCoords(this.dataPlayer.playerSprite, 32, 500);
+        //this.game.debug.cameraInfo(this.game.camera, 50, 50);
+        //this.game.debug.spriteCoords(this.dataPlayer.playerSprite, 50, 500);
         
         var x = this.layer.getTileX(this.dataPlayer.playerSprite.body.x);
         var y = this.layer.getTileY(this.dataPlayer.playerSprite.body.y);
@@ -135,11 +140,11 @@ class SimpleGame {
 
         this.game.debug.text("vida: " + this.dataPlayer.life.toString(),100,100)
 
-        //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 32, 48, 'rgb(0,0,0)');
-        //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 32, 64, 'rgb(0,0,0)');
+        //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 50, 48, 'rgb(0,0,0)');
+        //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 50, 64, 'rgb(0,0,0)');
 
-        this.game.debug.bodyInfo(this.dataPlayer.playerSprite, 32, 32);
-        this.game.debug.body(this.dataPlayer.playerSprite);
+        //this.game.debug.bodyInfo(this.dataPlayer.playerSprite, 50, 50);
+        //this.game.debug.body(this.dataPlayer.playerSprite);
 
     }
 
@@ -152,8 +157,8 @@ class SimpleGame {
     }
 
     mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {
-        this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;
-        this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.gridSize;
+        this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.dataGame.gridSize;
+        this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.dataGame.gridSize;
     }
 
     // Socket connected
@@ -183,7 +188,7 @@ class SimpleGame {
         newPlayer.tileY = data.y;
         newPlayer.IniciarJugador();
 
-        this.dataOtherPlayers.push(newPlayer);
+        this.controlOtherPlayers.arrayPlayers.push(newPlayer);
 
     }
 
@@ -192,9 +197,9 @@ class SimpleGame {
         
         // Find player by ID
         var movedPlayer:cOtherPlayerData;
-        for (var i = 0; i < this.dataOtherPlayers.length; i++) {
-            if (this.dataOtherPlayers[i].id === data.id) {
-                movedPlayer = this.dataOtherPlayers[i];
+        for (var i = 0; i < this.controlOtherPlayers.arrayPlayers .length; i++) {
+            if (this.controlOtherPlayers.arrayPlayers [i].id === data.id) {
+                movedPlayer = this.controlOtherPlayers.arrayPlayers [i];
                 break;
             }
         }
@@ -219,29 +224,16 @@ class SimpleGame {
     // Remove player
     onRemovePlayer (data) {
 
-        var playerToRemove = SimpleGame.prototype.playerById(this,data.id);
+        var playerToRemove = this.controlOtherPlayers.playerById(data.id);
 
         if (playerToRemove != null) {
             playerToRemove.removePlayer()
-            this.dataOtherPlayers.splice(this.dataOtherPlayers.indexOf(playerToRemove), 1)
+            this.controlOtherPlayers.arrayPlayers .splice(this.controlOtherPlayers.arrayPlayers .indexOf(playerToRemove), 1)
         }
 
         console.log(playerToRemove);
 
     }
-
-    playerById (simpleGame:SimpleGame,id:Text): cOtherPlayerData {
-        var i:number;
-        
-        for (i = 0; i < simpleGame.dataOtherPlayers.length; i++) {
-            if (simpleGame.dataOtherPlayers[i].id === id) {
-                return simpleGame.dataOtherPlayers[i];
-            }
-        }
-
-        return null
-    }
-
 
 
 } //fin

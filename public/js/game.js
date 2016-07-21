@@ -1,4 +1,5 @@
 var SimpleGame = (function () {
+    //variables creadas por mi
     function SimpleGame() {
         this.game = new Phaser.Game(800, 600, Phaser.CANVAS, 'content', {
             preload: this.preload,
@@ -9,7 +10,7 @@ var SimpleGame = (function () {
     }
     SimpleGame.prototype.preload = function () {
         this.game.load.tilemap('map', 'assets/maze.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('tiles', 'assets/tiles.png');
+        this.game.load.image('tiles', 'assets/tiles2.png');
         this.game.load.image('player', 'assets/fermat8.png');
         this.game.load.image('logo', 'assets/phaser.png');
         this.game.load.image('bat', 'assets/bat.png');
@@ -34,7 +35,8 @@ var SimpleGame = (function () {
         //para medir los tiempos
         this.game.time.advancedTiming = true;
         //inicio parametros del juego
-        this.gridSize = 32;
+        this.dataGame = new cDataGame();
+        this.dataGame.gridSize = 50;
         // To cotrol the mouses events
         this.game.input.onDown.add(SimpleGame.prototype.mouseDown, this);
         this.game.input.addMoveCallback(SimpleGame.prototype.mouseMove, this);
@@ -52,13 +54,14 @@ var SimpleGame = (function () {
         this.dataPlayer.game = this.game;
         this.dataPlayer.startPlayer();
         //inicio los jugadores enemigos
-        this.dataOtherPlayers = [];
+        this.controlOtherPlayers = new cControlOtherPlayers;
+        this.controlOtherPlayers.arrayPlayers = [];
         //esto controla el teclado
         this.cursors = this.game.input.keyboard.createCursorKeys();
         //  Para hacer un recuadro donde esta el mouse
         this.marker = this.game.add.graphics(0, 0);
         this.marker.lineStyle(2, 0xffffff, 1);
-        this.marker.drawRect(0, 0, 32, 32);
+        this.marker.drawRect(0, 0, 50, 50);
         // create 8 bats
         this.Enemies = this.game.add.group();
         this.Enemies.physicsBodyType = Phaser.Physics.ARCADE;
@@ -75,17 +78,17 @@ var SimpleGame = (function () {
         this.dataPlayer.updatePlayer(this.cursors, this.layer, this.socket);
     };
     SimpleGame.prototype.render = function () {
-        //this.game.debug.cameraInfo(this.game.camera, 32, 32);
-        //this.game.debug.spriteCoords(this.dataPlayer.playerSprite, 32, 500);
+        //this.game.debug.cameraInfo(this.game.camera, 50, 50);
+        //this.game.debug.spriteCoords(this.dataPlayer.playerSprite, 50, 500);
         var x = this.layer.getTileX(this.dataPlayer.playerSprite.body.x);
         var y = this.layer.getTileY(this.dataPlayer.playerSprite.body.y);
         var tile = this.map.getTile(x, y, this.layer);
         this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
         this.game.debug.text("vida: " + this.dataPlayer.life.toString(), 100, 100);
-        //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 32, 48, 'rgb(0,0,0)');
-        //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 32, 64, 'rgb(0,0,0)');
-        this.game.debug.bodyInfo(this.dataPlayer.playerSprite, 32, 32);
-        this.game.debug.body(this.dataPlayer.playerSprite);
+        //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 50, 48, 'rgb(0,0,0)');
+        //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 50, 64, 'rgb(0,0,0)');
+        //this.game.debug.bodyInfo(this.dataPlayer.playerSprite, 50, 50);
+        //this.game.debug.body(this.dataPlayer.playerSprite);
     };
     SimpleGame.prototype.mouseDown = function (event) {
         var tileX = this.layer.getTileX(this.game.input.activePointer.worldX);
@@ -93,8 +96,8 @@ var SimpleGame = (function () {
         this.socket.emit('mouse click', { x: tileX, y: tileY });
     };
     SimpleGame.prototype.mouseMove = function (pointer, x, y, a) {
-        this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;
-        this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.gridSize;
+        this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.dataGame.gridSize;
+        this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.dataGame.gridSize;
     };
     // Socket connected
     SimpleGame.prototype.onSocketConnected = function () {
@@ -117,15 +120,15 @@ var SimpleGame = (function () {
         newPlayer.tileX = data.x;
         newPlayer.tileY = data.y;
         newPlayer.IniciarJugador();
-        this.dataOtherPlayers.push(newPlayer);
+        this.controlOtherPlayers.arrayPlayers.push(newPlayer);
     };
     // Move player
     SimpleGame.prototype.onMovePlayer = function (data) {
         // Find player by ID
         var movedPlayer;
-        for (var i = 0; i < this.dataOtherPlayers.length; i++) {
-            if (this.dataOtherPlayers[i].id === data.id) {
-                movedPlayer = this.dataOtherPlayers[i];
+        for (var i = 0; i < this.controlOtherPlayers.arrayPlayers.length; i++) {
+            if (this.controlOtherPlayers.arrayPlayers[i].id === data.id) {
+                movedPlayer = this.controlOtherPlayers.arrayPlayers[i];
                 break;
             }
         }
@@ -143,21 +146,12 @@ var SimpleGame = (function () {
     };
     // Remove player
     SimpleGame.prototype.onRemovePlayer = function (data) {
-        var playerToRemove = SimpleGame.prototype.playerById(this, data.id);
+        var playerToRemove = this.controlOtherPlayers.playerById(data.id);
         if (playerToRemove != null) {
             playerToRemove.removePlayer();
-            this.dataOtherPlayers.splice(this.dataOtherPlayers.indexOf(playerToRemove), 1);
+            this.controlOtherPlayers.arrayPlayers.splice(this.controlOtherPlayers.arrayPlayers.indexOf(playerToRemove), 1);
         }
         console.log(playerToRemove);
-    };
-    SimpleGame.prototype.playerById = function (simpleGame, id) {
-        var i;
-        for (i = 0; i < simpleGame.dataOtherPlayers.length; i++) {
-            if (simpleGame.dataOtherPlayers[i].id === id) {
-                return simpleGame.dataOtherPlayers[i];
-            }
-        }
-        return null;
     };
     return SimpleGame;
 }()); //fin

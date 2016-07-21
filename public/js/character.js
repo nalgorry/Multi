@@ -10,8 +10,8 @@ var Character = (function (_super) {
     }
     Character.prototype.SetUp = function (main) {
         this.anchor.setTo(0.5, 0.5);
-        this.x = Math.floor(Math.random() * 60) * main.gridSize + main.gridSize / 2;
-        this.y = Math.floor(Math.random() * 60) * main.gridSize + main.gridSize / 2;
+        this.x = Math.floor(Math.random() * 60) * main.dataGame.gridSize + main.dataGame.gridSize / 2;
+        this.y = Math.floor(Math.random() * 60) * main.dataGame.gridSize + main.dataGame.gridSize / 2;
         this.exists = true;
         main.game.time.events.repeat(Phaser.Timer.SECOND * 2, 1000, this.moveCharacter, this);
         this.inputEnabled = true;
