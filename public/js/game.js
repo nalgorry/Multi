@@ -14,7 +14,7 @@ var SimpleGame = (function () {
         this.game.load.image('bat', 'assets/bat.png');
         this.game.load.image('tree', 'assets/tree.jpg');
         this.game.load.image('earth', 'assets/scorched_earth.png');
-        this.game.load.spritesheet('player', 'assets/char_test.png', 50, 100);
+        this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 72);
     };
     SimpleGame.prototype.create = function () {
         //inicio todos los parametros dele juego
@@ -22,7 +22,7 @@ var SimpleGame = (function () {
         //para medir los tiempos
         this.game.time.advancedTiming = true;
         // Configuro el mundo para que sea centrado en el personaje
-        this.game.world.setBounds(0, 0, 1920, 1920);
+        this.game.world.setBounds(0, 0, 60 * this.controlGame.gridSize, 60 * this.controlGame.gridSize);
         //inicio el jugador principal
         this.controlPlayer = new cControlPlayer(this.controlGame);
         //inicio los jugadores enemigos
@@ -37,8 +37,8 @@ var SimpleGame = (function () {
         this.controlGame.updateZDepth();
     };
     SimpleGame.prototype.render = function () {
-        this.game.debug.cameraInfo(this.game.camera, 50, 50);
-        this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
+        //this.game.debug.cameraInfo(this.game.camera, 50, 50);
+        //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
         var x = this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.body.x);
         var y = this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.body.y);
         var tile = this.controlGame.map.getTile(x, y, this.controlGame.layer);

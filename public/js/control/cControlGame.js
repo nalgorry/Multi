@@ -2,7 +2,7 @@ var cControlGame = (function () {
     function cControlGame(_game) {
         this.game = _game;
         //inicio parametros del juego
-        this.gridSize = 50;
+        this.gridSize = 40;
         //  Our tiled scrolling background
         this.map = this.game.add.tilemap('map');
         this.map.addTilesetImage('tiles', 'tiles');
