@@ -40,6 +40,10 @@ class cControlPlayer extends cPlayerData {
 
         this.controlGame.depthGroup.add(this.playerSprite);
 
+        //animaciones
+        this.playerSprite.animations.add('run', [0, 1, 2, 3, 4, 5], 10, true);
+        this.playerSprite.animations.add('idle', [6, 7], 2, true);
+
     }
 
     public playerHit(data) {
@@ -77,28 +81,28 @@ class cControlPlayer extends cPlayerData {
             this.playerSprite.body.velocity.y = -this.speedplayer;
             seMueveY = true;
             this.lastMoveY = -1;
-            this.playerSprite.frame = 0;
+            //this.playerSprite.frame = 0;
         }
         else if (cursors.down.isDown)
         {
             this.playerSprite.body.velocity.y = this.speedplayer;
             seMueveY = true;
             this.lastMoveY = 1;
-            this.playerSprite.frame = 2;
+            //this.playerSprite.frame = 2;
         }
         else if (cursors.left.isDown)
         {
             this.playerSprite.body.velocity.x = -this.speedplayer;
             seMueveX = true;
             this.lastMoveX = -1;
-            this.playerSprite.frame = 1;
+            //this.playerSprite.frame = 1;
         }
         else if (cursors.right.isDown)
         {
             this.playerSprite.body.velocity.x = this.speedplayer;
             seMueveX = true;
             this.lastMoveX = 1;
-            this.playerSprite.frame = 3;
+            //this.playerSprite.frame = 3;
         }
 
         //si dejo de moverse, me fijo hasta donde llego y lo acomodo en la grilla
@@ -129,6 +133,22 @@ class cControlPlayer extends cPlayerData {
                 }
             }
         }
+
+        //control de las animaciones
+        if (this.lastMoveX == 0 && this.lastMoveY == 0) {
+            this.playerSprite.animations.play('idle');
+            console.log("entra iddle");
+        }
+        if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
+            this.playerSprite.scale.x = -1;
+            this.playerSprite.animations.play('run');
+            console.log("entra a la derecha");
+        }
+        if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
+            this.playerSprite.scale.x = 1;
+            this.playerSprite.animations.play('run');
+        }
+        
 
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
         this.tileX = layer.getTileX(this.playerSprite.x);

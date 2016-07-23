@@ -27,7 +27,7 @@ class SimpleGame {
         this.game.load.image('bat', 'assets/bat.png');
         this.game.load.image('tree', 'assets/tree.jpg');
         this.game.load.image('earth', 'assets/scorched_earth.png');
-        this.game.load.spritesheet('player', 'assets/char_test40.png', 40,72 );
+        this.game.load.spritesheet('player', 'assets/charmander48x44.png', 40,40 );
     }
 
     create() {
