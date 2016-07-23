@@ -3,28 +3,31 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var cThisPlayerData = (function (_super) {
-    __extends(cThisPlayerData, _super);
-    function cThisPlayerData() {
+var cControlPlayer = (function (_super) {
+    __extends(cControlPlayer, _super);
+    function cControlPlayer() {
         _super.call(this);
         this.speedplayer = 150;
         this.lastMoveX = 0;
         this.lastMoveY = 0;
-        this.gridSize = 32;
+        this.gridSize = 50;
     }
-    cThisPlayerData.prototype.startPlayer = function () {
+    cControlPlayer.prototype.startPlayer = function () {
         this.playerSprite = this.game.add.sprite(0, 0, 'player');
         this.playerSprite.anchor.set(0.5);
         this.game.physics.arcade.enable(this.playerSprite);
         this.playerSprite.body.collideWorldBounds = true;
-        this.playerSprite.body.width = 32;
-        this.playerSprite.body.height = 32;
-        this.playerSprite.body.offset.y = this.playerSprite.height - 32;
+        this.playerSprite.body.width = 50;
+        this.playerSprite.body.height = 50;
+        this.playerSprite.body.offset.y = this.playerSprite.height - 50;
         this.life = 100; //esto vendria de algun server no?
         this.game.camera.follow(this.playerSprite);
         console.log(this.playerSprite);
     };
-    cThisPlayerData.prototype.updatePlayer = function (cursors, layer, socket) {
+    cControlPlayer.prototype.playerHit = function (data) {
+        this.life -= data.damage;
+    };
+    cControlPlayer.prototype.updatePlayer = function (cursors, layer, socket) {
         this.playerSprite.body.velocity.x = 0;
         this.playerSprite.body.velocity.y = 0;
         var seMueveX = false;
@@ -84,5 +87,5 @@ var cThisPlayerData = (function (_super) {
             socket.emit('move player', { x: this.tileX, y: this.tileY });
         }
     };
-    return cThisPlayerData;
+    return cControlPlayer;
 }(cPlayerData));

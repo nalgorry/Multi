@@ -1,4 +1,4 @@
-class cThisPlayerData extends cPlayerData {
+class cControlPlayer extends cPlayerData {
 
     public idServer: string;
     
@@ -31,6 +31,12 @@ class cThisPlayerData extends cPlayerData {
         this.game.camera.follow(this.playerSprite);
 
         console.log(this.playerSprite);
+
+    }
+
+    public playerHit(data) {
+
+        this.life -= data.damage;
 
     }
 

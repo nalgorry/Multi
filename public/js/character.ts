@@ -4,8 +4,8 @@ class Character extends Phaser.Sprite {
         
         this.anchor.setTo(0.5, 0.5);
 
-        this.x = Math.floor(Math.random() * 60) * main.dataGame.gridSize + main.dataGame.gridSize/2;
-        this.y = Math.floor(Math.random() * 60) * main.dataGame.gridSize + main.dataGame.gridSize/2;
+        this.x = Math.floor(Math.random() * 60) * main.controlGame.gridSize + main.controlGame.gridSize/2;
+        this.y = Math.floor(Math.random() * 60) * main.controlGame.gridSize + main.controlGame.gridSize/2;
         
         this.exists = true;
 

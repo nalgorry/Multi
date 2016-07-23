@@ -1,26 +1,20 @@
 
 class SimpleGame {
-    game: Phaser.Game;
-    map: Phaser.Tilemap;
-    land: Phaser.TileSprite;
-    layer: Phaser.TilemapLayer;
-    cursors: Phaser.CursorKeys;
-    
+
+    public game: Phaser.Game;
     marker; //to get the mouse
     
     //esto genera los vampiros
     Enemies: Phaser.Group;
     bat: Phaser.Sprite;
 
-    socket:SocketIOClient.Socket; // Socket connection
-
-    dataPlayer: cThisPlayerData; //clase que controla al jugador
-    dataGame: cDataGame; //aca van todos los datos relacionados con el juego
-    controlOtherPlayers: cControlOtherPlayers;
-    
-    //variables creadas por mi
+    controlPlayer: cControlPlayer ; //clase que controla al jugador
+    controlGame: cControlGame ; //aca van todos los datos relacionados con el juego
+    controlOtherPlayers: cControlOtherPlayers; //clase que controla los otros jugadores
+    controlServer: cControlServer; //clase que controla el servidor
 
     constructor() {
+
         this.game = new Phaser.Game(800, 600, Phaser.CANVAS, 'content', 
         { 
             preload: this.preload, 
@@ -28,83 +22,64 @@ class SimpleGame {
             update: this.update,
             render: this.render
         });
+
     }
 
     preload() {
         this.game.load.tilemap('map', 'assets/maze.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', 'assets/tiles2.png');
-        this.game.load.image('player', 'assets/fermat8.png');
+        this.game.load.image('player', 'assets/char test.png');
         this.game.load.image('logo', 'assets/phaser.png');
         this.game.load.image('bat', 'assets/bat.png');
         this.game.load.image('tree', 'assets/tree.jpg');
-        
         this.game.load.image('earth', 'assets/scorched_earth.png');
     }
 
     create() {
-        //para hacerlo multiplayer :)
-        this.socket = io.connect();
-
-        // Socket connection successful
-        this.socket.on('connect', SimpleGame.prototype.onSocketConnected.bind(this));
-
-        // Socket disconnection
-        this.socket.on('disconnect', SimpleGame.prototype.onSocketDisconnect.bind(this));
-
-        // New player message received
-        this.socket.on('new player', SimpleGame.prototype.onNewPlayer.bind(this));
-
-        // Player move message received
-        this.socket.on('move player', SimpleGame.prototype.onMovePlayer.bind(this));
-
-        // Player removed message received
-        this.socket.on('remove player', SimpleGame.prototype.onRemovePlayer.bind(this));
-
-        // Player removed message received
-        this.socket.on('player git', SimpleGame.prototype.onPlayerGit.bind(this));
+        
+        //inicio todos los parametros dele juego
+        this.controlGame = new cControlGame(this.game)
 
         //para medir los tiempos
         this.game.time.advancedTiming = true;
         
         //inicio parametros del juego
-        this.dataGame = new cDataGame();
-        this.dataGame.gridSize = 50;
+        this.controlGame.gridSize = 50;
 
         // To cotrol the mouses events
         this.game.input.onDown.add(SimpleGame.prototype.mouseDown,this);
         this.game.input.addMoveCallback(SimpleGame.prototype.mouseMove,this);
 
         //  Our tiled scrolling background
-        this.map = this.game.add.tilemap('map');
-        this.map.addTilesetImage('tiles', 'tiles');
-        this.layer = this.map.createLayer('Tile Layer 1');
-        this.map.setCollision(20, true, this.layer);
+        this.controlGame.map = this.game.add.tilemap('map');
+        this.controlGame.map.addTilesetImage('tiles', 'tiles');
+        this.controlGame.layer = this.controlGame.map.createLayer('Tile Layer 1');
+        this.controlGame.map.setCollision(20, true, this.controlGame.layer);
         this.game.stage.disableVisibilityChange = true;
-
         
         // Configuro el mundo para que sea centrado en el personaje
         this.game.world.setBounds(0, 0, 1920, 1920);
         //this.game.world.centerX
         
         //inicio el jugador principal
-        this.dataPlayer = new cThisPlayerData();
-        this.dataPlayer.game = this.game;
-        this.dataPlayer.startPlayer();
+        this.controlPlayer = new cControlPlayer();
+        this.controlPlayer.game = this.game;
+        this.controlPlayer.startPlayer();
 
         //inicio los jugadores enemigos
-        this.controlOtherPlayers = new cControlOtherPlayers;
+        this.controlOtherPlayers = new cControlOtherPlayers(this.controlGame);
 
-        
         this.controlOtherPlayers.arrayPlayers = [];
 
-
         //esto controla el teclado
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+        this.controlGame.cursors = this.game.input.keyboard.createCursorKeys();
 
         //  Para hacer un recuadro donde esta el mouse
         this.marker = this.game.add.graphics(0,0);
         this.marker.lineStyle(2, 0xffffff, 1);
         this.marker.drawRect(0, 0, 50, 50);
+
+        this.controlServer = new cControlServer(this.controlPlayer,this.controlGame,this.controlOtherPlayers);
 
         // create 8 bats
         this.Enemies = this.game.add.group();
@@ -123,8 +98,8 @@ class SimpleGame {
 
     update() {
 
-        this.game.physics.arcade.collide(this.dataPlayer.playerSprite, this.layer);
-        this.dataPlayer.updatePlayer(this.cursors,this.layer,this.socket);
+        this.game.physics.arcade.collide(this.controlPlayer.playerSprite, this.controlGame.layer);
+        this.controlPlayer.updatePlayer(this.controlGame.cursors,this.controlGame.layer,this.controlServer.socket);
         
     }
 
@@ -132,13 +107,13 @@ class SimpleGame {
         //this.game.debug.cameraInfo(this.game.camera, 50, 50);
         //this.game.debug.spriteCoords(this.dataPlayer.playerSprite, 50, 500);
         
-        var x = this.layer.getTileX(this.dataPlayer.playerSprite.body.x);
-        var y = this.layer.getTileY(this.dataPlayer.playerSprite.body.y);
-        var tile = this.map.getTile(x,y,this.layer);
+        var x = this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.body.x);
+        var y = this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.body.y);
+        var tile = this.controlGame.map.getTile(x,y,this.controlGame.layer);
         
         this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
 
-        this.game.debug.text("vida: " + this.dataPlayer.life.toString(),100,100)
+        this.game.debug.text("vida: " + this.controlPlayer.life.toString(),100,100)
 
         //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 50, 48, 'rgb(0,0,0)');
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 50, 64, 'rgb(0,0,0)');
@@ -150,89 +125,15 @@ class SimpleGame {
 
     mouseDown(event:MouseEvent) {
 
-        var tileX:number = this.layer.getTileX(this.game.input.activePointer.worldX);
-        var tileY:number = this.layer.getTileY(this.game.input.activePointer.worldY);
+        var tileX:number = this.controlGame.layer.getTileX(this.game.input.activePointer.worldX);
+        var tileY:number = this.controlGame.layer.getTileY(this.game.input.activePointer.worldY);
 
-        this.socket.emit('mouse click', { x: tileX, y: tileY });
+        this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
     }
 
     mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {
-        this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.dataGame.gridSize;
-        this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.dataGame.gridSize;
-    }
-
-    // Socket connected
-    public onSocketConnected()  {
-        console.log('Connected to socket server');
-
-        this.dataPlayer.idServer = "/#" + this.socket.id;
-        console.log(this.dataPlayer.idServer);
-
-        this.socket.emit('new player', { x: this.layer.getTileX(this.dataPlayer.playerSprite.x), y: this.layer.getTileY(this.dataPlayer.playerSprite.y) });
-    }
-
-    // Socket disconnected
-    onSocketDisconnect () {
-        console.log('Disconnected from socket server');
-    }
-
-    // New player
-    onNewPlayer (data) {
-        console.log('New player connected:', data.id);
-        //console.log(data);
-
-        var newPlayer = new cOtherPlayerData;
-        newPlayer.game = this.game;
-        newPlayer.id = data.id;
-        newPlayer.tileX = data.x;
-        newPlayer.tileY = data.y;
-        newPlayer.IniciarJugador();
-
-        this.controlOtherPlayers.arrayPlayers.push(newPlayer);
-
-    }
-
-    // Move player
-    onMovePlayer (data) {
-        
-        // Find player by ID
-        var movedPlayer:cOtherPlayerData;
-        for (var i = 0; i < this.controlOtherPlayers.arrayPlayers .length; i++) {
-            if (this.controlOtherPlayers.arrayPlayers [i].id === data.id) {
-                movedPlayer = this.controlOtherPlayers.arrayPlayers [i];
-                break;
-            }
-        }
-
-        movedPlayer.MoverJugador(data)
-
-    }
-
-     // Move player
-    onPlayerGit (data) {
-        console.log (data.damage);
-
-        console.log(data.id );
-        console.log(this.dataPlayer.idServer);
-        if (data.id === this.dataPlayer.idServer) {
-            this.dataPlayer.life -= data.damage;
-            console.log("entra");
-        }
-
-    }
-
-    // Remove player
-    onRemovePlayer (data) {
-
-        var playerToRemove = this.controlOtherPlayers.playerById(data.id);
-
-        if (playerToRemove != null) {
-            playerToRemove.removePlayer()
-            this.controlOtherPlayers.arrayPlayers .splice(this.controlOtherPlayers.arrayPlayers .indexOf(playerToRemove), 1)
-        }
-
-        console.log(playerToRemove);
-
+        this.marker.x = this.controlGame.layer.getTileX(this.game.input.activePointer.worldX) * this.controlGame.gridSize;
+        this.marker.y = this.controlGame.layer.getTileY(this.game.input.activePointer.worldY) * this.controlGame.gridSize;
     }
 
 
