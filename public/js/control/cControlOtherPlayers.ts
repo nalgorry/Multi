@@ -4,8 +4,9 @@ class cControlOtherPlayers {
 
     constructor(public controlGame: cControlGame) {
 
-    }
+        this.arrayPlayers = [];
 
+    }
 
     public  playerById (id:Text): cOtherPlayerData {
         var i:number;
@@ -21,8 +22,7 @@ class cControlOtherPlayers {
 
     public addPlayer(data) {
 
-        var newPlayer = new cOtherPlayerData;
-        newPlayer.game = this.controlGame.game;
+        var newPlayer = new cOtherPlayerData(this.controlGame);
         newPlayer.id = data.id;
         newPlayer.tileX = data.x;
         newPlayer.tileY = data.y;

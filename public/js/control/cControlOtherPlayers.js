@@ -1,6 +1,7 @@
 var cControlOtherPlayers = (function () {
     function cControlOtherPlayers(controlGame) {
         this.controlGame = controlGame;
+        this.arrayPlayers = [];
     }
     cControlOtherPlayers.prototype.playerById = function (id) {
         var i;
@@ -12,8 +13,7 @@ var cControlOtherPlayers = (function () {
         return null;
     };
     cControlOtherPlayers.prototype.addPlayer = function (data) {
-        var newPlayer = new cOtherPlayerData;
-        newPlayer.game = this.controlGame.game;
+        var newPlayer = new cOtherPlayerData(this.controlGame);
         newPlayer.id = data.id;
         newPlayer.tileX = data.x;
         newPlayer.tileY = data.y;

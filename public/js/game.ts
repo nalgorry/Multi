@@ -2,11 +2,6 @@
 class SimpleGame {
 
     public game: Phaser.Game;
-    marker; //to get the mouse
-    
-    //esto genera los vampiros
-    Enemies: Phaser.Group;
-    bat: Phaser.Sprite;
 
     controlPlayer: cControlPlayer ; //clase que controla al jugador
     controlGame: cControlGame ; //aca van todos los datos relacionados con el juego
@@ -43,57 +38,18 @@ class SimpleGame {
         //para medir los tiempos
         this.game.time.advancedTiming = true;
         
-        //inicio parametros del juego
-        this.controlGame.gridSize = 50;
-
-        // To cotrol the mouses events
-        this.game.input.onDown.add(SimpleGame.prototype.mouseDown,this);
-        this.game.input.addMoveCallback(SimpleGame.prototype.mouseMove,this);
-
-        //  Our tiled scrolling background
-        this.controlGame.map = this.game.add.tilemap('map');
-        this.controlGame.map.addTilesetImage('tiles', 'tiles');
-        this.controlGame.layer = this.controlGame.map.createLayer('Tile Layer 1');
-        this.controlGame.map.setCollision(20, true, this.controlGame.layer);
-        this.game.stage.disableVisibilityChange = true;
-        
         // Configuro el mundo para que sea centrado en el personaje
         this.game.world.setBounds(0, 0, 1920, 1920);
-        //this.game.world.centerX
         
         //inicio el jugador principal
-        this.controlPlayer = new cControlPlayer();
-        this.controlPlayer.game = this.game;
-        this.controlPlayer.startPlayer();
+        this.controlPlayer = new cControlPlayer(this.controlGame);
 
         //inicio los jugadores enemigos
         this.controlOtherPlayers = new cControlOtherPlayers(this.controlGame);
 
-        this.controlOtherPlayers.arrayPlayers = [];
-
-        //esto controla el teclado
-        this.controlGame.cursors = this.game.input.keyboard.createCursorKeys();
-
-        //  Para hacer un recuadro donde esta el mouse
-        this.marker = this.game.add.graphics(0,0);
-        this.marker.lineStyle(2, 0xffffff, 1);
-        this.marker.drawRect(0, 0, 50, 50);
-
+        //inicio el servidor
         this.controlServer = new cControlServer(this.controlPlayer,this.controlGame,this.controlOtherPlayers);
-
-        // create 8 bats
-        this.Enemies = this.game.add.group();
-        this.Enemies.physicsBodyType = Phaser.Physics.ARCADE;
-        this.Enemies.enableBody = true;
-
-        this.Enemies.classType = Character;
-        this.Enemies.createMultiple(30, "bat");
-        this.Enemies.forEach(function (Enemy: Character) {
-        // setup movements and animations
-        Enemy.SetUp(this);
-        
-        }, this);
-
+        this.controlGame.controlServer = this.controlServer;
     }
 
     update() {
@@ -122,20 +78,6 @@ class SimpleGame {
         //this.game.debug.body(this.dataPlayer.playerSprite);
 
     }
-
-    mouseDown(event:MouseEvent) {
-
-        var tileX:number = this.controlGame.layer.getTileX(this.game.input.activePointer.worldX);
-        var tileY:number = this.controlGame.layer.getTileY(this.game.input.activePointer.worldY);
-
-        this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
-    }
-
-    mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {
-        this.marker.x = this.controlGame.layer.getTileX(this.game.input.activePointer.worldX) * this.controlGame.gridSize;
-        this.marker.y = this.controlGame.layer.getTileY(this.game.input.activePointer.worldY) * this.controlGame.gridSize;
-    }
-
 
 } //fin
 window.onload = () => {

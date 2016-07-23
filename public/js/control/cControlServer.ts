@@ -1,6 +1,6 @@
 class cControlServer {
     
-    socket:SocketIOClient.Socket; // Socket connection
+    public socket:SocketIOClient.Socket; // Socket connection
 
         constructor(public controlPlayer: cControlPlayer,public controlGame: cControlGame,public controlOtherPlayers: cControlOtherPlayers ) {
 

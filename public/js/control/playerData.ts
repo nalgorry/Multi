@@ -3,10 +3,10 @@ class cPlayerData {
     public tileX: number;
     public tileY: number;
     public playerSprite: Phaser.Sprite;
-    public game: Phaser.Game;
+    public controlGame:cControlGame
 
-    constructor() {
-        
+    constructor(_controlGame:cControlGame) {
+        this.controlGame = _controlGame;
 
     }
 }

@@ -8,29 +8,31 @@ class cControlPlayer extends cPlayerData {
     private speedplayer: number = 150;
     private lastMoveX: number = 0;
     private lastMoveY: number = 0;
-    private gridSize: number = 50;
+    private gridSize: number;
     
-    constructor() {
-        super();    
+    constructor(controlGame:cControlGame) {
+        super(controlGame);
+        
+        this.startPlayer();
+        this.gridSize = controlGame.gridSize;
+
     }
 
     public startPlayer() {
 
-        this.playerSprite = this.game.add.sprite(0, 0, 'player');
+        this.playerSprite = this.controlGame.game.add.sprite(0, 0, 'player');
         this.playerSprite.anchor.set(0.5);
 
-        this.game.physics.arcade.enable(this.playerSprite);
+        this.controlGame.game.physics.arcade.enable(this.playerSprite);
         
         this.playerSprite.body.collideWorldBounds = true;
-        this.playerSprite.body.width =50;
-        this.playerSprite.body.height =50;
-        this.playerSprite.body.offset.y =this.playerSprite.height - 50 ;
+        this.playerSprite.body.width = this.controlGame.gridSize;
+        this.playerSprite.body.height =this.controlGame.gridSize;
+        this.playerSprite.body.offset.y =this.playerSprite.height - this.controlGame.gridSize;
         
         this.life = 100; //esto vendria de algun server no?
 
-        this.game.camera.follow(this.playerSprite);
-
-        console.log(this.playerSprite);
+        this.controlGame.game.camera.follow(this.playerSprite);
 
     }
 

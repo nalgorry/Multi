@@ -5,24 +5,24 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var cControlPlayer = (function (_super) {
     __extends(cControlPlayer, _super);
-    function cControlPlayer() {
-        _super.call(this);
+    function cControlPlayer(controlGame) {
+        _super.call(this, controlGame);
         this.speedplayer = 150;
         this.lastMoveX = 0;
         this.lastMoveY = 0;
-        this.gridSize = 50;
+        this.startPlayer();
+        this.gridSize = controlGame.gridSize;
     }
     cControlPlayer.prototype.startPlayer = function () {
-        this.playerSprite = this.game.add.sprite(0, 0, 'player');
+        this.playerSprite = this.controlGame.game.add.sprite(0, 0, 'player');
         this.playerSprite.anchor.set(0.5);
-        this.game.physics.arcade.enable(this.playerSprite);
+        this.controlGame.game.physics.arcade.enable(this.playerSprite);
         this.playerSprite.body.collideWorldBounds = true;
-        this.playerSprite.body.width = 50;
-        this.playerSprite.body.height = 50;
-        this.playerSprite.body.offset.y = this.playerSprite.height - 50;
+        this.playerSprite.body.width = this.controlGame.gridSize;
+        this.playerSprite.body.height = this.controlGame.gridSize;
+        this.playerSprite.body.offset.y = this.playerSprite.height - this.controlGame.gridSize;
         this.life = 100; //esto vendria de algun server no?
-        this.game.camera.follow(this.playerSprite);
-        console.log(this.playerSprite);
+        this.controlGame.game.camera.follow(this.playerSprite);
     };
     cControlPlayer.prototype.playerHit = function (data) {
         this.life -= data.damage;
