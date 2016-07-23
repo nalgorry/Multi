@@ -22,8 +22,11 @@ class cControlServer {
         // Player removed message received
         this.socket.on('remove player', cControlServer.prototype.onRemovePlayer.bind(this));
 
-        // Player removed message received
-        this.socket.on('player git', cControlServer.prototype.onPlayerGit.bind(this));
+        this.socket.on('player hit', cControlServer.prototype.onPlayerHit.bind(this));
+        this.socket.on('you hit', cControlServer.prototype.onYouHit.bind(this));
+
+        this.socket.on('player die', cControlServer.prototype.onPlayerDie.bind(this));
+        this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
         
         }
 
@@ -50,6 +53,11 @@ class cControlServer {
 
     }
 
+    onYouHit (data) {
+
+        this.controlPlayer.youHit(data)
+    }
+
     // Move player
     onMovePlayer (data) {
 
@@ -58,13 +66,26 @@ class cControlServer {
     }
 
      // Player git by other player
-    onPlayerGit (data) {
+    onPlayerHit (data) {
 
         console.log (data.damage);
         if (data.id === this.controlPlayer.idServer) {
             this.controlPlayer.playerHit(data) 
         }
 
+    }
+
+    // Someone has die
+    onPlayerDie (data) {
+
+        if (data.id === this.controlPlayer.idServer) {
+            this.controlPlayer.youDie(data) 
+        }
+
+    }
+
+    onYouKill (data) {
+        
     }
 
     // Remove player, cuando un jugador se desconecta

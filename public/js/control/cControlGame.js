@@ -7,7 +7,7 @@ var cControlGame = (function () {
         this.map = this.game.add.tilemap('map');
         this.map.addTilesetImage('tiles', 'tiles');
         this.layer = this.map.createLayer('Tile Layer 1');
-        this.map.setCollision(20, true, this.layer);
+        this.map.setCollision(100, true, this.layer);
         this.game.stage.disableVisibilityChange = true;
         //  Para hacer un recuadro donde esta el mouse
         this.marker = this.game.add.graphics(0, 0);
@@ -18,7 +18,12 @@ var cControlGame = (function () {
         this.game.input.addMoveCallback(this.mouseMove, this);
         //esto controla el teclado
         this.cursors = this.game.input.keyboard.createCursorKeys();
+        //inicio el grupo de profundidad
+        this.depthGroup = this.game.add.group(); //  To control the depth of the characters
     }
+    cControlGame.prototype.updateZDepth = function () {
+        this.depthGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+    };
     cControlGame.prototype.mouseDown = function (event) {
         var tileX = this.layer.getTileX(this.game.input.activePointer.worldX);
         var tileY = this.layer.getTileY(this.game.input.activePointer.worldY);

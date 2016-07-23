@@ -23,11 +23,11 @@ class SimpleGame {
     preload() {
         this.game.load.tilemap('map', 'assets/maze.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', 'assets/tiles2.png');
-        this.game.load.image('player', 'assets/char test.png');
         this.game.load.image('logo', 'assets/phaser.png');
         this.game.load.image('bat', 'assets/bat.png');
         this.game.load.image('tree', 'assets/tree.jpg');
         this.game.load.image('earth', 'assets/scorched_earth.png');
+        this.game.load.spritesheet('player', 'assets/char_test.png', 50, 100);
     }
 
     create() {
@@ -56,12 +56,14 @@ class SimpleGame {
 
         this.game.physics.arcade.collide(this.controlPlayer.playerSprite, this.controlGame.layer);
         this.controlPlayer.updatePlayer(this.controlGame.cursors,this.controlGame.layer,this.controlServer.socket);
+        this.controlGame.updateZDepth();
         
     }
 
     render() {
-        //this.game.debug.cameraInfo(this.game.camera, 50, 50);
-        //this.game.debug.spriteCoords(this.dataPlayer.playerSprite, 50, 500);
+        this.game.debug.cameraInfo(this.game.camera, 50, 50);
+        this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
+        
         
         var x = this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.body.x);
         var y = this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.body.y);

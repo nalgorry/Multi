@@ -7,6 +7,7 @@ class cControlGame {
     public layer: Phaser.TilemapLayer;
     public cursors: Phaser.CursorKeys;
     public controlServer: cControlServer;
+    public depthGroup:Phaser.Group;
     marker; //to get the mouse
 
     constructor(_game:Phaser.Game) {
@@ -19,7 +20,7 @@ class cControlGame {
         this.map = this.game.add.tilemap('map');
         this.map.addTilesetImage('tiles', 'tiles');
         this.layer = this.map.createLayer('Tile Layer 1');
-        this.map.setCollision(20, true, this.layer);
+        this.map.setCollision(100, true, this.layer);
         this.game.stage.disableVisibilityChange = true;
 
         //  Para hacer un recuadro donde esta el mouse
@@ -33,6 +34,13 @@ class cControlGame {
 
         //esto controla el teclado
         this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        //inicio el grupo de profundidad
+         this.depthGroup = this.game.add.group(); //  To control the depth of the characters
+    }
+
+    public updateZDepth() {
+        this.depthGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     }
 
     mouseDown(event:MouseEvent) {

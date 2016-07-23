@@ -61,12 +61,22 @@ function onSocketConnection (client) {
 function onMouseClick(data) {
   
   var player:cPlayer = playerByXY(data.x,data.y);
-  var damage:number = Math.round(Math.random()*10+2);
   
   if (player != null) {
+    var damage:number = Math.round(Math.random()*10+2);
     player.playerLife -= damage;
-    util.log('Player has click: ' + player.playerLife)
-    this.broadcast.emit('player git', {id: player.id, x: player.x, y: player.y,damage:damage})
+    util.log('Player has click: ' + player.playerLife);
+
+    // mando el golpe a los jugadores
+    this.broadcast.emit('player hit', {id: player.id, x: player.x, y: player.y,damage:damage});
+    this.emit('you hit', {damage: damage});
+
+    //mataron a alguien finalmente 
+    if (player.playerLife <= 0) { 
+      this.broadcast.emit('player die', {id: player.id, x: player.x, y: player.y,damage:damage});
+      this.emit('you kill', {damage: damage});
+      player.playerLife = 100;
+    }
   }
 
 }
@@ -121,8 +131,9 @@ function onMovePlayer (data) {
 
   movePlayer.x = data.x;
   movePlayer.y = data.y;
+  movePlayer.dirMov = data.dirMov;
 
-  this.broadcast.emit('move player', {id: movePlayer.id, x: movePlayer.x, y: movePlayer.y})
+  this.broadcast.emit('move player', {id: movePlayer.id, x: movePlayer.x, y: movePlayer.y,dirMov: movePlayer.dirMov })
 }
 
 
