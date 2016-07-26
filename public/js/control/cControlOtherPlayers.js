@@ -39,5 +39,8 @@ var cControlOtherPlayers = (function () {
         }
         movedPlayer.MoverJugador(data);
     };
+    cControlOtherPlayers.prototype.showChat = function (data) {
+        var player = this.playerById(data.id);
+    };
     return cControlOtherPlayers;
 }());

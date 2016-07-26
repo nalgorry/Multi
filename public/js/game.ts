@@ -7,6 +7,7 @@ class SimpleGame {
     controlGame: cControlGame ; //aca van todos los datos relacionados con el juego
     controlOtherPlayers: cControlOtherPlayers; //clase que controla los otros jugadores
     controlServer: cControlServer; //clase que controla el servidor
+    controlChat: cControlChat; //clase que controla el chat
 
     constructor() {
 
@@ -34,6 +35,7 @@ class SimpleGame {
         
         //inicio todos los parametros dele juego
         this.controlGame = new cControlGame(this.game)
+        this.game.add.plugin(Fabrique.Plugins.InputField);
 
         //para medir los tiempos
         this.game.time.advancedTiming = true;
@@ -47,18 +49,29 @@ class SimpleGame {
         //inicio los jugadores enemigos
         this.controlOtherPlayers = new cControlOtherPlayers(this.controlGame);
 
+        //inicio el chat
+        this.controlChat = new cControlChat(this.controlGame,this.controlPlayer,this.controlOtherPlayers);
+
         //inicio el servidor
-        this.controlServer = new cControlServer(this.controlPlayer,this.controlGame,this.controlOtherPlayers);
+        this.controlServer = new cControlServer(this.controlPlayer,this.controlGame,
+            this.controlOtherPlayers,this.controlChat);
         this.controlGame.controlServer = this.controlServer;
+        this.controlChat.controlServer = this.controlServer
+
+        
     }
 
     update() {
-
-        this.game.physics.arcade.collide(this.controlPlayer.playerSprite, this.controlGame.layer);
+        
         this.controlPlayer.updatePlayer(this.controlGame.cursors,this.controlGame.layer,this.controlServer.socket);
+        
         this.controlGame.updateZDepth();
+
+        var enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        enter.onDown.add(this.controlChat.enterPress,this.controlChat);
         
     }
+
 
     render() {
         //this.game.debug.cameraInfo(this.game.camera, 50, 50);

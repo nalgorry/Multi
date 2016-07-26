@@ -9,4 +9,11 @@ class cPlayerData {
         this.controlGame = _controlGame;
 
     }
+
+    public setChatText(texto:Phaser.Text) {
+        //pruebas de texto
+        this.playerSprite.addChild(texto);
+    }
+
+    
 }

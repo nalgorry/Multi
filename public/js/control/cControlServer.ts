@@ -2,7 +2,8 @@ class cControlServer {
     
     public socket:SocketIOClient.Socket; // Socket connection
 
-        constructor(public controlPlayer: cControlPlayer,public controlGame: cControlGame,public controlOtherPlayers: cControlOtherPlayers ) {
+        constructor(public controlPlayer: cControlPlayer,public controlGame: cControlGame,
+                    public controlOtherPlayers: cControlOtherPlayers, public controlChat: cControlChat) {
 
         //para hacerlo multiplayer :)
         this.socket = io.connect();
@@ -27,8 +28,24 @@ class cControlServer {
 
         this.socket.on('player die', cControlServer.prototype.onPlayerDie.bind(this));
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
+
+        this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
+        
         
         }
+
+    //chat text
+    public onSendChatText(text:string) {
+
+        this.socket.emit('Chat Send', { text: text });
+
+    }
+
+    public onYouReceiveChat(data) {
+
+        this.controlChat.chatReceive(data);
+
+    }
 
     // Socket connected
     public onSocketConnected()  {
@@ -94,6 +111,8 @@ class cControlServer {
         this.controlOtherPlayers.removePlayer(data)
 
     }
+
+
 
 
 

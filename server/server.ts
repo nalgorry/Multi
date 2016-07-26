@@ -55,6 +55,15 @@ function onSocketConnection (client) {
   //Listen for mouses click
   client.on('mouse click', onMouseClick)
 
+  //chat listener
+  client.on('Chat Send', onChatSend)
+
+}
+
+function onChatSend(data) {
+    util.log('Player has chat: ' + data.text);
+
+    this.broadcast.emit('Chat Receive', {id: this.id, text: data.text});
 }
 
 //on mouse click 

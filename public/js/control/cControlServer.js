@@ -1,8 +1,9 @@
 var cControlServer = (function () {
-    function cControlServer(controlPlayer, controlGame, controlOtherPlayers) {
+    function cControlServer(controlPlayer, controlGame, controlOtherPlayers, controlChat) {
         this.controlPlayer = controlPlayer;
         this.controlGame = controlGame;
         this.controlOtherPlayers = controlOtherPlayers;
+        this.controlChat = controlChat;
         //para hacerlo multiplayer :)
         this.socket = io.connect();
         // Socket connection successful
@@ -19,7 +20,15 @@ var cControlServer = (function () {
         this.socket.on('you hit', cControlServer.prototype.onYouHit.bind(this));
         this.socket.on('player die', cControlServer.prototype.onPlayerDie.bind(this));
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
+        this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
     }
+    //chat text
+    cControlServer.prototype.onSendChatText = function (text) {
+        this.socket.emit('Chat Send', { text: text });
+    };
+    cControlServer.prototype.onYouReceiveChat = function (data) {
+        this.controlChat.chatReceive(data);
+    };
     // Socket connected
     cControlServer.prototype.onSocketConnected = function () {
         console.log('Connected to socket server');

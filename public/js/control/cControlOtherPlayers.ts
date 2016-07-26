@@ -59,4 +59,10 @@ class cControlOtherPlayers {
 
     }
 
+    public showChat(data) {
+
+        var player = this.playerById(data.id);
+         
+    }
+
 }

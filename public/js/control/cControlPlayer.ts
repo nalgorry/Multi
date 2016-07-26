@@ -69,6 +69,8 @@ class cControlPlayer extends cPlayerData {
 
     public updatePlayer(cursors:Phaser.CursorKeys,layer:Phaser.TilemapLayer,socket:SocketIOClient.Socket) {
 
+        this.controlGame.game.physics.arcade.collide(this.playerSprite, this.controlGame.layer);
+        
         this.playerSprite.body.velocity.x = 0;
         this.playerSprite.body.velocity.y = 0;
 
@@ -137,12 +139,10 @@ class cControlPlayer extends cPlayerData {
         //control de las animaciones
         if (this.lastMoveX == 0 && this.lastMoveY == 0) {
             this.playerSprite.animations.play('idle');
-            console.log("entra iddle");
         }
         if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
             this.playerSprite.scale.x = -1;
             this.playerSprite.animations.play('run');
-            console.log("entra a la derecha");
         }
         if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
             this.playerSprite.scale.x = 1;
