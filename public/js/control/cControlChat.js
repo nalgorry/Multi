@@ -19,13 +19,10 @@ var cControlChat = (function () {
         this.inputTextChat.blockInput = false;
         this.inputTextChat.fixedToCamera = true;
         this.inputTextChat.cameraOffset.setTo(100, 560);
-        var style = { font: "12px Arial", fill: "#ffffff" };
-        this.textChat = this.controlGame.game.add.text(-30, -30, this.inputTextChat.value, style);
     }
     cControlChat.prototype.enterPress = function () {
-        this.textChat.text = this.inputTextChat.value;
-        this.controlPlayer.setChatText(this.textChat);
         this.controlServer.onSendChatText(this.inputTextChat.value);
+        this.controlPlayer.setChatText(this.inputTextChat.value);
         this.inputTextChat.setText("");
     };
     cControlChat.prototype.chatReceive = function (data) {

@@ -29,18 +29,12 @@ var cControlOtherPlayers = (function () {
         console.log(playerToRemove);
     };
     cControlOtherPlayers.prototype.movePlayer = function (data) {
-        // Find player by ID
-        var movedPlayer;
-        for (var i = 0; i < this.arrayPlayers.length; i++) {
-            if (this.arrayPlayers[i].id === data.id) {
-                movedPlayer = this.arrayPlayers[i];
-                break;
-            }
-        }
+        var movedPlayer = this.playerById(data.id);
         movedPlayer.MoverJugador(data);
     };
     cControlOtherPlayers.prototype.showChat = function (data) {
         var player = this.playerById(data.id);
+        player.setChatText(data.text);
     };
     return cControlOtherPlayers;
 }());

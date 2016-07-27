@@ -10,7 +10,6 @@ var cOtherPlayerData = (function (_super) {
     }
     cOtherPlayerData.prototype.IniciarJugador = function () {
         this.playerSprite = this.controlGame.game.add.sprite(this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize, 'player');
-        this.playerSprite.anchor.set(0, 0.5);
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         this.playerSprite.body.collideWorldBounds = true;
         this.controlGame.depthGroup.add(this.playerSprite);

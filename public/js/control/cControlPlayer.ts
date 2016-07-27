@@ -16,14 +16,14 @@ class cControlPlayer extends cPlayerData {
     
     constructor(controlGame:cControlGame) {
         super(controlGame);
-        
+
         this.startPlayer();
         this.gridSize = controlGame.gridSize;
-
     }
 
     public startPlayer() {
 
+        //esto no se si tendria que hacerlo aca
         this.playerSprite = this.controlGame.game.add.sprite(0, 0, 'player',2);
         this.playerSprite.anchor.set(0.5);
 
@@ -141,11 +141,9 @@ class cControlPlayer extends cPlayerData {
             this.playerSprite.animations.play('idle');
         }
         if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
-            this.playerSprite.scale.x = -1;
             this.playerSprite.animations.play('run');
         }
         if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
-            this.playerSprite.scale.x = 1;
             this.playerSprite.animations.play('run');
         }
         

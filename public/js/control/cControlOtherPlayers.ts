@@ -46,15 +46,7 @@ class cControlOtherPlayers {
 
     public movePlayer(data) {
 
-        // Find player by ID
-        var movedPlayer:cOtherPlayerData;
-        for (var i = 0; i < this.arrayPlayers .length; i++) {
-            if (this.arrayPlayers [i].id === data.id) {
-                movedPlayer = this.arrayPlayers [i];
-                break;
-            }
-        }
-
+        var movedPlayer =  this.playerById(data.id);
         movedPlayer.MoverJugador(data)
 
     }
@@ -62,7 +54,8 @@ class cControlOtherPlayers {
     public showChat(data) {
 
         var player = this.playerById(data.id);
-         
+        player.setChatText(data.text);
+
     }
 
 }

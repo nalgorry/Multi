@@ -51,8 +51,8 @@ var SimpleGame = (function () {
         this.game.debug.text("vida: " + this.controlPlayer.life.toString(), 100, 100);
         //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 50, 48, 'rgb(0,0,0)');
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 50, 64, 'rgb(0,0,0)');
-        //this.game.debug.bodyInfo(this.dataPlayer.playerSprite, 50, 50);
-        //this.game.debug.body(this.dataPlayer.playerSprite);
+        this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
+        this.game.debug.body(this.controlPlayer.playerSprite);
     };
     return SimpleGame;
 }()); //fin

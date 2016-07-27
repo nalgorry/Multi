@@ -17,6 +17,7 @@ var cControlPlayer = (function (_super) {
         this.gridSize = controlGame.gridSize;
     }
     cControlPlayer.prototype.startPlayer = function () {
+        //esto no se si tendria que hacerlo aca
         this.playerSprite = this.controlGame.game.add.sprite(0, 0, 'player', 2);
         this.playerSprite.anchor.set(0.5);
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
@@ -101,11 +102,9 @@ var cControlPlayer = (function (_super) {
             this.playerSprite.animations.play('idle');
         }
         if (this.lastMoveX == 1) {
-            this.playerSprite.scale.x = -1;
             this.playerSprite.animations.play('run');
         }
         if (this.lastMoveX == -1) {
-            this.playerSprite.scale.x = 1;
             this.playerSprite.animations.play('run');
         }
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
