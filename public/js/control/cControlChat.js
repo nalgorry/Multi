@@ -19,6 +19,9 @@ var cControlChat = (function () {
         this.inputTextChat.blockInput = false;
         this.inputTextChat.fixedToCamera = true;
         this.inputTextChat.cameraOffset.setTo(100, 560);
+        //registro el evento del teclado
+        var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        enter.onDown.add(this.enterPress, this);
     }
     cControlChat.prototype.enterPress = function () {
         this.controlServer.onSendChatText(this.inputTextChat.value);

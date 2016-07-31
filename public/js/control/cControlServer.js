@@ -46,6 +46,7 @@ var cControlServer = (function () {
     };
     cControlServer.prototype.onYouHit = function (data) {
         this.controlPlayer.youHit(data);
+        this.controlOtherPlayers.playerHit(data);
     };
     // Move player
     cControlServer.prototype.onMovePlayer = function (data) {
@@ -56,6 +57,9 @@ var cControlServer = (function () {
         console.log(data.damage);
         if (data.id === this.controlPlayer.idServer) {
             this.controlPlayer.playerHit(data);
+        }
+        else {
+            this.controlOtherPlayers.playerHit(data);
         }
     };
     // Someone has die

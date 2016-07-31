@@ -14,7 +14,9 @@ var SimpleGame = (function () {
         this.game.load.image('bat', 'assets/bat.png');
         this.game.load.image('tree', 'assets/tree.jpg');
         this.game.load.image('earth', 'assets/scorched_earth.png');
-        this.game.load.spritesheet('player', 'assets/charmander48x44.png', 40, 40);
+        this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 72);
+        this.game.load.atlas('arboles', 'assets/arboles.png', 'assets/arboles.json');
+        this.game.load.spritesheet('boom', 'assets/explosion.png', 100, 100);
     };
     SimpleGame.prototype.create = function () {
         //inicio todos los parametros dele juego
@@ -36,10 +38,8 @@ var SimpleGame = (function () {
         this.controlChat.controlServer = this.controlServer;
     };
     SimpleGame.prototype.update = function () {
-        this.controlPlayer.updatePlayer(this.controlGame.cursors, this.controlGame.layer, this.controlServer.socket);
+        this.controlPlayer.playerUpdate();
         this.controlGame.updateZDepth();
-        var enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        enter.onDown.add(this.controlChat.enterPress, this.controlChat);
     };
     SimpleGame.prototype.render = function () {
         //this.game.debug.cameraInfo(this.game.camera, 50, 50);
@@ -53,6 +53,7 @@ var SimpleGame = (function () {
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 50, 64, 'rgb(0,0,0)');
         this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
         this.game.debug.body(this.controlPlayer.playerSprite);
+        this.game.debug.geom(this.controlGame.point, 'rgb(0,255,0)');
     };
     return SimpleGame;
 }()); //fin

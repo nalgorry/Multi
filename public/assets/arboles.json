@@ -1,0 +1,21 @@
+{"frames": [
+
+{
+	"filename": "arbol 1",
+	"frame": {"x":0,"y":0,"w":150,"h":120},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":120},
+	"sourceSize": {"w":150,"h":120}
+}
+],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "arboles.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":319},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:17590581092f2081f084c22bf7b2e6b2$"
+}
+}

@@ -1,6 +1,6 @@
 class cControlOtherPlayers {
     
-    public arrayPlayers: cOtherPlayerData[]; //clase que controla los demas jugadores
+    public arrayPlayers: cOtherPlayer[]; //clase que controla los demas jugadores
 
     constructor(public controlGame: cControlGame) {
 
@@ -8,7 +8,7 @@ class cControlOtherPlayers {
 
     }
 
-    public  playerById (id:Text): cOtherPlayerData {
+    public  playerById (id:Text): cOtherPlayer {
         var i:number;
         
         for (i = 0; i < this.arrayPlayers .length; i++) {
@@ -22,7 +22,7 @@ class cControlOtherPlayers {
 
     public addPlayer(data) {
 
-        var newPlayer = new cOtherPlayerData(this.controlGame);
+        var newPlayer = new cOtherPlayer(this.controlGame);
         newPlayer.id = data.id;
         newPlayer.tileX = data.x;
         newPlayer.tileY = data.y;
@@ -55,6 +55,13 @@ class cControlOtherPlayers {
 
         var player = this.playerById(data.id);
         player.setChatText(data.text);
+
+    }
+
+    public playerHit(data) {
+
+        var player = this.playerById(data.id);
+        player.onHit(data);
 
     }
 

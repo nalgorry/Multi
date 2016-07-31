@@ -49,12 +49,12 @@ function onChatSend(data) {
 function onMouseClick(data) {
     var player = playerByXY(data.x, data.y);
     if (player != null) {
-        var damage = Math.round(Math.random() * 10 + 2);
+        var damage = Math.round(Math.random() * 50 + 10);
         player.playerLife -= damage;
         util.log('Player has click: ' + player.playerLife);
         // mando el golpe a los jugadores
         this.broadcast.emit('player hit', { id: player.id, x: player.x, y: player.y, damage: damage });
-        this.emit('you hit', { damage: damage });
+        this.emit('you hit', { id: player.id, damage: damage });
         //mataron a alguien finalmente 
         if (player.playerLife <= 0) {
             this.broadcast.emit('player die', { id: player.id, x: player.x, y: player.y, damage: damage });

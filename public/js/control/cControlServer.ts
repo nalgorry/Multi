@@ -73,6 +73,7 @@ class cControlServer {
     onYouHit (data) {
 
         this.controlPlayer.youHit(data)
+        this.controlOtherPlayers.playerHit(data);
     }
 
     // Move player
@@ -87,7 +88,9 @@ class cControlServer {
 
         console.log (data.damage);
         if (data.id === this.controlPlayer.idServer) {
-            this.controlPlayer.playerHit(data) 
+            this.controlPlayer.playerHit(data);
+        } else {
+            this.controlOtherPlayers.playerHit(data);
         }
 
     }

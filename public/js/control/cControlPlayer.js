@@ -10,6 +10,8 @@ var cControlPlayer = (function (_super) {
         this.speedplayer = 150;
         this.lastMoveX = 0;
         this.lastMoveY = 0;
+        this.seMueveX = false;
+        this.seMueveY = false;
         //texto para mostrar daño (temporal)
         this.style = { font: "15px Arial", fill: "#ff0044" };
         this.hitText = this.controlGame.game.add.text(0, 0, "Trata de golpear a alguien", this.style);
@@ -28,12 +30,26 @@ var cControlPlayer = (function (_super) {
         this.life = 100; //esto vendria de algun server no?
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.depthGroup.add(this.playerSprite);
+        //controlo el movimiento del jugador
+        var W = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        var A = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.A);
+        var S = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        var D = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        W.onDown.add(this.playerMove, this);
+        A.onDown.add(this.playerMove, this);
+        S.onDown.add(this.playerMove, this);
+        D.onDown.add(this.playerMove, this);
+        W.onUp.add(this.playerStop, this);
+        A.onUp.add(this.playerStop, this);
+        S.onUp.add(this.playerStop, this);
+        D.onUp.add(this.playerStop, this);
         //animaciones
-        this.playerSprite.animations.add('run', [0, 1, 2, 3, 4, 5], 10, true);
-        this.playerSprite.animations.add('idle', [6, 7], 2, true);
+        this.playerSprite.animations.add('run', [1], 10, true);
+        this.playerSprite.animations.add('idle', [1], 2, true);
     };
     cControlPlayer.prototype.playerHit = function (data) {
         this.life -= data.damage;
+        this.onHit(data);
     };
     cControlPlayer.prototype.youHit = function (data) {
         this.hitText.text = "Golpeaste a alguien por " + data.damage;
@@ -45,39 +61,24 @@ var cControlPlayer = (function (_super) {
     };
     cControlPlayer.prototype.youKill = function (data) {
     };
-    cControlPlayer.prototype.updatePlayer = function (cursors, layer, socket) {
+    cControlPlayer.prototype.playerStop = function (key) {
+        if (key.keyCode == Phaser.Keyboard.W || key.keyCode == Phaser.Keyboard.S) {
+            this.playerSprite.body.velocity.y = 0;
+            this.seMueveY = false;
+        }
+        if (key.keyCode == Phaser.Keyboard.A || key.keyCode == Phaser.Keyboard.D) {
+            this.playerSprite.body.velocity.x = 0;
+            this.seMueveX = false;
+        }
+    };
+    cControlPlayer.prototype.playerUpdate = function () {
         this.controlGame.game.physics.arcade.collide(this.playerSprite, this.controlGame.layer);
-        this.playerSprite.body.velocity.x = 0;
-        this.playerSprite.body.velocity.y = 0;
-        var seMueveX = false;
-        var seMueveY = false;
-        //me fijo si tengo que mover el jugador
-        if (cursors.up.isDown) {
-            this.playerSprite.body.velocity.y = -this.speedplayer;
-            seMueveY = true;
-            this.lastMoveY = -1;
-        }
-        else if (cursors.down.isDown) {
-            this.playerSprite.body.velocity.y = this.speedplayer;
-            seMueveY = true;
-            this.lastMoveY = 1;
-        }
-        else if (cursors.left.isDown) {
-            this.playerSprite.body.velocity.x = -this.speedplayer;
-            seMueveX = true;
-            this.lastMoveX = -1;
-        }
-        else if (cursors.right.isDown) {
-            this.playerSprite.body.velocity.x = this.speedplayer;
-            seMueveX = true;
-            this.lastMoveX = 1;
-        }
         //si dejo de moverse, me fijo hasta donde llego y lo acomodo en la grilla
-        if (seMueveX == false) {
+        if (this.seMueveX == false) {
             if (this.lastMoveX != 0) {
                 if (this.playerSprite.body.x % this.gridSize != 0) {
                     var velocidad1 = this.speedplayer / 60;
-                    var velocidad2 = Math.abs(layer.getTileX(this.playerSprite.body.x + this.gridSize / 2) * this.gridSize - this.playerSprite.body.x);
+                    var velocidad2 = Math.abs(this.controlGame.layer.getTileX(this.playerSprite.body.x + this.gridSize / 2) * this.gridSize - this.playerSprite.body.x);
                     this.playerSprite.body.x += this.lastMoveX * Math.min(velocidad1, velocidad2);
                 }
                 else {
@@ -85,11 +86,11 @@ var cControlPlayer = (function (_super) {
                 }
             }
         }
-        if (seMueveY == false) {
+        if (this.seMueveY == false) {
             if (this.lastMoveY != 0) {
                 if (this.playerSprite.body.y % this.gridSize != 0) {
                     var velocidad1 = this.speedplayer / 60;
-                    var velocidad2 = Math.abs(layer.getTileY(this.playerSprite.body.y + this.gridSize / 2) * this.gridSize - this.playerSprite.body.y);
+                    var velocidad2 = Math.abs(this.controlGame.layer.getTileY(this.playerSprite.body.y + this.gridSize / 2) * this.gridSize - this.playerSprite.body.y);
                     this.playerSprite.body.y += this.lastMoveY * Math.min(velocidad1, velocidad2);
                 }
                 else {
@@ -97,19 +98,9 @@ var cControlPlayer = (function (_super) {
                 }
             }
         }
-        //control de las animaciones
-        if (this.lastMoveX == 0 && this.lastMoveY == 0) {
-            this.playerSprite.animations.play('idle');
-        }
-        if (this.lastMoveX == 1) {
-            this.playerSprite.animations.play('run');
-        }
-        if (this.lastMoveX == -1) {
-            this.playerSprite.animations.play('run');
-        }
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
-        this.tileX = layer.getTileX(this.playerSprite.x);
-        this.tileY = layer.getTileY(this.playerSprite.y);
+        this.tileX = this.controlGame.layer.getTileX(this.playerSprite.x);
+        this.tileY = this.controlGame.layer.getTileY(this.playerSprite.y);
         if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY) {
             //me fijo para que lado me movi, para enviarle al servidor
             var dirMovimiento; // 0 arriba, 1 izquierda, 2 abajo, 3 derecha
@@ -127,8 +118,44 @@ var cControlPlayer = (function (_super) {
             }
             this.lastSendTileX = this.tileX;
             this.lastSendTileY = this.tileY;
-            socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: dirMovimiento });
+            this.controlGame.controlServer.socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: dirMovimiento });
+        }
+    };
+    cControlPlayer.prototype.playerMove = function (key) {
+        console.log(key);
+        this.playerSprite.body.velocity.x = 0;
+        this.playerSprite.body.velocity.y = 0;
+        //me fijo si tengo que mover el jugador
+        if (key.keyCode == Phaser.Keyboard.W) {
+            this.playerSprite.body.velocity.y = -this.speedplayer;
+            this.seMueveY = true;
+            this.lastMoveY = -1;
+        }
+        else if (key.keyCode == Phaser.Keyboard.S) {
+            this.playerSprite.body.velocity.y = this.speedplayer;
+            this.seMueveY = true;
+            this.lastMoveY = 1;
+        }
+        else if (key.keyCode == Phaser.Keyboard.A) {
+            this.playerSprite.body.velocity.x = -this.speedplayer;
+            this.seMueveX = true;
+            this.lastMoveX = -1;
+        }
+        else if (key.keyCode == Phaser.Keyboard.D) {
+            this.playerSprite.body.velocity.x = this.speedplayer;
+            this.seMueveX = true;
+            this.lastMoveX = 1;
+        }
+        //control de las animaciones
+        if (this.lastMoveX == 0 && this.lastMoveY == 0) {
+            this.playerSprite.animations.play('idle');
+        }
+        if (this.lastMoveX == 1) {
+            this.playerSprite.animations.play('run');
+        }
+        if (this.lastMoveX == -1) {
+            this.playerSprite.animations.play('run');
         }
     };
     return cControlPlayer;
-}(cPlayerData));
+}(cBasicActor));

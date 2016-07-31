@@ -13,7 +13,7 @@ var cControlOtherPlayers = (function () {
         return null;
     };
     cControlOtherPlayers.prototype.addPlayer = function (data) {
-        var newPlayer = new cOtherPlayerData(this.controlGame);
+        var newPlayer = new cOtherPlayer(this.controlGame);
         newPlayer.id = data.id;
         newPlayer.tileX = data.x;
         newPlayer.tileY = data.y;
@@ -35,6 +35,10 @@ var cControlOtherPlayers = (function () {
     cControlOtherPlayers.prototype.showChat = function (data) {
         var player = this.playerById(data.id);
         player.setChatText(data.text);
+    };
+    cControlOtherPlayers.prototype.playerHit = function (data) {
+        var player = this.playerById(data.id);
+        player.onHit(data);
     };
     return cControlOtherPlayers;
 }());
