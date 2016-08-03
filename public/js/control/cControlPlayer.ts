@@ -1,4 +1,13 @@
+enum move {
+    up = Phaser.Keyboard.W,
+    down = Phaser.Keyboard.S,
+    left = Phaser.Keyboard.A,
+    right = Phaser.Keyboard.D,
+    none = 0
+    }
+
 class cControlPlayer extends cBasicActor {
+    
 
     public idServer: string;
     
@@ -11,6 +20,9 @@ class cControlPlayer extends cBasicActor {
     private lastMoveY: number = 0;
     private seMueveX:Boolean = false;
     private seMueveY:Boolean = false;
+
+    private lastMove:move
+    private secondMove:move //permito que toque dos teclas a la vez
     
     private gridSize: number;
 
@@ -50,15 +62,15 @@ class cControlPlayer extends cBasicActor {
         var S = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.S);
         var D = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.D);
         
-        W.onDown.add(this.playerMove,this);
-        A.onDown.add(this.playerMove,this);
-        S.onDown.add(this.playerMove,this);
-        D.onDown.add(this.playerMove,this);
+        W.onDown.add(this.moveKeyPress,this);
+        A.onDown.add(this.moveKeyPress,this);
+        S.onDown.add(this.moveKeyPress,this);
+        D.onDown.add(this.moveKeyPress,this);
         
-        W.onUp.add(this.playerStop,this);
-        A.onUp.add(this.playerStop,this);
-        S.onUp.add(this.playerStop,this);
-        D.onUp.add(this.playerStop,this);
+        W.onUp.add(this.moveKeyRelease,this);
+        A.onUp.add(this.moveKeyRelease,this);
+        S.onUp.add(this.moveKeyRelease,this);
+        D.onUp.add(this.moveKeyRelease,this);
 
         //animaciones
         this.playerSprite.animations.add('run', [1], 10, true);
@@ -88,24 +100,47 @@ class cControlPlayer extends cBasicActor {
 
     }
 
-    public playerStop(key:Phaser.Key) {
-        
-        
-        if (key.keyCode == Phaser.Keyboard.W || key.keyCode == Phaser.Keyboard.S) {
-            this.playerSprite.body.velocity.y = 0;
-            this.seMueveY = false 
-        }
-        if (key.keyCode == Phaser.Keyboard.A || key.keyCode == Phaser.Keyboard.D) {
-            this.playerSprite.body.velocity.x = 0;
-            this.seMueveX = false 
+    public moveKeyRelease(key:Phaser.Key) {
+    
+        if (this.lastMove == key.keyCode) {
+
+            if (key.keyCode == Phaser.Keyboard.W || key.keyCode == Phaser.Keyboard.S) {
+                this.playerSprite.body.velocity.y = 0;
+                this.seMueveY = false;
+            }
+
+            if (key.keyCode == Phaser.Keyboard.A || key.keyCode == Phaser.Keyboard.D) {
+                this.playerSprite.body.velocity.x = 0;
+                this.seMueveX = false 
+            }
+
+            this.lastMove = this.secondMove;
+            this.secondMove = move.none;
+        } else if (this.secondMove == key.keyCode) {
+            this.secondMove = move.none;
         }
 
     }
 
     public playerUpdate() {
 
-        this.controlGame.game.physics.arcade.collide(this.playerSprite, this.controlGame.layer);
-        //si dejo de moverse, me fijo hasta donde llego y lo acomodo en la grilla
+        //if (this.lastMoveX == 0) {
+            if (this.lastMove == move.up) {
+                this.playerSprite.body.velocity.y = -this.speedplayer;
+            } else if (this.lastMove == move.down) {
+                this.playerSprite.body.velocity.y = this.speedplayer;
+            } 
+        //}
+        
+        //if (this.lastMoveY == 0) { esto evita el movimiento en diagonal
+            if (this.lastMove == move.left) {
+                this.playerSprite.body.velocity.x = -this.speedplayer;
+            } else if (this.lastMove == move.right) {
+                this.playerSprite.body.velocity.x = this.speedplayer;
+            }
+        //}
+
+        //si solto una tecla lo acomodo en la grilla
         if (this.seMueveX == false) {
             if (this.lastMoveX != 0) {
                 if (this.playerSprite.body.x%this.gridSize != 0) 
@@ -119,7 +154,8 @@ class cControlPlayer extends cBasicActor {
                     this.lastMoveX = 0;
                 }
             }
-        }
+        } 
+
         if (this.seMueveY == false) {
             if (this.lastMoveY != 0) {
                 if (this.playerSprite.body.y%this.gridSize != 0) 
@@ -132,7 +168,7 @@ class cControlPlayer extends cBasicActor {
                     this.lastMoveY = 0;
                 }
             }
-        }
+        } 
 
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
         this.tileX = this.controlGame.layer.getTileX(this.playerSprite.x);
@@ -159,41 +195,40 @@ class cControlPlayer extends cBasicActor {
         } 
     }
 
-    public playerMove(key:Phaser.Key) {
-
-        console.log(key);
-        
-        this.playerSprite.body.velocity.x = 0;
+    public moveKeyPress(key:Phaser.Key) {
+ 
         this.playerSprite.body.velocity.y = 0;
+        this.playerSprite.body.velocity.x = 0;
+        
+        var actualMove:move = key.keyCode;
+
+        if (this.lastMove != actualMove) {
+            this.secondMove = this.lastMove;
+            this.lastMove = actualMove;
+            this.seMueveX = false;
+            this.seMueveY = false;
+        }
        
         //me fijo si tengo que mover el jugador
         if (key.keyCode == Phaser.Keyboard.W)
         {
-            this.playerSprite.body.velocity.y = -this.speedplayer;
             this.seMueveY = true;
             this.lastMoveY = -1;
-            //this.playerSprite.frame = 0;
         }
         else if (key.keyCode == Phaser.Keyboard.S)
         {
-            this.playerSprite.body.velocity.y = this.speedplayer;
             this.seMueveY = true;
             this.lastMoveY = 1;
-            //this.playerSprite.frame = 2;
         }
         else if (key.keyCode == Phaser.Keyboard.A)
         {
-            this.playerSprite.body.velocity.x = -this.speedplayer;
             this.seMueveX = true;
             this.lastMoveX = -1;
-            //this.playerSprite.frame = 1;
         }
         else if (key.keyCode == Phaser.Keyboard.D)
         {
-            this.playerSprite.body.velocity.x = this.speedplayer;
             this.seMueveX = true;
             this.lastMoveX = 1;
-            //this.playerSprite.frame = 3;
         }
 
         //control de las animaciones

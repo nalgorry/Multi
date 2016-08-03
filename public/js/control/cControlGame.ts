@@ -8,6 +8,7 @@ class cControlGame {
     public cursors: Phaser.CursorKeys;
     public controlServer: cControlServer;
     public depthGroup:Phaser.Group;
+    public atackMode:boolean
     marker; //to get the mouse
     point;
 
@@ -22,14 +23,15 @@ class cControlGame {
         this.map.addTilesetImage('tiles', 'tiles');
         this.map.addTilesetImage('tiles v2', 'tiles');
         this.layer = this.map.createLayer('Tile Layer 1');
-        this.map.setCollision(100, true, this.layer);
+        this.map.setCollision(1, true, this.layer);
         this.game.stage.disableVisibilityChange = true;
 
         //inicio el grupo de profundidad
         this.depthGroup = this.game.add.group(); //  To control the depth of the characters      
 
         //creo los objetos a partir de los datos del mapa
-        this.map.createFromObjects('Objetos', 1724, 'arboles', 'arbol 1', true, false, this.depthGroup);
+        this.map.createFromObjects('Objetos', 1724, 'arboles', 'arbol 1', true, false, this.depthGroup,undefined,false);
+        this.map.createFromObjects('Objetos', 1736, 'arboles', 'arbol 2', true, false, this.depthGroup);
         this.depthGroup.forEach(this.ObjectsConfiguration,this)
         
         //para testear el centro de un sprite
@@ -39,6 +41,13 @@ class cControlGame {
         this.marker = this.game.add.graphics(0,0);
         this.marker.lineStyle(2, 0xffffff, 1);
         this.marker.drawRect(0, 0, this.gridSize, this.gridSize);
+
+        //test de boton
+        var boton = this.game.add.sprite(this.game.width - 200, 0, 'interfaz',2);
+        boton.inputEnabled = true;
+        boton.events.onInputDown.add(this.atackKeyOne, this);
+        boton.fixedToCamera = true;
+        //boton.cameraOffset.setTo(100, 560);
 
         // To cotrol the mouses events
         this.game.input.onDown.add(this.mouseDown,this);
@@ -60,6 +69,7 @@ class cControlGame {
     atackKeyOne(data) {
         console.log(data);
         this.game.canvas.style.cursor = 'crosshair';
+        this.atackMode = true;
     }
 
 
@@ -73,9 +83,11 @@ class cControlGame {
         var tileX:number = this.layer.getTileX(this.game.input.activePointer.worldX);
         var tileY:number = this.layer.getTileY(this.game.input.activePointer.worldY);
         
-        this.game.canvas.style.cursor = 'default';
-
-        this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
+        if (this.atackMode == true) {
+            this.game.canvas.style.cursor = 'default';
+            this.atackMode = false;
+            this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
+        }
     }
 
     mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {

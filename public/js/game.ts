@@ -11,7 +11,7 @@ class SimpleGame {
 
     constructor() {
 
-        this.game = new Phaser.Game(800, 600, Phaser.CANVAS, 'content', 
+        this.game = new Phaser.Game(1000, 600, Phaser.CANVAS, 'content', 
         { 
             preload: this.preload, 
             create: this.create,
@@ -28,11 +28,12 @@ class SimpleGame {
         this.game.load.image('bat', 'assets/bat.png');
         this.game.load.image('tree', 'assets/tree.jpg');
         this.game.load.image('earth', 'assets/scorched_earth.png');
+        this.game.load.spritesheet('boom', 'assets/explosion.png',100,100);
 
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40,72 );
         this.game.load.atlas('arboles', 'assets/arboles.png','assets/arboles.json');
 
-        this.game.load.spritesheet('boom', 'assets/explosion.png', 100,100 );
+        this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200,600 );
     }
 
     create() {
@@ -67,6 +68,8 @@ class SimpleGame {
 
     update() {
         
+        this.controlGame.game.physics.arcade.collide(this.controlPlayer.playerSprite, this.controlGame.layer);
+
         this.controlPlayer.playerUpdate();
         this.controlGame.updateZDepth();
         

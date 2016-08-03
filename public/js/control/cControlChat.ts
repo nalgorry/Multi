@@ -20,8 +20,8 @@ class cControlChat {
             borderRadius: 0,
         });
 
-        this.inputTextChat.focusOutOnEnter = false;
-        this.inputTextChat.blockInput = false;
+        this.inputTextChat.focusOutOnEnter = true;
+        this.inputTextChat.blockInput = true;
 
         this.inputTextChat.fixedToCamera = true;
         this.inputTextChat.cameraOffset.setTo(100, 560);

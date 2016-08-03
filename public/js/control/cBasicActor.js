@@ -6,7 +6,7 @@ var cBasicActor = (function () {
     }
     cBasicActor.prototype.setChatText = function (texto) {
         if (this.textChat == null) {
-            this.textChat = this.controlGame.game.add.text(-30, -30, "", this.styleChat);
+            this.textChat = this.controlGame.game.add.text(-30, -this.playerSprite.height, "", this.styleChat);
             this.playerSprite.addChild(this.textChat);
         }
         this.textChat.text = texto;
@@ -16,7 +16,7 @@ var cBasicActor = (function () {
         var boomSprite = this.controlGame.game.add.sprite(this.playerSprite.x, this.playerSprite.y, 'boom');
         boomSprite.anchor.set(0.5);
         boomSprite.animations.add('boom');
-        boomSprite.animations.play('boom', 100, false, true);
+        boomSprite.animations.play('boom', 160, false, true);
         //texto con el daño
         var hitText = this.controlGame.game.add.text(-30, -40, data.damage, this.styleHit);
         this.playerSprite.addChild(hitText);

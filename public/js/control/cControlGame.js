@@ -8,12 +8,13 @@ var cControlGame = (function () {
         this.map.addTilesetImage('tiles', 'tiles');
         this.map.addTilesetImage('tiles v2', 'tiles');
         this.layer = this.map.createLayer('Tile Layer 1');
-        this.map.setCollision(100, true, this.layer);
+        this.map.setCollision(1, true, this.layer);
         this.game.stage.disableVisibilityChange = true;
         //inicio el grupo de profundidad
         this.depthGroup = this.game.add.group(); //  To control the depth of the characters      
         //creo los objetos a partir de los datos del mapa
-        this.map.createFromObjects('Objetos', 1724, 'arboles', 'arbol 1', true, false, this.depthGroup);
+        this.map.createFromObjects('Objetos', 1724, 'arboles', 'arbol 1', true, false, this.depthGroup, undefined, false);
+        this.map.createFromObjects('Objetos', 1736, 'arboles', 'arbol 2', true, false, this.depthGroup);
         this.depthGroup.forEach(this.ObjectsConfiguration, this);
         //para testear el centro de un sprite
         this.point = new Phaser.Point(this.depthGroup.children[0].x, this.depthGroup.children[0].y);
@@ -21,6 +22,12 @@ var cControlGame = (function () {
         this.marker = this.game.add.graphics(0, 0);
         this.marker.lineStyle(2, 0xffffff, 1);
         this.marker.drawRect(0, 0, this.gridSize, this.gridSize);
+        //test de boton
+        var boton = this.game.add.sprite(this.game.width - 200, 0, 'interfaz', 2);
+        boton.inputEnabled = true;
+        boton.events.onInputDown.add(this.atackKeyOne, this);
+        boton.fixedToCamera = true;
+        //boton.cameraOffset.setTo(100, 560);
         // To cotrol the mouses events
         this.game.input.onDown.add(this.mouseDown, this);
         this.game.input.addMoveCallback(this.mouseMove, this);
@@ -36,6 +43,7 @@ var cControlGame = (function () {
     cControlGame.prototype.atackKeyOne = function (data) {
         console.log(data);
         this.game.canvas.style.cursor = 'crosshair';
+        this.atackMode = true;
     };
     cControlGame.prototype.updateZDepth = function () {
         this.depthGroup.sort('y', Phaser.Group.SORT_ASCENDING);
@@ -43,8 +51,11 @@ var cControlGame = (function () {
     cControlGame.prototype.mouseDown = function (event) {
         var tileX = this.layer.getTileX(this.game.input.activePointer.worldX);
         var tileY = this.layer.getTileY(this.game.input.activePointer.worldY);
-        this.game.canvas.style.cursor = 'default';
-        this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
+        if (this.atackMode == true) {
+            this.game.canvas.style.cursor = 'default';
+            this.atackMode = false;
+            this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
+        }
     };
     cControlGame.prototype.mouseMove = function (pointer, x, y, a) {
         this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;
