@@ -48,6 +48,13 @@ var cControlGame = (function () {
     cControlGame.prototype.updateZDepth = function () {
         this.depthGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     };
+    cControlGame.prototype.PowerTrow = function (data) {
+        //animiacion de la bomba 
+        var boomSprite = this.game.add.sprite(data.x * this.gridSize + this.gridSize / 2, data.y * this.gridSize + this.gridSize / 2, 'boom');
+        boomSprite.anchor.set(0.5);
+        boomSprite.animations.add('boom');
+        boomSprite.animations.play('boom', 160, false, true);
+    };
     cControlGame.prototype.mouseDown = function (event) {
         var tileX = this.layer.getTileX(this.game.input.activePointer.worldX);
         var tileY = this.layer.getTileY(this.game.input.activePointer.worldY);

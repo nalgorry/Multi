@@ -30,9 +30,15 @@ class cControlServer {
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
 
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
+        this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
+        
         
         
         }
+
+    public onPowerThrow(data) {
+        this.controlGame.PowerTrow(data);
+    }
 
     //chat text
     public onSendChatText(text:string) {

@@ -21,7 +21,11 @@ var cControlServer = (function () {
         this.socket.on('player die', cControlServer.prototype.onPlayerDie.bind(this));
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
+        this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
     }
+    cControlServer.prototype.onPowerThrow = function (data) {
+        this.controlGame.PowerTrow(data);
+    };
     //chat text
     cControlServer.prototype.onSendChatText = function (text) {
         this.socket.emit('Chat Send', { text: text });

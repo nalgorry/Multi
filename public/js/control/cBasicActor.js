@@ -12,11 +12,6 @@ var cBasicActor = (function () {
         this.textChat.text = texto;
     };
     cBasicActor.prototype.onHit = function (data) {
-        //animiacion de la bomba 
-        var boomSprite = this.controlGame.game.add.sprite(this.playerSprite.x, this.playerSprite.y, 'boom');
-        boomSprite.anchor.set(0.5);
-        boomSprite.animations.add('boom');
-        boomSprite.animations.play('boom', 160, false, true);
         //texto con el daño
         var hitText = this.controlGame.game.add.text(-30, -40, data.damage, this.styleHit);
         this.playerSprite.addChild(hitText);

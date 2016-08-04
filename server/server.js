@@ -62,6 +62,8 @@ function onMouseClick(data) {
             player.playerLife = 100;
         }
     }
+    //this.broadcast.emit('power throw', {x:data. x, y:data.y});
+    socket.emit('power throw', { x: data.x, y: data.y });
 }
 // Socket client has disconnected
 function onClientDisconnect() {
