@@ -37,6 +37,7 @@ var cControlPlayer = (function (_super) {
         this.playerSprite.body.offset.y = this.playerSprite.height - this.controlGame.gridSize;
         this.life = 100; //esto vendria de algun server no?
         this.controlGame.game.camera.follow(this.playerSprite);
+        this.controlGame.game.camera.deadzone = new Phaser.Rectangle(this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2, this.controlGame.game.height / 2, 0, 0);
         this.controlGame.depthGroup.add(this.playerSprite);
         //controlo el movimiento del jugador
         var W = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.W);

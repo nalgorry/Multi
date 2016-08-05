@@ -8,6 +8,7 @@ class cControlGame {
     public cursors: Phaser.CursorKeys;
     public controlServer: cControlServer;
     public depthGroup:Phaser.Group;
+    public interfaz:Phaser.Sprite;
     public atackMode:boolean
     marker; //to get the mouse
     point;
@@ -18,11 +19,19 @@ class cControlGame {
         //inicio parametros del juego
         this.gridSize = 40;
 
-         //  Our tiled scrolling background
+        //cargo la interfaz dele juego
+        this.interfaz = this.game.add.sprite(this.game.width - 200, 0, 'interfaz',2);
+        this.interfaz.inputEnabled = true;
+        this.interfaz.events.onInputDown.add(this.atackKeyOne, this);
+        this.interfaz.fixedToCamera = true;
+        this.interfaz.visible = false;
+        //boton.cameraOffset.setTo(100, 560);
+
+        //  Our tiled scrolling background
         this.map = this.game.add.tilemap('map');
         this.map.addTilesetImage('tiles', 'tiles');
         this.map.addTilesetImage('tiles v2', 'tiles');
-        this.layer = this.map.createLayer('Tile Layer 1');
+        this.layer = this.map.createLayer('Tile Layer 1',this.game.width - this.interfaz.width);
         this.map.setCollision(1, true, this.layer);
         this.game.stage.disableVisibilityChange = true;
 
@@ -43,12 +52,7 @@ class cControlGame {
         this.marker.lineStyle(2, 0xffffff, 1);
         this.marker.drawRect(0, 0, this.gridSize, this.gridSize);
 
-        //test de boton
-        var boton = this.game.add.sprite(this.game.width - 200, 0, 'interfaz',2);
-        boton.inputEnabled = true;
-        boton.events.onInputDown.add(this.atackKeyOne, this);
-        boton.fixedToCamera = true;
-        //boton.cameraOffset.setTo(100, 560);
+        
 
         // To cotrol the mouses events
         this.game.input.onDown.add(this.mouseDown,this);

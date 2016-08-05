@@ -40,7 +40,7 @@ var SimpleGame = (function () {
         this.controlGame.updateZDepth();
     };
     SimpleGame.prototype.render = function () {
-        //this.game.debug.cameraInfo(this.game.camera, 50, 50);
+        this.game.debug.cameraInfo(this.game.camera, 50, 500);
         //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
         var x = this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.body.x);
         var y = this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.body.y);

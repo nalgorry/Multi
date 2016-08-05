@@ -55,7 +55,7 @@ class SimpleGame {
 
         //inicio el servidor
         this.controlServer = new cControlServer(this.controlPlayer,this.controlGame,
-            this.controlOtherPlayers,this.controlChat);
+        this.controlOtherPlayers,this.controlChat);
         this.controlGame.controlServer = this.controlServer;
         this.controlChat.controlServer = this.controlServer
 
@@ -73,7 +73,7 @@ class SimpleGame {
 
 
     render() {
-        //this.game.debug.cameraInfo(this.game.camera, 50, 50);
+        this.game.debug.cameraInfo(this.game.camera, 50, 500);
         //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
         
         
