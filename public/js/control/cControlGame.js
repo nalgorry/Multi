@@ -13,8 +13,8 @@ var cControlGame = (function () {
         //inicio el grupo de profundidad
         this.depthGroup = this.game.add.group(); //  To control the depth of the characters      
         //creo los objetos a partir de los datos del mapa
-        this.map.createFromObjects('Objetos', 1724, 'arboles', 'arbol 1', true, false, this.depthGroup, undefined, false);
-        this.map.createFromObjects('Objetos', 1736, 'arboles', 'arbol 2', true, false, this.depthGroup);
+        this.map.createFromObjects('Objetos', 1724, 'objects', 'arbol1.png', true, false, this.depthGroup, undefined, false);
+        // this.map.createFromObjects('Objetos', 1736, 'arboles', 'arbol 2', true, false, this.depthGroup);
         this.depthGroup.forEach(this.ObjectsConfiguration, this);
         //para testear el centro de un sprite
         this.point = new Phaser.Point(this.depthGroup.children[0].x, this.depthGroup.children[0].y);

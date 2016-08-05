@@ -10,13 +10,9 @@ var SimpleGame = (function () {
     SimpleGame.prototype.preload = function () {
         this.game.load.tilemap('map', 'assets/maze.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', 'assets/tiles2.png');
-        this.game.load.image('logo', 'assets/phaser.png');
-        this.game.load.image('bat', 'assets/bat.png');
-        this.game.load.image('tree', 'assets/tree.jpg');
-        this.game.load.image('earth', 'assets/scorched_earth.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png', 100, 100);
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 72);
-        this.game.load.atlas('arboles', 'assets/arboles.png', 'assets/arboles.json');
+        this.game.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 600);
     };
     SimpleGame.prototype.create = function () {
