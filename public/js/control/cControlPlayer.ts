@@ -13,6 +13,7 @@ class cControlPlayer extends cBasicActor {
     
     public lastSendTileX: number;
     public lastSendTileY: number;
+    public maxLife:number;
     public life:number;
     private speedplayer: number = 150;
     
@@ -50,7 +51,8 @@ class cControlPlayer extends cBasicActor {
         this.playerSprite.body.height =this.controlGame.gridSize;
         this.playerSprite.body.offset.y =this.playerSprite.height - this.controlGame.gridSize;
         
-        this.life = 100; //esto vendria de algun server no?
+        this.maxLife = 100; //esto vendria de algun server no?
+        this.life = this.maxLife; 
 
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(
@@ -80,10 +82,13 @@ class cControlPlayer extends cBasicActor {
 
     }
 
+    //esto se activa cuando golepan al jugador actual
     public playerHit(data) {
 
         this.life -= data.damage;
         this.onHit(data);
+        this.controlGame.game.add.tween(this.controlGame.barraVida.scale).to(
+             { y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
 
     }
 
@@ -95,7 +100,9 @@ class cControlPlayer extends cBasicActor {
 
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
-        this.life = 100;
+        this.life = this.maxLife;
+        this.controlGame.game.add.tween(this.controlGame.barraVida.scale).to(
+             { y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
     }
 
     public youKill(data) {

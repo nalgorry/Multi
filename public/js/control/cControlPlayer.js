@@ -35,7 +35,8 @@ var cControlPlayer = (function (_super) {
         this.playerSprite.body.width = this.controlGame.gridSize;
         this.playerSprite.body.height = this.controlGame.gridSize;
         this.playerSprite.body.offset.y = this.playerSprite.height - this.controlGame.gridSize;
-        this.life = 100; //esto vendria de algun server no?
+        this.maxLife = 100; //esto vendria de algun server no?
+        this.life = this.maxLife;
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2, this.controlGame.game.height / 2, 0, 0);
         this.controlGame.depthGroup.add(this.playerSprite);
@@ -56,9 +57,11 @@ var cControlPlayer = (function (_super) {
         this.playerSprite.animations.add('run', [1], 10, true);
         this.playerSprite.animations.add('idle', [1], 2, true);
     };
+    //esto se activa cuando golepan al jugador actual
     cControlPlayer.prototype.playerHit = function (data) {
         this.life -= data.damage;
         this.onHit(data);
+        this.controlGame.game.add.tween(this.controlGame.barraVida.scale).to({ y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
     };
     cControlPlayer.prototype.youHit = function (data) {
         this.hitText.text = "Golpeaste a alguien por " + data.damage;
@@ -66,7 +69,8 @@ var cControlPlayer = (function (_super) {
     cControlPlayer.prototype.youDie = function (data) {
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
-        this.life = 100;
+        this.life = this.maxLife;
+        this.controlGame.game.add.tween(this.controlGame.barraVida.scale).to({ y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
     };
     cControlPlayer.prototype.youKill = function (data) {
     };

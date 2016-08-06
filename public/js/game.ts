@@ -90,6 +90,9 @@ class SimpleGame {
 
         this.game.debug.geom(this.controlGame.point, 'rgb(0,255,0)');
 
+        var pos = this.controlGame.game.input.activePointer.position;
+        this.controlGame.game.debug.text("x:" + pos.x + " y:" + pos.y, 180, 200);
+
     }
 
 } //fin

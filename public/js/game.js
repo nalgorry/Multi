@@ -50,6 +50,8 @@ var SimpleGame = (function () {
         this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
         this.game.debug.body(this.controlPlayer.playerSprite);
         this.game.debug.geom(this.controlGame.point, 'rgb(0,255,0)');
+        var pos = this.controlGame.game.input.activePointer.position;
+        this.controlGame.game.debug.text("x:" + pos.x + " y:" + pos.y, 180, 200);
     };
     return SimpleGame;
 }()); //fin

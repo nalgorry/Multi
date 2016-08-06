@@ -12,7 +12,7 @@ class cOtherPlayer extends cBasicActor {
         
         this.playerSprite.body.collideWorldBounds = true;
         this.playerSprite.inputEnabled = true;
-        this.playerSprite.events.onInputDown.add(this.playerHit, this);
+        this.playerSprite.events.onInputDown.add(this.youHitPlayer, this);
 
         this.controlGame.depthGroup.add(this.playerSprite);
 
@@ -27,10 +27,10 @@ class cOtherPlayer extends cBasicActor {
 
     }
 
-    public playerHit() {
+    public youHitPlayer() {
          if (this.controlGame.atackMode == true) {
-             console.log("entra");
             this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:this.id });
+            this.controlGame.game.canvas.style.cursor = 'default';
         }
     }
 
