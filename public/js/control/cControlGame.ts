@@ -24,7 +24,6 @@ class cControlGame {
         this.interfaz.inputEnabled = true;
         this.interfaz.events.onInputDown.add(this.atackKeyOne, this);
         this.interfaz.fixedToCamera = true;
-        this.interfaz.visible = false;
         //boton.cameraOffset.setTo(100, 560);
 
         //  Our tiled scrolling background
