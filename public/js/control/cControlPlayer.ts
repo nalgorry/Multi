@@ -40,7 +40,7 @@ class cControlPlayer extends cBasicActor {
     public startPlayer() {
 
         //esto no se si tendria que hacerlo aca
-        this.playerSprite = this.controlGame.game.add.sprite(0, 0, 'player',2);
+        this.playerSprite = this.controlGame.game.add.sprite(1000, 1000, 'player',2);
         this.playerSprite.anchor.set(0.5);
 
         this.controlGame.game.physics.arcade.enable(this.playerSprite);

@@ -41,9 +41,6 @@ class SimpleGame {
         //para medir los tiempos
         this.game.time.advancedTiming = true;
         
-        // Configuro el mundo para que sea centrado en el personaje
-        this.game.world.setBounds(0, 0, 60*this.controlGame.gridSize, 60*this.controlGame.gridSize);
-        
         //inicio el jugador principal
         this.controlPlayer = new cControlPlayer(this.controlGame);
 
@@ -64,7 +61,7 @@ class SimpleGame {
 
     update() {
         
-        this.controlGame.game.physics.arcade.collide(this.controlPlayer.playerSprite, this.controlGame.layer);
+        this.controlGame.game.physics.arcade.collide(this.controlPlayer.playerSprite, this.controlGame.hitLayer);
 
         this.controlPlayer.playerUpdate();
         this.controlGame.updateZDepth();
@@ -83,7 +80,7 @@ class SimpleGame {
         
         this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
 
-        this.game.debug.text("vida: " + this.controlPlayer.life.toString(),100,100)
+        this.game.debug.text("vida: " + this.controlPlayer.life.toString(),800,120)
 
         //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 50, 48, 'rgb(0,0,0)');
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 50, 64, 'rgb(0,0,0)');
