@@ -60,8 +60,6 @@ var cControlGame = (function () {
         var tileY = this.layer.getTileY(this.game.input.activePointer.worldY);
         if (this.atackMode == true) {
             this.game.canvas.style.cursor = 'default';
-            this.atackMode = false;
-            this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
         }
     };
     cControlGame.prototype.mouseMove = function (pointer, x, y, a) {

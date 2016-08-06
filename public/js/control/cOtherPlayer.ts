@@ -11,6 +11,8 @@ class cOtherPlayer extends cBasicActor {
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         
         this.playerSprite.body.collideWorldBounds = true;
+        this.playerSprite.inputEnabled = true;
+        this.playerSprite.events.onInputDown.add(this.playerHit, this);
 
         this.controlGame.depthGroup.add(this.playerSprite);
 
@@ -23,6 +25,13 @@ class cOtherPlayer extends cBasicActor {
 
         //this.playerSprite.frame = data.dirMov;
 
+    }
+
+    public playerHit() {
+         if (this.controlGame.atackMode == true) {
+             console.log("entra");
+            this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:this.id });
+        }
     }
 
     public removePlayer() {

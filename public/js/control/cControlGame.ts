@@ -98,8 +98,8 @@ class cControlGame {
         
         if (this.atackMode == true) {
             this.game.canvas.style.cursor = 'default';
-            this.atackMode = false;
-            this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
+            //this.atackMode = false;
+            //this.controlServer.socket.emit('mouse click', { x: tileX, y: tileY });
         }
     }
 

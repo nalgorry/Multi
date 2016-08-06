@@ -55,6 +55,9 @@ function onSocketConnection (client) {
   //Listen for mouses click
   client.on('mouse click', onMouseClick)
 
+    //Listen for mouses click
+  client.on('player click', onPlayerClick)
+
   //chat listener
   client.on('Chat Send', onChatSend)
 
@@ -64,6 +67,32 @@ function onChatSend(data) {
     util.log('Player has chat: ' + data.text);
 
     this.broadcast.emit('Chat Receive', {id: this.id, text: data.text});
+}
+
+function onPlayerClick(data) {
+
+  var player:cPlayer = playerById(data.idPlayerHit);
+  
+   if (player != null) {
+    var damage:number = Math.round(Math.random()*40+5);
+    player.playerLife -= damage;
+    util.log('Player has click: ' + player.playerLife);
+
+    // mando el golpe a los jugadores
+    this.broadcast.emit('player hit', {id: player.id, x: player.x, y: player.y,damage:damage});
+    this.emit('you hit', {id: player.id,damage: damage});
+
+    //mataron a alguien finalmente 
+    if (player.playerLife <= 0) { 
+      this.broadcast.emit('player die', {id: player.id, x: player.x, y: player.y,damage:damage});
+      this.emit('you kill', {damage: damage});
+      player.playerLife = 100;
+    }
+  }
+
+  //this.broadcast.emit('power throw', {x:data. x, y:data.y});
+  socket.emit('power throw', {x:player.x, y:player.y});
+
 }
 
 //on mouse click 
