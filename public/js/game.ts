@@ -22,8 +22,8 @@ class SimpleGame {
     }
 
     preload() {
-        this.game.load.tilemap('map', 'assets/maze.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('tiles', 'assets/tiles2.png');
+        this.game.load.tilemap('map', 'assets/map1.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.image('tiles', 'assets/tiles.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png',100,100);
 
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40,72 );

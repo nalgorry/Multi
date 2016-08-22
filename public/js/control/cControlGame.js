@@ -18,8 +18,8 @@ var cControlGame = (function () {
         //inicio el grupo de profundidad
         this.depthGroup = this.game.add.group(); //  To control the depth of the characters      
         //creo los objetos a partir de los datos del mapa
-        this.map.createFromObjects('Objetos', 1601, 'objects', 'arbol1.png', true, true, this.depthGroup, undefined, false);
-        this.map.createFromObjects('Objetos', 1602, 'objects', 'roca1.png', true, true, this.depthGroup, undefined, false);
+        this.map.createFromObjects('Objects', 626, 'objects', 'arbol1.png', true, true, this.depthGroup, undefined, false);
+        this.map.createFromObjects('Objects', 1602, 'objects', 'roca1.png', true, true, this.depthGroup, undefined, false);
         this.depthGroup.forEach(this.ObjectsConfiguration, this);
         //cargo la interfaz dele juego
         this.interfaz = this.game.add.sprite(this.game.width - this.interfazWidth, 0, 'interfaz');
@@ -67,7 +67,7 @@ var cControlGame = (function () {
         exp.anchor.setTo(1);
         exp.fixedToCamera = true;
         //para testear el centro de un sprite
-        this.point = new Phaser.Point(this.depthGroup.children[0].x, this.depthGroup.children[0].y);
+        //this.point = new Phaser.Point(this.depthGroup.children[0].x, this.depthGroup.children[0].y);
         //  Para hacer un recuadro donde esta el mouse
         this.marker = this.game.add.graphics(0, 0);
         this.marker.lineStyle(2, 0xffffff, 1);

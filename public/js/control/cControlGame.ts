@@ -45,8 +45,8 @@ class cControlGame {
         this.depthGroup = this.game.add.group(); //  To control the depth of the characters      
 
          //creo los objetos a partir de los datos del mapa
-        this.map.createFromObjects('Objetos', 1601, 'objects', 'arbol1.png', true, true, this.depthGroup,undefined,false);
-        this.map.createFromObjects('Objetos', 1602, 'objects', 'roca1.png', true, true, this.depthGroup,undefined,false);
+        this.map.createFromObjects('Objects', 626, 'objects', 'arbol1.png', true, true, this.depthGroup,undefined,false);
+        this.map.createFromObjects('Objects', 1602, 'objects', 'roca1.png', true, true, this.depthGroup,undefined,false);
 
         this.depthGroup.forEach(this.ObjectsConfiguration,this)
 
@@ -104,7 +104,7 @@ class cControlGame {
 
         
         //para testear el centro de un sprite
-        this.point = new Phaser.Point(this.depthGroup.children[0].x, this.depthGroup.children[0].y);
+        //this.point = new Phaser.Point(this.depthGroup.children[0].x, this.depthGroup.children[0].y);
 
         //  Para hacer un recuadro donde esta el mouse
         this.marker = this.game.add.graphics(0,0);
