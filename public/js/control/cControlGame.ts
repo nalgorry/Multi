@@ -15,12 +15,6 @@ class cControlGame {
     marker; //to get the mouse
     point;
 
-    //barras del jugador
-    barraVida:Phaser.Sprite
-    barraMana:Phaser.Sprite
-    barraEnergia:Phaser.Sprite
-    barraExp:Phaser.Sprite
-
     constructor(_game:Phaser.Game) {
         this.game = _game;
 
@@ -60,49 +54,7 @@ class cControlGame {
         var graphics = this.game.add.graphics(100, 100);
         graphics.drawRect(50, 250, 100, 100);
 
-        //creo las barras de vida y energia 
       
-        //vida
-        var bitmapVida = this.game.add.bitmapData(24, 130);
-        bitmapVida.ctx.beginPath();
-        bitmapVida.ctx.rect(0, 0, 24, 130);
-        bitmapVida.ctx.fillStyle = '#e33133';
-        bitmapVida.ctx.fill();
-        this.barraVida = this.game.add.sprite(810 + bitmapVida.width, 125 + bitmapVida.height,bitmapVida);
-        this.barraVida.anchor.setTo(1);
-        this.barraVida.fixedToCamera = true;
-
-        //mana
-        var bitmapMana = this.game.add.bitmapData(24, 130);
-        bitmapMana.ctx.beginPath();
-        bitmapMana.ctx.rect(0, 0, 24, 130);
-        bitmapMana.ctx.fillStyle = '#0099ff';
-        bitmapMana.ctx.fill();
-        var mana = this.game.add.sprite(854 + bitmapMana.width, 125 + bitmapMana.height,bitmapMana);
-        mana.anchor.setTo(1);
-        mana.fixedToCamera = true;
-
-        //energia
-        var bitmapEnergia = this.game.add.bitmapData(25, 130);
-        bitmapEnergia.ctx.beginPath();
-        bitmapEnergia.ctx.rect(0, 0, 24, 130);
-        bitmapEnergia.ctx.fillStyle = '#33cc66';
-        bitmapEnergia.ctx.fill();
-        var energia = this.game.add.sprite(897 + bitmapEnergia.width, 125 + bitmapEnergia.height,bitmapEnergia);
-        energia.anchor.setTo(1);
-        energia.fixedToCamera = true;
-
-        //exp
-        var bitmapExp = this.game.add.bitmapData(25, 130);
-        bitmapExp.ctx.beginPath();
-        bitmapExp.ctx.rect(0, 0, 24, 130);
-        bitmapExp.ctx.fillStyle = '#cc33cc';
-        bitmapExp.ctx.fill();
-        var exp = this.game.add.sprite(954 + bitmapExp.width,125 + bitmapExp.height,bitmapExp);
-        exp.anchor.setTo(1);
-        exp.fixedToCamera = true;
-
-        
         //para testear el centro de un sprite
         //this.point = new Phaser.Point(this.depthGroup.children[0].x, this.depthGroup.children[0].y);
 

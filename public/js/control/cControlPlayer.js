@@ -56,12 +56,14 @@ var cControlPlayer = (function (_super) {
         //animaciones
         this.playerSprite.animations.add('run', [1], 10, true);
         this.playerSprite.animations.add('idle', [1], 2, true);
+        //Cargo el sistema de controlFocus
+        this.controlFocus = new cControlFocus(this.controlGame);
     };
     //esto se activa cuando golepan al jugador actual
     cControlPlayer.prototype.playerHit = function (data) {
         this.life -= data.damage;
         this.onHit(data);
-        this.controlGame.game.add.tween(this.controlGame.barraVida.scale).to({ y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
+        this.controlGame.game.add.tween(this.controlFocus.lifeBar.scale).to({ y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
     };
     cControlPlayer.prototype.youHit = function (data) {
         this.hitText.text = "Golpeaste a alguien por " + data.damage;
@@ -70,7 +72,7 @@ var cControlPlayer = (function (_super) {
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
         this.life = this.maxLife;
-        this.controlGame.game.add.tween(this.controlGame.barraVida.scale).to({ y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
+        this.controlGame.game.add.tween(this.controlFocus.lifeBar.scale).to({ y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
     };
     cControlPlayer.prototype.youKill = function (data) {
     };

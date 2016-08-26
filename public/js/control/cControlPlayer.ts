@@ -15,6 +15,8 @@ class cControlPlayer extends cBasicActor {
     public lastSendTileY: number;
     public maxLife:number;
     public life:number;
+    public controlFocus: cControlFocus;
+
     private speedplayer: number = 150;
     
     private lastMoveX: number = 0;
@@ -80,6 +82,9 @@ class cControlPlayer extends cBasicActor {
         this.playerSprite.animations.add('run', [1], 10, true);
         this.playerSprite.animations.add('idle', [1], 2, true);
 
+        //Cargo el sistema de controlFocus
+        this.controlFocus = new cControlFocus(this.controlGame);
+
     }
 
     //esto se activa cuando golepan al jugador actual
@@ -87,7 +92,7 @@ class cControlPlayer extends cBasicActor {
 
         this.life -= data.damage;
         this.onHit(data);
-        this.controlGame.game.add.tween(this.controlGame.barraVida.scale).to(
+        this.controlGame.game.add.tween(this.controlFocus.lifeBar.scale).to(
              { y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
 
     }
@@ -101,7 +106,7 @@ class cControlPlayer extends cBasicActor {
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
         this.life = this.maxLife;
-        this.controlGame.game.add.tween(this.controlGame.barraVida.scale).to(
+        this.controlGame.game.add.tween(this.controlFocus.lifeBar.scale).to(
              { y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
     }
 
