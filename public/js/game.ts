@@ -54,7 +54,7 @@ class SimpleGame {
         this.controlServer = new cControlServer(this.controlPlayer,this.controlGame,
         this.controlOtherPlayers,this.controlChat);
         this.controlGame.controlServer = this.controlServer;
-        this.controlChat.controlServer = this.controlServer
+        this.controlChat.controlServer = this.controlServer;
 
         
     }
@@ -80,7 +80,7 @@ class SimpleGame {
         
         this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
 
-        this.game.debug.text("vida: " + this.controlPlayer.life.toString(),800,120)
+        this.game.debug.text("vida: " + this.controlPlayer.controlFocus.life.toString(),800,120)
 
         //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 50, 48, 'rgb(0,0,0)');
         //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 50, 64, 'rgb(0,0,0)');

@@ -30,13 +30,13 @@ var cControlPlayer = (function (_super) {
         //esto no se si tendria que hacerlo aca
         this.playerSprite = this.controlGame.game.add.sprite(1000, 1000, 'player', 2);
         this.playerSprite.anchor.set(0.5);
+        //Cargo el sistema de controlFocus
+        this.controlFocus = new cControlFocus(this.controlGame);
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         this.playerSprite.body.collideWorldBounds = true;
         this.playerSprite.body.width = this.controlGame.gridSize;
         this.playerSprite.body.height = this.controlGame.gridSize;
         this.playerSprite.body.offset.y = this.playerSprite.height - this.controlGame.gridSize;
-        this.maxLife = 100; //esto vendria de algun server no?
-        this.life = this.maxLife;
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2, this.controlGame.game.height / 2, 0, 0);
         this.controlGame.depthGroup.add(this.playerSprite);
@@ -53,17 +53,24 @@ var cControlPlayer = (function (_super) {
         A.onUp.add(this.moveKeyRelease, this);
         S.onUp.add(this.moveKeyRelease, this);
         D.onUp.add(this.moveKeyRelease, this);
+        //controles de Focus 
+        var one = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        one.onDown.add(this.controlFocus.SelectLifeFocus, this.controlFocus);
+        var two = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        two.onDown.add(this.controlFocus.SelectManaFocus, this.controlFocus);
+        var three = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        three.onDown.add(this.controlFocus.SelectEnergyFocus, this.controlFocus);
+        //controles adicionales para test
+        var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
+        H.onDown.add(this.controlFocus.ResetBars, this.controlFocus);
         //animaciones
         this.playerSprite.animations.add('run', [1], 10, true);
         this.playerSprite.animations.add('idle', [1], 2, true);
-        //Cargo el sistema de controlFocus
-        this.controlFocus = new cControlFocus(this.controlGame);
     };
     //esto se activa cuando golepan al jugador actual
     cControlPlayer.prototype.playerHit = function (data) {
-        this.life -= data.damage;
+        this.controlFocus.UpdateLife(-data.damage);
         this.onHit(data);
-        this.controlGame.game.add.tween(this.controlFocus.lifeBar.scale).to({ y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
     };
     cControlPlayer.prototype.youHit = function (data) {
         this.hitText.text = "Golpeaste a alguien por " + data.damage;
@@ -71,8 +78,7 @@ var cControlPlayer = (function (_super) {
     cControlPlayer.prototype.youDie = function (data) {
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
-        this.life = this.maxLife;
-        this.controlGame.game.add.tween(this.controlFocus.lifeBar.scale).to({ y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
+        this.controlFocus.UpdateLife(this.controlFocus.maxLife);
     };
     cControlPlayer.prototype.youKill = function (data) {
     };

@@ -9,13 +9,27 @@ enum FocusSystem {
 class cControlFocus {
 
     //constantes para velocidad del focus
-    speedFocus:number = 1000;
+    speedFocus:number = 50;
+
+    speedNormalLife:number = 0.2;
+    speedNormalMana:number = 0.5;
+    speedNormalEnergy:number = 1;
+
+    speedFocusLife:number = this.speedNormalLife * 4;
+    speedFocusMana:number = this.speedNormalMana * 4;
+    speedFocusEnergy:number = this.speedNormalEnergy * 4;
+
+    actualFocusSystem:FocusSystem = FocusSystem.nothing;
+
+    //valores actuales utilizados por el focus sistem
+    actualFocusLife:number = this.speedNormalLife;
+    actualFocusMana:number = this.speedNormalMana;
+    actualFocusEnergy:number = this.speedNormalEnergy;
     
     //estadisticas maximas del jugador
     maxLife: number;
     maxMana: number;
     maxEnergy: number;
-
     
     //valores actuales del jugador
     life:number;
@@ -29,28 +43,125 @@ class cControlFocus {
     energyBar:Phaser.Sprite;
     expBar:Phaser.Sprite;
 
+    //recuadro para seleccionar una de las barras
+    public rectangleFocus:Phaser.Graphics;
+    
+
     constructor(public controlGame:cControlGame) {
     
         this.LoadBars();
         this.CreateBars();
 
-        
-        console.log("entra");
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
 
     }
 
+    public ResetBars() {
+        this.UpdateLife(1 - this.life);
+        this.UpdateMana(1 - this.mana);
+        this.UpdateEnergy(1 - this.energy);
+    }
+
     public ResizeBar(bar: Phaser.Sprite,value:number,maxValue:number) {
         this.controlGame.game.add.tween(bar.scale).to(
-             { y: value / maxValue }, 200, Phaser.Easing.Linear.None, true);
+             { y: value / maxValue }, 25, Phaser.Easing.Linear.None, true);
     }
 
     public UpdateFocus() {
         
-        console.log("entra");
-        this.life += 10;
+        this.UpdateLife(this.actualFocusLife);
+        this.UpdateMana(this.actualFocusMana);
+        this.UpdateEnergy(this.actualFocusEnergy);
+        
+    }
 
-        this.ResizeBar(this.lifeBar,this.life,this.maxLife);
+    public UpdateLife(addValue:number) {
+        this.life = this.UpdateBar(this.lifeBar,this.life,this.maxLife,addValue);
+    }
+
+    public UpdateMana(addValue:number) {
+        this.mana = this.UpdateBar(this.manaBar,this.mana,this.maxMana,addValue);
+    }
+
+    public UpdateEnergy(addValue:number) {
+        this.energy = this.UpdateBar(this.energyBar,this.energy,this.maxEnergy,addValue);
+    }
+
+    public UpdateBar(bar:Phaser.Sprite,value:number,maxValue:number,addValue:number) {
+
+        //controlo si no se paso del maximo
+        if (value + addValue <= maxValue) {
+            value += addValue;
+        } else {
+            value = maxValue;
+            //si paso el maximo con alguna de las barras, me fijo si es necesario resetear el sistema de focus
+            if (this.actualFocusSystem == FocusSystem.life || this.actualFocusSystem == FocusSystem.mana || this.actualFocusSystem == FocusSystem.energy) {
+                this.SelectNothingFocus();
+            }
+
+        }
+
+        this.ResizeBar(bar,value,maxValue);
+
+        return value;
+    }
+
+    public SelectLifeFocus() {
+        this.SelectFocus(FocusSystem.life);
+    }
+
+    public SelectManaFocus() {
+        this.SelectFocus(FocusSystem.mana);
+    }
+
+    public SelectEnergyFocus() {
+        this.SelectFocus(FocusSystem.energy);
+    }
+
+    public SelectNothingFocus() {
+        this.SelectFocus(FocusSystem.nothing);
+    }
+
+    private SelectFocus(wichFocus:FocusSystem) {
+        
+        switch (wichFocus) {
+            case FocusSystem.life:
+
+                this.actualFocusLife = this.speedFocusLife;
+                this.actualFocusMana = 0;
+                this.actualFocusEnergy = 0;
+                this.rectangleFocus.cameraOffset.x = 810;
+                this.rectangleFocus.visible = true;
+                this.actualFocusSystem = FocusSystem.life; 
+                break;
+            case FocusSystem.mana :
+
+                this.actualFocusLife = 0;
+                this.actualFocusMana = this.speedFocusMana;
+                this.actualFocusEnergy = 0;
+                this.rectangleFocus.cameraOffset.x = 854;
+                this.rectangleFocus.visible = true;
+                this.actualFocusSystem = FocusSystem.mana;
+                break;
+            case FocusSystem.energy:
+
+                this.actualFocusLife = 0;
+                this.actualFocusMana = 0;
+                this.actualFocusEnergy = this.speedFocusEnergy;
+                this.rectangleFocus.cameraOffset.x = 897;
+                this.rectangleFocus.visible = true;
+                this.actualFocusSystem = FocusSystem.energy;
+                break;
+            case FocusSystem.nothing:
+                
+                this.actualFocusLife = this.speedNormalLife;
+                this.actualFocusMana = this.speedNormalMana;
+                this.actualFocusEnergy = this.speedNormalEnergy;
+                this.rectangleFocus.visible = false;
+                this.actualFocusSystem = FocusSystem.nothing;
+
+                break;
+        }     
     }
 
     private LoadBars() {
@@ -62,6 +173,7 @@ class cControlFocus {
         this.life = 100;
         this.energy = 100;
         this.mana = 100;
+
     }
 
     private CreateBars() {
@@ -112,6 +224,18 @@ class cControlFocus {
         this.ResizeBar(this.lifeBar,this.life,this.maxLife);
         this.ResizeBar(this.manaBar,this.mana,this.maxMana);
         this.ResizeBar(this.energyBar,this.energy,this.maxEnergy);
+
+        //  Para hacer un recuadro sobre la barra selecionada
+        this.rectangleFocus = this.controlGame.game.add.graphics(0,0);
+        this.rectangleFocus.lineStyle(2, 0xffffff, 1);
+        this.rectangleFocus.fixedToCamera = true;
+        this.rectangleFocus.drawRect(0, 0, 24, 130);
+        
+
+        this.rectangleFocus.cameraOffset.x = this.lifeBar.x - this.lifeBar.width;
+        this.rectangleFocus.cameraOffset.y = 125;
+        
+        console.log(this.rectangleFocus);
 
     }
 

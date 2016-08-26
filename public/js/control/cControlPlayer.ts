@@ -13,8 +13,6 @@ class cControlPlayer extends cBasicActor {
     
     public lastSendTileX: number;
     public lastSendTileY: number;
-    public maxLife:number;
-    public life:number;
     public controlFocus: cControlFocus;
 
     private speedplayer: number = 150;
@@ -46,15 +44,15 @@ class cControlPlayer extends cBasicActor {
         this.playerSprite = this.controlGame.game.add.sprite(1000, 1000, 'player',2);
         this.playerSprite.anchor.set(0.5);
 
+        //Cargo el sistema de controlFocus
+        this.controlFocus = new cControlFocus(this.controlGame);
+
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         
         this.playerSprite.body.collideWorldBounds = true;
         this.playerSprite.body.width = this.controlGame.gridSize;
         this.playerSprite.body.height =this.controlGame.gridSize;
-        this.playerSprite.body.offset.y =this.playerSprite.height - this.controlGame.gridSize;
-        
-        this.maxLife = 100; //esto vendria de algun server no?
-        this.life = this.maxLife; 
+        this.playerSprite.body.offset.y =this.playerSprite.height - this.controlGame.gridSize; 
 
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(
@@ -67,7 +65,7 @@ class cControlPlayer extends cBasicActor {
         var A = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.A);
         var S = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.S);
         var D = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.D);
-        
+       
         W.onDown.add(this.moveKeyPress,this);
         A.onDown.add(this.moveKeyPress,this);
         S.onDown.add(this.moveKeyPress,this);
@@ -78,22 +76,29 @@ class cControlPlayer extends cBasicActor {
         S.onUp.add(this.moveKeyRelease,this);
         D.onUp.add(this.moveKeyRelease,this);
 
+        //controles de Focus 
+        var one = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+        one.onDown.add(this.controlFocus.SelectLifeFocus,this.controlFocus); 
+        var two = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+        two.onDown.add(this.controlFocus.SelectManaFocus,this.controlFocus); 
+        var three = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+        three.onDown.add(this.controlFocus.SelectEnergyFocus,this.controlFocus);
+        
+        //controles adicionales para test
+        var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
+        H.onDown.add(this.controlFocus.ResetBars,this.controlFocus);
+
         //animaciones
         this.playerSprite.animations.add('run', [1], 10, true);
         this.playerSprite.animations.add('idle', [1], 2, true);
-
-        //Cargo el sistema de controlFocus
-        this.controlFocus = new cControlFocus(this.controlGame);
 
     }
 
     //esto se activa cuando golepan al jugador actual
     public playerHit(data) {
 
-        this.life -= data.damage;
+        this.controlFocus.UpdateLife(-data.damage);
         this.onHit(data);
-        this.controlGame.game.add.tween(this.controlFocus.lifeBar.scale).to(
-             { y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
 
     }
 
@@ -105,9 +110,7 @@ class cControlPlayer extends cBasicActor {
 
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
-        this.life = this.maxLife;
-        this.controlGame.game.add.tween(this.controlFocus.lifeBar.scale).to(
-             { y: this.life / this.maxLife }, 200, Phaser.Easing.Linear.None, true);
+        this.controlFocus.UpdateLife(this.controlFocus.maxLife);
     }
 
     public youKill(data) {
