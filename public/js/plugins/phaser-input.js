@@ -1,3 +1,12 @@
+/*!
+ * phaser-input - version 1.2.5 
+ * Adds input boxes to Phaser like CanvasInput, but also works for WebGL and Mobile, made for Phaser only.
+ *
+ * OrangeGames
+ * Build at 08-08-2016
+ * Released under MIT License 
+ */
+
 var Fabrique;
 (function (Fabrique) {
     (function (InputType) {
@@ -273,9 +282,6 @@ var Fabrique;
                     this.setCaretOnclick(e);
                     return;
                 }
-                if (null !== this.placeHolder) {
-                    this.placeHolder.visible = false;
-                }
                 if (this.inputOptions.zoom && !Fabrique.Plugins.InputField.Zoomed) {
                     this.zoomIn();
                 }
@@ -335,6 +341,9 @@ var Fabrique;
         InputField.prototype.startFocus = function () {
             var _this = this;
             this.focus = true;
+            if (null !== this.placeHolder) {
+                this.placeHolder.visible = false;
+            }
             if (this.game.device.desktop) {
                 //Timeout is a chrome hack
                 setTimeout(function () {
@@ -369,10 +378,10 @@ var Fabrique;
             else if (this.inputOptions.type === Fabrique.InputType.number) {
                 var val = parseInt(this.value);
                 if (val < parseInt(this.inputOptions.min)) {
-                    text = this.inputOptions.min;
+                    text = this.value = this.domElement.value = this.inputOptions.min;
                 }
                 else if (val > parseInt(this.inputOptions.max)) {
-                    text = this.inputOptions.max;
+                    text = this.value = this.domElement.value = this.inputOptions.max;
                 }
                 else {
                     text = this.value;
@@ -537,9 +546,12 @@ var Fabrique;
         /**
          * We overwrite the destroy method because we want to delete the (hidden) dom element when the inputField was removed
          */
-        InputField.prototype.destroy = function () {
+        InputField.prototype.destroy = function (destroyChildren) {
+            this.game.input.onDown.remove(this.checkDown, this);
+            this.domElement.focusIn.removeAll();
+            this.domElement.focusOut.removeAll();
             this.domElement.destroy();
-            _super.prototype.destroy.call(this);
+            _super.prototype.destroy.call(this, destroyChildren);
         };
         /**
          * Resets the text to an empty value
@@ -549,11 +561,13 @@ var Fabrique;
         };
         InputField.prototype.setText = function (text) {
             if (text === void 0) { text = ''; }
-            if (text.length > 0) {
-                this.placeHolder.visible = false;
-            }
-            else {
-                this.placeHolder.visible = true;
+            if (null !== this.placeHolder) {
+                if (text.length > 0) {
+                    this.placeHolder.visible = false;
+                }
+                else {
+                    this.placeHolder.visible = true;
+                }
             }
             this.value = text;
             this.domElement.value = this.value;

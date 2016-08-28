@@ -11,6 +11,7 @@ class cControlGame {
     public depthGroup:Phaser.Group;
     public interfaz:Phaser.Sprite;
     public atackMode:boolean;
+    public controlPlayer:cControlPlayer;
     interfazWidth:number;
     marker; //to get the mouse
     point;
@@ -114,8 +115,10 @@ class cControlGame {
 
     mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {
 
-        this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;
-        this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.gridSize;
+        if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {
+            this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;
+            this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.gridSize;
+        }
 
     }
 

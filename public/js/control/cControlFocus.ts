@@ -11,13 +11,13 @@ class cControlFocus {
     //constantes para velocidad del focus
     speedFocus:number = 50;
 
-    speedNormalLife:number = 0.2;
-    speedNormalMana:number = 0.5;
-    speedNormalEnergy:number = 1;
+    speedNormalLife:number = 0.1;
+    speedNormalMana:number = 0.25;
+    speedNormalEnergy:number = 0.5;
 
-    speedFocusLife:number = this.speedNormalLife * 4;
-    speedFocusMana:number = this.speedNormalMana * 4;
-    speedFocusEnergy:number = this.speedNormalEnergy * 4;
+    speedFocusLife:number = this.speedNormalLife * 8;
+    speedFocusMana:number = this.speedNormalMana * 8;
+    speedFocusEnergy:number = this.speedNormalEnergy * 8;
 
     actualFocusSystem:FocusSystem = FocusSystem.nothing;
 
@@ -56,6 +56,20 @@ class cControlFocus {
 
     }
 
+    public SpellPosible(needMana:number,needEnergy:number,needLife:number):boolean {
+
+        if (this.mana >= needMana && this.energy >= needEnergy && this.life >= needLife) {
+            
+            this.UpdateEnergy(-50);
+            this.UpdateMana(-50);
+            
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+    
     public ResetBars() {
         this.UpdateLife(1 - this.life);
         this.UpdateMana(1 - this.mana);
@@ -130,7 +144,7 @@ class cControlFocus {
                 this.actualFocusLife = this.speedFocusLife;
                 this.actualFocusMana = 0;
                 this.actualFocusEnergy = 0;
-                this.rectangleFocus.cameraOffset.x = 810;
+                this.rectangleFocus.cameraOffset.x = 850;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.life; 
                 break;
@@ -139,7 +153,7 @@ class cControlFocus {
                 this.actualFocusLife = 0;
                 this.actualFocusMana = this.speedFocusMana;
                 this.actualFocusEnergy = 0;
-                this.rectangleFocus.cameraOffset.x = 854;
+                this.rectangleFocus.cameraOffset.x = 894;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.mana;
                 break;
@@ -148,7 +162,7 @@ class cControlFocus {
                 this.actualFocusLife = 0;
                 this.actualFocusMana = 0;
                 this.actualFocusEnergy = this.speedFocusEnergy;
-                this.rectangleFocus.cameraOffset.x = 897;
+                this.rectangleFocus.cameraOffset.x = 947;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.energy;
                 break;
@@ -186,7 +200,7 @@ class cControlFocus {
         bitmapVida.ctx.rect(0, 0, 24, 130);
         bitmapVida.ctx.fillStyle = '#e33133';
         bitmapVida.ctx.fill();
-        this.lifeBar = this.controlGame.game.add.sprite(810 + bitmapVida.width, 125 + bitmapVida.height,bitmapVida);
+        this.lifeBar = this.controlGame.game.add.sprite(850 + bitmapVida.width, 125 + bitmapVida.height,bitmapVida);
         this.lifeBar.anchor.setTo(1);
         this.lifeBar.fixedToCamera = true;
 
@@ -196,7 +210,7 @@ class cControlFocus {
         bitmapMana.ctx.rect(0, 0, 24, 130);
         bitmapMana.ctx.fillStyle = '#0099ff';
         bitmapMana.ctx.fill();
-        this.manaBar = this.controlGame.game.add.sprite(854 + bitmapMana.width, 125 + bitmapMana.height,bitmapMana);
+        this.manaBar = this.controlGame.game.add.sprite(894 + bitmapMana.width, 125 + bitmapMana.height,bitmapMana);
         this.manaBar.anchor.setTo(1);
         this.manaBar.fixedToCamera = true;
 
@@ -206,7 +220,7 @@ class cControlFocus {
         bitmapEnergia.ctx.rect(0, 0, 24, 130);
         bitmapEnergia.ctx.fillStyle = '#33cc66';
         bitmapEnergia.ctx.fill();
-        this.energyBar = this.controlGame.game.add.sprite(897 + bitmapEnergia.width, 125 + bitmapEnergia.height,bitmapEnergia);
+        this.energyBar = this.controlGame.game.add.sprite(937 + bitmapEnergia.width, 125 + bitmapEnergia.height,bitmapEnergia);
         this.energyBar.anchor.setTo(1);
         this.energyBar.fixedToCamera = true;
 
@@ -216,7 +230,7 @@ class cControlFocus {
         bitmapExp.ctx.rect(0, 0, 24, 130);
         bitmapExp.ctx.fillStyle = '#cc33cc';
         bitmapExp.ctx.fill();
-        this.expBar = this.controlGame.game.add.sprite(954 + bitmapExp.width,125 + bitmapExp.height,bitmapExp);
+        this.expBar = this.controlGame.game.add.sprite(994 + bitmapExp.width,125 + bitmapExp.height,bitmapExp);
         this.expBar.anchor.setTo(1);
         this.expBar.fixedToCamera = true;
 
@@ -235,7 +249,7 @@ class cControlFocus {
         this.rectangleFocus.cameraOffset.x = this.lifeBar.x - this.lifeBar.width;
         this.rectangleFocus.cameraOffset.y = 125;
         
-        console.log(this.rectangleFocus);
+        this.rectangleFocus.visible = false;
 
     }
 

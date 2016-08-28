@@ -1,6 +1,6 @@
 var SimpleGame = (function () {
     function SimpleGame() {
-        this.game = new Phaser.Game(1000, 600, Phaser.CANVAS, 'content', {
+        this.game = new Phaser.Game(1040, 640, Phaser.CANVAS, 'content', {
             preload: this.preload,
             create: this.create,
             update: this.update,
@@ -23,6 +23,7 @@ var SimpleGame = (function () {
         this.game.time.advancedTiming = true;
         //inicio el jugador principal
         this.controlPlayer = new cControlPlayer(this.controlGame);
+        this.controlGame.controlPlayer = this.controlPlayer;
         //inicio los jugadores enemigos
         this.controlOtherPlayers = new cControlOtherPlayers(this.controlGame);
         //inicio el chat

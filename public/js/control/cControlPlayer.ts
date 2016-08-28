@@ -104,6 +104,8 @@ class cControlPlayer extends cBasicActor {
 
     public youHit(data) {
         this.hitText.text = "Golpeaste a alguien por " + data.damage;
+
+
     }
 
     public youDie(data) {

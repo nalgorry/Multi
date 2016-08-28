@@ -11,7 +11,7 @@ class SimpleGame {
 
     constructor() {
 
-        this.game = new Phaser.Game(1000, 600, Phaser.CANVAS, 'content', 
+        this.game = new Phaser.Game(1040, 640, Phaser.CANVAS, 'content', 
         { 
             preload: this.preload, 
             create: this.create,
@@ -43,6 +43,7 @@ class SimpleGame {
         
         //inicio el jugador principal
         this.controlPlayer = new cControlPlayer(this.controlGame);
+        this.controlGame.controlPlayer = this.controlPlayer;
 
         //inicio los jugadores enemigos
         this.controlOtherPlayers = new cControlOtherPlayers(this.controlGame);

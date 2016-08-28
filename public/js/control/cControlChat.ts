@@ -1,5 +1,6 @@
 class cControlChat {
 
+    isActive:boolean = false;
     inputTextChat:Fabrique.InputField;
 
     controlServer:cControlServer;
@@ -20,25 +21,35 @@ class cControlChat {
             borderRadius: 0,
         });
 
-        this.inputTextChat.focusOutOnEnter = true;
+        //this.inputTextChat.focusOutOnEnter = true;
         this.inputTextChat.blockInput = true;
-
+    
         this.inputTextChat.fixedToCamera = true;
         this.inputTextChat.cameraOffset.setTo(100, 560);
 
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        enter.onDown.add(this.enterPress,this);
+        enter.onUp.add(this.enterPress,this);
 
+    }
+
+    public veamos() {
+        console.log("entra");
+        
     }
 
     public enterPress() {   
 
-        this.controlServer.onSendChatText(this.inputTextChat.value)
-        this.controlPlayer.setChatText(this.inputTextChat.value);
-
-        this.inputTextChat.setText("");
-
+        if (this.isActive) {
+            this.controlServer.onSendChatText(this.inputTextChat.value);
+            this.controlPlayer.setChatText(this.inputTextChat.value);
+            this.inputTextChat.setText("");
+            this.isActive = false; 
+        } else {
+            this.inputTextChat.startFocus();
+            this.isActive = true;
+        }
+        
     }
 
     public chatReceive(data) {

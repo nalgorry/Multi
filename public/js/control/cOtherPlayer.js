@@ -25,7 +25,9 @@ var cOtherPlayer = (function (_super) {
     };
     cOtherPlayer.prototype.youHitPlayer = function () {
         if (this.controlGame.atackMode == true) {
-            this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: this.id });
+            if (this.controlGame.controlPlayer.controlFocus.SpellPosible(50, 50, 0) == true) {
+                this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: this.id });
+            }
             this.controlGame.game.canvas.style.cursor = 'default';
         }
     };

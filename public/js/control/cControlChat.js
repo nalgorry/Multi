@@ -3,6 +3,7 @@ var cControlChat = (function () {
         this.controlGame = controlGame;
         this.controlPlayer = controlPlayer;
         this.controlOtherPlayers = controlOtherPlayers;
+        this.isActive = false;
         this.inputTextChat = this.controlGame.game.add.inputField(10, 90, {
             font: '18px Arial',
             fill: '#212121',
@@ -15,18 +16,28 @@ var cControlChat = (function () {
             placeHolder: 'Chat',
             borderRadius: 0,
         });
-        this.inputTextChat.focusOutOnEnter = true;
+        //this.inputTextChat.focusOutOnEnter = true;
         this.inputTextChat.blockInput = true;
         this.inputTextChat.fixedToCamera = true;
         this.inputTextChat.cameraOffset.setTo(100, 560);
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        enter.onDown.add(this.enterPress, this);
+        enter.onUp.add(this.enterPress, this);
     }
+    cControlChat.prototype.veamos = function () {
+        console.log("entra");
+    };
     cControlChat.prototype.enterPress = function () {
-        this.controlServer.onSendChatText(this.inputTextChat.value);
-        this.controlPlayer.setChatText(this.inputTextChat.value);
-        this.inputTextChat.setText("");
+        if (this.isActive) {
+            this.controlServer.onSendChatText(this.inputTextChat.value);
+            this.controlPlayer.setChatText(this.inputTextChat.value);
+            this.inputTextChat.setText("");
+            this.isActive = false;
+        }
+        else {
+            this.inputTextChat.startFocus();
+            this.isActive = true;
+        }
     };
     cControlChat.prototype.chatReceive = function (data) {
         console.log(data);

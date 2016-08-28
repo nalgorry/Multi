@@ -11,12 +11,12 @@ var cControlFocus = (function () {
         this.controlGame = controlGame;
         //constantes para velocidad del focus
         this.speedFocus = 50;
-        this.speedNormalLife = 0.2;
-        this.speedNormalMana = 0.5;
-        this.speedNormalEnergy = 1;
-        this.speedFocusLife = this.speedNormalLife * 4;
-        this.speedFocusMana = this.speedNormalMana * 4;
-        this.speedFocusEnergy = this.speedNormalEnergy * 4;
+        this.speedNormalLife = 0.1;
+        this.speedNormalMana = 0.25;
+        this.speedNormalEnergy = 0.5;
+        this.speedFocusLife = this.speedNormalLife * 8;
+        this.speedFocusMana = this.speedNormalMana * 8;
+        this.speedFocusEnergy = this.speedNormalEnergy * 8;
         this.actualFocusSystem = FocusSystem.nothing;
         //valores actuales utilizados por el focus sistem
         this.actualFocusLife = this.speedNormalLife;
@@ -26,6 +26,16 @@ var cControlFocus = (function () {
         this.CreateBars();
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
     }
+    cControlFocus.prototype.SpellPosible = function (needMana, needEnergy, needLife) {
+        if (this.mana >= needMana && this.energy >= needEnergy && this.life >= needLife) {
+            this.UpdateEnergy(-50);
+            this.UpdateMana(-50);
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
     cControlFocus.prototype.ResetBars = function () {
         this.UpdateLife(1 - this.life);
         this.UpdateMana(1 - this.mana);
@@ -81,7 +91,7 @@ var cControlFocus = (function () {
                 this.actualFocusLife = this.speedFocusLife;
                 this.actualFocusMana = 0;
                 this.actualFocusEnergy = 0;
-                this.rectangleFocus.cameraOffset.x = 810;
+                this.rectangleFocus.cameraOffset.x = 850;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.life;
                 break;
@@ -89,7 +99,7 @@ var cControlFocus = (function () {
                 this.actualFocusLife = 0;
                 this.actualFocusMana = this.speedFocusMana;
                 this.actualFocusEnergy = 0;
-                this.rectangleFocus.cameraOffset.x = 854;
+                this.rectangleFocus.cameraOffset.x = 894;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.mana;
                 break;
@@ -97,7 +107,7 @@ var cControlFocus = (function () {
                 this.actualFocusLife = 0;
                 this.actualFocusMana = 0;
                 this.actualFocusEnergy = this.speedFocusEnergy;
-                this.rectangleFocus.cameraOffset.x = 897;
+                this.rectangleFocus.cameraOffset.x = 947;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.energy;
                 break;
@@ -127,7 +137,7 @@ var cControlFocus = (function () {
         bitmapVida.ctx.rect(0, 0, 24, 130);
         bitmapVida.ctx.fillStyle = '#e33133';
         bitmapVida.ctx.fill();
-        this.lifeBar = this.controlGame.game.add.sprite(810 + bitmapVida.width, 125 + bitmapVida.height, bitmapVida);
+        this.lifeBar = this.controlGame.game.add.sprite(850 + bitmapVida.width, 125 + bitmapVida.height, bitmapVida);
         this.lifeBar.anchor.setTo(1);
         this.lifeBar.fixedToCamera = true;
         //mana
@@ -136,7 +146,7 @@ var cControlFocus = (function () {
         bitmapMana.ctx.rect(0, 0, 24, 130);
         bitmapMana.ctx.fillStyle = '#0099ff';
         bitmapMana.ctx.fill();
-        this.manaBar = this.controlGame.game.add.sprite(854 + bitmapMana.width, 125 + bitmapMana.height, bitmapMana);
+        this.manaBar = this.controlGame.game.add.sprite(894 + bitmapMana.width, 125 + bitmapMana.height, bitmapMana);
         this.manaBar.anchor.setTo(1);
         this.manaBar.fixedToCamera = true;
         //energia
@@ -145,7 +155,7 @@ var cControlFocus = (function () {
         bitmapEnergia.ctx.rect(0, 0, 24, 130);
         bitmapEnergia.ctx.fillStyle = '#33cc66';
         bitmapEnergia.ctx.fill();
-        this.energyBar = this.controlGame.game.add.sprite(897 + bitmapEnergia.width, 125 + bitmapEnergia.height, bitmapEnergia);
+        this.energyBar = this.controlGame.game.add.sprite(937 + bitmapEnergia.width, 125 + bitmapEnergia.height, bitmapEnergia);
         this.energyBar.anchor.setTo(1);
         this.energyBar.fixedToCamera = true;
         //exp
@@ -154,7 +164,7 @@ var cControlFocus = (function () {
         bitmapExp.ctx.rect(0, 0, 24, 130);
         bitmapExp.ctx.fillStyle = '#cc33cc';
         bitmapExp.ctx.fill();
-        this.expBar = this.controlGame.game.add.sprite(954 + bitmapExp.width, 125 + bitmapExp.height, bitmapExp);
+        this.expBar = this.controlGame.game.add.sprite(994 + bitmapExp.width, 125 + bitmapExp.height, bitmapExp);
         this.expBar.anchor.setTo(1);
         this.expBar.fixedToCamera = true;
         //hago las barras del tamaño segun los valores actuales
@@ -168,7 +178,7 @@ var cControlFocus = (function () {
         this.rectangleFocus.drawRect(0, 0, 24, 130);
         this.rectangleFocus.cameraOffset.x = this.lifeBar.x - this.lifeBar.width;
         this.rectangleFocus.cameraOffset.y = 125;
-        console.log(this.rectangleFocus);
+        this.rectangleFocus.visible = false;
     };
     return cControlFocus;
 }());
