@@ -32,8 +32,8 @@ class cControlGame {
         this.map.addTilesetImage('tiles', 'tiles');
         this.hitLayer = this.map.createLayer('HitTest',this.game.width - this.interfazWidth);
         this.layer = this.map.createLayer('FirstFloor',this.game.width - this.interfazWidth);
-        //this.layer = this.map.createLayer('SecondFloor',this.game.width - this.interfazWidth);
-        this.map.setCollision(802, true, this.hitLayer );
+        this.layer = this.map.createLayer('SecondFloor',this.game.width - this.interfazWidth);
+        this.map.setCollision(5, true, this.hitLayer );
         this.game.stage.disableVisibilityChange = true;
 
         //inicio el grupo de profundidad
@@ -43,10 +43,10 @@ class cControlGame {
         //this.map.createFromObjects('Objects', 626, 'objects', 'arbol1.png', true, true, this.depthGroup,undefined,false);
         //this.map.createFromObjects('Objects', 1602, 'objects', 'roca1.png', true, true, this.depthGroup,undefined,false);
 
-        this.map.createFromObjects('Objects', 188, 'objects', 'arbol003.png', true, true, this.depthGroup,undefined,false);
-        this.map.createFromObjects('Objects', 189, 'objects', 'arbol004.png', true, true, this.depthGroup,undefined,false);
-        this.map.createFromObjects('Objects', 190, 'objects', 'arbol005.png', true, true, this.depthGroup,undefined,false);
-        this.map.createFromObjects('Objects', 191, 'objects', 'arbol006.png', true, true, this.depthGroup,undefined,false);
+        this.map.createFromObjects('Objects', 1, 'objects', 'arbol003.png', true, true, this.depthGroup,undefined,false);
+        this.map.createFromObjects('Objects', 2, 'objects', 'arbol004.png', true, true, this.depthGroup,undefined,false);
+        this.map.createFromObjects('Objects', 3, 'objects', 'arbol005.png', true, true, this.depthGroup,undefined,false);
+        this.map.createFromObjects('Objects', 4, 'objects', 'arbol006.png', true, true, this.depthGroup,undefined,false);
 
         this.depthGroup.forEach(this.ObjectsConfiguration,this)
 

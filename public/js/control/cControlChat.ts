@@ -12,7 +12,7 @@ class cControlChat {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
-            width: 350,
+            width: 840,
             height: 22,
             padding: 8,
             borderWidth: 1,
@@ -21,21 +21,16 @@ class cControlChat {
             borderRadius: 0,
         });
 
-        //this.inputTextChat.focusOutOnEnter = true;
+        this.inputTextChat.focusOutOnEnter = true;
         this.inputTextChat.blockInput = true;
     
         this.inputTextChat.fixedToCamera = true;
-        this.inputTextChat.cameraOffset.setTo(100, 560);
+        this.inputTextChat.cameraOffset.setTo(0, 600);
 
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         enter.onUp.add(this.enterPress,this);
 
-    }
-
-    public veamos() {
-        console.log("entra");
-        
     }
 
     public enterPress() {   
