@@ -30,7 +30,7 @@ class cOtherPlayer extends cBasicActor {
     public youHitPlayer() {
          if (this.controlGame.atackMode == true) {
              
-             if (this.controlGame.controlPlayer.controlFocus.SpellPosible(50,50,0) == true) {
+             if (this.controlGame.controlPlayer.controlFocus.SpellPosible(25,10,0) == true) {
                 this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:this.id });
              }
 

@@ -1,7 +1,7 @@
 var cBasicActor = (function () {
     function cBasicActor(_controlGame) {
         this.controlGame = _controlGame;
-        this.styleChat = { font: "22px Arial", fill: "#ffffff" };
+        this.styleChat = { font: "16px Arial", fill: "#000000" };
         this.styleHit = { font: "22px Arial", fill: "#612131" };
     }
     cBasicActor.prototype.setChatText = function (texto) {

@@ -25,6 +25,14 @@ var cControlFocus = (function () {
         this.LoadBars();
         this.CreateBars();
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
+        //para los textos de las barras
+        this.styleText = { font: "15px Arial", fill: "#ffffff", textalign: "center" };
+        this.textLife = this.controlGame.game.add.text(850, 105, "200", this.styleText);
+        this.textLife.fixedToCamera = true;
+        this.textMana = this.controlGame.game.add.text(894, 105, "200", this.styleText);
+        this.textMana.fixedToCamera = true;
+        this.textEnergy = this.controlGame.game.add.text(936, 105, "200", this.styleText);
+        this.textEnergy.fixedToCamera = true;
     }
     cControlFocus.prototype.SpellPosible = function (needMana, needEnergy, needLife) {
         if (this.mana >= needMana && this.energy >= needEnergy && this.life >= needLife) {
@@ -48,9 +56,21 @@ var cControlFocus = (function () {
         this.UpdateLife(this.actualFocusLife);
         this.UpdateMana(this.actualFocusMana);
         this.UpdateEnergy(this.actualFocusEnergy);
+        this.textLife.text = Math.round(this.life).toString();
+        this.textMana.text = Math.round(this.mana).toString();
+        this.textEnergy.text = Math.round(this.energy).toString();
     };
+    //devuelve true si el personaje llego a cero vida
     cControlFocus.prototype.UpdateLife = function (addValue) {
-        this.life = this.UpdateBar(this.lifeBar, this.life, this.maxLife, addValue);
+        //controlo si se murio o no 
+        if (this.life > -addValue) {
+            this.life = this.UpdateBar(this.lifeBar, this.life, this.maxLife, addValue);
+            return false;
+        }
+        else {
+            this.life = 0;
+            return true;
+        }
     };
     cControlFocus.prototype.UpdateMana = function (addValue) {
         this.mana = this.UpdateBar(this.manaBar, this.mana, this.maxMana, addValue);
@@ -107,7 +127,7 @@ var cControlFocus = (function () {
                 this.actualFocusLife = 0;
                 this.actualFocusMana = 0;
                 this.actualFocusEnergy = this.speedFocusEnergy;
-                this.rectangleFocus.cameraOffset.x = 947;
+                this.rectangleFocus.cameraOffset.x = 937;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.energy;
                 break;

@@ -30,6 +30,7 @@ var cControlPlayer = (function (_super) {
         //esto no se si tendria que hacerlo aca
         this.playerSprite = this.controlGame.game.add.sprite(1000, 1000, 'player', 2);
         this.playerSprite.anchor.set(0.5);
+        this.playerSprite.x += this.playerSprite.width / 2;
         //Cargo el sistema de controlFocus
         this.controlFocus = new cControlFocus(this.controlGame);
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
@@ -69,7 +70,10 @@ var cControlPlayer = (function (_super) {
     };
     //esto se activa cuando golepan al jugador actual
     cControlPlayer.prototype.playerHit = function (data) {
-        this.controlFocus.UpdateLife(-data.damage);
+        //resto la vida y controlo si murio 
+        if (this.controlFocus.UpdateLife(-data.damage)) {
+            this.youDie(data);
+        }
         this.onHit(data);
     };
     cControlPlayer.prototype.youHit = function (data) {

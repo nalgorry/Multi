@@ -43,6 +43,7 @@ class cControlPlayer extends cBasicActor {
         //esto no se si tendria que hacerlo aca
         this.playerSprite = this.controlGame.game.add.sprite(1000, 1000, 'player',2);
         this.playerSprite.anchor.set(0.5);
+        this.playerSprite.x += this.playerSprite.width/2;
 
         //Cargo el sistema de controlFocus
         this.controlFocus = new cControlFocus(this.controlGame);
@@ -97,7 +98,11 @@ class cControlPlayer extends cBasicActor {
     //esto se activa cuando golepan al jugador actual
     public playerHit(data) {
 
-        this.controlFocus.UpdateLife(-data.damage);
+        //resto la vida y controlo si murio 
+        if (this.controlFocus.UpdateLife(-data.damage)) {
+            this.youDie(data);
+        } 
+        
         this.onHit(data);
 
     }

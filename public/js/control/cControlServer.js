@@ -69,7 +69,6 @@ var cControlServer = (function () {
     // Someone has die
     cControlServer.prototype.onPlayerDie = function (data) {
         if (data.id === this.controlPlayer.idServer) {
-            this.controlPlayer.youDie(data);
         }
     };
     cControlServer.prototype.onYouKill = function (data) {

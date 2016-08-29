@@ -21,6 +21,11 @@ class cControlFocus {
 
     actualFocusSystem:FocusSystem = FocusSystem.nothing;
 
+    textLife: Phaser.Text;
+    textMana: Phaser.Text;
+    textEnergy: Phaser.Text;
+    styleText;
+
     //valores actuales utilizados por el focus sistem
     actualFocusLife:number = this.speedNormalLife;
     actualFocusMana:number = this.speedNormalMana;
@@ -53,6 +58,17 @@ class cControlFocus {
         this.CreateBars();
 
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
+        
+        //para los textos de las barras
+        this.styleText = { font: "15px Arial", fill: "#ffffff", textalign: "center"};
+        this.textLife = this.controlGame.game.add.text(850, 105, "200" , this.styleText);
+        this.textLife.fixedToCamera = true;
+
+        this.textMana = this.controlGame.game.add.text(894, 105, "200" , this.styleText);
+        this.textMana.fixedToCamera = true;
+
+        this.textEnergy = this.controlGame.game.add.text(936, 105, "200" , this.styleText);
+        this.textEnergy.fixedToCamera = true;
 
     }
 
@@ -86,11 +102,27 @@ class cControlFocus {
         this.UpdateLife(this.actualFocusLife);
         this.UpdateMana(this.actualFocusMana);
         this.UpdateEnergy(this.actualFocusEnergy);
+
+        this.textLife.text = Math.round(this.life).toString();
+        this.textMana.text = Math.round(this.mana).toString();
+        this.textEnergy.text = Math.round(this.energy).toString();
+
+
         
     }
 
-    public UpdateLife(addValue:number) {
-        this.life = this.UpdateBar(this.lifeBar,this.life,this.maxLife,addValue);
+    //devuelve true si el personaje llego a cero vida
+    public UpdateLife(addValue:number):boolean {
+        //controlo si se murio o no 
+        if (this.life > -addValue) {
+            this.life = this.UpdateBar(this.lifeBar,this.life,this.maxLife,addValue);
+            return false;
+        } else {
+            this.life = 0;
+            return true;
+        }
+
+        
     }
 
     public UpdateMana(addValue:number) {
@@ -162,7 +194,7 @@ class cControlFocus {
                 this.actualFocusLife = 0;
                 this.actualFocusMana = 0;
                 this.actualFocusEnergy = this.speedFocusEnergy;
-                this.rectangleFocus.cameraOffset.x = 947;
+                this.rectangleFocus.cameraOffset.x = 937;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.energy;
                 break;

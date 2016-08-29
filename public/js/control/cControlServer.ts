@@ -105,7 +105,7 @@ class cControlServer {
     onPlayerDie (data) {
 
         if (data.id === this.controlPlayer.idServer) {
-            this.controlPlayer.youDie(data) 
+            //this.controlPlayer.youDie(data) 
         }
 
     }
