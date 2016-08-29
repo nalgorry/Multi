@@ -1,28 +1,44 @@
 {"frames": [
 
 {
-	"filename": "arbol1.png",
-	"frame": {"x":0,"y":40,"w":40,"h":160},
+	"filename": "arbol003.png",
+	"frame": {"x":0,"y":320,"w":80,"h":160},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":40,"h":160},
-	"sourceSize": {"w":40,"h":160}
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":160},
+	"sourceSize": {"w":80,"h":160}
 },
 {
-	"filename": "roca1.png",
-	"frame": {"x":0,"y":0,"w":80,"h":40},
+	"filename": "arbol004.png",
+	"frame": {"x":0,"y":160,"w":80,"h":160},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":40},
-	"sourceSize": {"w":80,"h":40}
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":160},
+	"sourceSize": {"w":80,"h":160}
+},
+{
+	"filename": "arbol005.png",
+	"frame": {"x":0,"y":0,"w":80,"h":160},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":160},
+	"sourceSize": {"w":80,"h":160}
+},
+{
+	"filename": "arbol006.png",
+	"frame": {"x":0,"y":480,"w":80,"h":120},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":120},
+	"sourceSize": {"w":80,"h":120}
 }],
 "meta": {
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
 	"image": "objects.png",
 	"format": "RGBA8888",
-	"size": {"w":80,"h":200},
+	"size": {"w":80,"h":601},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:8a33e52c844d2e62f77cd7988ef97a12$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a4a7b0f740ffcb4d0630b09f3933916e$"
 }
 }
