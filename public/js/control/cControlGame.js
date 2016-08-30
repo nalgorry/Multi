@@ -18,8 +18,6 @@ var cControlGame = (function () {
         //inicio el grupo de profundidad
         this.depthGroup = this.game.add.group(); //  To control the depth of the characters      
         //creo los objetos a partir de los datos del mapa
-        //this.map.createFromObjects('Objects', 626, 'objects', 'arbol1.png', true, true, this.depthGroup,undefined,false);
-        //this.map.createFromObjects('Objects', 1602, 'objects', 'roca1.png', true, true, this.depthGroup,undefined,false);
         this.map.createFromObjects('Objects', 1, 'objects', 'arbol003.png', true, true, this.depthGroup, undefined, false);
         this.map.createFromObjects('Objects', 2, 'objects', 'arbol004.png', true, true, this.depthGroup, undefined, false);
         this.map.createFromObjects('Objects', 3, 'objects', 'arbol005.png', true, true, this.depthGroup, undefined, false);
@@ -53,7 +51,6 @@ var cControlGame = (function () {
         child.anchor.set(0, 1);
     };
     cControlGame.prototype.atackKeyOne = function (data) {
-        console.log(data);
         this.game.canvas.style.cursor = 'crosshair';
         this.atackMode = true;
     };

@@ -50,7 +50,7 @@ function onChatSend(data) {
 function onPlayerClick(data) {
     var player = playerById(data.idPlayerHit);
     if (player != null) {
-        var damage = Math.round(Math.random() * 40 + 5);
+        var damage = Math.round(Math.random() * 40 + 15);
         player.playerLife -= damage;
         util.log('Player has click: ' + player.playerLife);
         // mando el golpe a los jugadores

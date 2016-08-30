@@ -36,8 +36,9 @@ var cControlFocus = (function () {
     }
     cControlFocus.prototype.SpellPosible = function (needMana, needEnergy, needLife) {
         if (this.mana >= needMana && this.energy >= needEnergy && this.life >= needLife) {
-            this.UpdateEnergy(-50);
-            this.UpdateMana(-50);
+            this.UpdateEnergy(-needEnergy);
+            this.UpdateMana(-needMana);
+            this.UpdateLife(-needLife);
             return true;
         }
         else {
@@ -142,7 +143,7 @@ var cControlFocus = (function () {
     };
     cControlFocus.prototype.LoadBars = function () {
         //esto tendria que venir del server en algun momento
-        this.maxLife = 200;
+        this.maxLife = 150;
         this.maxEnergy = 200;
         this.maxMana = 200;
         this.life = 100;
@@ -160,6 +161,8 @@ var cControlFocus = (function () {
         this.lifeBar = this.controlGame.game.add.sprite(850 + bitmapVida.width, 125 + bitmapVida.height, bitmapVida);
         this.lifeBar.anchor.setTo(1);
         this.lifeBar.fixedToCamera = true;
+        this.lifeBar.inputEnabled = true;
+        this.lifeBar.events.onInputDown.add(this.SelectLifeFocus, this);
         //mana
         var bitmapMana = this.controlGame.game.add.bitmapData(24, 130);
         bitmapMana.ctx.beginPath();
@@ -169,6 +172,8 @@ var cControlFocus = (function () {
         this.manaBar = this.controlGame.game.add.sprite(894 + bitmapMana.width, 125 + bitmapMana.height, bitmapMana);
         this.manaBar.anchor.setTo(1);
         this.manaBar.fixedToCamera = true;
+        this.manaBar.inputEnabled = true;
+        this.manaBar.events.onInputDown.add(this.SelectManaFocus, this);
         //energia
         var bitmapEnergia = this.controlGame.game.add.bitmapData(25, 130);
         bitmapEnergia.ctx.beginPath();
@@ -178,6 +183,8 @@ var cControlFocus = (function () {
         this.energyBar = this.controlGame.game.add.sprite(937 + bitmapEnergia.width, 125 + bitmapEnergia.height, bitmapEnergia);
         this.energyBar.anchor.setTo(1);
         this.energyBar.fixedToCamera = true;
+        this.energyBar.inputEnabled = true;
+        this.energyBar.events.onInputDown.add(this.SelectEnergyFocus, this);
         //exp
         var bitmapExp = this.controlGame.game.add.bitmapData(25, 130);
         bitmapExp.ctx.beginPath();

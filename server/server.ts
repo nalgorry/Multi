@@ -74,7 +74,7 @@ function onPlayerClick(data) {
   var player:cPlayer = playerById(data.idPlayerHit);
   
    if (player != null) {
-    var damage:number = Math.round(Math.random()*40+5);
+    var damage:number = Math.round(Math.random()*40+15);
     player.playerLife -= damage;
     util.log('Player has click: ' + player.playerLife);
 
