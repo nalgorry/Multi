@@ -14,6 +14,7 @@ class cControlPlayer extends cBasicActor {
     public lastSendTileX: number;
     public lastSendTileY: number;
     public controlFocus: cControlFocus;
+    public controlSpells:cControlSpells;
 
     private speedplayer: number = 150;
     
@@ -47,6 +48,9 @@ class cControlPlayer extends cBasicActor {
 
         //Cargo el sistema de controlFocus
         this.controlFocus = new cControlFocus(this.controlGame);
+
+        //Cargo el sistema de hechizos.
+        this.controlSpells = new cControlSpells(this.controlGame);
 
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         

@@ -28,6 +28,7 @@ class SimpleGame {
 
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40,72 );
         this.game.load.atlas('objects', 'assets/objects.png','assets/objects.json');
+        this.game.load.spritesheet('spells', 'assets/spells.png', 27,71 );
 
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200,600 );
     }

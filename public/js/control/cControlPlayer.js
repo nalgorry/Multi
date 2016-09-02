@@ -33,6 +33,8 @@ var cControlPlayer = (function (_super) {
         this.playerSprite.x += this.playerSprite.width / 2;
         //Cargo el sistema de controlFocus
         this.controlFocus = new cControlFocus(this.controlGame);
+        //Cargo el sistema de hechizos.
+        this.controlSpells = new cControlSpells(this.controlGame);
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         this.playerSprite.body.collideWorldBounds = true;
         this.playerSprite.body.width = this.controlGame.gridSize;
