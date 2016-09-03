@@ -36,6 +36,9 @@ class cBasicActor {
 
         var tweenText = this.controlGame.game.add.tween(hitText).to({y: '-30'},500,undefined,true);
         tweenText.onComplete.add(this.removeTweenText,hitText);
+
+        this.controlGame.controlPlayer.controlSpells.spellAnimation(this,data);
+
     }
 
     removeTweenText(sprite:Phaser.Sprite) {        

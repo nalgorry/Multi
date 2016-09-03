@@ -28,15 +28,9 @@ class cOtherPlayer extends cBasicActor {
     }
 
     public youHitPlayer() {
-         if (this.controlGame.atackMode == true) {
-             
-             if (this.controlGame.controlPlayer.controlFocus.SpellPosible(25,10,0) == true) {
-                this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:this.id });
-             }
 
-            this.controlGame.game.canvas.style.cursor = 'default';
+        this.controlGame.controlPlayer.controlSpells.otherPlayerClick(this)
 
-        }
     }
 
     public removePlayer() {

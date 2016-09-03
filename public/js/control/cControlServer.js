@@ -24,7 +24,6 @@ var cControlServer = (function () {
         this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
     }
     cControlServer.prototype.onPowerThrow = function (data) {
-        this.controlGame.PowerTrow(data);
     };
     //chat text
     cControlServer.prototype.onSendChatText = function (text) {
@@ -58,7 +57,6 @@ var cControlServer = (function () {
     };
     // Player git by other player
     cControlServer.prototype.onPlayerHit = function (data) {
-        console.log(data.damage);
         if (data.id === this.controlPlayer.idServer) {
             this.controlPlayer.playerHit(data);
         }

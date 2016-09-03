@@ -214,12 +214,12 @@ class cControlFocus {
     private LoadBars() {
         //esto tendria que venir del server en algun momento
         this.maxLife = 150;
-        this.maxEnergy = 200;
-        this.maxMana = 200;
+        this.maxEnergy = 100;
+        this.maxMana = 100;
         
-        this.life = 100;
-        this.energy = 100;
-        this.mana = 100;
+        this.life = 80;
+        this.energy = 50;
+        this.mana = 50;
 
     }
 

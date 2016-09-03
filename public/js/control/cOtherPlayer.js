@@ -24,12 +24,7 @@ var cOtherPlayer = (function (_super) {
         //this.playerSprite.frame = data.dirMov;
     };
     cOtherPlayer.prototype.youHitPlayer = function () {
-        if (this.controlGame.atackMode == true) {
-            if (this.controlGame.controlPlayer.controlFocus.SpellPosible(25, 10, 0) == true) {
-                this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: this.id });
-            }
-            this.controlGame.game.canvas.style.cursor = 'default';
-        }
+        this.controlGame.controlPlayer.controlSpells.otherPlayerClick(this);
     };
     cOtherPlayer.prototype.removePlayer = function () {
         this.playerSprite.kill();

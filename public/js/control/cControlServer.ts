@@ -37,7 +37,7 @@ class cControlServer {
         }
 
     public onPowerThrow(data) {
-        this.controlGame.PowerTrow(data);
+        
     }
 
     //chat text
@@ -92,12 +92,13 @@ class cControlServer {
      // Player git by other player
     onPlayerHit (data) {
 
-        console.log (data.damage);
         if (data.id === this.controlPlayer.idServer) {
             this.controlPlayer.playerHit(data);
         } else {
             this.controlOtherPlayers.playerHit(data);
         }
+
+        
 
     }
 

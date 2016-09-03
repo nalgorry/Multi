@@ -94,14 +94,6 @@ class cControlGame {
         this.depthGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     }
 
-    public PowerTrow(data) {
-        //animiacion de la bomba 
-        var boomSprite = this.game.add.sprite(data.x * this.gridSize + this.gridSize/2 , data.y * this.gridSize + this.gridSize/2,'boom');    
-        boomSprite.anchor.set(0.5);
-        boomSprite.animations.add('boom');
-        boomSprite.animations.play('boom',160,false,true);
-
-    }
 
     mouseDown(event:MouseEvent) {
         this.game.canvas.style.cursor = 'default';

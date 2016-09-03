@@ -71,16 +71,26 @@ function onChatSend(data) {
 
 function onPlayerClick(data) {
 
-  var player:cPlayer = playerById(data.idPlayerHit);
+   var player:cPlayer = playerById(data.idPlayerHit);
+
   
    if (player != null) {
-    var damage:number = Math.round(Math.random()*40+15);
+
+    if (data.idSpell == 0 ) {
+        var damage:number = Math.round(Math.random()*10+20);
+    } else if (data.idSpell == 1) {
+        var damage:number = Math.round(Math.random()*15+5);
+        if (Math.random() < 0.15) { //daño critico!
+          damage = damage * 4;
+          util.log("daño critico");
+        }
+    }
+    
     player.playerLife -= damage;
-    util.log('Player has click: ' + player.playerLife);
 
     // mando el golpe a los jugadores
-    this.broadcast.emit('player hit', {id: player.id, x: player.x, y: player.y,damage:damage});
-    this.emit('you hit', {id: player.id,damage: damage});
+    this.broadcast.emit('player hit', {id: player.id, x: player.x, y: player.y,damage:damage, idSpell: data.idSpell});
+    this.emit('you hit', {id: player.id,damage: damage,idSpell: data.idSpell});
 
     //mataron a alguien finalmente 
     if (player.playerLife <= 0) { 

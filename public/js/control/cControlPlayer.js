@@ -22,9 +22,10 @@ var cControlPlayer = (function (_super) {
         this.seMueveY = false;
         //texto para mostrar daño (temporal)
         this.style = { font: "15px Arial", fill: "#ff0044" };
-        this.hitText = this.controlGame.game.add.text(0, 0, "Trata de golpear a alguien", this.style);
+        this.hitText = this.controlGame.game.add.text(0, 15, "Trata de golpear a alguien", this.style);
         this.startPlayer();
         this.gridSize = controlGame.gridSize;
+        this.hitText.fixedToCamera = true;
     }
     cControlPlayer.prototype.startPlayer = function () {
         //esto no se si tendria que hacerlo aca
@@ -66,9 +67,32 @@ var cControlPlayer = (function (_super) {
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars, this.controlFocus);
-        //animaciones
-        this.playerSprite.animations.add('run', [1], 10, true);
-        this.playerSprite.animations.add('idle', [1], 2, true);
+        //defino las animaciones segun la cantidad de cuadros 
+        var framesPerLine = 8;
+        var arrayAnimationIdle;
+        var arrayAnimationLeft;
+        var arrayAnimationRight;
+        var arrayAnimationUp;
+        var arrayAnimationDown;
+        //creo el array de animacion
+        arrayAnimationIdle = new Array();
+        arrayAnimationLeft = new Array();
+        arrayAnimationRight = new Array();
+        arrayAnimationUp = new Array();
+        arrayAnimationDown = new Array();
+        var i = 0;
+        for (i; i < framesPerLine; i++) {
+            arrayAnimationIdle.push(i);
+            arrayAnimationLeft.push(i + framesPerLine);
+            arrayAnimationRight.push(i + framesPerLine * 2);
+            arrayAnimationUp.push(i + framesPerLine * 3);
+            arrayAnimationDown.push(i + framesPerLine * 4);
+        }
+        this.playerSprite.animations.add('idle', arrayAnimationIdle, 10, true);
+        this.playerSprite.animations.add('left', arrayAnimationLeft, 10, true);
+        this.playerSprite.animations.add('right', arrayAnimationRight, 10, true);
+        this.playerSprite.animations.add('up', arrayAnimationUp, 10, true);
+        this.playerSprite.animations.add('down', arrayAnimationDown, 10, true);
     };
     //esto se activa cuando golepan al jugador actual
     cControlPlayer.prototype.playerHit = function (data) {
@@ -76,7 +100,7 @@ var cControlPlayer = (function (_super) {
         if (this.controlFocus.UpdateLife(-data.damage)) {
             this.youDie(data);
         }
-        this.onHit(data);
+        this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda
     };
     cControlPlayer.prototype.youHit = function (data) {
         this.hitText.text = "Golpeaste a alguien por " + data.damage;
@@ -169,6 +193,22 @@ var cControlPlayer = (function (_super) {
             this.lastSendTileY = this.tileY;
             this.controlGame.controlServer.socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: dirMovimiento });
         }
+        //control de las animaciones
+        if (this.lastMoveX == 0 && this.lastMoveY == 0) {
+            this.playerSprite.animations.play('idle');
+        }
+        if (this.lastMoveX == 1) {
+            this.playerSprite.animations.play('right');
+        }
+        if (this.lastMoveX == -1) {
+            this.playerSprite.animations.play('left');
+        }
+        if (this.lastMoveY == 1) {
+            this.playerSprite.animations.play('up');
+        }
+        if (this.lastMoveY == -1) {
+            this.playerSprite.animations.play('down');
+        }
     };
     cControlPlayer.prototype.moveKeyPress = function (key) {
         this.playerSprite.body.velocity.y = 0;
@@ -196,16 +236,6 @@ var cControlPlayer = (function (_super) {
         else if (key.keyCode == Phaser.Keyboard.D) {
             this.seMueveX = true;
             this.lastMoveX = 1;
-        }
-        //control de las animaciones
-        if (this.lastMoveX == 0 && this.lastMoveY == 0) {
-            this.playerSprite.animations.play('idle');
-        }
-        if (this.lastMoveX == 1) {
-            this.playerSprite.animations.play('run');
-        }
-        if (this.lastMoveX == -1) {
-            this.playerSprite.animations.play('run');
         }
     };
     return cControlPlayer;

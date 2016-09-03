@@ -17,6 +17,7 @@ var cBasicActor = (function () {
         this.playerSprite.addChild(hitText);
         var tweenText = this.controlGame.game.add.tween(hitText).to({ y: '-30' }, 500, undefined, true);
         tweenText.onComplete.add(this.removeTweenText, hitText);
+        this.controlGame.controlPlayer.controlSpells.spellAnimation(this, data);
     };
     cBasicActor.prototype.removeTweenText = function (sprite) {
         sprite.destroy();
