@@ -26,6 +26,7 @@ class SimpleGame {
         this.game.load.image('tiles', 'assets/tiles.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png',100,100);
         this.game.load.spritesheet('boom2', 'assets/explosion2.png',96,96);
+        this.game.load.spritesheet('boom3', 'assets/blueexplosion.png',66.66,66.66);
 
         this.game.load.spritesheet('player', 'assets/char_test40.png', 50,100 );
         this.game.load.atlas('objects', 'assets/objects.png','assets/objects.json');

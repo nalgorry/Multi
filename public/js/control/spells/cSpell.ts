@@ -1,21 +1,23 @@
 class cSpell {
 
+    //variables para definir el hechizo
+    public idSpell:number;
+    public spellName: string;
+    public manaCost:number;
+    public energyCost:number;
+    public lifeCost:number;
+    public posInSpritesheet:number;
+    public explotionSprite:string;
+    public explotionFrameRate:number;
+
+    
+    //variables creadas por la clase
     public spellSprite:Phaser.Sprite
     public spellNumber:number
 
     public signalTest:Phaser.Signal;
 
-    constructor(public controlGame: cControlGame,
-                public idSpell:number,
-                public spellName: string,
-                public manaCost:number,
-                public energyCost:number,
-                public lifeCost:number,
-                public posInSpritesheet:number,
-                public explotionSprite:string,
-                public explotionFrameRate:number) {
-
-        //this.spellSprite.anchor.setTo(1);
+    constructor(public controlGame: cControlGame) {
         
     }
 

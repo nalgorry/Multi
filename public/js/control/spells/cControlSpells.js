@@ -55,6 +55,7 @@ var cControlSpells = (function () {
         this.rectangleSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x;
         this.rectangleSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y;
         this.selectedSpell = sender.idSpell;
+        this.controlGame.activateAtackMode();
     };
     return cControlSpells;
 }());

@@ -50,7 +50,6 @@ class cControlGame {
         //cargo la interfaz dele juego
         this.interfaz = this.game.add.sprite(this.game.width - this.interfazWidth , 0, 'interfaz');
         this.interfaz.inputEnabled = true;
-        this.interfaz.events.onInputDown.add(this.atackKeyOne, this);
         this.interfaz.fixedToCamera = true;
         //boton.cameraOffset.setTo(100, 560);
 
@@ -73,7 +72,7 @@ class cControlGame {
 
         //to control the keyboard 
         var atackKeyOne = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        atackKeyOne.onDown.add(this.atackKeyOne,this);
+        atackKeyOne.onDown.add(this.activateAtackMode,this);
 
         //esto controla el teclado
         //this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -84,7 +83,7 @@ class cControlGame {
         child.anchor.set(0,1);
     }
 
-    atackKeyOne(data) {
+    activateAtackMode() {
         this.game.canvas.style.cursor = 'crosshair';
         this.atackMode = true;
     }
@@ -96,14 +95,16 @@ class cControlGame {
 
 
     mouseDown(event:MouseEvent) {
-        this.game.canvas.style.cursor = 'default';
+     
     }
 
     mouseUp(event:MouseEvent) {
     
-        if (this.atackMode == true) {
-            this.atackMode = false;
-        }
+    //controlo si hizo click en el juego y si es asi desactivo el sistema de ataque
+    if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {
+        this.atackMode = false;
+        this.game.canvas.style.cursor = 'default';
+    }
     }
 
     mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {

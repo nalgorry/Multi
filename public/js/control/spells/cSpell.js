@@ -1,15 +1,6 @@
 var cSpell = (function () {
-    function cSpell(controlGame, idSpell, spellName, manaCost, energyCost, lifeCost, posInSpritesheet, explotionSprite, explotionFrameRate) {
-        //this.spellSprite.anchor.setTo(1);
+    function cSpell(controlGame) {
         this.controlGame = controlGame;
-        this.idSpell = idSpell;
-        this.spellName = spellName;
-        this.manaCost = manaCost;
-        this.energyCost = energyCost;
-        this.lifeCost = lifeCost;
-        this.posInSpritesheet = posInSpritesheet;
-        this.explotionSprite = explotionSprite;
-        this.explotionFrameRate = explotionFrameRate;
     }
     cSpell.prototype.spellAnimation = function (actor) {
         //animiacion de la bomba 

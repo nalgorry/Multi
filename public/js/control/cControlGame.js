@@ -26,7 +26,6 @@ var cControlGame = (function () {
         //cargo la interfaz dele juego
         this.interfaz = this.game.add.sprite(this.game.width - this.interfazWidth, 0, 'interfaz');
         this.interfaz.inputEnabled = true;
-        this.interfaz.events.onInputDown.add(this.atackKeyOne, this);
         this.interfaz.fixedToCamera = true;
         //boton.cameraOffset.setTo(100, 560);
         var graphics = this.game.add.graphics(100, 100);
@@ -43,14 +42,14 @@ var cControlGame = (function () {
         this.game.input.addMoveCallback(this.mouseMove, this);
         //to control the keyboard 
         var atackKeyOne = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        atackKeyOne.onDown.add(this.atackKeyOne, this);
+        atackKeyOne.onDown.add(this.activateAtackMode, this);
         //esto controla el teclado
         //this.cursors = this.game.input.keyboard.createCursorKeys();
     }
     cControlGame.prototype.ObjectsConfiguration = function (child) {
         child.anchor.set(0, 1);
     };
-    cControlGame.prototype.atackKeyOne = function (data) {
+    cControlGame.prototype.activateAtackMode = function () {
         this.game.canvas.style.cursor = 'crosshair';
         this.atackMode = true;
     };
@@ -58,11 +57,12 @@ var cControlGame = (function () {
         this.depthGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     };
     cControlGame.prototype.mouseDown = function (event) {
-        this.game.canvas.style.cursor = 'default';
     };
     cControlGame.prototype.mouseUp = function (event) {
-        if (this.atackMode == true) {
+        //controlo si hizo click en el juego y si es asi desactivo el sistema de ataque
+        if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {
             this.atackMode = false;
+            this.game.canvas.style.cursor = 'default';
         }
     };
     cControlGame.prototype.mouseMove = function (pointer, x, y, a) {

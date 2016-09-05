@@ -23,7 +23,7 @@ class cControlSpells {
     public otherPlayerClick(player:cOtherPlayer) {
 
         if (this.controlGame.atackMode == true) {
-             
+            
              if (this.controlGame.controlPlayer.controlFocus.SpellPosible(25,10,0) == true) {
                  var idSpell:number = this.controlGame.controlPlayer.controlSpells.selectedSpell;
                 this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:player.id,idSpell: idSpell });
@@ -91,6 +91,7 @@ class cControlSpells {
         this.rectangleSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x;
         this.rectangleSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y;
         this.selectedSpell = sender.idSpell;
+        this.controlGame.activateAtackMode();
 
     }
 
