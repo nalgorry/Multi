@@ -3,6 +3,8 @@ class cBasicActor {
     public tileX: number;
     public tileY: number;
     public playerSprite: Phaser.Sprite;
+    public weaponSprite: Phaser.Sprite;
+    public armorSprite: Phaser.Sprite;
     public controlGame:cControlGame
     
     textChat: Phaser.Text;

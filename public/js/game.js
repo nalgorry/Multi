@@ -12,10 +12,11 @@ var SimpleGame = (function () {
         this.game.load.image('tiles', 'assets/tiles.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png', 100, 100);
         this.game.load.spritesheet('boom2', 'assets/explosion2.png', 96, 96);
-        this.game.load.spritesheet('player', 'assets/char_test40.png', 50, 100);
+        this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 70);
         this.game.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
         this.game.load.spritesheet('spells', 'assets/spells.png', 27, 71);
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 600);
+        this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120, 120);
     };
     SimpleGame.prototype.create = function () {
         //inicio todos los parametros dele juego

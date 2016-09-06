@@ -45,9 +45,24 @@ class cControlPlayer extends cBasicActor {
     public startPlayer() {
 
         //esto no se si tendria que hacerlo aca
-        this.playerSprite = this.controlGame.game.add.sprite(1000, 1000, 'player',2);
-        this.playerSprite.anchor.set(0.5);
+        this.playerSprite = this.controlGame.game.add.sprite(1000, 1000);
+        this.playerSprite.anchor.set(0.5,1);
         this.playerSprite.x += this.playerSprite.width/2;
+
+        //creo el cuerpo con su armadura
+        this.armorSprite = this.controlGame.game.add.sprite(0, 0, 'player',0);
+        this.armorSprite.anchor.set(0.5,1);
+        this.playerSprite.addChild(this.armorSprite);
+
+        //creo el arma
+        this.weaponSprite = this.controlGame.game.add.sprite(0, 0, 'weapon1',0);
+        this.weaponSprite.anchor.set(0.5,1);
+        this.playerSprite.addChild(this.weaponSprite);
+
+        //seteo el z del arma para poder swapear facilmente
+        this.armorSprite.z =3;
+        this.weaponSprite.z =4;
+        this.playerSprite.children.sort();
 
         //Cargo el sistema de controlFocus
         this.controlFocus = new cControlFocus(this.controlGame);
@@ -97,34 +112,18 @@ class cControlPlayer extends cBasicActor {
         H.onDown.add(this.controlFocus.ResetBars,this.controlFocus);
 
         //defino las animaciones segun la cantidad de cuadros 
-        var framesPerLine:number = 8;
 
-        var arrayAnimationIdle: Array<number>;
-        var arrayAnimationLeft: Array<number>;
-        var arrayAnimationRight: Array<number>;
-        var arrayAnimationUp: Array<number>;
-        var arrayAnimationDown: Array<number>;
+        this.armorSprite.animations.add('idle',[0,1,2,3,4], 4, true);
+        this.armorSprite.animations.add('left', [8,9,10,11,12,13,14,15], 10, true);
+        this.armorSprite.animations.add('right', [16,17,18,19,20,21,22,23], 10, true);
+        this.armorSprite.animations.add('up', [24,25,26,27,28], 10, true);
+        this.armorSprite.animations.add('down', [32,33,34,35,36], 10, true);
 
-        //creo el array de animacion
-        arrayAnimationIdle = new Array();
-        arrayAnimationLeft = new Array();
-        arrayAnimationRight = new Array();
-        arrayAnimationUp = new Array();
-        arrayAnimationDown = new Array();
-        var i:number = 0;
-        for (i;i<framesPerLine;i++) {
-            arrayAnimationIdle.push(i);
-            arrayAnimationLeft.push(i + framesPerLine);
-            arrayAnimationRight.push(i + framesPerLine * 2);
-            arrayAnimationUp.push(i + framesPerLine * 3);
-            arrayAnimationDown.push(i + framesPerLine * 4);
-        }
-
-        this.playerSprite.animations.add('idle', arrayAnimationIdle, 10, true);
-        this.playerSprite.animations.add('left', arrayAnimationLeft, 10, true);
-        this.playerSprite.animations.add('right', arrayAnimationRight, 10, true);
-        this.playerSprite.animations.add('up', arrayAnimationUp, 10, true);
-        this.playerSprite.animations.add('down', arrayAnimationDown, 10, true);
+        this.weaponSprite.animations.add('idle',[0,1,2,3,4], 4, true);
+        this.weaponSprite.animations.add('left', [8,9,10,11,12,13,14,15], 10, true);
+        this.weaponSprite.animations.add('right', [16,17,18,19,20,21,22,23], 10, true);
+        this.weaponSprite.animations.add('up', [24,25,26,27,28], 10, true);
+        this.weaponSprite.animations.add('down', [32,33,34,35,36], 10, true);
 
     }
 
@@ -251,19 +250,25 @@ class cControlPlayer extends cBasicActor {
 
         //control de las animaciones
         if (this.lastMoveX == 0 && this.lastMoveY == 0) {
-            this.playerSprite.animations.play('idle');
+            this.armorSprite.animations.play('idle');
+            this.weaponSprite.animations.play('idle');
         }
         if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
-            this.playerSprite.animations.play('right');
+            this.armorSprite.animations.play('right');
+            this.weaponSprite.animations.play('right');
+            this.weaponSprite.z = 9;
         }
         if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
-            this.playerSprite.animations.play('left');
+            this.armorSprite.animations.play('left');
+            this.weaponSprite.animations.play('left');
         }
         if (this.lastMoveY == 1) { //se esta moviendo hacia arriba
-            this.playerSprite.animations.play('up');
+            this.armorSprite.animations.play('up');
+            this.weaponSprite.animations.play('up');
         }
         if (this.lastMoveY == -1) { //se esta moviendo hacia abajo
-            this.playerSprite.animations.play('down');
+            this.armorSprite.animations.play('down');
+            this.weaponSprite.animations.play('down');
         } 
     }
 
