@@ -22,11 +22,7 @@ class cControlOtherPlayers {
 
     public addPlayer(data) {
 
-        var newPlayer = new cOtherPlayer(this.controlGame);
-        newPlayer.id = data.id;
-        newPlayer.tileX = data.x;
-        newPlayer.tileY = data.y;
-        newPlayer.IniciarJugador();
+        var newPlayer = new cOtherPlayer(this.controlGame,data);
 
         this.arrayPlayers.push(newPlayer);
 

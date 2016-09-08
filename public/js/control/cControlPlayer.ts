@@ -36,6 +36,7 @@ class cControlPlayer extends cBasicActor {
     constructor(controlGame:cControlGame) {
         super(controlGame);
 
+        this.startActor();
         this.startPlayer();
         this.gridSize = controlGame.gridSize;
 
@@ -43,26 +44,6 @@ class cControlPlayer extends cBasicActor {
     }
 
     public startPlayer() {
-
-        //esto no se si tendria que hacerlo aca
-        this.playerSprite = this.controlGame.game.add.sprite(1000, 1000);
-        this.playerSprite.anchor.set(0.5,1);
-        this.playerSprite.x += this.playerSprite.width/2;
-
-        //creo el cuerpo con su armadura
-        this.armorSprite = this.controlGame.game.add.sprite(0, 0, 'player',0);
-        this.armorSprite.anchor.set(0.5,1);
-        this.playerSprite.addChild(this.armorSprite);
-
-        //creo el arma
-        this.weaponSprite = this.controlGame.game.add.sprite(0, 0, 'weapon1',0);
-        this.weaponSprite.anchor.set(0.5,1);
-        this.playerSprite.addChild(this.weaponSprite);
-
-        //seteo el z del arma para poder swapear facilmente
-        this.armorSprite.z =3;
-        this.weaponSprite.z =4;
-        this.playerSprite.children.sort();
 
         //Cargo el sistema de controlFocus
         this.controlFocus = new cControlFocus(this.controlGame);
@@ -81,7 +62,6 @@ class cControlPlayer extends cBasicActor {
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(
             this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2,
             this.controlGame.game.height / 2 ,0,0);
-        this.controlGame.depthGroup.add(this.playerSprite);
 
         //controlo el movimiento del jugador
         var W = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -110,20 +90,6 @@ class cControlPlayer extends cBasicActor {
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars,this.controlFocus);
-
-        //defino las animaciones segun la cantidad de cuadros 
-
-        this.armorSprite.animations.add('idle',[0,1,2,3,4], 4, true);
-        this.armorSprite.animations.add('left', [8,9,10,11,12,13,14,15], 10, true);
-        this.armorSprite.animations.add('right', [16,17,18,19,20,21,22,23], 10, true);
-        this.armorSprite.animations.add('up', [24,25,26,27,28], 10, true);
-        this.armorSprite.animations.add('down', [32,33,34,35,36], 10, true);
-
-        this.weaponSprite.animations.add('idle',[0,1,2,3,4], 4, true);
-        this.weaponSprite.animations.add('left', [8,9,10,11,12,13,14,15], 10, true);
-        this.weaponSprite.animations.add('right', [16,17,18,19,20,21,22,23], 10, true);
-        this.weaponSprite.animations.add('up', [24,25,26,27,28], 10, true);
-        this.weaponSprite.animations.add('down', [32,33,34,35,36], 10, true);
 
     }
 
@@ -250,25 +216,19 @@ class cControlPlayer extends cBasicActor {
 
         //control de las animaciones
         if (this.lastMoveX == 0 && this.lastMoveY == 0) {
-            this.armorSprite.animations.play('idle');
-            this.weaponSprite.animations.play('idle');
+            this.startAnimation('idle');
         }
         if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
-            this.armorSprite.animations.play('right');
-            this.weaponSprite.animations.play('right');
-            this.weaponSprite.z = 9;
+            this.startAnimation('right');
         }
         if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
-            this.armorSprite.animations.play('left');
-            this.weaponSprite.animations.play('left');
+            this.startAnimation('left');
         }
         if (this.lastMoveY == 1) { //se esta moviendo hacia arriba
-            this.armorSprite.animations.play('up');
-            this.weaponSprite.animations.play('up');
+            this.startAnimation('down');
         }
         if (this.lastMoveY == -1) { //se esta moviendo hacia abajo
-            this.armorSprite.animations.play('down');
-            this.weaponSprite.animations.play('down');
+            this.startAnimation('up');
         } 
     }
 

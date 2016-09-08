@@ -5,23 +5,40 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var cOtherPlayer = (function (_super) {
     __extends(cOtherPlayer, _super);
-    function cOtherPlayer() {
-        _super.apply(this, arguments);
+    function cOtherPlayer(controlGame, data) {
+        _super.call(this, controlGame);
+        this.id = data.id;
+        this.tileX = data.x;
+        this.tileY = data.y;
+        this.startActor(); //esto inicia todo el jugador con sus elementos
+        this.startPlayer();
     }
-    cOtherPlayer.prototype.IniciarJugador = function () {
-        this.playerSprite = this.controlGame.game.add.sprite(this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize, 'player');
-        this.playerSprite.anchor.set(0.5, 1);
-        this.playerSprite.x += this.playerSprite.width / 2;
-        this.controlGame.game.physics.arcade.enable(this.playerSprite);
-        this.playerSprite.body.collideWorldBounds = true;
+    cOtherPlayer.prototype.startPlayer = function () {
         this.playerSprite.inputEnabled = true;
         this.playerSprite.events.onInputDown.add(this.youHitPlayer, this);
-        this.controlGame.depthGroup.add(this.playerSprite);
+        this.startAnimation('idle');
     };
     cOtherPlayer.prototype.MoverJugador = function (data) {
-        this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x * this.controlGame.gridSize + this.playerSprite.width / 2 }, 350, Phaser.Easing.Linear.None, true, 0);
+        var tween = this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x * this.controlGame.gridSize + this.playerSprite.width / 2 }, 350, Phaser.Easing.Linear.None, true, 0);
         this.controlGame.game.add.tween(this.playerSprite).to({ y: data.y * this.controlGame.gridSize }, 350, Phaser.Easing.Linear.None, true, 0);
-        //this.playerSprite.frame = data.dirMov;
+        tween.onComplete.add(this.resetAnimation, this);
+        if (data.x > this.tileX) {
+            this.startAnimation('right');
+        }
+        else if (data.x < this.tileX) {
+            this.startAnimation('left');
+        }
+        if (data.y > this.tileY) {
+            this.startAnimation('up');
+        }
+        else if (data.y < this.tileY) {
+            this.startAnimation('down');
+        }
+        this.tileX = data.x;
+        this.tileY = data.y;
+    };
+    cOtherPlayer.prototype.resetAnimation = function () {
+        this.startAnimation('idle');
     };
     cOtherPlayer.prototype.youHitPlayer = function () {
         this.controlGame.controlPlayer.controlSpells.otherPlayerClick(this);

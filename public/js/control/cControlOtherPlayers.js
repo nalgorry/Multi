@@ -13,11 +13,7 @@ var cControlOtherPlayers = (function () {
         return null;
     };
     cControlOtherPlayers.prototype.addPlayer = function (data) {
-        var newPlayer = new cOtherPlayer(this.controlGame);
-        newPlayer.id = data.id;
-        newPlayer.tileX = data.x;
-        newPlayer.tileY = data.y;
-        newPlayer.IniciarJugador();
+        var newPlayer = new cOtherPlayer(this.controlGame, data);
         this.arrayPlayers.push(newPlayer);
     };
     cControlOtherPlayers.prototype.removePlayer = function (data) {

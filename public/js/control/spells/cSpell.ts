@@ -23,9 +23,9 @@ class cSpell {
 
     public spellAnimation(actor:cBasicActor) {
         //animiacion de la bomba 
-        var boomSprite = this.controlGame.game.add.sprite(actor.tileX* this.controlGame.gridSize + this.controlGame.gridSize/2 , 
-            actor.tileY * this.controlGame.gridSize + this.controlGame.gridSize/2,this.explotionSprite);    
-        boomSprite.anchor.set(0.5);
+        var boomSprite = this.controlGame.game.add.sprite(actor.playerSprite.x , 
+            actor.playerSprite.y,this.explotionSprite);    
+        boomSprite.anchor.set(0.5,1);
         boomSprite.animations.add('boom');
         boomSprite.animations.play('boom',this.explotionFrameRate,false,true);
 
