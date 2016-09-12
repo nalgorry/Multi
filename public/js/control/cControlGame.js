@@ -7,6 +7,10 @@ var cControlGame = (function () {
         var tamanoMapa = 100;
         // Configuro el mundo para que sea centrado en el personaje
         this.game.world.setBounds(0, 0, tamanoMapa * this.gridSize, tamanoMapa * this.gridSize);
+        //controlo que aparezca en todo el navegador.
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.scale.pageAlignHorizontally = true;
+        this.game.scale.pageAlignVertically = true;
         //  Our tiled scrolling background
         this.map = this.game.add.tilemap('map');
         this.map.addTilesetImage('tiles', 'tiles');

@@ -9,7 +9,7 @@ var move;
     move[move["down"] = Phaser.Keyboard.S] = "down";
     move[move["left"] = Phaser.Keyboard.A] = "left";
     move[move["right"] = Phaser.Keyboard.D] = "right";
-    move[move["none"] = 0] = "none";
+    move[move["idle"] = 0] = "idle";
 })(move || (move = {}));
 var cControlPlayer = (function (_super) {
     __extends(cControlPlayer, _super);
@@ -82,40 +82,24 @@ var cControlPlayer = (function (_super) {
     };
     cControlPlayer.prototype.youKill = function (data) {
     };
-    cControlPlayer.prototype.moveKeyRelease = function (key) {
-        if (this.lastMove == key.keyCode) {
-            if (key.keyCode == Phaser.Keyboard.W || key.keyCode == Phaser.Keyboard.S) {
-                this.playerSprite.body.velocity.y = 0;
-                this.seMueveY = false;
-            }
-            if (key.keyCode == Phaser.Keyboard.A || key.keyCode == Phaser.Keyboard.D) {
-                this.playerSprite.body.velocity.x = 0;
-                this.seMueveX = false;
-            }
-            this.lastMove = this.secondMove;
-            this.secondMove = move.none;
-        }
-        else if (this.secondMove == key.keyCode) {
-            this.secondMove = move.none;
-        }
-    };
     cControlPlayer.prototype.playerUpdate = function () {
-        //if (this.lastMoveX == 0) {
-        if (this.lastMove == move.up) {
-            this.playerSprite.body.velocity.y = -this.speedplayer;
+        //me fijo para que lado se esta moviendo 
+        if (this.seMueveX == true && this.seMueveY == false) {
+            this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX;
+            this.playerSprite.body.velocity.y = 0;
         }
-        else if (this.lastMove == move.down) {
-            this.playerSprite.body.velocity.y = this.speedplayer;
+        else if (this.seMueveX == false && this.seMueveY == true) {
+            this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY;
+            this.playerSprite.body.velocity.x = 0;
         }
-        //}
-        //if (this.lastMoveY == 0) { esto evita el movimiento en diagonal
-        if (this.lastMove == move.left) {
-            this.playerSprite.body.velocity.x = -this.speedplayer;
+        else if (this.seMueveX == true && this.seMueveY == true) {
+            this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX * 0.7071;
+            this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY * 0.7071;
         }
-        else if (this.lastMove == move.right) {
-            this.playerSprite.body.velocity.x = this.speedplayer;
+        else if (this.seMueveX == false && this.seMueveY == false) {
+            this.playerSprite.body.velocity.x = 0;
+            this.playerSprite.body.velocity.y = 0;
         }
-        //}
         //si solto una tecla lo acomodo en la grilla
         if (this.seMueveX == false) {
             if (this.lastMoveX != 0) {
@@ -126,6 +110,7 @@ var cControlPlayer = (function (_super) {
                 }
                 else {
                     this.lastMoveX = 0;
+                    this.dirMovimiento = move.idle;
                 }
             }
         }
@@ -138,59 +123,45 @@ var cControlPlayer = (function (_super) {
                 }
                 else {
                     this.lastMoveY = 0;
+                    this.dirMovimiento = move.idle;
                 }
             }
-        }
-        //Me fijo si cambio la posicion y si es asi emito la nueva posicion
-        this.tileX = this.controlGame.layer.getTileX(this.playerSprite.x);
-        this.tileY = this.controlGame.layer.getTileY(this.playerSprite.y);
-        if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY) {
-            //me fijo para que lado me movi, para enviarle al servidor
-            var dirMovimiento; // 0 arriba, 1 izquierda, 2 abajo, 3 derecha
-            if (this.tileX > this.lastSendTileX) {
-                dirMovimiento = 3;
-            }
-            else if (this.tileX < this.lastSendTileX) {
-                dirMovimiento = 1;
-            }
-            else if (this.tileY < this.lastSendTileY) {
-                dirMovimiento = 0;
-            }
-            else if (this.tileY > this.lastSendTileY) {
-                dirMovimiento = 2;
-            }
-            this.lastSendTileX = this.tileX;
-            this.lastSendTileY = this.tileY;
-            this.controlGame.controlServer.socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: dirMovimiento });
         }
         //control de las animaciones
         if (this.lastMoveX == 0 && this.lastMoveY == 0) {
             this.startAnimation('idle');
         }
-        if (this.lastMoveX == 1) {
-            this.startAnimation('right');
+        if (this.lastMoveX == 0 || this.lastMoveY == 0) {
+            if (this.lastMoveX == 1) {
+                this.startAnimation('right');
+                this.dirMovimiento = move.right;
+            }
+            if (this.lastMoveX == -1) {
+                this.startAnimation('left');
+                this.dirMovimiento = move.left;
+            }
+            if (this.lastMoveY == 1) {
+                this.startAnimation('down');
+                this.dirMovimiento = move.down;
+            }
+            if (this.lastMoveY == -1) {
+                this.startAnimation('up');
+                this.dirMovimiento = move.up;
+            }
         }
-        if (this.lastMoveX == -1) {
-            this.startAnimation('left');
-        }
-        if (this.lastMoveY == 1) {
-            this.startAnimation('down');
-        }
-        if (this.lastMoveY == -1) {
-            this.startAnimation('up');
+        //Me fijo si cambio la posicion y si es asi emito la nueva posicion
+        this.tileX = this.controlGame.layer.getTileX(this.playerSprite.x);
+        this.tileY = this.controlGame.layer.getTileY(this.playerSprite.y);
+        if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY ||
+            (this.dirMovimiento == move.idle && this.lastdirMov != move.idle && this.lastMoveY == 0 && this.lastMoveX == 0)) {
+            this.lastSendTileX = this.tileX;
+            this.lastSendTileY = this.tileY;
+            this.lastdirMov = this.dirMovimiento;
+            this.controlGame.controlServer.socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: this.dirMovimiento });
         }
     };
     cControlPlayer.prototype.moveKeyPress = function (key) {
-        this.playerSprite.body.velocity.y = 0;
-        this.playerSprite.body.velocity.x = 0;
-        var actualMove = key.keyCode;
-        if (this.lastMove != actualMove) {
-            this.secondMove = this.lastMove;
-            this.lastMove = actualMove;
-            this.seMueveX = false;
-            this.seMueveY = false;
-        }
-        //me fijo si tengo que mover el jugador
+        //me fijo que tecla toco
         if (key.keyCode == Phaser.Keyboard.W) {
             this.seMueveY = true;
             this.lastMoveY = -1;
@@ -206,6 +177,21 @@ var cControlPlayer = (function (_super) {
         else if (key.keyCode == Phaser.Keyboard.D) {
             this.seMueveX = true;
             this.lastMoveX = 1;
+        }
+    };
+    cControlPlayer.prototype.moveKeyRelease = function (key) {
+        //me fijo que tecla solto
+        if (key.keyCode == Phaser.Keyboard.W) {
+            this.seMueveY = false;
+        }
+        else if (key.keyCode == Phaser.Keyboard.S) {
+            this.seMueveY = false;
+        }
+        else if (key.keyCode == Phaser.Keyboard.A) {
+            this.seMueveX = false;
+        }
+        else if (key.keyCode == Phaser.Keyboard.D) {
+            this.seMueveX = false;
         }
     };
     return cControlPlayer;

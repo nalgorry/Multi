@@ -3,7 +3,7 @@ enum move {
     down = Phaser.Keyboard.S,
     left = Phaser.Keyboard.A,
     right = Phaser.Keyboard.D,
-    none = 0
+    idle = 0
     }
 
 class cControlPlayer extends cBasicActor {
@@ -24,8 +24,8 @@ class cControlPlayer extends cBasicActor {
     private seMueveX:Boolean = false;
     private seMueveY:Boolean = false;
 
-    private lastMove:move
-    private secondMove:move //permito que toque dos teclas a la vez
+    private dirMovimiento:move;
+    private lastdirMov:move; //para guardar el ultimo moviemiento enviado
     
     private gridSize: number;
 
@@ -120,45 +120,22 @@ class cControlPlayer extends cBasicActor {
 
     }
 
-    public moveKeyRelease(key:Phaser.Key) {
-    
-        if (this.lastMove == key.keyCode) {
-
-            if (key.keyCode == Phaser.Keyboard.W || key.keyCode == Phaser.Keyboard.S) {
-                this.playerSprite.body.velocity.y = 0;
-                this.seMueveY = false;
-            }
-
-            if (key.keyCode == Phaser.Keyboard.A || key.keyCode == Phaser.Keyboard.D) {
-                this.playerSprite.body.velocity.x = 0;
-                this.seMueveX = false 
-            }
-
-            this.lastMove = this.secondMove;
-            this.secondMove = move.none;
-        } else if (this.secondMove == key.keyCode) {
-            this.secondMove = move.none;
-        }
-
-    }
-
     public playerUpdate() {
 
-        //if (this.lastMoveX == 0) {
-            if (this.lastMove == move.up) {
-                this.playerSprite.body.velocity.y = -this.speedplayer;
-            } else if (this.lastMove == move.down) {
-                this.playerSprite.body.velocity.y = this.speedplayer;
-            } 
-        //}
-        
-        //if (this.lastMoveY == 0) { esto evita el movimiento en diagonal
-            if (this.lastMove == move.left) {
-                this.playerSprite.body.velocity.x = -this.speedplayer;
-            } else if (this.lastMove == move.right) {
-                this.playerSprite.body.velocity.x = this.speedplayer;
-            }
-        //}
+        //me fijo para que lado se esta moviendo 
+        if (this.seMueveX == true && this.seMueveY == false) {
+            this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX;
+            this.playerSprite.body.velocity.y = 0;
+        } else if (this.seMueveX == false && this.seMueveY == true) {
+            this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY;
+            this.playerSprite.body.velocity.x = 0;
+        } else if (this.seMueveX == true && this.seMueveY == true) {
+            this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX * 0.7071;
+            this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY * 0.7071;
+        } else if (this.seMueveX == false && this.seMueveY == false) {
+            this.playerSprite.body.velocity.x = 0;
+            this.playerSprite.body.velocity.y = 0;
+        }
 
         //si solto una tecla lo acomodo en la grilla
         if (this.seMueveX == false) {
@@ -172,6 +149,7 @@ class cControlPlayer extends cBasicActor {
 
                 } else {
                     this.lastMoveX = 0;
+                    this.dirMovimiento = move.idle;
                 }
             }
         } 
@@ -186,67 +164,55 @@ class cControlPlayer extends cBasicActor {
                     this.playerSprite.body.y += this.lastMoveY * Math.min(velocidad1,velocidad2);
                 } else {
                     this.lastMoveY = 0;
+                    this.dirMovimiento = move.idle;
                 }
             }
         } 
-
-        //Me fijo si cambio la posicion y si es asi emito la nueva posicion
-        this.tileX = this.controlGame.layer.getTileX(this.playerSprite.x);
-        this.tileY = this.controlGame.layer.getTileY(this.playerSprite.y);
-
-        if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY) {
-
-            //me fijo para que lado me movi, para enviarle al servidor
-            var dirMovimiento:number; // 0 arriba, 1 izquierda, 2 abajo, 3 derecha
-            if (this.tileX > this.lastSendTileX) {
-                dirMovimiento = 3;
-            } else if (this.tileX < this.lastSendTileX) {
-                dirMovimiento = 1;
-            } else if (this.tileY < this.lastSendTileY) {
-                dirMovimiento = 0;
-            } else if (this.tileY > this.lastSendTileY) {
-                dirMovimiento = 2;
-            }
-
-            this.lastSendTileX = this.tileX;
-            this.lastSendTileY = this.tileY;
-            
-            this.controlGame.controlServer.socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: dirMovimiento });
-        }
 
         //control de las animaciones
         if (this.lastMoveX == 0 && this.lastMoveY == 0) {
             this.startAnimation('idle');
         }
-        if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
-            this.startAnimation('right');
+        if (this.lastMoveX == 0 || this.lastMoveY == 0 ) { //solo animo si se mueve en x o en y, si toca las dos mantengo la ultima animación
+
+            if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
+                this.startAnimation('right');
+                this.dirMovimiento = move.right;
+            }
+            if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
+                this.startAnimation('left');
+                this.dirMovimiento = move.left;
+            }
+            if (this.lastMoveY == 1) { //se esta moviendo hacia arriba
+                this.startAnimation('down');
+                this.dirMovimiento = move.down;
+            }
+            if (this.lastMoveY == -1) { //se esta moviendo hacia abajo
+                this.startAnimation('up');
+                this.dirMovimiento = move.up;
+            }
+
         }
-        if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
-            this.startAnimation('left');
+
+        //Me fijo si cambio la posicion y si es asi emito la nueva posicion
+        this.tileX = this.controlGame.layer.getTileX(this.playerSprite.x);
+        this.tileY = this.controlGame.layer.getTileY(this.playerSprite.y);
+
+        if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY || 
+            (this.dirMovimiento == move.idle && this.lastdirMov != move.idle && this.lastMoveY == 0 && this.lastMoveX == 0 ) ) {
+
+            this.lastSendTileX = this.tileX;
+            this.lastSendTileY = this.tileY;
+            this.lastdirMov = this.dirMovimiento;
+            
+            this.controlGame.controlServer.socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: this.dirMovimiento });
         }
-        if (this.lastMoveY == 1) { //se esta moviendo hacia arriba
-            this.startAnimation('down');
-        }
-        if (this.lastMoveY == -1) { //se esta moviendo hacia abajo
-            this.startAnimation('up');
-        } 
+       
     }
 
     public moveKeyPress(key:Phaser.Key) {
  
-        this.playerSprite.body.velocity.y = 0;
-        this.playerSprite.body.velocity.x = 0;
-        
-        var actualMove:move = key.keyCode;
-
-        if (this.lastMove != actualMove) {
-            this.secondMove = this.lastMove;
-            this.lastMove = actualMove;
-            this.seMueveX = false;
-            this.seMueveY = false;
-        }
-       
-        //me fijo si tengo que mover el jugador
+        //me fijo que tecla toco
         if (key.keyCode == Phaser.Keyboard.W)
         {
             this.seMueveY = true;
@@ -269,5 +235,30 @@ class cControlPlayer extends cBasicActor {
         }
 
     }
+
+     public moveKeyRelease(key:Phaser.Key) {
+
+        //me fijo que tecla solto
+        if (key.keyCode == Phaser.Keyboard.W)
+        {
+            this.seMueveY = false;
+        }
+        else if (key.keyCode == Phaser.Keyboard.S)
+        {
+            this.seMueveY = false;
+        }
+        else if (key.keyCode == Phaser.Keyboard.A)
+        {
+            this.seMueveX = false;
+        }
+        else if (key.keyCode == Phaser.Keyboard.D)
+        {
+            this.seMueveX = false;
+        }
+    
+
+
+    }
+
 
 }

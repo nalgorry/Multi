@@ -19,26 +19,32 @@ var cOtherPlayer = (function (_super) {
         this.startAnimation('idle');
     };
     cOtherPlayer.prototype.MoverJugador = function (data) {
-        var tween = this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x * this.controlGame.gridSize + this.playerSprite.width / 2 }, 350, Phaser.Easing.Linear.None, true, 0);
-        this.controlGame.game.add.tween(this.playerSprite).to({ y: data.y * this.controlGame.gridSize }, 350, Phaser.Easing.Linear.None, true, 0);
-        tween.onComplete.add(this.resetAnimation, this);
-        if (data.x > this.tileX) {
+        console.log(data);
+        this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x * this.controlGame.gridSize + this.playerSprite.width / 2, y: data.y * this.controlGame.gridSize }, 320, Phaser.Easing.Linear.None, true, 0);
+        this.moveTween.onComplete.add(this.resetAnimation, this);
+        this.idleStatus = false;
+        if (data.dirMov == move.right) {
             this.startAnimation('right');
         }
-        else if (data.x < this.tileX) {
+        else if (data.dirMov == move.left) {
             this.startAnimation('left');
         }
-        if (data.y > this.tileY) {
+        else if (data.dirMov == move.up) {
             this.startAnimation('up');
         }
-        else if (data.y < this.tileY) {
+        else if (data.dirMov == move.down) {
             this.startAnimation('down');
+        }
+        else if (data.dirMov == move.idle) {
+            this.idleStatus = true;
         }
         this.tileX = data.x;
         this.tileY = data.y;
     };
     cOtherPlayer.prototype.resetAnimation = function () {
-        this.startAnimation('idle');
+        if (this.idleStatus == true) {
+            this.startAnimation('idle');
+        }
     };
     cOtherPlayer.prototype.youHitPlayer = function () {
         this.controlGame.controlPlayer.controlSpells.otherPlayerClick(this);

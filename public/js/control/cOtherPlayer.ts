@@ -1,6 +1,8 @@
 class cOtherPlayer extends cBasicActor {
 
     id:Text;
+    idleStatus:boolean;
+    moveTween:Phaser.Tween;
 
     constructor(controlGame:cControlGame,data) {
 
@@ -26,21 +28,25 @@ class cOtherPlayer extends cBasicActor {
 
     public MoverJugador(data) {
         
-        var tween = this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x * this.controlGame.gridSize + this.playerSprite.width/2 }, 350, Phaser.Easing.Linear.None, true, 0);
-        this.controlGame.game.add.tween(this.playerSprite).to({ y: data.y * this.controlGame.gridSize }, 350, Phaser.Easing.Linear.None, true, 0);
-
-        tween.onComplete.add(this.resetAnimation, this)
+        console.log(data);
         
-        if (data.x > this.tileX) {
+        this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to(
+            { x: data.x * this.controlGame.gridSize + this.playerSprite.width/2, y: data.y * this.controlGame.gridSize   }
+            , 320, Phaser.Easing.Linear.None, true, 0);
+        this.moveTween.onComplete.add(this.resetAnimation, this)      
+        
+        this.idleStatus = false;
+        
+        if (data.dirMov == move.right) {
             this.startAnimation('right');
-        } else if (data.x < this.tileX) {
+        } else if (data.dirMov == move.left) {
             this.startAnimation('left');
-        }
-
-        if (data.y > this.tileY) {
+        } else if (data.dirMov == move.up) {
             this.startAnimation('up');
-        } else if (data.y < this.tileY) {
+        } else if (data.dirMov == move.down) {
             this.startAnimation('down');
+        } else if (data.dirMov == move.idle) {
+            this.idleStatus = true;
         }
 
         this.tileX = data.x;
@@ -49,7 +55,9 @@ class cOtherPlayer extends cBasicActor {
     }
 
     public resetAnimation() {
-        this.startAnimation('idle');
+        if (this.idleStatus == true) {
+            this.startAnimation('idle');
+        }
     }
 
     public youHitPlayer() {
