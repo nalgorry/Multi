@@ -36,10 +36,10 @@ class cControlPlayer extends cBasicActor {
     constructor(controlGame:cControlGame) {
         super(controlGame);
 
+        this.gridSize = controlGame.gridSize;
         this.startActor();
         this.startPlayer();
-        this.gridSize = controlGame.gridSize;
-
+        
         this.hitText.fixedToCamera = true;
     }
 
@@ -57,6 +57,12 @@ class cControlPlayer extends cBasicActor {
         this.playerSprite.body.width = this.controlGame.gridSize;
         this.playerSprite.body.height =this.controlGame.gridSize;
         this.playerSprite.body.offset.y =this.playerSprite.height - this.controlGame.gridSize; 
+
+        //para testear el centro de un sprite
+        var marker = this.controlGame.game.add.graphics(0,0);
+        marker.lineStyle(2, 0xffffff, 1);
+        console.log(this.playerSprite.x + this.gridSize/2);
+        marker.drawRect(this.playerSprite.x + this.gridSize/2, this.playerSprite.y, 1, 1);
 
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(
@@ -121,6 +127,7 @@ class cControlPlayer extends cBasicActor {
     }
 
     public playerUpdate() {
+
 
         //me fijo para que lado se esta moviendo 
         if (this.seMueveX == true && this.seMueveY == false) {
@@ -194,9 +201,21 @@ class cControlPlayer extends cBasicActor {
 
         }
 
+        //esto controla para mandar la nueva posicion del juegador apenasa se mueve, y no cuando el centro de la sprite pasa
+        var xOffset:number = this.playerSprite.x;
+        var yOffset:number = this.playerSprite.y;
+
+        if (this.lastMoveX != 0) {
+            xOffset = this.playerSprite.x + this.gridSize/2 * this.lastMoveX
+        }
+        if (this.lastMoveY == -1) {
+            yOffset = this.playerSprite.y - this.gridSize;
+        }
+
+
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
-        this.tileX = this.controlGame.layer.getTileX(this.playerSprite.x);
-        this.tileY = this.controlGame.layer.getTileY(this.playerSprite.y);
+        this.tileX = this.controlGame.layer.getTileX(xOffset);
+        this.tileY = this.controlGame.layer.getTileY(yOffset);
 
         if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY || 
             (this.dirMovimiento == move.idle && this.lastdirMov != move.idle && this.lastMoveY == 0 && this.lastMoveX == 0 ) ) {

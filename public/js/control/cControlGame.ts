@@ -28,7 +28,7 @@ class cControlGame {
         this.game.world.setBounds(0, 0, tamanoMapa*this.gridSize, tamanoMapa*this.gridSize);
         
         //controlo que aparezca en todo el navegador.
-        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        //this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.game.scale.pageAlignHorizontally = true;
         this.game.scale.pageAlignVertically = true;
         
