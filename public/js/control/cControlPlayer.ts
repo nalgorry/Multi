@@ -97,6 +97,8 @@ class cControlPlayer extends cBasicActor {
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars,this.controlFocus);
 
+        console.log(this.playerSprite.body);
+
     }
 
     //esto se activa cuando golepan al jugador actual
@@ -128,77 +130,15 @@ class cControlPlayer extends cBasicActor {
 
     public playerUpdate() {
 
-
         //me fijo para que lado se esta moviendo 
         if (this.seMueveX == true && this.seMueveY == false) {
             this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX;
-            this.playerSprite.body.velocity.y = 0;
         } else if (this.seMueveX == false && this.seMueveY == true) {
             this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY;
-            this.playerSprite.body.velocity.x = 0;
         } else if (this.seMueveX == true && this.seMueveY == true) {
             this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX * 0.7071;
             this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY * 0.7071;
         } else if (this.seMueveX == false && this.seMueveY == false) {
-            this.playerSprite.body.velocity.x = 0;
-            this.playerSprite.body.velocity.y = 0;
-        }
-
-        //si solto una tecla lo acomodo en la grilla
-        if (this.seMueveX == false) {
-            if (this.lastMoveX != 0) {
-                if (this.playerSprite.body.x%this.gridSize != 0) 
-                {
-                    var velocidad1:number = this.speedplayer/60;
-                    var velocidad2:number = Math.abs(this.controlGame.layer.getTileX(this.playerSprite.body.x + this.gridSize/2) * this.gridSize - this.playerSprite.body.x); 
-
-                    this.playerSprite.body.x += this.lastMoveX * Math.min(velocidad1,velocidad2);
-
-                } else {
-                    this.lastMoveX = 0;
-                    this.dirMovimiento = move.idle;
-                }
-            }
-        } 
-
-        if (this.seMueveY == false) {
-            if (this.lastMoveY != 0) {
-                if (this.playerSprite.body.y%this.gridSize != 0) 
-                {
-                    var velocidad1:number = this.speedplayer/60;
-                    var velocidad2:number = Math.abs(this.controlGame.layer.getTileY(this.playerSprite.body.y + this.gridSize/2) * this.gridSize - this.playerSprite.body.y); 
-
-                    this.playerSprite.body.y += this.lastMoveY * Math.min(velocidad1,velocidad2);
-                } else {
-                    this.lastMoveY = 0;
-                    this.dirMovimiento = move.idle;
-                }
-            }
-        } 
-
-        //control de las animaciones
-        if (this.lastMoveX == 0 && this.lastMoveY == 0) {
-            this.startAnimation('idle');
-        }
-        if (this.lastMoveX == 0 || this.lastMoveY == 0 ) { //solo animo si se mueve en x o en y, si toca las dos mantengo la ultima animación
-
-            if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
-                this.startAnimation('right');
-                this.dirMovimiento = move.right;
-            }
-            if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
-                this.startAnimation('left');
-                this.dirMovimiento = move.left;
-            }
-            if (this.lastMoveY == 1) { //se esta moviendo hacia arriba
-                this.startAnimation('down');
-                this.dirMovimiento = move.down;
-            }
-            if (this.lastMoveY == -1) { //se esta moviendo hacia abajo
-                this.startAnimation('up');
-                this.dirMovimiento = move.up;
-            }
-
         }
 
         //esto controla para mandar la nueva posicion del juegador apenasa se mueve, y no cuando el centro de la sprite pasa
@@ -212,6 +152,56 @@ class cControlPlayer extends cBasicActor {
             yOffset = this.playerSprite.y - this.gridSize;
         }
 
+
+        //si solto una tecla sigo avanzando hasta el centro de la grilla a la velocidad actual
+        if (this.seMueveX == false) {
+            if (this.playerSprite.body.velocity.x != 0) {
+
+                    var offsetToCenter:number = Math.abs(this.controlGame.layer.getTileX(this.playerSprite.body.x + this.gridSize/2) * this.gridSize - this.playerSprite.body.x);
+
+                    if (offsetToCenter <= Math.abs(this.playerSprite.body.deltaX())) {
+                        this.playerSprite.body.x += offsetToCenter * this.lastMoveX;
+                        this.playerSprite.body.velocity.x = 0;
+                        this.lastMoveX = 0;
+                        this.dirMovimiento = move.idle;
+                    }
+                }
+                
+        }
+
+        if (this.seMueveY == false) {
+            if (this.playerSprite.body.velocity.y != 0) {
+
+                    var offsetToCenter:number = Math.abs(this.controlGame.layer.getTileY(this.playerSprite.body.y + this.gridSize/2) * this.gridSize - this.playerSprite.body.y);
+
+                    if (offsetToCenter <= Math.abs(this.playerSprite.body.deltaY())) {
+                        this.playerSprite.body.y += offsetToCenter * this.lastMoveY;
+                        this.playerSprite.body.velocity.y = 0;
+                        this.lastMoveY = 0;
+                        this.dirMovimiento = move.idle;
+                    }
+                } 
+        }
+
+        var isMovingX:boolean = this.playerSprite.body.position.x !=  this.playerSprite.body.prev.x;
+        var isMovingY:boolean = this.playerSprite.body.position.y !=  this.playerSprite.body.prev.y;
+
+        //control de las animaciones
+        if (isMovingX == false && isMovingY == false) {
+            this.startAnimation('idle');
+        } else if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
+            this.startAnimation('right');
+            this.dirMovimiento = move.right;
+        } else if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
+            this.startAnimation('left');
+            this.dirMovimiento = move.left;
+        } else if (this.lastMoveY == 1) { //se esta moviendo hacia arriba
+            this.startAnimation('down');
+            this.dirMovimiento = move.down;
+        } else if (this.lastMoveY == -1) { //se esta moviendo hacia abajo
+            this.startAnimation('up');
+            this.dirMovimiento = move.up;
+        }
 
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
         this.tileX = this.controlGame.layer.getTileX(xOffset);
