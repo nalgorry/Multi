@@ -76,7 +76,7 @@ class SimpleGame {
 
     render() {
         //this.game.debug.cameraInfo(this.game.camera, 50, 500);
-        this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
+        //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
         
         
         var x = this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.body.x);
@@ -92,7 +92,7 @@ class SimpleGame {
 
         
         
-        this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
+        //this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
         //this.game.debug.body(this.controlPlayer.playerSprite);
 
         //this.game.debug.geom(this.controlGame.point, 'rgb(0,255,0)');

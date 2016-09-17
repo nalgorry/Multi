@@ -97,10 +97,16 @@ var cControlPlayer = (function (_super) {
             this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY;
         }
         else if (this.seMueveX == true && this.seMueveY == true) {
-            this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX * 0.7071;
-            this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY * 0.7071;
-        }
-        else if (this.seMueveX == false && this.seMueveY == false) {
+            //me aseguro que no este tocando una pared antes de reducir la velocidad
+            if (this.playerSprite.body.blocked.left == false && this.playerSprite.body.blocked.right == false &&
+                this.playerSprite.body.blocked.up == false && this.playerSprite.body.blocked.up == false) {
+                this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX * 0.7071;
+                this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY * 0.7071;
+            }
+            else {
+                this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX;
+                this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY;
+            }
         }
         //esto controla para mandar la nueva posicion del juegador apenasa se mueve, y no cuando el centro de la sprite pasa
         var xOffset = this.playerSprite.x;
