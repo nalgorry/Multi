@@ -20,9 +20,7 @@ var cOtherPlayer = (function (_super) {
     };
     cOtherPlayer.prototype.MoverJugador = function (data) {
         console.log(data);
-        this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x * this.controlGame.gridSize + this.playerSprite.width / 2, y: data.y * this.controlGame.gridSize }, 320, Phaser.Easing.Linear.None, true, 0);
-        this.moveTween.onComplete.add(this.resetAnimation, this);
-        this.idleStatus = false;
+        this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x, y: data.y }, 320, Phaser.Easing.Linear.None, true, 0);
         if (data.dirMov == move.right) {
             this.startAnimation('right');
         }
@@ -36,15 +34,13 @@ var cOtherPlayer = (function (_super) {
             this.startAnimation('down');
         }
         else if (data.dirMov == move.idle) {
-            this.idleStatus = true;
+            this.moveTween.onComplete.add(this.resetAnimation, this);
         }
         this.tileX = data.x;
         this.tileY = data.y;
     };
     cOtherPlayer.prototype.resetAnimation = function () {
-        if (this.idleStatus == true) {
-            this.startAnimation('idle');
-        }
+        this.startAnimation('idle');
     };
     cOtherPlayer.prototype.youHitPlayer = function () {
         this.controlGame.controlPlayer.controlSpells.otherPlayerClick(this);

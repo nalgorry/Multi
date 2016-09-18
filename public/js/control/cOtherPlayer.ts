@@ -1,7 +1,6 @@
 class cOtherPlayer extends cBasicActor {
 
     id:Text;
-    idleStatus:boolean;
     moveTween:Phaser.Tween;
 
     constructor(controlGame:cControlGame,data) {
@@ -27,16 +26,13 @@ class cOtherPlayer extends cBasicActor {
     }
 
     public MoverJugador(data) {
-        
+
         console.log(data);
         
         this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to(
-            { x: data.x * this.controlGame.gridSize + this.playerSprite.width/2, y: data.y * this.controlGame.gridSize   }
-            , 320, Phaser.Easing.Linear.None, true, 0);
-        this.moveTween.onComplete.add(this.resetAnimation, this)      
-        
-        this.idleStatus = false;
-        
+            { x: data.x , y: data.y }
+            , 320, Phaser.Easing.Linear.None, true, 0);      
+     
         if (data.dirMov == move.right) {
             this.startAnimation('right');
         } else if (data.dirMov == move.left) {
@@ -46,7 +42,7 @@ class cOtherPlayer extends cBasicActor {
         } else if (data.dirMov == move.down) {
             this.startAnimation('down');
         } else if (data.dirMov == move.idle) {
-            this.idleStatus = true;
+            this.moveTween.onComplete.add(this.resetAnimation, this)
         }
 
         this.tileX = data.x;
@@ -55,9 +51,7 @@ class cOtherPlayer extends cBasicActor {
     }
 
     public resetAnimation() {
-        if (this.idleStatus == true) {
             this.startAnimation('idle');
-        }
     }
 
     public youHitPlayer() {

@@ -21,8 +21,9 @@ class cControlPlayer extends cBasicActor {
     
     private lastMoveX: number = 0;
     private lastMoveY: number = 0;
-    private seMueveX:Boolean = false;
-    private seMueveY:Boolean = false;
+    private seMueveX:boolean = false;
+    private seMueveY:boolean = false;
+    private playerIdle:boolean = false;
 
     private dirMovimiento:move;
     private lastdirMov:move; //para guardar el ultimo moviemiento enviado
@@ -147,17 +148,9 @@ class cControlPlayer extends cBasicActor {
             } 
         } 
 
-        //esto controla para mandar la nueva posicion del juegador apenasa se mueve, y no cuando el centro de la sprite pasa
+        //para mandar el movimiento solo si paso el centro del jugador 
         var xOffset:number = this.playerSprite.x;
-        var yOffset:number = this.playerSprite.y;
-
-        if (this.lastMoveX != 0) {
-            xOffset = this.playerSprite.x + this.gridSize/2 * this.lastMoveX
-        }
-        if (this.lastMoveY == -1) {
-            yOffset = this.playerSprite.y - this.gridSize;
-        }
-
+        var yOffset:number = this.playerSprite.y - this.gridSize/2;
 
         //si solto una tecla sigo avanzando hasta el centro de la grilla a la velocidad actual
         if (this.seMueveX == false) {
@@ -169,7 +162,6 @@ class cControlPlayer extends cBasicActor {
                         this.playerSprite.body.x += offsetToCenter * this.lastMoveX;
                         this.playerSprite.body.velocity.x = 0;
                         this.lastMoveX = 0;
-                        this.dirMovimiento = move.idle;
                     }
                 }
                 
@@ -184,7 +176,6 @@ class cControlPlayer extends cBasicActor {
                         this.playerSprite.body.y += offsetToCenter * this.lastMoveY;
                         this.playerSprite.body.velocity.y = 0;
                         this.lastMoveY = 0;
-                        this.dirMovimiento = move.idle;
                     }
                 } 
         }
@@ -213,14 +204,17 @@ class cControlPlayer extends cBasicActor {
         this.tileX = this.controlGame.layer.getTileX(xOffset);
         this.tileY = this.controlGame.layer.getTileY(yOffset);
 
-        if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY || 
-            (this.dirMovimiento == move.idle && this.lastdirMov != move.idle && this.lastMoveY == 0 && this.lastMoveX == 0 ) ) {
+        if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY) {
 
             this.lastSendTileX = this.tileX;
             this.lastSendTileY = this.tileY;
             this.lastdirMov = this.dirMovimiento;
+            this.playerIdle = false;
             
-            this.controlGame.controlServer.socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: this.dirMovimiento });
+            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.dirMovimiento });
+        } else if (isMovingX == false && isMovingY == false && this.playerIdle == false) {
+            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
+            this.playerIdle = true;
         }
        
     }

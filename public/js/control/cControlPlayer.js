@@ -20,6 +20,7 @@ var cControlPlayer = (function (_super) {
         this.lastMoveY = 0;
         this.seMueveX = false;
         this.seMueveY = false;
+        this.playerIdle = false;
         //texto para mostrar daño (temporal)
         this.style = { font: "15px Arial", fill: "#ff0044" };
         this.hitText = this.controlGame.game.add.text(0, 15, "Trata de golpear a alguien", this.style);
@@ -108,15 +109,9 @@ var cControlPlayer = (function (_super) {
                 this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY;
             }
         }
-        //esto controla para mandar la nueva posicion del juegador apenasa se mueve, y no cuando el centro de la sprite pasa
+        //para mandar el movimiento solo si paso el centro del jugador 
         var xOffset = this.playerSprite.x;
-        var yOffset = this.playerSprite.y;
-        if (this.lastMoveX != 0) {
-            xOffset = this.playerSprite.x + this.gridSize / 2 * this.lastMoveX;
-        }
-        if (this.lastMoveY == -1) {
-            yOffset = this.playerSprite.y - this.gridSize;
-        }
+        var yOffset = this.playerSprite.y - this.gridSize / 2;
         //si solto una tecla sigo avanzando hasta el centro de la grilla a la velocidad actual
         if (this.seMueveX == false) {
             if (this.playerSprite.body.velocity.x != 0) {
@@ -125,7 +120,6 @@ var cControlPlayer = (function (_super) {
                     this.playerSprite.body.x += offsetToCenter * this.lastMoveX;
                     this.playerSprite.body.velocity.x = 0;
                     this.lastMoveX = 0;
-                    this.dirMovimiento = move.idle;
                 }
             }
         }
@@ -136,7 +130,6 @@ var cControlPlayer = (function (_super) {
                     this.playerSprite.body.y += offsetToCenter * this.lastMoveY;
                     this.playerSprite.body.velocity.y = 0;
                     this.lastMoveY = 0;
-                    this.dirMovimiento = move.idle;
                 }
             }
         }
@@ -165,12 +158,16 @@ var cControlPlayer = (function (_super) {
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
         this.tileX = this.controlGame.layer.getTileX(xOffset);
         this.tileY = this.controlGame.layer.getTileY(yOffset);
-        if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY ||
-            (this.dirMovimiento == move.idle && this.lastdirMov != move.idle && this.lastMoveY == 0 && this.lastMoveX == 0)) {
+        if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY) {
             this.lastSendTileX = this.tileX;
             this.lastSendTileY = this.tileY;
             this.lastdirMov = this.dirMovimiento;
-            this.controlGame.controlServer.socket.emit('move player', { x: this.tileX, y: this.tileY, dirMov: this.dirMovimiento });
+            this.playerIdle = false;
+            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.dirMovimiento });
+        }
+        else if (isMovingX == false && isMovingY == false && this.playerIdle == false) {
+            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
+            this.playerIdle = true;
         }
     };
     cControlPlayer.prototype.moveKeyPress = function (key) {
