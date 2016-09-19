@@ -62,7 +62,6 @@ class cControlPlayer extends cBasicActor {
         //para testear el centro de un sprite
         var marker = this.controlGame.game.add.graphics(0,0);
         marker.lineStyle(2, 0xffffff, 1);
-        console.log(this.playerSprite.x + this.gridSize/2);
         marker.drawRect(this.playerSprite.x + this.gridSize/2, this.playerSprite.y, 1, 1);
 
         this.controlGame.game.camera.follow(this.playerSprite);
@@ -97,8 +96,6 @@ class cControlPlayer extends cBasicActor {
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars,this.controlFocus);
-
-        console.log(this.playerSprite.body);
 
     }
 

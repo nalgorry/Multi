@@ -27,13 +27,15 @@ class cControlChat {
         this.inputTextChat.fixedToCamera = true;
         this.inputTextChat.cameraOffset.setTo(0, 600);
 
+        Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress,this);
+
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         enter.onUp.add(this.enterPress,this);
 
     }
 
-    public enterPress() {   
+    public enterPress() {  
 
         if (this.isActive) {
             this.controlServer.onSendChatText(this.inputTextChat.value);
@@ -48,7 +50,6 @@ class cControlChat {
     }
 
     public chatReceive(data) {
-        console.log(data);
         this.controlOtherPlayers.showChat(data)
     }
 

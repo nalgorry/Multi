@@ -6,10 +6,11 @@ var cBasicActor = (function () {
     }
     cBasicActor.prototype.setChatText = function (texto) {
         if (this.textChat == null) {
-            this.textChat = this.controlGame.game.add.text(-30, -this.playerSprite.height, "", this.styleChat);
+            this.textChat = this.controlGame.game.add.text(0, -this.playerSprite.children[0].height - 18, "", this.styleChat);
             this.playerSprite.addChild(this.textChat);
         }
         this.textChat.text = texto;
+        this.textChat.x = -this.textChat.width / 2;
     };
     cBasicActor.prototype.startActor = function () {
         //sprite del jugador, aca se  cargan todas las partes del jugador

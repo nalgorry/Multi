@@ -535,6 +535,7 @@ var Fabrique;
             if (evt.keyCode === 13) {
                 if (this.focusOutOnEnter) {
                     this.endFocus();
+                    Fabrique.Plugins.InputField.onPressEnter.dispatch();
                 }
                 return;
             }
@@ -683,6 +684,7 @@ var Fabrique;
             InputField.KeyboardOpen = false;
             InputField.onKeyboardOpen = new Phaser.Signal();
             InputField.onKeyboardClose = new Phaser.Signal();
+            InputField.onPressEnter = new Phaser.Signal();
             return InputField;
         })(Phaser.Plugin);
         Plugins.InputField = InputField;

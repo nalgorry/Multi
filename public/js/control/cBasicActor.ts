@@ -22,11 +22,12 @@ class cBasicActor {
     public setChatText(texto:string) {
 
         if (this.textChat == null) {
-            this.textChat = this.controlGame.game.add.text(-30, -this.playerSprite.height, "" , this.styleChat);
+            this.textChat = this.controlGame.game.add.text(0, -this.playerSprite.children[0].height - 18, "" , this.styleChat);
             this.playerSprite.addChild(this.textChat);
         }
 
         this.textChat.text = texto;
+        this.textChat.x = -this.textChat.width/2;
 
     }
 

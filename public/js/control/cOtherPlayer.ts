@@ -26,8 +26,6 @@ class cOtherPlayer extends cBasicActor {
     }
 
     public MoverJugador(data) {
-
-        console.log(data);
         
         this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to(
             { x: data.x , y: data.y }

@@ -20,6 +20,7 @@ var cControlChat = (function () {
         this.inputTextChat.blockInput = true;
         this.inputTextChat.fixedToCamera = true;
         this.inputTextChat.cameraOffset.setTo(0, 600);
+        Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress, this);
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         enter.onUp.add(this.enterPress, this);
@@ -37,7 +38,6 @@ var cControlChat = (function () {
         }
     };
     cControlChat.prototype.chatReceive = function (data) {
-        console.log(data);
         this.controlOtherPlayers.showChat(data);
     };
     return cControlChat;

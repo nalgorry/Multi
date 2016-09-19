@@ -19,7 +19,6 @@ var cOtherPlayer = (function (_super) {
         this.startAnimation('idle');
     };
     cOtherPlayer.prototype.MoverJugador = function (data) {
-        console.log(data);
         this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x, y: data.y }, 320, Phaser.Easing.Linear.None, true, 0);
         if (data.dirMov == move.right) {
             this.startAnimation('right');

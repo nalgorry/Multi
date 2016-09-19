@@ -42,7 +42,6 @@ var cControlPlayer = (function (_super) {
         //para testear el centro de un sprite
         var marker = this.controlGame.game.add.graphics(0, 0);
         marker.lineStyle(2, 0xffffff, 1);
-        console.log(this.playerSprite.x + this.gridSize / 2);
         marker.drawRect(this.playerSprite.x + this.gridSize / 2, this.playerSprite.y, 1, 1);
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2, this.controlGame.game.height / 2, 0, 0);
@@ -69,7 +68,6 @@ var cControlPlayer = (function (_super) {
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars, this.controlFocus);
-        console.log(this.playerSprite.body);
     };
     //esto se activa cuando golepan al jugador actual
     cControlPlayer.prototype.playerHit = function (data) {
