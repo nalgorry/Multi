@@ -10,14 +10,22 @@ var cControlSpells = (function () {
     };
     cControlSpells.prototype.otherPlayerClick = function (player) {
         if (this.controlGame.atackMode == true) {
-            if (this.controlGame.controlPlayer.controlFocus.SpellPosible(25, 10, 0) == true) {
-                var idSpell = this.controlGame.controlPlayer.controlSpells.selectedSpell;
-                this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: player.id, idSpell: idSpell });
+            if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true &&
+                this.selSpell.enabledTrowOtherPlayer == true) {
+                this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: player.idServer, idSpell: this.selSpell.idSpell });
             }
             this.controlGame.game.canvas.style.cursor = 'default';
         }
     };
-    cControlSpells.prototype.thisPlayerClick = function () {
+    cControlSpells.prototype.thisPlayerClick = function (player) {
+        if (this.controlGame.atackMode == true) {
+            if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true &&
+                this.selSpell.enabledTrowThisPlayer == true) {
+                console.log("entra");
+                this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: player.idServer, idSpell: this.selSpell.idSpell });
+            }
+            this.controlGame.game.canvas.style.cursor = 'default';
+        }
     };
     cControlSpells.prototype.iniciateSpellSystem = function () {
         //dibujo el rectangulo para el hechizo seleccionado
@@ -27,34 +35,32 @@ var cControlSpells = (function () {
         this.rectangleSpell.drawRect(0, 0, 27, 71);
         this.rectangleSpell.cameraOffset.x = 850;
         this.rectangleSpell.cameraOffset.y = 296;
-        //seleciono el hechioz uno por defecto
-        this.selectedSpell = 0;
     };
     cControlSpells.prototype.createSpells = function () {
-        this.arraySelectedSpells = new Array();
+        var gameWidth = this.controlGame.game.width;
+        this.arrayselSpells = new Array();
         //hechizo 1
         var spellOne = this.allSpells.arraySpells[0];
-        spellOne.iniciateSpell(new Phaser.Point(850, 296));
-        spellOne.spellNumber = 0;
-        this.arraySelectedSpells.push(spellOne);
+        spellOne.iniciateSpell(new Phaser.Point(gameWidth - 190, 296), 0);
+        this.arrayselSpells.push(spellOne);
         spellOne.signalTest.add(this.spellClick, this);
         //hechizo 2
         var spellTwo = this.allSpells.arraySpells[1];
-        spellTwo.iniciateSpell(new Phaser.Point(881, 296));
-        spellTwo.spellNumber = 1;
-        this.arraySelectedSpells.push(spellTwo);
+        spellTwo.iniciateSpell(new Phaser.Point(gameWidth - 190 + 31, 296), 1);
+        this.arrayselSpells.push(spellTwo);
         spellTwo.signalTest.add(this.spellClick, this);
         //hechizo 3
         var spellThree = this.allSpells.arraySpells[2];
-        spellThree.iniciateSpell(new Phaser.Point(912, 296));
-        spellThree.spellNumber = 2;
-        this.arraySelectedSpells.push(spellThree);
+        spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 31 * 2, 296), 2);
+        this.arrayselSpells.push(spellThree);
         spellThree.signalTest.add(this.spellClick, this);
+        //seleciono el hechioz uno por defecto
+        this.selSpell = spellOne;
     };
     cControlSpells.prototype.spellClick = function (sender) {
         this.rectangleSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x;
         this.rectangleSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y;
-        this.selectedSpell = sender.idSpell;
+        this.selSpell = sender;
         this.controlGame.activateAtackMode();
     };
     return cControlSpells;

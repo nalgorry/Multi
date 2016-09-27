@@ -78,8 +78,13 @@ class cControlServer {
 
     onYouHit (data) {
 
-        this.controlPlayer.youHit(data)
-        this.controlOtherPlayers.playerHit(data);
+        if (data.id === this.controlPlayer.idServer) {
+            this.controlPlayer.playerHit(data);
+        } else {
+            this.controlPlayer.youHit(data)
+            this.controlOtherPlayers.playerHit(data);
+        }
+        
     }
 
     // Move player

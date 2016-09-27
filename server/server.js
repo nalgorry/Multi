@@ -50,15 +50,18 @@ function onChatSend(data) {
 function onPlayerClick(data) {
     var player = playerById(data.idPlayerHit);
     if (player != null) {
+        var damage = 0;
         if (data.idSpell == 0) {
-            var damage = Math.round(Math.random() * 40 + 40);
+            damage = Math.round(Math.random() * 40 + 40);
         }
         else if (data.idSpell == 1) {
-            var damage = Math.round(Math.random() * 45 + 5);
+            damage = Math.round(Math.random() * 45 + 5);
             if (Math.random() < 0.15) {
                 damage = damage + 100;
                 util.log("daño critico");
             }
+        }
+        else if (data.idSpell == 2) {
         }
         player.playerLife -= damage;
         // mando el golpe a los jugadores

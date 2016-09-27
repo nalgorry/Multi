@@ -1,13 +1,13 @@
 class cOtherPlayer extends cBasicActor {
 
-    id:Text;
+    idServer:Text;
     moveTween:Phaser.Tween;
 
     constructor(controlGame:cControlGame,data) {
 
         super(controlGame);
 
-        this.id = data.id;
+        this.idServer = data.id;
         this.tileX = data.x;
         this.tileY = data.y;
 

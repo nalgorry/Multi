@@ -6,7 +6,7 @@ var cControlOtherPlayers = (function () {
     cControlOtherPlayers.prototype.playerById = function (id) {
         var i;
         for (i = 0; i < this.arrayPlayers.length; i++) {
-            if (this.arrayPlayers[i].id === id) {
+            if (this.arrayPlayers[i].idServer === id) {
                 return this.arrayPlayers[i];
             }
         }

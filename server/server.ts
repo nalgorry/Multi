@@ -76,14 +76,17 @@ function onPlayerClick(data) {
   
    if (player != null) {
 
+     var damage:number = 0;
     if (data.idSpell == 0 ) {
-        var damage:number = Math.round(Math.random()*40+40);
+        damage = Math.round(Math.random()*40+40);
     } else if (data.idSpell == 1) {
-        var damage:number = Math.round(Math.random()*45+5);
+        damage = Math.round(Math.random()*45+5);
         if (Math.random() < 0.15) { //daño critico!
           damage = damage + 100;
           util.log("daño critico");
         }
+    } else if (data.idSpell == 2) {
+      
     }
     
     player.playerLife -= damage;

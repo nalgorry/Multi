@@ -12,7 +12,7 @@ class cControlOtherPlayers {
         var i:number;
         
         for (i = 0; i < this.arrayPlayers .length; i++) {
-            if (this.arrayPlayers [i].id === id) {
+            if (this.arrayPlayers [i].idServer === id) {
                 return this.arrayPlayers [i];
             }
         }

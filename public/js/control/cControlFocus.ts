@@ -54,31 +54,35 @@ class cControlFocus {
 
     constructor(public controlGame:cControlGame) {
     
+        
+        var gameWidth:number = this.controlGame.game.width;
+        var gameHeight:number = this.controlGame.game.height;
+        
         this.LoadBars();
-        this.CreateBars();
+        this.CreateBars(gameWidth,gameHeight);
 
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
         
         //para los textos de las barras
         this.styleText = { font: "15px Arial", fill: "#ffffff", textalign: "center"};
-        this.textLife = this.controlGame.game.add.text(850, 105, "200" , this.styleText);
+        this.textLife = this.controlGame.game.add.text(gameWidth - 186, 105, "200" , this.styleText);
         this.textLife.fixedToCamera = true;
 
-        this.textMana = this.controlGame.game.add.text(894, 105, "200" , this.styleText);
+        this.textMana = this.controlGame.game.add.text(gameWidth - 186 + 44, 105, "200" , this.styleText);
         this.textMana.fixedToCamera = true;
 
-        this.textEnergy = this.controlGame.game.add.text(936, 105, "200" , this.styleText);
+        this.textEnergy = this.controlGame.game.add.text(gameWidth - 186 + 44 * 2, 105, "200" , this.styleText);
         this.textEnergy.fixedToCamera = true;
 
     }
 
-    public SpellPosible(needMana:number,needEnergy:number,needLife:number):boolean {
+    public SpellPosible(spell:cSpell):boolean {
 
-        if (this.mana >= needMana && this.energy >= needEnergy && this.life >= needLife) {
+        if (this.mana >= spell.manaCost && this.energy >= spell.energyCost && this.life >= spell.lifeCost) {
             
-            this.UpdateEnergy(-needEnergy);
-            this.UpdateMana(-needMana);
-            this.UpdateLife(-needLife);
+            this.UpdateEnergy(-spell.energyCost);
+            this.UpdateMana(-spell.manaCost);
+            this.UpdateLife(-spell.lifeCost);
             
             return true;
 
@@ -223,17 +227,17 @@ class cControlFocus {
 
     }
 
-    private CreateBars() {
+    private CreateBars(gameWidth:number,gameHeight:number) {
 
-        //creo las barras de vida y energia 
-      
+        //creo las barras de vida y energia
+
         //vida
         var bitmapVida = this.controlGame.game.add.bitmapData(24, 130);
         bitmapVida.ctx.beginPath();
         bitmapVida.ctx.rect(0, 0, 24, 130);
         bitmapVida.ctx.fillStyle = '#e33133';
         bitmapVida.ctx.fill();
-        this.lifeBar = this.controlGame.game.add.sprite(850 + bitmapVida.width, 125 + bitmapVida.height,bitmapVida);
+        this.lifeBar = this.controlGame.game.add.sprite(gameWidth - 166, 125 + bitmapVida.height,bitmapVida);
         this.lifeBar.anchor.setTo(1);
         this.lifeBar.fixedToCamera = true;
         this.lifeBar.inputEnabled = true;
@@ -245,7 +249,7 @@ class cControlFocus {
         bitmapMana.ctx.rect(0, 0, 24, 130);
         bitmapMana.ctx.fillStyle = '#0099ff';
         bitmapMana.ctx.fill();
-        this.manaBar = this.controlGame.game.add.sprite(894 + bitmapMana.width, 125 + bitmapMana.height,bitmapMana);
+        this.manaBar = this.controlGame.game.add.sprite(gameWidth - 166 + 44 , 125 + bitmapMana.height,bitmapMana);
         this.manaBar.anchor.setTo(1);
         this.manaBar.fixedToCamera = true;
         this.manaBar.inputEnabled = true;
@@ -257,21 +261,21 @@ class cControlFocus {
         bitmapEnergia.ctx.rect(0, 0, 24, 130);
         bitmapEnergia.ctx.fillStyle = '#33cc66';
         bitmapEnergia.ctx.fill();
-        this.energyBar = this.controlGame.game.add.sprite(937 + bitmapEnergia.width, 125 + bitmapEnergia.height,bitmapEnergia);
+        this.energyBar = this.controlGame.game.add.sprite(gameWidth - 166 + 44 * 2, 125 + bitmapEnergia.height,bitmapEnergia);
         this.energyBar.anchor.setTo(1);
         this.energyBar.fixedToCamera = true;
         this.energyBar.inputEnabled = true;
         this.energyBar.events.onInputDown.add(this.SelectEnergyFocus, this);
 
          //exp
-        var bitmapExp = this.controlGame.game.add.bitmapData(25, 130);
-        bitmapExp.ctx.beginPath();
-        bitmapExp.ctx.rect(0, 0, 24, 130);
-        bitmapExp.ctx.fillStyle = '#cc33cc';
-        bitmapExp.ctx.fill();
-        this.expBar = this.controlGame.game.add.sprite(994 + bitmapExp.width,125 + bitmapExp.height,bitmapExp);
-        this.expBar.anchor.setTo(1);
-        this.expBar.fixedToCamera = true;
+        //var bitmapExp = this.controlGame.game.add.bitmapData(25, 130);
+        //bitmapExp.ctx.beginPath();
+        //bitmapExp.ctx.rect(0, 0, 24, 130);
+        //bitmapExp.ctx.fillStyle = '#cc33cc';
+        //bitmapExp.ctx.fill();
+        //this.expBar = this.controlGame.game.add.sprite(994 + bitmapExp.width,125 + bitmapExp.height,bitmapExp);
+        //this.expBar.anchor.setTo(1);
+        //this.expBar.fixedToCamera = true;
 
         //hago las barras del tamaño segun los valores actuales
         this.ResizeBar(this.lifeBar,this.life,this.maxLife);

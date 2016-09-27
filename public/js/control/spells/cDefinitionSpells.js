@@ -10,7 +10,7 @@ var cDefinitionSpells = (function () {
         this.arraySpells.push(newSpell);
         newSpell.idSpell = 0;
         newSpell.spellName = "Bola de Fuego";
-        newSpell.manaCost = 50;
+        newSpell.manaCost = 40;
         newSpell.energyCost = 20;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 0;
@@ -21,7 +21,7 @@ var cDefinitionSpells = (function () {
         newSpell.idSpell = 1;
         newSpell.spellName = "Meteorito Mortal";
         newSpell.manaCost = 20;
-        newSpell.energyCost = 80;
+        newSpell.energyCost = 40;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 1;
         newSpell.explotionSprite = 'boom3';
@@ -31,11 +31,14 @@ var cDefinitionSpells = (function () {
         newSpell.idSpell = 2;
         newSpell.spellName = "Escudo Protector";
         newSpell.manaCost = 50;
-        newSpell.energyCost = 100;
+        newSpell.energyCost = 50;
         newSpell.lifeCost = 2;
         newSpell.posInSpritesheet = 2;
-        newSpell.explotionSprite = 'boom';
-        newSpell.explotionFrameRate = 100;
+        newSpell.explotionSprite = 'aura';
+        newSpell.explotionFrameRate = 5;
+        newSpell.explotionLoopNumber = 5;
+        newSpell.enabledTrowOtherPlayer = false;
+        newSpell.enabledTrowThisPlayer = true;
     };
     return cDefinitionSpells;
 }());
