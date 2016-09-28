@@ -12,7 +12,7 @@ class cControlChat {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
-            width: 824,
+            width: 984,
             height: 23,
             padding: 8,
             borderWidth: 1,
@@ -25,7 +25,7 @@ class cControlChat {
         this.inputTextChat.blockInput = true;
     
         this.inputTextChat.fixedToCamera = true;
-        this.inputTextChat.cameraOffset.setTo(0, 600);
+        this.inputTextChat.cameraOffset.setTo(0, 635);
 
         Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress,this);
 

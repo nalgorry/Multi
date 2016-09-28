@@ -97,6 +97,13 @@ class cControlPlayer extends cBasicActor {
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars,this.controlFocus);
 
+        this.playerSprite.inputEnabled = true;
+        this.playerSprite.events.onInputDown.add(this.youClickYou, this);
+
+    }
+
+    private youClickYou() {
+        this.controlGame.controlPlayer.controlSpells.thisPlayerClick(this);
     }
 
     //esto se activa cuando golepan al jugador actual
@@ -136,7 +143,7 @@ class cControlPlayer extends cBasicActor {
         } else if (this.seMueveX == true && this.seMueveY == true) {
             //me aseguro que no este tocando una pared antes de reducir la velocidad
             if (this.playerSprite.body.blocked.left == false && this.playerSprite.body.blocked.right == false &&
-            this.playerSprite.body.blocked.up == false && this.playerSprite.body.blocked.up == false ) {  
+            this.playerSprite.body.blocked.up == false && this.playerSprite.body.blocked.down == false ) {  
                  this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX * 0.7071;
                  this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY * 0.7071;
             } else {

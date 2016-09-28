@@ -7,7 +7,7 @@ var cOtherPlayer = (function (_super) {
     __extends(cOtherPlayer, _super);
     function cOtherPlayer(controlGame, data) {
         _super.call(this, controlGame);
-        this.id = data.id;
+        this.idServer = data.id;
         this.tileX = data.x;
         this.tileY = data.y;
         this.startActor(); //esto inicia todo el jugador con sus elementos

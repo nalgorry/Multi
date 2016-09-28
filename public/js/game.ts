@@ -11,7 +11,7 @@ class SimpleGame {
 
     constructor() {
 
-        this.game = new Phaser.Game(1040, 640, Phaser.CANVAS, 'content', 
+        this.game = new Phaser.Game(1200, 675, Phaser.CANVAS, 'content', 
         { 
             preload: this.preload, 
             create: this.create,
@@ -27,6 +27,8 @@ class SimpleGame {
         this.game.load.spritesheet('boom', 'assets/explosion.png',100,100);
         this.game.load.spritesheet('boom2', 'assets/explosion2.png',96,96);
         this.game.load.spritesheet('boom3', 'assets/blueexplosion.png',66.66,66.66);
+
+        this.game.load.spritesheet('aura', 'assets/aura80.png',70,80);
 
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40,70 );
         this.game.load.atlas('objects', 'assets/objects.png','assets/objects.json');

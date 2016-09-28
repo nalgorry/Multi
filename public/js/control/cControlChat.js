@@ -8,7 +8,7 @@ var cControlChat = (function () {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
-            width: 824,
+            width: 984,
             height: 23,
             padding: 8,
             borderWidth: 1,
@@ -19,7 +19,7 @@ var cControlChat = (function () {
         this.inputTextChat.focusOutOnEnter = true;
         this.inputTextChat.blockInput = true;
         this.inputTextChat.fixedToCamera = true;
-        this.inputTextChat.cameraOffset.setTo(0, 600);
+        this.inputTextChat.cameraOffset.setTo(0, 635);
         Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress, this);
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);

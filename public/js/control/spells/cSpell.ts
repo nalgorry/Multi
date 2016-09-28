@@ -9,6 +9,9 @@ class cSpell {
     public posInSpritesheet:number;
     public explotionSprite:string;
     public explotionFrameRate:number;
+    public explotionLoopNumber:number = 1;
+    public enabledTrowOtherPlayer: boolean = true;
+    public enabledTrowThisPlayer: boolean = false;
 
     
     //variables creadas por la clase
@@ -26,15 +29,30 @@ class cSpell {
         var boomSprite = this.controlGame.game.add.sprite(actor.playerSprite.x , 
             actor.playerSprite.y,this.explotionSprite);    
         boomSprite.anchor.set(0.5,1);
-        boomSprite.animations.add('boom');
-        boomSprite.animations.play('boom',this.explotionFrameRate,false,true);
+        var animation = boomSprite.animations.add('boom');
+        
+        if (this.explotionLoopNumber == 1) {
+            boomSprite.animations.play('boom',this.explotionFrameRate,false,true);
+        } else {
+            boomSprite.animations.play('boom',this.explotionFrameRate,true,true);
+        }
+        
+        animation.onLoop.add(this.loopAnimation,this);
 
     }
 
-    public iniciateSpell(spellPos:Phaser.Point) {
+    public loopAnimation(sprite:Phaser.Sprite, animation: Phaser.Animation) {
+        if (animation.loopCount == this.explotionLoopNumber - 1) {
+            animation.loop = false;
+        }
+    }
+
+    public iniciateSpell(spellPos:Phaser.Point,spellNumber:number) {
         this.spellSprite = this.controlGame.game.add.sprite(spellPos.x, spellPos.y, 'spells',this.posInSpritesheet);
         this.spellSprite.fixedToCamera = true;
         this.spellSprite.inputEnabled = true;
+        
+        this.spellNumber = spellNumber
         
         this.spellSprite.events.onInputDown.add(this.spellSelected, this);
 
