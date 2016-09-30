@@ -21,6 +21,7 @@ var cControlPlayer = (function (_super) {
         this.seMueveX = false;
         this.seMueveY = false;
         this.playerIdle = false;
+        this.lastAnimation = move.right;
         //texto para mostrar daño (temporal)
         this.style = { font: "15px Arial", fill: "#ff0044" };
         this.hitText = this.controlGame.game.add.text(0, 15, "Trata de golpear a alguien", this.style);
@@ -145,17 +146,29 @@ var cControlPlayer = (function (_super) {
         else if (this.lastMoveX == 1) {
             this.startAnimation('right');
             this.dirMovimiento = move.right;
+            this.lastAnimation = move.right;
         }
         else if (this.lastMoveX == -1) {
             this.startAnimation('left');
             this.dirMovimiento = move.left;
+            this.lastAnimation = move.left;
         }
         else if (this.lastMoveY == 1) {
-            this.startAnimation('down');
+            if (this.lastAnimation == move.left) {
+                this.startAnimation('left');
+            }
+            else {
+                this.startAnimation('right');
+            }
             this.dirMovimiento = move.down;
         }
         else if (this.lastMoveY == -1) {
-            this.startAnimation('up');
+            if (this.lastAnimation == move.left) {
+                this.startAnimation('left');
+            }
+            else {
+                this.startAnimation('right');
+            }
             this.dirMovimiento = move.up;
         }
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion

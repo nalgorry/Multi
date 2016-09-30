@@ -24,6 +24,7 @@ class cControlPlayer extends cBasicActor {
     private seMueveX:boolean = false;
     private seMueveY:boolean = false;
     private playerIdle:boolean = false;
+    private lastAnimation:move = move.right;
 
     private dirMovimiento:move;
     private lastdirMov:move; //para guardar el ultimo moviemiento enviado
@@ -193,14 +194,30 @@ class cControlPlayer extends cBasicActor {
         } else if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
             this.startAnimation('right');
             this.dirMovimiento = move.right;
+            this.lastAnimation = move.right;
         } else if (this.lastMoveX == -1) { //se esta moviendo hacia la izquierda
             this.startAnimation('left');
             this.dirMovimiento = move.left;
-        } else if (this.lastMoveY == 1) { //se esta moviendo hacia arriba
-            this.startAnimation('down');
+            this.lastAnimation = move.left;
+        } else if (this.lastMoveY == 1) { //mantego el ultimo movimiento del costado
+            if (this.lastAnimation == move.left)
+            {
+                this.startAnimation('left');
+            } else
+            {
+                this.startAnimation('right');
+            }
+
             this.dirMovimiento = move.down;
-        } else if (this.lastMoveY == -1) { //se esta moviendo hacia abajo
-            this.startAnimation('up');
+        } else if (this.lastMoveY == -1) { //mantengo el ultimo moviemiento del costado
+            if (this.lastAnimation == move.left)
+            {
+                this.startAnimation('left');
+            } else
+            {
+                this.startAnimation('right');
+            }
+
             this.dirMovimiento = move.up;
         }
 

@@ -82,11 +82,31 @@ var cControlFocus = (function () {
             value = maxValue;
             //si paso el maximo con alguna de las barras, me fijo si es necesario resetear el sistema de focus
             if (this.actualFocusSystem == FocusSystem.life || this.actualFocusSystem == FocusSystem.mana || this.actualFocusSystem == FocusSystem.energy) {
-                this.SelectNothingFocus();
             }
         }
         this.ResizeBar(bar, value, maxValue);
         return value;
+    };
+    cControlFocus.prototype.SelectFocusFromSpell = function (idSpell) {
+        var selectedFocus;
+        if (idSpell == 3) {
+            selectedFocus = FocusSystem.life;
+        }
+        else if (idSpell == 4) {
+            selectedFocus = FocusSystem.mana;
+        }
+        else if (idSpell == 5) {
+            selectedFocus = FocusSystem.energy;
+        }
+        //si vuelve a tocar el sistema seleccionado le saco la selección
+        if (selectedFocus != this.actualFocusSystem) {
+            this.SelectFocus(selectedFocus);
+            return true;
+        }
+        else {
+            this.SelectFocus(FocusSystem.nothing);
+            return false;
+        }
     };
     cControlFocus.prototype.SelectLifeFocus = function () {
         this.SelectFocus(FocusSystem.life);
@@ -106,7 +126,8 @@ var cControlFocus = (function () {
                 this.actualFocusLife = this.speedFocusLife;
                 this.actualFocusMana = 0;
                 this.actualFocusEnergy = 0;
-                this.rectangleFocus.cameraOffset.x = 850;
+                this.rectangleFocus.cameraOffset.x = this.lifeBar.cameraOffset.x;
+                this.rectangleFocus.cameraOffset.y = this.lifeBar.cameraOffset.y;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.life;
                 break;
@@ -114,7 +135,8 @@ var cControlFocus = (function () {
                 this.actualFocusLife = 0;
                 this.actualFocusMana = this.speedFocusMana;
                 this.actualFocusEnergy = 0;
-                this.rectangleFocus.cameraOffset.x = 894;
+                this.rectangleFocus.cameraOffset.x = this.manaBar.cameraOffset.x;
+                this.rectangleFocus.cameraOffset.y = this.manaBar.cameraOffset.y;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.mana;
                 break;
@@ -122,7 +144,8 @@ var cControlFocus = (function () {
                 this.actualFocusLife = 0;
                 this.actualFocusMana = 0;
                 this.actualFocusEnergy = this.speedFocusEnergy;
-                this.rectangleFocus.cameraOffset.x = 937;
+                this.rectangleFocus.cameraOffset.x = this.energyBar.cameraOffset.x;
+                this.rectangleFocus.cameraOffset.y = this.energyBar.cameraOffset.y;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.energy;
                 break;
@@ -206,7 +229,7 @@ var cControlFocus = (function () {
         this.rectangleFocus = this.controlGame.game.add.graphics(0, 0);
         this.rectangleFocus.lineStyle(2, 0xffffff, 1);
         this.rectangleFocus.fixedToCamera = true;
-        this.rectangleFocus.drawRect(0, 0, 24, 130);
+        this.rectangleFocus.drawRect(0, -barHeight, barWidth, barHeight);
         this.rectangleFocus.cameraOffset.x = this.lifeBar.x - this.lifeBar.width;
         this.rectangleFocus.cameraOffset.y = 125;
         this.rectangleFocus.visible = false;
