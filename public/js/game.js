@@ -16,8 +16,8 @@ var SimpleGame = (function () {
         this.game.load.spritesheet('aura', 'assets/aura80.png', 70, 80);
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 70);
         this.game.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
-        this.game.load.spritesheet('spells', 'assets/spells.png', 27, 71);
-        this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 600);
+        this.game.load.spritesheet('spells', 'assets/spells.png', 40, 40);
+        this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 675);
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120, 120);
     };
     SimpleGame.prototype.create = function () {

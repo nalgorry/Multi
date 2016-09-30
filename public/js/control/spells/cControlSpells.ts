@@ -2,7 +2,7 @@ class cControlSpells {
 
     public selSpell:cSpell;
     public arrayselSpells: Array<cSpell>;
-    public rectangleSpell:Phaser.Graphics;
+    public borderSpell:Phaser.Graphics;
     private allSpells:cDefinitionSpells;
 
     constructor(public controlGame:cControlGame) {
@@ -43,7 +43,6 @@ class cControlSpells {
              if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true &&
                 this.selSpell.enabledTrowThisPlayer == true) {
 
-                console.log("entra");
                 this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:player.idServer,idSpell: this.selSpell.idSpell });
              }
 
@@ -55,17 +54,11 @@ class cControlSpells {
 
     private iniciateSpellSystem() {
 
-        //dibujo el rectangulo para el hechizo seleccionado
-        this.rectangleSpell = this.controlGame.game.add.graphics(0,0);
-        this.rectangleSpell.lineStyle(2, 0xffffff, 1);
-        this.rectangleSpell.fixedToCamera = true;
-        this.rectangleSpell.drawRect(0, 0, 27, 71);
-        
-
-        this.rectangleSpell.cameraOffset.x = 850;
-        this.rectangleSpell.cameraOffset.y = 296;
-
-
+        //dibujo el marco para el hechizo seleccionado
+        this.borderSpell = this.controlGame.game.add.graphics(0,0);
+        this.borderSpell.lineStyle(2, 0xffffff, 1);
+        this.borderSpell.fixedToCamera = true;
+        this.borderSpell.drawCircle(0, 0, 40);
     }
 
     private createSpells() {
@@ -76,21 +69,21 @@ class cControlSpells {
 
         //hechizo 1
         var spellOne:cSpell = this.allSpells.arraySpells[0];
-        spellOne.iniciateSpell(new Phaser.Point(gameWidth - 190,296),0);
+        spellOne.iniciateSpell(new Phaser.Point(gameWidth - 190,212),0);
 
         this.arrayselSpells.push(spellOne);
         spellOne.signalTest.add(this.spellClick,this);
 
         //hechizo 2
         var spellTwo:cSpell = this.allSpells.arraySpells[1];
-        spellTwo.iniciateSpell(new Phaser.Point(gameWidth - 190 + 31,296),1);
+        spellTwo.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48,212),1);
 
         this.arrayselSpells.push(spellTwo);
         spellTwo.signalTest.add(this.spellClick,this);
 
         //hechizo 3
         var spellThree:cSpell = this.allSpells.arraySpells[2];
-        spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 31*2,296),2);
+        spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*2,212),2);
         
         this.arrayselSpells.push(spellThree);
         spellThree.signalTest.add(this.spellClick,this);      
@@ -102,8 +95,8 @@ class cControlSpells {
 
     public spellClick(sender:cSpell) {
 
-        this.rectangleSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x;
-        this.rectangleSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y;
+        this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width/2;
+        this.borderSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height/2;
         this.selSpell = sender;
         this.controlGame.activateAtackMode();
 

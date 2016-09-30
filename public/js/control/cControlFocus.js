@@ -27,14 +27,6 @@ var cControlFocus = (function () {
         this.LoadBars();
         this.CreateBars(gameWidth, gameHeight);
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
-        //para los textos de las barras
-        this.styleText = { font: "15px Arial", fill: "#ffffff", textalign: "center" };
-        this.textLife = this.controlGame.game.add.text(gameWidth - 186, 105, "200", this.styleText);
-        this.textLife.fixedToCamera = true;
-        this.textMana = this.controlGame.game.add.text(gameWidth - 186 + 44, 105, "200", this.styleText);
-        this.textMana.fixedToCamera = true;
-        this.textEnergy = this.controlGame.game.add.text(gameWidth - 186 + 44 * 2, 105, "200", this.styleText);
-        this.textEnergy.fixedToCamera = true;
     }
     cControlFocus.prototype.SpellPosible = function (spell) {
         if (this.mana >= spell.manaCost && this.energy >= spell.energyCost && this.life >= spell.lifeCost) {
@@ -53,7 +45,7 @@ var cControlFocus = (function () {
         this.UpdateEnergy(1 - this.energy);
     };
     cControlFocus.prototype.ResizeBar = function (bar, value, maxValue) {
-        this.controlGame.game.add.tween(bar.scale).to({ y: value / maxValue }, 25, Phaser.Easing.Linear.None, true);
+        this.controlGame.game.add.tween(bar.scale).to({ x: -value / maxValue }, 25, Phaser.Easing.Linear.None, true);
     };
     cControlFocus.prototype.UpdateFocus = function () {
         this.UpdateLife(this.actualFocusLife);
@@ -154,35 +146,37 @@ var cControlFocus = (function () {
     };
     cControlFocus.prototype.CreateBars = function (gameWidth, gameHeight) {
         //creo las barras de vida y energia
+        var barHeight = 14;
+        var barWidth = 158;
         //vida
-        var bitmapVida = this.controlGame.game.add.bitmapData(24, 130);
+        var bitmapVida = this.controlGame.game.add.bitmapData(barWidth, barHeight);
         bitmapVida.ctx.beginPath();
-        bitmapVida.ctx.rect(0, 0, 24, 130);
+        bitmapVida.ctx.rect(0, 0, barWidth, barHeight);
         bitmapVida.ctx.fillStyle = '#e33133';
         bitmapVida.ctx.fill();
-        this.lifeBar = this.controlGame.game.add.sprite(gameWidth - 166, 125 + bitmapVida.height, bitmapVida);
+        this.lifeBar = this.controlGame.game.add.sprite(gameWidth - 167, 135 + bitmapVida.height, bitmapVida);
         this.lifeBar.anchor.setTo(1);
         this.lifeBar.fixedToCamera = true;
         this.lifeBar.inputEnabled = true;
         this.lifeBar.events.onInputDown.add(this.SelectLifeFocus, this);
         //mana
-        var bitmapMana = this.controlGame.game.add.bitmapData(24, 130);
+        var bitmapMana = this.controlGame.game.add.bitmapData(barWidth, barHeight);
         bitmapMana.ctx.beginPath();
-        bitmapMana.ctx.rect(0, 0, 24, 130);
+        bitmapMana.ctx.rect(0, 0, barWidth, barHeight);
         bitmapMana.ctx.fillStyle = '#0099ff';
         bitmapMana.ctx.fill();
-        this.manaBar = this.controlGame.game.add.sprite(gameWidth - 166 + 44, 125 + bitmapMana.height, bitmapMana);
+        this.manaBar = this.controlGame.game.add.sprite(gameWidth - 167, 153 + bitmapMana.height, bitmapMana);
         this.manaBar.anchor.setTo(1);
         this.manaBar.fixedToCamera = true;
         this.manaBar.inputEnabled = true;
         this.manaBar.events.onInputDown.add(this.SelectManaFocus, this);
         //energia
-        var bitmapEnergia = this.controlGame.game.add.bitmapData(25, 130);
+        var bitmapEnergia = this.controlGame.game.add.bitmapData(barWidth, barHeight);
         bitmapEnergia.ctx.beginPath();
-        bitmapEnergia.ctx.rect(0, 0, 24, 130);
+        bitmapEnergia.ctx.rect(0, 0, barWidth, barHeight);
         bitmapEnergia.ctx.fillStyle = '#33cc66';
         bitmapEnergia.ctx.fill();
-        this.energyBar = this.controlGame.game.add.sprite(gameWidth - 166 + 44 * 2, 125 + bitmapEnergia.height, bitmapEnergia);
+        this.energyBar = this.controlGame.game.add.sprite(gameWidth - 167, 170 + bitmapEnergia.height, bitmapEnergia);
         this.energyBar.anchor.setTo(1);
         this.energyBar.fixedToCamera = true;
         this.energyBar.inputEnabled = true;
@@ -200,6 +194,14 @@ var cControlFocus = (function () {
         this.ResizeBar(this.lifeBar, this.life, this.maxLife);
         this.ResizeBar(this.manaBar, this.mana, this.maxMana);
         this.ResizeBar(this.energyBar, this.energy, this.maxEnergy);
+        //para los textos de las barras
+        this.styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center" };
+        this.textLife = this.controlGame.game.add.text(gameWidth - 165, 134, "200", this.styleText);
+        this.textLife.fixedToCamera = true;
+        this.textMana = this.controlGame.game.add.text(gameWidth - 165, 134 + 18, "200", this.styleText);
+        this.textMana.fixedToCamera = true;
+        this.textEnergy = this.controlGame.game.add.text(gameWidth - 165, 134 + 18 * 2, "200", this.styleText);
+        this.textEnergy.fixedToCamera = true;
         //  Para hacer un recuadro sobre la barra selecionada
         this.rectangleFocus = this.controlGame.game.add.graphics(0, 0);
         this.rectangleFocus.lineStyle(2, 0xffffff, 1);
