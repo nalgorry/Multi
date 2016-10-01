@@ -1,0 +1,204 @@
+{"frames": {
+
+"arbol_4.png":
+{
+	"frame": {"x":1,"y":1,"w":82,"h":75},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":82,"h":75},
+	"sourceSize": {"w":82,"h":75}
+},
+"arbol_3.png":
+{
+	"frame": {"x":85,"y":1,"w":82,"h":75},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":82,"h":75},
+	"sourceSize": {"w":82,"h":75}
+},
+"arbol_5.png":
+{
+	"frame": {"x":169,"y":1,"w":82,"h":75},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":82,"h":75},
+	"sourceSize": {"w":82,"h":75}
+},
+"arbol_0.png":
+{
+	"frame": {"x":253,"y":1,"w":82,"h":75},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":82,"h":75},
+	"sourceSize": {"w":82,"h":75}
+},
+"arbol_2.png":
+{
+	"frame": {"x":337,"y":1,"w":82,"h":75},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":82,"h":75},
+	"sourceSize": {"w":82,"h":75}
+},
+"arbol_1.png":
+{
+	"frame": {"x":421,"y":1,"w":82,"h":75},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":82,"h":75},
+	"sourceSize": {"w":82,"h":75}
+},
+"sword_1.png":
+{
+	"frame": {"x":505,"y":1,"w":126,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":98},
+	"sourceSize": {"w":126,"h":98}
+},
+"sword_0.png":
+{
+	"frame": {"x":633,"y":1,"w":126,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":98},
+	"sourceSize": {"w":126,"h":98}
+},
+"sword_2.png":
+{
+	"frame": {"x":761,"y":1,"w":126,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":98},
+	"sourceSize": {"w":126,"h":98}
+},
+"sword_4.png":
+{
+	"frame": {"x":889,"y":1,"w":126,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":98},
+	"sourceSize": {"w":126,"h":98}
+},
+"sword_3.png":
+{
+	"frame": {"x":1017,"y":1,"w":126,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":98},
+	"sourceSize": {"w":126,"h":98}
+},
+"sword_5.png":
+{
+	"frame": {"x":1145,"y":1,"w":126,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":98},
+	"sourceSize": {"w":126,"h":98}
+},
+"pj_3.png":
+{
+	"frame": {"x":1273,"y":1,"w":126,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":108},
+	"sourceSize": {"w":126,"h":108}
+},
+"pj_2.png":
+{
+	"frame": {"x":1401,"y":1,"w":126,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":108},
+	"sourceSize": {"w":126,"h":108}
+},
+"pj_0.png":
+{
+	"frame": {"x":1,"y":111,"w":126,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":108},
+	"sourceSize": {"w":126,"h":108}
+},
+"pj_1.png":
+{
+	"frame": {"x":129,"y":111,"w":126,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":108},
+	"sourceSize": {"w":126,"h":108}
+},
+"pj_4.png":
+{
+	"frame": {"x":257,"y":111,"w":126,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":108},
+	"sourceSize": {"w":126,"h":108}
+},
+"pj_5.png":
+{
+	"frame": {"x":385,"y":111,"w":126,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":108},
+	"sourceSize": {"w":126,"h":108}
+},
+"sword2_1.png":
+{
+	"frame": {"x":513,"y":111,"w":164,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":164,"h":107},
+	"sourceSize": {"w":164,"h":107}
+},
+"sword2_4.png":
+{
+	"frame": {"x":679,"y":111,"w":164,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":164,"h":107},
+	"sourceSize": {"w":164,"h":107}
+},
+"sword2_2.png":
+{
+	"frame": {"x":845,"y":111,"w":164,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":164,"h":107},
+	"sourceSize": {"w":164,"h":107}
+},
+"sword2_0.png":
+{
+	"frame": {"x":1011,"y":111,"w":164,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":164,"h":107},
+	"sourceSize": {"w":164,"h":107}
+},
+"sword2_5.png":
+{
+	"frame": {"x":1177,"y":111,"w":164,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":164,"h":107},
+	"sourceSize": {"w":164,"h":107}
+},
+"sword2_3.png":
+{
+	"frame": {"x":1343,"y":111,"w":164,"h":107},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":164,"h":107},
+	"sourceSize": {"w":164,"h":107}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "pj.png",
+	"format": "RGBA8888",
+	"size": {"w":1528,"h":220},
+	"scale": "0.25",
+	"smartupdate": "$TexturePacker:SmartUpdate:9ada84284dba4d7f25b7744dd0a648c7:40fb84827a8b8bdd8c09734f3202f574:fba843c4c3fcf91d9d07502c7eb86d7c$"
+}
+}

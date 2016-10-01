@@ -19,6 +19,7 @@ var SimpleGame = (function () {
         this.game.load.spritesheet('spells', 'assets/spells.png', 40, 40);
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 675);
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120, 120);
+        this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
     };
     SimpleGame.prototype.create = function () {
         //inicio todos los parametros dele juego

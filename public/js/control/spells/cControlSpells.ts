@@ -74,6 +74,8 @@ class cControlSpells {
         
         this.arrayselSpells = new Array<cSpell>();
 
+        //los tres de focus
+
         //hechizo 1
         var spellOne:cSpell = this.allSpells.arraySpells[2];
         spellOne.iniciateSpell(new Phaser.Point(gameWidth - 170,208),0);
@@ -95,7 +97,8 @@ class cControlSpells {
         this.arrayselSpells.push(spellThree);
         spellThree.signalTest.add(this.spellClick,this);
 
-
+        //resto de hechizos
+        
         //hechizo 4
         var spellThree:cSpell = this.allSpells.arraySpells[0];
         spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*0,263),2);

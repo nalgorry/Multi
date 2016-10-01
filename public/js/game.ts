@@ -36,6 +36,8 @@ class SimpleGame {
 
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200,675 );
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120,120 );    
+
+        this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
 }
 
     create() {

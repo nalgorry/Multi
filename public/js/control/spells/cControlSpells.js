@@ -43,6 +43,7 @@ var cControlSpells = (function () {
     cControlSpells.prototype.createSpells = function () {
         var gameWidth = this.controlGame.game.width;
         this.arrayselSpells = new Array();
+        //los tres de focus
         //hechizo 1
         var spellOne = this.allSpells.arraySpells[2];
         spellOne.iniciateSpell(new Phaser.Point(gameWidth - 170, 208), 0);
@@ -58,6 +59,7 @@ var cControlSpells = (function () {
         spellThree.iniciateSpell(new Phaser.Point(gameWidth - 170 + 48 * 2, 208), 2);
         this.arrayselSpells.push(spellThree);
         spellThree.signalTest.add(this.spellClick, this);
+        //resto de hechizos
         //hechizo 4
         var spellThree = this.allSpells.arraySpells[0];
         spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 0, 263), 2);

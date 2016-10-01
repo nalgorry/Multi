@@ -17,6 +17,7 @@ var cControlGame = (function () {
         this.hitLayer = this.map.createLayer('HitTest', this.game.width - this.interfazWidth);
         this.layer = this.map.createLayer('FirstFloor', this.game.width - this.interfazWidth);
         this.layer = this.map.createLayer('SecondFloor', this.game.width - this.interfazWidth);
+        this.layer = this.map.createLayer('ThirdFloor', this.game.width - this.interfazWidth);
         this.map.setCollision(5, true, this.hitLayer);
         this.game.stage.disableVisibilityChange = true;
         //inicio el grupo de profundidad
