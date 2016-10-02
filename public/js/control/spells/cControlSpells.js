@@ -13,6 +13,7 @@ var cControlSpells = (function () {
             if (this.selSpell.enabledTrowOtherPlayer == true) {
                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
                     this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: player.idServer, idSpell: this.selSpell.idSpell });
+                    this.selSpell.spellColdDown();
                 }
             }
             this.controlGame.game.canvas.style.cursor = 'default';
@@ -23,6 +24,7 @@ var cControlSpells = (function () {
             if (this.selSpell.enabledTrowThisPlayer == true) {
                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
                     this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: player.idServer, idSpell: this.selSpell.idSpell });
+                    this.selSpell.spellColdDown();
                 }
             }
             this.controlGame.game.canvas.style.cursor = 'default';
@@ -48,38 +50,38 @@ var cControlSpells = (function () {
         var spellOne = this.allSpells.arraySpells[2];
         spellOne.iniciateSpell(new Phaser.Point(gameWidth - 170, 208), 0);
         this.arrayselSpells.push(spellOne);
-        spellOne.signalTest.add(this.spellClick, this);
+        spellOne.signalSpellSel.add(this.spellClick, this);
         //hechizo 2
         var spellTwo = this.allSpells.arraySpells[3];
         spellTwo.iniciateSpell(new Phaser.Point(gameWidth - 170 + 48, 208), 1);
         this.arrayselSpells.push(spellTwo);
-        spellTwo.signalTest.add(this.spellClick, this);
+        spellTwo.signalSpellSel.add(this.spellClick, this);
         //hechizo 3
-        var spellThree = this.allSpells.arraySpells[4];
-        spellThree.iniciateSpell(new Phaser.Point(gameWidth - 170 + 48 * 2, 208), 2);
-        this.arrayselSpells.push(spellThree);
-        spellThree.signalTest.add(this.spellClick, this);
+        var newSpell = this.allSpells.arraySpells[4];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 170 + 48 * 2, 208), 2);
+        this.arrayselSpells.push(newSpell);
+        newSpell.signalSpellSel.add(this.spellClick, this);
         //resto de hechizos
         //hechizo 4
-        var spellThree = this.allSpells.arraySpells[0];
-        spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 0, 263), 2);
-        this.arrayselSpells.push(spellThree);
-        spellThree.signalTest.add(this.spellClick, this);
+        var newSpell = this.allSpells.arraySpells[0];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 0, 263), 2);
+        this.arrayselSpells.push(newSpell);
+        newSpell.signalSpellSel.add(this.spellClick, this);
         //hechizo 5
-        var spellThree = this.allSpells.arraySpells[1];
-        spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 1, 263), 2);
-        this.arrayselSpells.push(spellThree);
-        spellThree.signalTest.add(this.spellClick, this);
+        var newSpell = this.allSpells.arraySpells[1];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 1, 263), 2);
+        this.arrayselSpells.push(newSpell);
+        newSpell.signalSpellSel.add(this.spellClick, this);
         //hechizo 6
-        var spellThree = this.allSpells.arraySpells[5];
-        spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 2, 263), 2);
-        this.arrayselSpells.push(spellThree);
-        spellThree.signalTest.add(this.spellClick, this);
+        var newSpell = this.allSpells.arraySpells[5];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 2, 263), 2);
+        this.arrayselSpells.push(newSpell);
+        newSpell.signalSpellSel.add(this.spellClick, this);
         //hechizo 7
-        var spellThree = this.allSpells.arraySpells[5];
-        spellThree.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 3, 263), 2);
-        this.arrayselSpells.push(spellThree);
-        spellThree.signalTest.add(this.spellClick, this);
+        var newSpell = this.allSpells.arraySpells[6];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 3, 263), 2);
+        this.arrayselSpells.push(newSpell);
+        newSpell.signalSpellSel.add(this.spellClick, this);
         //seleciono el hechioz uno por defecto
         this.selSpell = spellOne;
     };

@@ -15,6 +15,7 @@ var cDefinitionSpells = (function () {
         newSpell.energyCost = 20;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 0;
+        newSpell.coolDownTimeSec = 1;
         newSpell.explotionSprite = 'boom';
         newSpell.explotionFrameRate = 150;
         //hechizo 2
@@ -26,6 +27,7 @@ var cDefinitionSpells = (function () {
         newSpell.energyCost = 40;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 5;
+        newSpell.coolDownTimeSec = 0.5;
         newSpell.explotionSprite = 'boom3';
         newSpell.explotionFrameRate = 100;
         //hechizo 3
@@ -74,6 +76,20 @@ var cDefinitionSpells = (function () {
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells.push(newSpell);
         newSpell.idSpell = 6;
+        newSpell.spellName = "Escudo Protector";
+        newSpell.manaCost = 50;
+        newSpell.energyCost = 50;
+        newSpell.lifeCost = 2;
+        newSpell.posInSpritesheet = 3;
+        newSpell.explotionSprite = 'aura';
+        newSpell.explotionFrameRate = 5;
+        newSpell.explotionLoopNumber = 5;
+        newSpell.enabledTrowOtherPlayer = false;
+        newSpell.enabledTrowThisPlayer = true;
+        //hechizo 7
+        var newSpell = new cSpell(this.controlGame);
+        this.arraySpells.push(newSpell);
+        newSpell.idSpell = 7;
         newSpell.spellName = "Escudo Protector";
         newSpell.manaCost = 50;
         newSpell.energyCost = 50;

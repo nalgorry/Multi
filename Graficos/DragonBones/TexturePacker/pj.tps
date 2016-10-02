@@ -193,7 +193,6 @@
         <key>fileList</key>
         <array>
             <filename>../Sword</filename>
-            <filename>../arbol</filename>
             <filename>../pj</filename>
             <filename>../sword2</filename>
         </array>
