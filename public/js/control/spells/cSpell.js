@@ -5,6 +5,7 @@ var cSpell = (function () {
         this.enabledTrowOtherPlayer = true;
         this.enabledTrowThisPlayer = false;
         this.coolDownTimeSec = 2;
+        this.isSpellOnCoolDown = false;
     }
     cSpell.prototype.spellAnimation = function (actor) {
         //animiacion de la bomba 
@@ -55,6 +56,7 @@ var cSpell = (function () {
         this.signalSpellSel.dispatch(this);
     };
     cSpell.prototype.spellColdDown = function () {
+        this.isSpellOnCoolDown = true;
         this.spriteFocusCool.visible = true;
         this.spriteFocusFixCool.visible = true;
         this.spriteFocusCool.scale.set(1, 1);
@@ -64,6 +66,7 @@ var cSpell = (function () {
     cSpell.prototype.coolDownFinish = function () {
         this.spriteFocusCool.visible = false;
         this.spriteFocusFixCool.visible = false;
+        this.isSpellOnCoolDown = false;
     };
     return cSpell;
 }());

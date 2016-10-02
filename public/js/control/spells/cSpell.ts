@@ -18,6 +18,7 @@ class cSpell {
     //variables creadas por la clase
     public spellSprite:Phaser.Sprite
     public spellNumber:number
+    public isSpellOnCoolDown:boolean = false;
 
     public signalSpellSel:Phaser.Signal;
 
@@ -96,6 +97,8 @@ class cSpell {
 
     spellColdDown() {
 
+        this.isSpellOnCoolDown = true;
+        
         this.spriteFocusCool.visible = true;
         this.spriteFocusFixCool.visible = true;
         this.spriteFocusCool.scale.set(1,1);
@@ -110,6 +113,7 @@ class cSpell {
     coolDownFinish() {
         this.spriteFocusCool.visible = false;
         this.spriteFocusFixCool.visible = false;
+        this.isSpellOnCoolDown = false;
     }
 
 

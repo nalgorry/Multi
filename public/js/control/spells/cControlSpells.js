@@ -10,7 +10,7 @@ var cControlSpells = (function () {
     };
     cControlSpells.prototype.otherPlayerClick = function (player) {
         if (this.controlGame.atackMode == true) {
-            if (this.selSpell.enabledTrowOtherPlayer == true) {
+            if (this.selSpell.enabledTrowOtherPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
                     this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: player.idServer, idSpell: this.selSpell.idSpell });
                     this.selSpell.spellColdDown();
@@ -21,7 +21,7 @@ var cControlSpells = (function () {
     };
     cControlSpells.prototype.thisPlayerClick = function (player) {
         if (this.controlGame.atackMode == true) {
-            if (this.selSpell.enabledTrowThisPlayer == true) {
+            if (this.selSpell.enabledTrowThisPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
                     this.controlGame.controlServer.socket.emit('player click', { idPlayerHit: player.idServer, idSpell: this.selSpell.idSpell });
                     this.selSpell.spellColdDown();

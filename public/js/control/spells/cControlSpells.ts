@@ -25,7 +25,7 @@ class cControlSpells {
 
         if (this.controlGame.atackMode == true) {
             
-             if (this.selSpell.enabledTrowOtherPlayer == true) {
+             if (this.selSpell.enabledTrowOtherPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
                  if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
                     this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:player.idServer,idSpell: this.selSpell.idSpell });
                     this.selSpell.spellColdDown();
@@ -42,7 +42,7 @@ class cControlSpells {
         
         if (this.controlGame.atackMode == true) {
             
-             if (this.selSpell.enabledTrowThisPlayer == true) {
+             if (this.selSpell.enabledTrowThisPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
                  if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {                   
                         this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:player.idServer,idSpell: this.selSpell.idSpell });
                         this.selSpell.spellColdDown();
