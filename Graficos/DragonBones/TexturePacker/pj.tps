@@ -76,7 +76,7 @@
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
-        <uint>1</uint>
+        <uint>7</uint>
         <key>webpQualityLevel</key>
         <uint>101</uint>
         <key>textureSubPath</key>
@@ -195,6 +195,7 @@
             <filename>../Sword</filename>
             <filename>../pj</filename>
             <filename>../sword2</filename>
+            <filename>../idle</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

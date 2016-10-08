@@ -7,11 +7,15 @@ class cControlGame {
     public layer: Phaser.TilemapLayer;
     public hitLayer: Phaser.TilemapLayer;
     public cursors: Phaser.CursorKeys;
-    public controlServer: cControlServer;
+    
     public depthGroup:Phaser.Group;
     public interfaz:Phaser.Sprite;
     public atackMode:boolean;
+
+    public controlServer: cControlServer;
     public controlPlayer:cControlPlayer;
+    public controlConsole:cControlConsole;
+
     interfazWidth:number;
     marker; //to get the mouse
     point;
@@ -63,7 +67,6 @@ class cControlGame {
         var graphics = this.game.add.graphics(100, 100);
         graphics.drawRect(50, 250, 100, 100);
 
-      
         //para testear el centro de un sprite
         //this.point = new Phaser.Point(this.depthGroup.children[0].x, this.depthGroup.children[0].y);
 
@@ -83,6 +86,10 @@ class cControlGame {
 
         //esto controla el teclado
         //this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        //inicio la consola
+        this.controlConsole = new cControlConsole(this);
+
 
     }
 

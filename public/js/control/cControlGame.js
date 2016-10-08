@@ -50,6 +50,8 @@ var cControlGame = (function () {
         atackKeyOne.onDown.add(this.activateAtackMode, this);
         //esto controla el teclado
         //this.cursors = this.game.input.keyboard.createCursorKeys();
+        //inicio la consola
+        this.controlConsole = new cControlConsole(this);
     }
     cControlGame.prototype.ObjectsConfiguration = function (child) {
         child.anchor.set(0, 1);
