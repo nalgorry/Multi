@@ -31,10 +31,6 @@ class cControlPlayer extends cBasicActor {
     
     private gridSize: number;
 
-    //texto para mostrar daño (temporal)
-    style = { font: "15px Arial", fill: "#ff0044"};
-    hitText:Phaser.Text = this.controlGame.game.add.text(0, 15,"Trata de golpear a alguien",this.style);
-    
     constructor(controlGame:cControlGame) {
         super(controlGame);
 
@@ -42,7 +38,7 @@ class cControlPlayer extends cBasicActor {
         this.startActor();
         this.startPlayer();
         
-        this.hitText.fixedToCamera = true;
+
     }
 
     public startPlayer() {
@@ -107,20 +103,22 @@ class cControlPlayer extends cBasicActor {
         this.controlGame.controlPlayer.controlSpells.thisPlayerClick(this);
     }
 
-    //esto se activa cuando golepan al jugador actual
+    //esto se activa cuando golpean al jugador
     public playerHit(data) {
 
         //resto la vida y controlo si murio 
         if (this.controlFocus.UpdateLife(-data.damage)) {
             this.youDie(data);
         } 
+
+        this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Te golpearon por " + data.damage)
         
         this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda
 
     }
 
     public youHit(data) {
-        this.hitText.text = "Golpeaste a alguien por " + data.damage;
+        this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste por " + data.damage)
     }
 
     public youDie(data) {

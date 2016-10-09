@@ -22,13 +22,9 @@ var cControlPlayer = (function (_super) {
         this.seMueveY = false;
         this.playerIdle = false;
         this.lastAnimation = move.right;
-        //texto para mostrar daño (temporal)
-        this.style = { font: "15px Arial", fill: "#ff0044" };
-        this.hitText = this.controlGame.game.add.text(0, 15, "Trata de golpear a alguien", this.style);
         this.gridSize = controlGame.gridSize;
         this.startActor();
         this.startPlayer();
-        this.hitText.fixedToCamera = true;
     }
     cControlPlayer.prototype.startPlayer = function () {
         //Cargo el sistema de controlFocus
@@ -75,16 +71,17 @@ var cControlPlayer = (function (_super) {
     cControlPlayer.prototype.youClickYou = function () {
         this.controlGame.controlPlayer.controlSpells.thisPlayerClick(this);
     };
-    //esto se activa cuando golepan al jugador actual
+    //esto se activa cuando golpean al jugador
     cControlPlayer.prototype.playerHit = function (data) {
         //resto la vida y controlo si murio 
         if (this.controlFocus.UpdateLife(-data.damage)) {
             this.youDie(data);
         }
+        this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Te golpearon por " + data.damage);
         this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda
     };
     cControlPlayer.prototype.youHit = function (data) {
-        this.hitText.text = "Golpeaste a alguien por " + data.damage;
+        this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Golpeaste por " + data.damage);
     };
     cControlPlayer.prototype.youDie = function (data) {
         this.playerSprite.x = 0;
