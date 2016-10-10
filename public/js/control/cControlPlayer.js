@@ -65,8 +65,8 @@ var cControlPlayer = (function (_super) {
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars, this.controlFocus);
-        this.playerSprite.inputEnabled = true;
-        this.playerSprite.events.onInputDown.add(this.youClickYou, this);
+        this.armorSprite.inputEnabled = true;
+        this.armorSprite.events.onInputDown.add(this.youClickYou, this);
     };
     cControlPlayer.prototype.youClickYou = function () {
         this.controlGame.controlPlayer.controlSpells.thisPlayerClick(this);
@@ -77,11 +77,15 @@ var cControlPlayer = (function (_super) {
         if (this.controlFocus.UpdateLife(-data.damage)) {
             this.youDie(data);
         }
-        this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Te golpearon por " + data.damage);
-        this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda
+        if (data.damage != 0) {
+            this.controlGame.controlConsole.newMessage(enumMessage.youWereHit, "Te golpearon por " + data.damage);
+        }
+        this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda y la animación
     };
     cControlPlayer.prototype.youHit = function (data) {
-        this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Golpeaste por " + data.damage);
+        if (data.damage != 0) {
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Golpeaste por " + data.damage);
+        }
     };
     cControlPlayer.prototype.youDie = function (data) {
         this.playerSprite.x = 0;
@@ -176,7 +180,7 @@ var cControlPlayer = (function (_super) {
             this.lastSendTileY = this.tileY;
             this.lastdirMov = this.dirMovimiento;
             this.playerIdle = false;
-            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.dirMovimiento });
+            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.lastAnimation });
         }
         else if (isMovingX == false && isMovingY == false && this.playerIdle == false) {
             this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });

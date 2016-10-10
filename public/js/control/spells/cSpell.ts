@@ -9,11 +9,13 @@ class cSpell {
     public posInSpritesheet:number;
     public explotionSprite:string;
     public explotionFrameRate:number;
-    public explotionLoopNumber:number = 1;
+    public explotionTimeSeconds:number = 0;
+    public explotionFollowCharacter:boolean = true;
+    public explotionYOffset:number = -10;
     public enabledTrowOtherPlayer: boolean = true;
     public enabledTrowThisPlayer: boolean = false;
     public coolDownTimeSec:number = 2;
-
+    
     
     //variables creadas por la clase
     public spellSprite:Phaser.Sprite
@@ -28,25 +30,34 @@ class cSpell {
 
     public spellAnimation(actor:cBasicActor) {
         //animiacion de la bomba 
-        var boomSprite = this.controlGame.game.add.sprite(actor.playerSprite.x , 
-            actor.playerSprite.y,this.explotionSprite);    
+        if (this.explotionFollowCharacter == true) {
+            var boomSprite = this.controlGame.game.add.sprite(0 , this.explotionYOffset,
+                this.explotionSprite);
+            actor.playerSprite.addChild(boomSprite);
+        } else {
+            var boomSprite = this.controlGame.game.add.sprite(actor.playerSprite.x , actor.playerSprite.y + this.explotionYOffset,
+                this.explotionSprite);
+        }    
+
         boomSprite.anchor.set(0.5,1);
-        var animation = boomSprite.animations.add('boom');
         
-        if (this.explotionLoopNumber == 1) {
+        var animation = boomSprite.animations.add('boom');
+
+        actor.playerSprite.addChild(boomSprite);
+      
+        if (this.explotionTimeSeconds == 0) {
             boomSprite.animations.play('boom',this.explotionFrameRate,false,true);
         } else {
             boomSprite.animations.play('boom',this.explotionFrameRate,true,true);
+            this.controlGame.game.time.events.add(Phaser.Timer.SECOND * this.explotionTimeSeconds, this.animationFinish, animation);
         }
-        
-        animation.onLoop.add(this.loopAnimation,this);
+
 
     }
 
-    public loopAnimation(sprite:Phaser.Sprite, animation: Phaser.Animation) {
-        if (animation.loopCount == this.explotionLoopNumber - 1) {
+    public animationFinish() {
+            var animation:any = this;
             animation.loop = false;
-        }
     }
 
     public iniciateSpell(spellPos:Phaser.Point,spellNumber:number) {

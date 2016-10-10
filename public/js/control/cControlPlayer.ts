@@ -94,8 +94,8 @@ class cControlPlayer extends cBasicActor {
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars,this.controlFocus);
 
-        this.playerSprite.inputEnabled = true;
-        this.playerSprite.events.onInputDown.add(this.youClickYou, this);
+        this.armorSprite.inputEnabled = true;
+        this.armorSprite.events.onInputDown.add(this.youClickYou, this);
 
     }
 
@@ -111,14 +111,18 @@ class cControlPlayer extends cBasicActor {
             this.youDie(data);
         } 
 
-        this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Te golpearon por " + data.damage)
+        if (data.damage != 0 ) {
+            this.controlGame.controlConsole.newMessage(enumMessage.youWereHit,"Te golpearon por " + data.damage)
+        }
         
-        this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda
+        this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda y la animación
 
     }
 
     public youHit(data) {
-        this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste por " + data.damage)
+        if (data.damage != 0 ) {
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste por " + data.damage)
+        }
     }
 
     public youDie(data) {
@@ -230,7 +234,7 @@ class cControlPlayer extends cBasicActor {
             this.lastdirMov = this.dirMovimiento;
             this.playerIdle = false;
             
-            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.dirMovimiento });
+            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.lastAnimation });
         } else if (isMovingX == false && isMovingY == false && this.playerIdle == false) {
             this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
             this.playerIdle = true;

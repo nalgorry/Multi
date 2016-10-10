@@ -22,7 +22,7 @@ class cBasicActor {
     public setChatText(texto:string) {
 
         if (this.textChat == null) {
-            this.textChat = this.controlGame.game.add.text(0, -this.playerSprite.children[0].height - 18, "" , this.styleChat);
+            this.textChat = this.controlGame.game.add.text(0, -this.armorSprite.height - 18, "" , this.styleChat);
             this.playerSprite.addChild(this.textChat);
         }
 
@@ -50,9 +50,6 @@ class cBasicActor {
         var a = Phaser.Animation.generateFrameNames('Idle_right_',0,5,'.png');
         pjFull.animations.add('test',a,20,true);
         pjFull.animations.play('test',10,true);
-
-
-
 
         //sprite del jugador, aca se  cargan todas las partes del jugador
         this.playerSprite = this.controlGame.game.add.sprite(1000, 1000);
@@ -111,11 +108,13 @@ class cBasicActor {
     public onHit(data) {
         
         //texto con el daño
-        var hitText = this.controlGame.game.add.text(-30, -40, data.damage , this.styleHit);
-        this.playerSprite.addChild(hitText);
+        if (data.damage != 0) {
+            var hitText = this.controlGame.game.add.text(-30, -40, data.damage , this.styleHit);
+            this.playerSprite.addChild(hitText);
 
-        var tweenText = this.controlGame.game.add.tween(hitText).to({y: '-30'},500,undefined,true);
-        tweenText.onComplete.add(this.removeTweenText,hitText);
+            var tweenText = this.controlGame.game.add.tween(hitText).to({y: '-30'},1000,undefined,true);
+            tweenText.onComplete.add(this.removeTweenText,hitText);
+        }
 
         this.controlGame.controlPlayer.controlSpells.spellAnimation(this,data);
 

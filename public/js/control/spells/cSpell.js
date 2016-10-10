@@ -1,7 +1,9 @@
 var cSpell = (function () {
     function cSpell(controlGame) {
         this.controlGame = controlGame;
-        this.explotionLoopNumber = 1;
+        this.explotionTimeSeconds = 0;
+        this.explotionFollowCharacter = true;
+        this.explotionYOffset = -10;
         this.enabledTrowOtherPlayer = true;
         this.enabledTrowThisPlayer = false;
         this.coolDownTimeSec = 2;
@@ -9,21 +11,27 @@ var cSpell = (function () {
     }
     cSpell.prototype.spellAnimation = function (actor) {
         //animiacion de la bomba 
-        var boomSprite = this.controlGame.game.add.sprite(actor.playerSprite.x, actor.playerSprite.y, this.explotionSprite);
+        if (this.explotionFollowCharacter == true) {
+            var boomSprite = this.controlGame.game.add.sprite(0, this.explotionYOffset, this.explotionSprite);
+            actor.playerSprite.addChild(boomSprite);
+        }
+        else {
+            var boomSprite = this.controlGame.game.add.sprite(actor.playerSprite.x, actor.playerSprite.y + this.explotionYOffset, this.explotionSprite);
+        }
         boomSprite.anchor.set(0.5, 1);
         var animation = boomSprite.animations.add('boom');
-        if (this.explotionLoopNumber == 1) {
+        actor.playerSprite.addChild(boomSprite);
+        if (this.explotionTimeSeconds == 0) {
             boomSprite.animations.play('boom', this.explotionFrameRate, false, true);
         }
         else {
             boomSprite.animations.play('boom', this.explotionFrameRate, true, true);
+            this.controlGame.game.time.events.add(Phaser.Timer.SECOND * this.explotionTimeSeconds, this.animationFinish, animation);
         }
-        animation.onLoop.add(this.loopAnimation, this);
     };
-    cSpell.prototype.loopAnimation = function (sprite, animation) {
-        if (animation.loopCount == this.explotionLoopNumber - 1) {
-            animation.loop = false;
-        }
+    cSpell.prototype.animationFinish = function () {
+        var animation = this;
+        animation.loop = false;
     };
     cSpell.prototype.iniciateSpell = function (spellPos, spellNumber) {
         this.spellSprite = this.controlGame.game.add.sprite(spellPos.x, spellPos.y, 'spells', this.posInSpritesheet);

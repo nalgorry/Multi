@@ -18,8 +18,8 @@ class cOtherPlayer extends cBasicActor {
 
     public startPlayer() {       
         
-        this.playerSprite.inputEnabled = true;
-        this.playerSprite.events.onInputDown.add(this.youHitPlayer, this);
+        this.armorSprite.inputEnabled = true;
+        this.armorSprite.events.onInputDown.add(this.youHitPlayer, this);
 
         this.startAnimation('idle');
 

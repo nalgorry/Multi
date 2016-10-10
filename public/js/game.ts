@@ -24,11 +24,12 @@ class SimpleGame {
     preload() {
         this.game.load.tilemap('map', 'assets/map1.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', 'assets/tiles.png');
-        this.game.load.spritesheet('boom', 'assets/explosion.png',100,100);
+        this.game.load.spritesheet('boom', 'assets/explosion.png',50,50);
         this.game.load.spritesheet('boom2', 'assets/explosion2.png',96,96);
         this.game.load.spritesheet('boom3', 'assets/blueexplosion.png',66.66,66.66);
 
         this.game.load.spritesheet('aura', 'assets/aura80.png',70,80);
+        this.game.load.spritesheet('aura2', 'assets/aura2.png',20,20);
 
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40,70 );
         this.game.load.atlas('objects', 'assets/objects.png','assets/objects.json');

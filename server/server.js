@@ -50,20 +50,8 @@ function onChatSend(data) {
 function onPlayerClick(data) {
     var player = playerById(data.idPlayerHit);
     if (player != null) {
-        var damage = 0;
-        if (data.idSpell == 0) {
-            damage = Math.round(Math.random() * 40 + 40);
-        }
-        else if (data.idSpell == 1) {
-            damage = Math.round(Math.random() * 45 + 5);
-            if (Math.random() < 0.15) {
-                damage = damage + 100;
-                util.log("daño critico");
-            }
-        }
-        else if (data.idSpell == 2) {
-        }
-        player.playerLife -= damage;
+        //recorrro los hechizos para actual segun lo que hizo cada uno
+        var damage = player.spellActivated(data);
         // mando el golpe a los jugadores
         this.broadcast.emit('player hit', { id: player.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
         this.emit('you hit', { id: player.id, damage: damage, idSpell: data.idSpell });
@@ -74,8 +62,7 @@ function onPlayerClick(data) {
             player.playerLife = 100;
         }
     }
-    //this.broadcast.emit('power throw', {x:data. x, y:data.y});
-    socket.emit('power throw', { x: player.x, y: player.y });
+    socket.emit('power throw', { x: player.x, y: player.y }); //esto manda a todos, incluso al jugador actual
 }
 //on mouse click 
 function onMouseClick(data) {

@@ -14,8 +14,8 @@ var cOtherPlayer = (function (_super) {
         this.startPlayer();
     }
     cOtherPlayer.prototype.startPlayer = function () {
-        this.playerSprite.inputEnabled = true;
-        this.playerSprite.events.onInputDown.add(this.youHitPlayer, this);
+        this.armorSprite.inputEnabled = true;
+        this.armorSprite.events.onInputDown.add(this.youHitPlayer, this);
         this.startAnimation('idle');
     };
     cOtherPlayer.prototype.MoverJugador = function (data) {
