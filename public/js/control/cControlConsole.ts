@@ -74,6 +74,8 @@ class cConsoleMessage {
         var style
         if (this.type == enumMessage.youHit) {
             style = { font: "15px Arial", fill: "#64936e"};
+        } else if (this.type == enumMessage.youKill) {
+            style = { font: "15px Arial", fill: "#64936e"};
         } else if (this.type == enumMessage.information) {
             style = { font: "15px Arial", fill: "#3e76d1"};
         } else if (this.type == enumMessage.youWereHit){

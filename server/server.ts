@@ -7,13 +7,10 @@ var ioServer:SocketIO.Server = require('socket.io');
 //require('./cPlayer');
 import {cPlayer} from './cPlayer';
 
-//var Player:cPlayer = require('./cPlayer')
-
-
 var port = process.env.PORT || 8080
 
 // variables del juego
-var socket	// Socket controller
+var socket:SocketIO.Server	// Socket controller
 var players:cPlayer[]	// Array of connected players
 
 /* ************************************************
@@ -61,6 +58,14 @@ function onSocketConnection (client) {
   //chat listener
   client.on('Chat Send', onChatSend)
 
+    //chat listener
+  client.on('you die', onYouDie)
+
+}
+
+function onYouDie(data) {
+    util.log('mataste a ' + data.idPlayerKill);
+    socket.sockets.connected[data.idPlayerKill].emit('you kill',{idPlayer: this.id});
 }
 
 function onChatSend(data) {
@@ -79,7 +84,7 @@ function onPlayerClick(data) {
       var damage = player.spellActivated(data);
       
       // mando el golpe a los jugadores
-      this.broadcast.emit('player hit', {id: player.id, x: player.x, y: player.y,damage:damage, idSpell: data.idSpell});
+      this.broadcast.emit('player hit', {id: player.id, playerThatHit:this.id, x: player.x, y: player.y,damage:damage, idSpell: data.idSpell});
       this.emit('you hit', {id: player.id,damage: damage,idSpell: data.idSpell});
 
       //mataron a alguien finalmente 

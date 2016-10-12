@@ -117,7 +117,7 @@ class cControlServer {
     }
 
     onYouKill (data) {
-        
+        this.controlPlayer.youKill(data);
     }
 
     // Remove player, cuando un jugador se desconecta

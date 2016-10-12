@@ -88,11 +88,15 @@ var cControlPlayer = (function (_super) {
         }
     };
     cControlPlayer.prototype.youDie = function (data) {
+        console.log(data);
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
+        this.controlGame.controlServer.socket.emit('you die', { idPlayerKill: data.playerThatHit });
     };
     cControlPlayer.prototype.youKill = function (data) {
+        console.log("mataste a" + data);
+        this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste a " + data.idPlayer);
     };
     cControlPlayer.prototype.playerUpdate = function () {
         //me fijo para que lado se esta moviendo 

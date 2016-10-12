@@ -6,7 +6,6 @@ var ecstatic = require('ecstatic');
 var ioServer = require('socket.io');
 //require('./cPlayer');
 var cPlayer_1 = require('./cPlayer');
-//var Player:cPlayer = require('./cPlayer')
 var port = process.env.PORT || 8080;
 // variables del juego
 var socket; // Socket controller
@@ -42,6 +41,12 @@ function onSocketConnection(client) {
     client.on('player click', onPlayerClick);
     //chat listener
     client.on('Chat Send', onChatSend);
+    //chat listener
+    client.on('you die', onYouDie);
+}
+function onYouDie(data) {
+    util.log('mataste a ' + data.idPlayerKill);
+    socket.sockets.connected[data.idPlayerKill].emit('you kill', { idPlayer: this.id });
 }
 function onChatSend(data) {
     util.log('Player has chat: ' + data.text);
@@ -53,7 +58,7 @@ function onPlayerClick(data) {
         //recorrro los hechizos para actual segun lo que hizo cada uno
         var damage = player.spellActivated(data);
         // mando el golpe a los jugadores
-        this.broadcast.emit('player hit', { id: player.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
+        this.broadcast.emit('player hit', { id: player.id, playerThatHit: this.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
         this.emit('you hit', { id: player.id, damage: damage, idSpell: data.idSpell });
         //mataron a alguien finalmente 
         if (player.playerLife <= 0) {

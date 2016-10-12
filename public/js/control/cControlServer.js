@@ -75,6 +75,7 @@ var cControlServer = (function () {
         }
     };
     cControlServer.prototype.onYouKill = function (data) {
+        this.controlPlayer.youKill(data);
     };
     // Remove player, cuando un jugador se desconecta
     cControlServer.prototype.onRemovePlayer = function (data) {

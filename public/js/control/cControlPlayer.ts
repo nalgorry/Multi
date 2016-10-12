@@ -126,14 +126,16 @@ class cControlPlayer extends cBasicActor {
     }
 
     public youDie(data) {
-
+        console.log(data);
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
+        this.controlGame.controlServer.socket.emit('you die', {idPlayerKill:data.playerThatHit });
     }
 
     public youKill(data) {
-
+        console.log("mataste a" + data )
+        this.controlGame.controlConsole.newMessage(enumMessage.youKill,"Mataste a " + data.idPlayer);
     }
 
     public playerUpdate() {
