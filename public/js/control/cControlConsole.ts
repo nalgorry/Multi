@@ -10,10 +10,10 @@ class cControlConsole {
         var consoleHeight:number = 120;
 
         //creo el cuadrado donde va a ir la consola
-        this.consoleGraph = this.controlGame.game.add.graphics(5,controlGame.game.height - consoleHeight- 45);
-        this.consoleGraph.beginFill(0x141417);
+        this.consoleGraph = this.controlGame.game.add.graphics(5,controlGame.game.height - consoleHeight- 48);
+        this.consoleGraph.beginFill(0xedeeef);
         this.consoleGraph.fixedToCamera = true;
-        this.consoleGraph.alpha = 0.25;
+        this.consoleGraph.alpha = 0.75;
         this.consoleGraph.drawRect(0, 0, consoleWidth,consoleHeight);
 
         //inicio el array de mensajes
@@ -75,7 +75,7 @@ class cConsoleMessage {
         if (this.type == enumMessage.youHit) {
             style = { font: "15px Arial", fill: "#64936e"};
         } else if (this.type == enumMessage.youKill) {
-            style = { font: "15px Arial", fill: "#64936e"};
+            style = { font: "15px Arial", fill: "#806ad8"};
         } else if (this.type == enumMessage.information) {
             style = { font: "15px Arial", fill: "#3e76d1"};
         } else if (this.type == enumMessage.youWereHit){
