@@ -41,10 +41,18 @@ class cControlServer {
     }
 
     //chat text
-    public onSendChatText(text:string) {
+    public onSendChatText(text:string):boolean {
+        var isChat:boolean =  false;
+        
+        if(text.search("/name ") != null) {
+            var name = text.substring(5,text.length);
+            this.controlGame.controlServer.socket.emit('you change', { name: name });
+        } else {
+            this.socket.emit('Chat Send', { text: text });
+            isChat =  true;
+        }
 
-        this.socket.emit('Chat Send', { text: text });
-
+        return isChat
     }
 
     public onYouReceiveChat(data) {

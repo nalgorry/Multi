@@ -2,13 +2,15 @@ var util = require('util');
 
 export class cPlayer {
 
+
+
     public playerLife:number;
     public dirMov:number;
 
     public protectedField:boolean = false;
     public weakEfect:boolean = false;
 
-    constructor(public x:number, public y:number, public id:string) {
+    constructor(public playerId:string,public playerName:string, public x:number, public y:number) {
     }
 
     public spellActivated(data):number {

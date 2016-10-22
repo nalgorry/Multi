@@ -27,8 +27,11 @@ var cControlChat = (function () {
     }
     cControlChat.prototype.enterPress = function () {
         if (this.isActive) {
-            this.controlServer.onSendChatText(this.inputTextChat.value);
-            this.controlPlayer.setChatText(this.inputTextChat.value);
+            var isChat = this.controlServer.onSendChatText(this.inputTextChat.value);
+            //muestro el texto del chat si es chat unicamente
+            if (isChat == true) {
+                this.controlPlayer.setChatText(this.inputTextChat.value);
+            }
             this.inputTextChat.setText("");
             this.isActive = false;
         }

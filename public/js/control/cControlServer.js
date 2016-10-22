@@ -27,7 +27,16 @@ var cControlServer = (function () {
     };
     //chat text
     cControlServer.prototype.onSendChatText = function (text) {
-        this.socket.emit('Chat Send', { text: text });
+        var isChat = false;
+        if (text.search("/name ") != null) {
+            var name = text.substring(5, text.length);
+            this.controlGame.controlServer.socket.emit('you change', { name: name });
+        }
+        else {
+            this.socket.emit('Chat Send', { text: text });
+            isChat = true;
+        }
+        return isChat;
     };
     cControlServer.prototype.onYouReceiveChat = function (data) {
         this.controlChat.chatReceive(data);

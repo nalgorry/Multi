@@ -10,9 +10,6 @@ var port = process.env.PORT || 8080;
 // variables del juego
 var socket; // Socket controller
 var players; // Array of connected players
-/* ************************************************
-** GAME INITIALISATION
-************************************************ */
 // Create and start the http server
 var server = http.createServer(ecstatic({ root: path.resolve(__dirname, '../public') })).listen(port, function (err) {
     if (err) {
@@ -43,6 +40,14 @@ function onSocketConnection(client) {
     client.on('Chat Send', onChatSend);
     //chat listener
     client.on('you die', onYouDie);
+    //Player Change
+    client.on('you change', onYouChange);
+}
+function onYouChange(data) {
+    util.log('entra a cambio ' + data.idPlayerKill);
+    if (data.name != null) {
+        util.log('cambio nombre a ' + data.name);
+    }
 }
 function onYouDie(data) {
     util.log('mataste a ' + data.idPlayerKill);
@@ -58,11 +63,11 @@ function onPlayerClick(data) {
         //recorrro los hechizos para actual segun lo que hizo cada uno
         var damage = player.spellActivated(data);
         // mando el golpe a los jugadores
-        this.broadcast.emit('player hit', { id: player.id, playerThatHit: this.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
-        this.emit('you hit', { id: player.id, damage: damage, idSpell: data.idSpell });
+        this.broadcast.emit('player hit', { id: player.playerId, playerThatHit: this.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
+        this.emit('you hit', { id: player.playerId, damage: damage, idSpell: data.idSpell });
         //mataron a alguien finalmente 
         if (player.playerLife <= 0) {
-            this.broadcast.emit('player die', { id: player.id, x: player.x, y: player.y, damage: damage });
+            this.broadcast.emit('player die', { id: player.playerId, x: player.x, y: player.y, damage: damage });
             this.emit('you kill', { damage: damage });
             player.playerLife = 100;
         }
@@ -88,14 +93,13 @@ function onClientDisconnect() {
 // New player has joined
 function onNewPlayer(data) {
     // Create a new player
-    var newPlayer = new cPlayer_1.cPlayer(data.x, data.y, this.id);
-    newPlayer.playerLife = 100;
-    this.broadcast.emit('new player', { id: newPlayer.id, x: newPlayer.x, y: newPlayer.y });
+    var newPlayer = new cPlayer_1.cPlayer(this.id, 'name', data.x, data.y);
+    this.broadcast.emit('new player', { id: newPlayer.playerId, x: newPlayer.x, y: newPlayer.y });
     var i;
     var existingPlayer;
     for (i = 0; i < players.length; i++) {
         existingPlayer = players[i];
-        this.emit('new player', { id: existingPlayer.id, x: existingPlayer.x, y: existingPlayer.y });
+        this.emit('new player', { id: existingPlayer.playerId, x: existingPlayer.x, y: existingPlayer.y });
     }
     // Add new player to the players array
     players.push(newPlayer);
@@ -112,12 +116,12 @@ function onMovePlayer(data) {
     movePlayer.x = data.x;
     movePlayer.y = data.y;
     movePlayer.dirMov = data.dirMov;
-    this.broadcast.emit('move player', { id: movePlayer.id, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
+    this.broadcast.emit('move player', { id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
 }
 function playerById(id) {
     var i;
     for (i = 0; i < players.length; i++) {
-        if (players[i].id === id) {
+        if (players[i].playerId === id) {
             return players[i];
         }
     }

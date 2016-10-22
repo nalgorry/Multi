@@ -1,10 +1,11 @@
 "use strict";
 var util = require('util');
 var cPlayer = (function () {
-    function cPlayer(x, y, id) {
+    function cPlayer(playerId, playerName, x, y) {
+        this.playerId = playerId;
+        this.playerName = playerName;
         this.x = x;
         this.y = y;
-        this.id = id;
         this.protectedField = false;
         this.weakEfect = false;
     }
