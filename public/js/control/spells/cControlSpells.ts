@@ -153,5 +153,25 @@ class cControlSpells {
 
     }
 
+    public spellSelectKeyboard(sender:Phaser.Key) {
+
+            //selecciono el hechizo segun la tecla que toco
+            if (sender.keyCode == Phaser.Keyboard.ONE) {
+                var spell = this.arrayselSpells[3];
+            } else if (sender.keyCode == Phaser.Keyboard.TWO) {
+                var spell = this.arrayselSpells[4];
+            } else if (sender.keyCode == Phaser.Keyboard.THREE) {
+                var spell = this.arrayselSpells[5];
+            }  else if (sender.keyCode == Phaser.Keyboard.FOUR) {
+                var spell = this.arrayselSpells[6];
+            } 
+
+            this.borderSpell.cameraOffset.x = spell.spellSprite.cameraOffset.x + spell.spellSprite.width/2;
+            this.borderSpell.cameraOffset.y = spell.spellSprite.cameraOffset.y + spell.spellSprite.height/2;
+            this.selSpell = spell;
+            this.controlGame.activateAtackMode();
+
+    }
+
 
 }

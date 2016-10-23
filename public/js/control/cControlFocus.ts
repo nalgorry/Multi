@@ -146,11 +146,11 @@ class cControlFocus {
 
         var selectedFocus:FocusSystem;
 
-        if (idSpell == 3) {//id = 3 focus vida, 4 focus mana, 5 focus energia
+        if (idSpell == 0) {
             selectedFocus = FocusSystem.life;
-        } else if (idSpell == 4 ) {
+        } else if (idSpell == 1 ) {
             selectedFocus = FocusSystem.mana;
-        } else if (idSpell == 5 ) {
+        } else if (idSpell == 2 ) {
             selectedFocus = FocusSystem.energy;
         }
         

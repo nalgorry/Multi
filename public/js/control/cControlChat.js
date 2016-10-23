@@ -29,7 +29,7 @@ var cControlChat = (function () {
         if (this.isActive) {
             var text = this.inputTextChat.value;
             //me fijo si mando un chat comun, o si uso algun texto para setear alguna variable del juego
-            if (text.search("/name ") != -1) {
+            if (text.toUpperCase().search("/NAME ") != -1) {
                 var name = text.substring(6, text.length);
                 this.controlServer.onSendChatText('you change', { name: name });
                 this.controlPlayer.setNameText(name);

@@ -47,15 +47,16 @@ function onYouChange(data) {
     if (data.name != null) {
         var player = playerById(this.id);
         if (player != null) {
-            util.log("entra");
             player.playerName = data.name;
             this.broadcast.emit('player change', { id: this.id, name: data.name });
         }
     }
 }
 function onYouDie(data) {
-    util.log('mataste a ' + data.idPlayerKill);
-    socket.sockets.connected[data.idPlayerKill].emit('you kill', { idPlayer: this.id });
+    var player = playerById(this.id);
+    if (player != null) {
+        socket.sockets.connected[data.idPlayerKill].emit('you kill', { name: player.playerName });
+    }
 }
 function onChatSend(data) {
     util.log('Player has chat: ' + data.text);
@@ -69,12 +70,6 @@ function onPlayerClick(data) {
         // mando el golpe a los jugadores
         this.broadcast.emit('player hit', { id: player.playerId, playerThatHit: this.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
         this.emit('you hit', { id: player.playerId, damage: damage, idSpell: data.idSpell });
-        //mataron a alguien finalmente 
-        if (player.playerLife <= 0) {
-            this.broadcast.emit('player die', { id: player.playerId, x: player.x, y: player.y, damage: damage });
-            this.emit('you kill', { damage: damage });
-            player.playerLife = 100;
-        }
     }
     socket.emit('power throw', { x: player.x, y: player.y }); //esto manda a todos, incluso al jugador actual
 }

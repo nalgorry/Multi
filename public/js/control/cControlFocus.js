@@ -89,13 +89,13 @@ var cControlFocus = (function () {
     };
     cControlFocus.prototype.SelectFocusFromSpell = function (idSpell) {
         var selectedFocus;
-        if (idSpell == 3) {
+        if (idSpell == 0) {
             selectedFocus = FocusSystem.life;
         }
-        else if (idSpell == 4) {
+        else if (idSpell == 1) {
             selectedFocus = FocusSystem.mana;
         }
-        else if (idSpell == 5) {
+        else if (idSpell == 2) {
             selectedFocus = FocusSystem.energy;
         }
         //si vuelve a tocar el sistema seleccionado le saco la selección

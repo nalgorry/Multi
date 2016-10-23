@@ -57,11 +57,13 @@ var cControlPlayer = (function (_super) {
         D.onUp.add(this.moveKeyRelease, this);
         //controles de Focus 
         var one = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
-        one.onDown.add(this.controlFocus.SelectLifeFocus, this.controlFocus);
+        one.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
         var two = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
-        two.onDown.add(this.controlFocus.SelectManaFocus, this.controlFocus);
+        two.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
         var three = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
-        three.onDown.add(this.controlFocus.SelectEnergyFocus, this.controlFocus);
+        three.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
+        var four = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+        four.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars, this.controlFocus);
@@ -88,15 +90,13 @@ var cControlPlayer = (function (_super) {
         }
     };
     cControlPlayer.prototype.youDie = function (data) {
-        console.log(data);
         this.playerSprite.x = 0;
         this.playerSprite.y = 0;
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
         this.controlGame.controlServer.socket.emit('you die', { idPlayerKill: data.playerThatHit });
     };
     cControlPlayer.prototype.youKill = function (data) {
-        console.log("mataste a" + data);
-        this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste a " + data.idPlayer);
+        this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste a " + data.name);
     };
     cControlPlayer.prototype.playerUpdate = function () {
         //me fijo para que lado se esta moviendo 
