@@ -101,7 +101,7 @@ declare module Fabrique {
         /**
          *
          */
-        private startFocus();
+        public startFocus();
         private keyUpProcessor();
         /**
          * Update the text value in the box, and make sure the cursor is positioned correctly
