@@ -5,17 +5,22 @@ class cBasicActor {
     public playerSprite: Phaser.Sprite;
     public weaponSprite: Phaser.Sprite;
     public armorSprite: Phaser.Sprite;
-    public controlGame:cControlGame
+    public controlGame:cControlGame;
     
-    textChat: Phaser.Text;
-    styleChat;
-    styleHit;
+    private textChat: Phaser.Text;
+    private textName:Phaser.Text;
+
+    private styleChat;
+    private styleName;
+    private styleHit;
+
 
     constructor(_controlGame:cControlGame) {
         
         this.controlGame = _controlGame;
         this.styleChat = { font: "16px Arial", fill: "#000000" };
-        this.styleHit = { font: "22px Arial", fill: "#612131" };
+        this.styleName = { font: "16px Arial", fill: "#3e76d1" };
+        this.styleHit = { font: "16px Arial", fill: "#612131" };
 
     }
 
@@ -28,6 +33,19 @@ class cBasicActor {
 
         this.textChat.text = texto;
         this.textChat.x = -this.textChat.width/2;
+
+    }
+
+    public setNameText(texto:string) {
+
+        if (this.textName == null) {
+            this.textName = this.controlGame.game.add.text(0, 0, "" , this.styleName);
+            this.playerSprite.addChild(this.textName);
+        }
+
+        this.textName.text = texto;
+        this.textName.x = -this.textName.width/2;
+
 
     }
 

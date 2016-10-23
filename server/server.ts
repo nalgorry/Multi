@@ -63,10 +63,16 @@ function onSocketConnection (client) {
 }
 
 function onYouChange(data) {
-  util.log('entra a cambio ' + data.idPlayerKill);
 
     if(data.name != null) {
-      util.log ('cambio nombre a ' + data.name)
+      var player:cPlayer = playerById(this.id);
+
+      if (player != null) {
+        util.log("entra");
+        player.playerName = data.name;
+        this.broadcast.emit('player change', {id: this.id, name:data.name})
+      }
+
     }
 
 }
@@ -134,15 +140,17 @@ function onClientDisconnect () {
 function onNewPlayer (data) {
   
   // Create a new player
-  var newPlayer:cPlayer = new cPlayer(this.id,'name',data.x, data.y)
+  var newPlayer:cPlayer = new cPlayer(this.id,data.name,data.x, data.y)
   
-  this.broadcast.emit('new player', {id: newPlayer.playerId, x: newPlayer.x, y: newPlayer.y})
+  this.broadcast.emit('new player', {id: newPlayer.playerId, x: newPlayer.x, y: newPlayer.y, name:data.name})
 
   var i:number;
   var existingPlayer: cPlayer;
   for (i = 0; i < players.length; i++) { // Send existing players to the new player
     existingPlayer = players[i]
-    this.emit('new player', {id: existingPlayer.playerId, x: existingPlayer.x, y: existingPlayer.y})
+    this.emit('new player', {id: existingPlayer.playerId, 
+      x: existingPlayer.x, y: existingPlayer.y,
+      name:existingPlayer.playerName})
   }
 
   // Add new player to the players array

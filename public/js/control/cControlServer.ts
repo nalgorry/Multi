@@ -31,28 +31,29 @@ class cControlServer {
 
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
         this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
+        this.socket.on('player change', cControlServer.prototype.onPlayerChange.bind(this));
         
         
         
         }
+
+
+    public onPlayerChange(data) {
+        
+        if (data.name != null) {
+            this.controlOtherPlayers.playerById(data.id).setNameText(data.name);
+        }
+    }
 
     public onPowerThrow(data) {
         
     }
 
     //chat text
-    public onSendChatText(text:string):boolean {
-        var isChat:boolean =  false;
+    public onSendChatText(type:string,argsToSend) {
         
-        if(text.search("/name ") != null) {
-            var name = text.substring(5,text.length);
-            this.controlGame.controlServer.socket.emit('you change', { name: name });
-        } else {
-            this.socket.emit('Chat Send', { text: text });
-            isChat =  true;
-        }
+        this.controlGame.controlServer.socket.emit(type, argsToSend);
 
-        return isChat
     }
 
     public onYouReceiveChat(data) {
@@ -67,7 +68,9 @@ class cControlServer {
         console.log('Connected to socket server');
 
         this.controlPlayer.idServer = "/#" + this.socket.id;
-        this.socket.emit('new player', { x: this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.x), y: this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.y) });
+        this.socket.emit('new player', { x: this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.x), 
+            y: this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.y),
+            name: 'Invitado' });
 
     }
 

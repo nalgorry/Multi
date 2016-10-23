@@ -22,21 +22,18 @@ var cControlServer = (function () {
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
         this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
+        this.socket.on('player change', cControlServer.prototype.onPlayerChange.bind(this));
     }
+    cControlServer.prototype.onPlayerChange = function (data) {
+        if (data.name != null) {
+            this.controlOtherPlayers.playerById(data.id).setNameText(data.name);
+        }
+    };
     cControlServer.prototype.onPowerThrow = function (data) {
     };
     //chat text
-    cControlServer.prototype.onSendChatText = function (text) {
-        var isChat = false;
-        if (text.search("/name ") != null) {
-            var name = text.substring(5, text.length);
-            this.controlGame.controlServer.socket.emit('you change', { name: name });
-        }
-        else {
-            this.socket.emit('Chat Send', { text: text });
-            isChat = true;
-        }
-        return isChat;
+    cControlServer.prototype.onSendChatText = function (type, argsToSend) {
+        this.controlGame.controlServer.socket.emit(type, argsToSend);
     };
     cControlServer.prototype.onYouReceiveChat = function (data) {
         this.controlChat.chatReceive(data);
@@ -45,7 +42,9 @@ var cControlServer = (function () {
     cControlServer.prototype.onSocketConnected = function () {
         console.log('Connected to socket server');
         this.controlPlayer.idServer = "/#" + this.socket.id;
-        this.socket.emit('new player', { x: this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.x), y: this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.y) });
+        this.socket.emit('new player', { x: this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.x),
+            y: this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.y),
+            name: 'Invitado' });
     };
     // Socket disconnected
     cControlServer.prototype.onSocketDisconnect = function () {

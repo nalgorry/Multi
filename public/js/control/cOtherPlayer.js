@@ -11,11 +11,13 @@ var cOtherPlayer = (function (_super) {
         this.tileX = data.x;
         this.tileY = data.y;
         this.startActor(); //esto inicia todo el jugador con sus elementos
-        this.startPlayer();
+        this.startPlayer(data);
     }
-    cOtherPlayer.prototype.startPlayer = function () {
+    cOtherPlayer.prototype.startPlayer = function (data) {
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youHitPlayer, this);
+        console.log(data);
+        this.setNameText(data.name);
         this.startAnimation('idle');
     };
     cOtherPlayer.prototype.MoverJugador = function (data) {

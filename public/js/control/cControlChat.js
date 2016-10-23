@@ -27,9 +27,15 @@ var cControlChat = (function () {
     }
     cControlChat.prototype.enterPress = function () {
         if (this.isActive) {
-            var isChat = this.controlServer.onSendChatText(this.inputTextChat.value);
-            //muestro el texto del chat si es chat unicamente
-            if (isChat == true) {
+            var text = this.inputTextChat.value;
+            //me fijo si mando un chat comun, o si uso algun texto para setear alguna variable del juego
+            if (text.search("/name ") != -1) {
+                var name = text.substring(6, text.length);
+                this.controlServer.onSendChatText('you change', { name: name });
+                this.controlPlayer.setNameText(name);
+            }
+            else {
+                this.controlServer.onSendChatText('Chat Send', { text: text });
                 this.controlPlayer.setChatText(this.inputTextChat.value);
             }
             this.inputTextChat.setText("");

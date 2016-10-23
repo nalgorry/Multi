@@ -2,7 +2,8 @@ var cBasicActor = (function () {
     function cBasicActor(_controlGame) {
         this.controlGame = _controlGame;
         this.styleChat = { font: "16px Arial", fill: "#000000" };
-        this.styleHit = { font: "22px Arial", fill: "#612131" };
+        this.styleName = { font: "16px Arial", fill: "#3e76d1" };
+        this.styleHit = { font: "16px Arial", fill: "#612131" };
     }
     cBasicActor.prototype.setChatText = function (texto) {
         if (this.textChat == null) {
@@ -11,6 +12,14 @@ var cBasicActor = (function () {
         }
         this.textChat.text = texto;
         this.textChat.x = -this.textChat.width / 2;
+    };
+    cBasicActor.prototype.setNameText = function (texto) {
+        if (this.textName == null) {
+            this.textName = this.controlGame.game.add.text(0, 0, "", this.styleName);
+            this.playerSprite.addChild(this.textName);
+        }
+        this.textName.text = texto;
+        this.textName.x = -this.textName.width / 2;
     };
     cBasicActor.prototype.startActor = function () {
         var test = this.controlGame.game.add.sprite(1000, 1000, 'pj');
