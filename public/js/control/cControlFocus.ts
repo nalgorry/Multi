@@ -183,6 +183,21 @@ class cControlFocus {
         this.SelectFocus(FocusSystem.nothing);
     }
 
+    public SelectRotativeFocus() {
+
+        console.log("entra");
+
+        if (this.actualFocusSystem == FocusSystem.life) {
+            this.SelectManaFocus();
+        } else if (this.actualFocusSystem == FocusSystem.mana) {
+            this.SelectEnergyFocus();
+        } else if (this.actualFocusSystem == FocusSystem.energy || 
+        this.actualFocusSystem == FocusSystem.nothing) {
+            this.SelectLifeFocus();
+        }
+
+    }
+
     private SelectFocus(wichFocus:FocusSystem) {
         
         switch (wichFocus) {

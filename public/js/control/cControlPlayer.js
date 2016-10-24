@@ -55,7 +55,7 @@ var cControlPlayer = (function (_super) {
         A.onUp.add(this.moveKeyRelease, this);
         S.onUp.add(this.moveKeyRelease, this);
         D.onUp.add(this.moveKeyRelease, this);
-        //controles de Focus 
+        //controles de Hechizos 
         var one = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
         one.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
         var two = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
@@ -64,9 +64,15 @@ var cControlPlayer = (function (_super) {
         three.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
         var four = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
         four.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
+        //controles de focus
+        var e = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        e.onDown.add(this.controlFocus.SelectRotativeFocus, this.controlFocus);
+        var r = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.R);
+        r.onDown.add(this.controlFocus.SelectNothingFocus, this.controlFocus);
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars, this.controlFocus);
+        //para poder tirar poderes sobre si mismo.
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youClickYou, this);
     };

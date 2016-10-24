@@ -120,6 +120,19 @@ var cControlFocus = (function () {
     cControlFocus.prototype.SelectNothingFocus = function () {
         this.SelectFocus(FocusSystem.nothing);
     };
+    cControlFocus.prototype.SelectRotativeFocus = function () {
+        console.log("entra");
+        if (this.actualFocusSystem == FocusSystem.life) {
+            this.SelectManaFocus();
+        }
+        else if (this.actualFocusSystem == FocusSystem.mana) {
+            this.SelectEnergyFocus();
+        }
+        else if (this.actualFocusSystem == FocusSystem.energy ||
+            this.actualFocusSystem == FocusSystem.nothing) {
+            this.SelectLifeFocus();
+        }
+    };
     cControlFocus.prototype.SelectFocus = function (wichFocus) {
         switch (wichFocus) {
             case FocusSystem.life:
