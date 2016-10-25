@@ -3,7 +3,6 @@ class cControlSpells {
     public selSpell:cSpell;
     public arrayselSpells: Array<cSpell>;
     public borderSpell:Phaser.Graphics;
-    public borderFocus:Phaser.Graphics;
     private allSpells:cDefinitionSpells;
 
     constructor(public controlGame:cControlGame) {
@@ -63,11 +62,6 @@ class cControlSpells {
         this.borderSpell.fixedToCamera = true;
         this.borderSpell.drawCircle(0, 0, 40);
 
-        //dibujo el marco para el focusthis.borderSpell = this.controlGame.game.add.graphics(0,0);
-        this.borderFocus = this.controlGame.game.add.graphics(0,0);
-        this.borderFocus.lineStyle(2, 0x141417, 1);
-        this.borderFocus.fixedToCamera = true;
-        this.borderFocus.drawCircle(0, 0, 40);
     }
 
     private createSpells() {
@@ -139,9 +133,7 @@ class cControlSpells {
 
         //focus
         if (sender.idSpell == 0 || sender.idSpell == 1 || sender.idSpell == 2) {
-            this.borderFocus.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width/2;
-            this.borderFocus.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height/2;
-            this.borderFocus.visible = this.controlGame.controlPlayer.controlFocus.SelectFocusFromSpell(sender.idSpell) //me devuelve false si salio del focus
+            this.controlGame.controlPlayer.controlFocus.SelectFocusFromSpell(sender.idSpell) //me devuelve false si salio del focus
         } else { //resto de los hechizos 
 
             this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width/2;

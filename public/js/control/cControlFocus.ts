@@ -1,9 +1,9 @@
 enum FocusSystem {
-    nothing = 0, 
-    life = 1,
-    mana = 2,
-    energy = 3,
-    exp = 4
+    life = 0,
+    mana = 1,
+    energy = 2,
+    exp = 3,
+    nothing = 4, 
     }
 
 class cControlFocus {
@@ -47,9 +47,10 @@ class cControlFocus {
     manaBar:Phaser.Sprite;
     energyBar:Phaser.Sprite;
     expBar:Phaser.Sprite;
-
-    //recuadro para seleccionar una de las barras
+    
+    //recuadro para seleccionar una de las barrasy el circulo
     public rectangleFocus:Phaser.Graphics;
+    public borderFocus:Phaser.Graphics;
     
     constructor(public controlGame:cControlGame) {
     
@@ -185,8 +186,6 @@ class cControlFocus {
 
     public SelectRotativeFocus() {
 
-        console.log("entra");
-
         if (this.actualFocusSystem == FocusSystem.life) {
             this.SelectManaFocus();
         } else if (this.actualFocusSystem == FocusSystem.mana) {
@@ -238,9 +237,17 @@ class cControlFocus {
                 this.actualFocusEnergy = this.speedNormalEnergy;
                 this.rectangleFocus.visible = false;
                 this.actualFocusSystem = FocusSystem.nothing;
-
+                
                 break;
-        }     
+        }  
+
+        //selecciono el circulo de focus
+        var spellFocus:cSpell = this.controlGame.controlPlayer.controlSpells.arrayselSpells[wichFocus];
+
+        this.borderFocus.cameraOffset.x = spellFocus.spellSprite.cameraOffset.x + spellFocus.spellSprite.width/2;
+        this.borderFocus.cameraOffset.y = spellFocus.spellSprite.cameraOffset.y + spellFocus.spellSprite.height/2;
+
+        if (wichFocus != FocusSystem.nothing) {this.borderFocus.visible = true} else {this.borderFocus.visible = false} 
     }
 
     private LoadBars() {
@@ -333,6 +340,12 @@ class cControlFocus {
         this.rectangleFocus.cameraOffset.y = 125;
         
         this.rectangleFocus.visible = false;
+
+        //para hacer un circulo en el hechizo focus        //dibujo el marco para el focusthis.borderSpell = this.controlGame.game.add.graphics(0,0);
+        this.borderFocus = this.controlGame.game.add.graphics(0,0);
+        this.borderFocus.lineStyle(2, 0x141417, 1);
+        this.borderFocus.fixedToCamera = true;
+        this.borderFocus.drawCircle(0, 0, 42);
 
     }
 

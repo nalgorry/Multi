@@ -1,10 +1,10 @@
 var FocusSystem;
 (function (FocusSystem) {
-    FocusSystem[FocusSystem["nothing"] = 0] = "nothing";
-    FocusSystem[FocusSystem["life"] = 1] = "life";
-    FocusSystem[FocusSystem["mana"] = 2] = "mana";
-    FocusSystem[FocusSystem["energy"] = 3] = "energy";
-    FocusSystem[FocusSystem["exp"] = 4] = "exp";
+    FocusSystem[FocusSystem["life"] = 0] = "life";
+    FocusSystem[FocusSystem["mana"] = 1] = "mana";
+    FocusSystem[FocusSystem["energy"] = 2] = "energy";
+    FocusSystem[FocusSystem["exp"] = 3] = "exp";
+    FocusSystem[FocusSystem["nothing"] = 4] = "nothing";
 })(FocusSystem || (FocusSystem = {}));
 var cControlFocus = (function () {
     function cControlFocus(controlGame) {
@@ -121,7 +121,6 @@ var cControlFocus = (function () {
         this.SelectFocus(FocusSystem.nothing);
     };
     cControlFocus.prototype.SelectRotativeFocus = function () {
-        console.log("entra");
         if (this.actualFocusSystem == FocusSystem.life) {
             this.SelectManaFocus();
         }
@@ -169,6 +168,16 @@ var cControlFocus = (function () {
                 this.rectangleFocus.visible = false;
                 this.actualFocusSystem = FocusSystem.nothing;
                 break;
+        }
+        //selecciono el circulo de focus
+        var spellFocus = this.controlGame.controlPlayer.controlSpells.arrayselSpells[wichFocus];
+        this.borderFocus.cameraOffset.x = spellFocus.spellSprite.cameraOffset.x + spellFocus.spellSprite.width / 2;
+        this.borderFocus.cameraOffset.y = spellFocus.spellSprite.cameraOffset.y + spellFocus.spellSprite.height / 2;
+        if (wichFocus != FocusSystem.nothing) {
+            this.borderFocus.visible = true;
+        }
+        else {
+            this.borderFocus.visible = false;
         }
     };
     cControlFocus.prototype.LoadBars = function () {
@@ -246,6 +255,11 @@ var cControlFocus = (function () {
         this.rectangleFocus.cameraOffset.x = this.lifeBar.x - this.lifeBar.width;
         this.rectangleFocus.cameraOffset.y = 125;
         this.rectangleFocus.visible = false;
+        //para hacer un circulo en el hechizo focus        //dibujo el marco para el focusthis.borderSpell = this.controlGame.game.add.graphics(0,0);
+        this.borderFocus = this.controlGame.game.add.graphics(0, 0);
+        this.borderFocus.lineStyle(2, 0x141417, 1);
+        this.borderFocus.fixedToCamera = true;
+        this.borderFocus.drawCircle(0, 0, 42);
     };
     return cControlFocus;
 }());
