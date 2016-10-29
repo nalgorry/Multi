@@ -33,6 +33,8 @@ var SimpleGame = (function () {
         this.controlGame.controlPlayer = this.controlPlayer;
         //inicio los jugadores enemigos
         this.controlOtherPlayers = new cControlOtherPlayers(this.controlGame);
+        //inicio los monstruos
+        this.controlMonsters = new cControlMonsters(this.controlGame);
         //inicio el chat
         this.controlChat = new cControlChat(this.controlGame, this.controlPlayer, this.controlOtherPlayers);
         //inicio el servidor

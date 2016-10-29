@@ -72,15 +72,16 @@ class cControlPlayer extends cBasicActor {
         var S = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.S);
         var D = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.D);
        
+        W.onUp.add(this.moveKeyRelease,this);
+        A.onUp.add(this.moveKeyRelease,this);
+        S.onUp.add(this.moveKeyRelease,this);
+        D.onUp.add(this.moveKeyRelease,this);
+
         W.onDown.add(this.moveKeyPress,this);
         A.onDown.add(this.moveKeyPress,this);
         S.onDown.add(this.moveKeyPress,this);
         D.onDown.add(this.moveKeyPress,this);
         
-        W.onUp.add(this.moveKeyRelease,this);
-        A.onUp.add(this.moveKeyRelease,this);
-        S.onUp.add(this.moveKeyRelease,this);
-        D.onUp.add(this.moveKeyRelease,this);
 
         //controles de Hechizos 
         var one = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
@@ -279,26 +280,25 @@ class cControlPlayer extends cBasicActor {
 
      public moveKeyRelease(key:Phaser.Key) {
 
-        //me fijo que tecla solto
-        if (key.keyCode == Phaser.Keyboard.W)
+
+        //me fijo que tecla solto y si no toco muy rapido la tecla en dir contraria
+        if (key.keyCode == Phaser.Keyboard.W && this.lastMoveY == -1)
         {
             this.seMueveY = false;
         }
-        else if (key.keyCode == Phaser.Keyboard.S)
+        else if (key.keyCode == Phaser.Keyboard.S && this.lastMoveY == 1)
         {
             this.seMueveY = false;
         }
-        else if (key.keyCode == Phaser.Keyboard.A)
+        else if (key.keyCode == Phaser.Keyboard.A && this.lastMoveX == -1)
         {
             this.seMueveX = false;
         }
-        else if (key.keyCode == Phaser.Keyboard.D)
+        else if (key.keyCode == Phaser.Keyboard.D && this.lastMoveX == 1)
         {
             this.seMueveX = false;
         }
     
-
-
     }
 
 

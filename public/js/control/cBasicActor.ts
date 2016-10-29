@@ -45,15 +45,13 @@ class cBasicActor {
 
         this.textName.text = texto;
         this.textName.x = -this.textName.width/2;
-
-
     }
 
     public startActor() {       
 
         var test:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj');
         test.anchor.set(0.5,0);
-        var a = Phaser.Animation.generateFrameNames('pj_',0,5,'.png');
+        var a = Phaser.Animation.generateFrameNames('Golpe_',0,5,'.png');
         test.animations.add('test',a,20,true);
         test.animations.play('test',10,true);
 

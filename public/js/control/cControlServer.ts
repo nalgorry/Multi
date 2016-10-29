@@ -26,7 +26,7 @@ class cControlServer {
         this.socket.on('player hit', cControlServer.prototype.onPlayerHit.bind(this));
         this.socket.on('you hit', cControlServer.prototype.onYouHit.bind(this));
 
-        this.socket.on('player die', cControlServer.prototype.onPlayerDie.bind(this));
+        this.socket.on('you die', cControlServer.prototype.onPlayerDie.bind(this));
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
 
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
@@ -118,13 +118,11 @@ class cControlServer {
 
     }
 
-    // Someone has die
+    // Te hicieron pure, veamos quien fue
     onPlayerDie (data) {
-
-        if (data.id === this.controlPlayer.idServer) {
-            //this.controlPlayer.youDie(data) 
-        }
-
+        console.log("entra");
+        this.controlGame.controlConsole.newMessage(
+            enumMessage.youDie,"Has Muerto. Te Mató " + data.name)
     }
 
     onYouKill (data) {

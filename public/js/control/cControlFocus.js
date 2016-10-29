@@ -127,8 +127,10 @@ var cControlFocus = (function () {
         else if (this.actualFocusSystem == FocusSystem.mana) {
             this.SelectEnergyFocus();
         }
-        else if (this.actualFocusSystem == FocusSystem.energy ||
-            this.actualFocusSystem == FocusSystem.nothing) {
+        else if (this.actualFocusSystem == FocusSystem.energy) {
+            this.SelectNothingFocus();
+        }
+        else if (this.actualFocusSystem == FocusSystem.nothing) {
             this.SelectLifeFocus();
         }
     };

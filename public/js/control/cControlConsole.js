@@ -54,6 +54,12 @@ var cConsoleMessage = (function () {
         else if (this.type == enumMessage.youWereHit) {
             style = { font: "15px Arial", fill: "#ff0044" };
         }
+        else if (this.type == enumMessage.youDie) {
+            style = { font: "15px Arial", fill: "#ff0044" };
+        }
+        else {
+            style = { font: "15px Arial", fill: "#3e76d1" };
+        }
         return style;
     };
     return cConsoleMessage;

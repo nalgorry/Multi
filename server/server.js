@@ -33,12 +33,10 @@ function onSocketConnection(client) {
     // Listen for move player message
     client.on('move player', onMovePlayer);
     //Listen for mouses click
-    client.on('mouse click', onMouseClick);
-    //Listen for mouses click
     client.on('player click', onPlayerClick);
     //chat listener
     client.on('Chat Send', onChatSend);
-    //chat listener
+    //te mataron :(
     client.on('you die', onYouDie);
     //Player Change
     client.on('you change', onYouChange);
@@ -54,8 +52,14 @@ function onYouChange(data) {
 }
 function onYouDie(data) {
     var player = playerById(this.id);
+    //primero envio al que mato su kill
     if (player != null) {
         socket.sockets.connected[data.idPlayerKill].emit('you kill', { name: player.playerName });
+        //envio al que murio quien lo mato
+        var playerKill = playerById(data.idPlayerKill);
+        if (playerKill != null) {
+            this.emit('you die', { name: playerKill.playerName });
+        }
     }
 }
 function onChatSend(data) {
@@ -72,9 +76,6 @@ function onPlayerClick(data) {
         this.emit('you hit', { id: player.playerId, damage: damage, idSpell: data.idSpell });
     }
     socket.emit('power throw', { x: player.x, y: player.y }); //esto manda a todos, incluso al jugador actual
-}
-//on mouse click 
-function onMouseClick(data) {
 }
 // Socket client has disconnected
 function onClientDisconnect() {

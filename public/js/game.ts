@@ -8,6 +8,7 @@ class SimpleGame {
     controlOtherPlayers: cControlOtherPlayers; //clase que controla los otros jugadores
     controlServer: cControlServer; //clase que controla el servidor
     controlChat: cControlChat; //clase que controla el chat
+    controlMonsters: cControlMonsters; //clase que controla los monstruos
 
     constructor() {
 
@@ -56,6 +57,9 @@ class SimpleGame {
 
         //inicio los jugadores enemigos
         this.controlOtherPlayers = new cControlOtherPlayers(this.controlGame);
+
+        //inicio los monstruos
+        this.controlMonsters = new cControlMonsters(this.controlGame);
 
         //inicio el chat
         this.controlChat = new cControlChat(this.controlGame,this.controlPlayer,this.controlOtherPlayers);

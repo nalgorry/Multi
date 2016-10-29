@@ -18,7 +18,7 @@ var cControlServer = (function () {
         this.socket.on('remove player', cControlServer.prototype.onRemovePlayer.bind(this));
         this.socket.on('player hit', cControlServer.prototype.onPlayerHit.bind(this));
         this.socket.on('you hit', cControlServer.prototype.onYouHit.bind(this));
-        this.socket.on('player die', cControlServer.prototype.onPlayerDie.bind(this));
+        this.socket.on('you die', cControlServer.prototype.onPlayerDie.bind(this));
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
         this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
@@ -77,10 +77,10 @@ var cControlServer = (function () {
             this.controlOtherPlayers.playerHit(data);
         }
     };
-    // Someone has die
+    // Te hicieron pure, veamos quien fue
     cControlServer.prototype.onPlayerDie = function (data) {
-        if (data.id === this.controlPlayer.idServer) {
-        }
+        console.log("entra");
+        this.controlGame.controlConsole.newMessage(enumMessage.youDie, "Has Muerto. Te Mató " + data.name);
     };
     cControlServer.prototype.onYouKill = function (data) {
         this.controlPlayer.youKill(data);

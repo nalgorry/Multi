@@ -45,16 +45,13 @@ function onSocketConnection (client) {
   // Listen for move player message
   client.on('move player', onMovePlayer)
 
-  //Listen for mouses click
-  client.on('mouse click', onMouseClick)
-
     //Listen for mouses click
   client.on('player click', onPlayerClick)
 
   //chat listener
   client.on('Chat Send', onChatSend)
 
-  //chat listener
+  //te mataron :(
   client.on('you die', onYouDie)
 
   //Player Change
@@ -80,9 +77,17 @@ function onYouDie(data) {
 
   var player:cPlayer = playerById(this.id);
 
+  //primero envio al que mato su kill
   if (player != null) {
     socket.sockets.connected[data.idPlayerKill].emit('you kill',{name: player.playerName});
+
+    //envio al que murio quien lo mato
+    var playerKill:cPlayer = playerById(data.idPlayerKill);
+    if (playerKill != null) {
+      this.emit('you die', {name: playerKill.playerName});
+    }
   }
+
 }
 
 function onChatSend(data) {
@@ -107,11 +112,6 @@ function onPlayerClick(data) {
   }
 
   socket.emit('power throw', {x:player.x, y:player.y}); //esto manda a todos, incluso al jugador actual
-
-}
-
-//on mouse click 
-function onMouseClick(data) {
 
 }
 
