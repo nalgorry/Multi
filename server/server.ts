@@ -7,13 +7,17 @@ var ioServer:SocketIO.Server = require('socket.io');
 //require('./cPlayer');
 import {cPlayer} from './cPlayer';
 import {cServerControlMonster} from './cServerControlMonster';
+import {cServerControlPlayers} from './cControlServerPlayers';
 
 var port = process.env.PORT || 8080
 
 // variables del juego
 var socket:SocketIO.Server	// Socket controller
+
 var players:cPlayer[]	// Array of connected players
-var controlMonster:cServerControlMonster;
+
+var controlPlayers:cServerControlPlayers; //control los jugadores
+var controlMonster:cServerControlMonster; //control los mounstros
 
 // Create and start the http server
 var server = http.createServer(
@@ -34,6 +38,7 @@ function init () {
   //aca van los jugadores
   players = [];
 
+  controlPlayers = new cServerControlPlayers(socket);
   controlMonster = new cServerControlMonster(socket);
 }
 

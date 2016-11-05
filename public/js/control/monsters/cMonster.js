@@ -10,7 +10,6 @@ var cMonster = (function () {
     }
     cMonster.prototype.startMonster = function (data) {
         var _this = this;
-        console.log(data);
         //creo el moustro
         this.monsterSprite = this.controlGame.game.add.sprite(this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize, 'monster_1', 0);
         this.monsterSprite.anchor.set(0, 1);

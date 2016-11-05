@@ -22,8 +22,6 @@ class cMonster  {
 
     private startMonster(data) {
 
-        console.log(data);
-
         //creo el moustro
         this.monsterSprite = this.controlGame.game.add.sprite(
             this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize,
