@@ -2,8 +2,6 @@ var util = require('util');
 
 export class cPlayer {
 
-
-
     public playerLife:number;
     public dirMov:number;
 

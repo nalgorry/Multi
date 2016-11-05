@@ -32,11 +32,16 @@ class cControlServer {
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
         this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
         this.socket.on('player change', cControlServer.prototype.onPlayerChange.bind(this));
-        
+
+        //monsters controls
+        this.socket.on('new Monster', cControlServer.prototype.onNewMonster.bind(this));
         
         
         }
 
+    public onNewMonster(data) {
+        this.controlGame.controlMonsters.newMonster(data)
+    }
 
     public onPlayerChange(data) {
         

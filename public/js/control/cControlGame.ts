@@ -15,6 +15,7 @@ class cControlGame {
     public controlServer: cControlServer;
     public controlPlayer:cControlPlayer;
     public controlConsole:cControlConsole;
+    public controlMonsters:cControlMonsters;
 
     interfazWidth:number;
     marker; //to get the mouse

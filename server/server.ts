@@ -6,12 +6,14 @@ var ioServer:SocketIO.Server = require('socket.io');
 
 //require('./cPlayer');
 import {cPlayer} from './cPlayer';
+import {cServerControlMonster} from './cServerControlMonster';
 
 var port = process.env.PORT || 8080
 
 // variables del juego
 var socket:SocketIO.Server	// Socket controller
 var players:cPlayer[]	// Array of connected players
+var controlMonster:cServerControlMonster;
 
 // Create and start the http server
 var server = http.createServer(
@@ -25,11 +27,14 @@ var server = http.createServer(
 })
 
 function init () {
-  //aca van los jugadores
-  players = []
 
   socket = ioServer.listen(server)
   socket.sockets.on('connection', onSocketConnection)
+
+  //aca van los jugadores
+  players = [];
+
+  controlMonster = new cServerControlMonster(socket);
 }
 
 // New socket connection
@@ -45,7 +50,7 @@ function onSocketConnection (client) {
   // Listen for move player message
   client.on('move player', onMovePlayer)
 
-    //Listen for mouses click
+  //Listen for mouses click
   client.on('player click', onPlayerClick)
 
   //chat listener
@@ -149,6 +154,8 @@ function onNewPlayer (data) {
       x: existingPlayer.x, y: existingPlayer.y,
       name:existingPlayer.playerName})
   }
+
+  controlMonster.onNewPlayerConected(this);
 
   // Add new player to the players array
   players.push(newPlayer);

@@ -23,7 +23,12 @@ var cControlServer = (function () {
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
         this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
         this.socket.on('player change', cControlServer.prototype.onPlayerChange.bind(this));
+        //monsters controls
+        this.socket.on('new Monster', cControlServer.prototype.onNewMonster.bind(this));
     }
+    cControlServer.prototype.onNewMonster = function (data) {
+        this.controlGame.controlMonsters.newMonster(data);
+    };
     cControlServer.prototype.onPlayerChange = function (data) {
         if (data.name != null) {
             this.controlOtherPlayers.playerById(data.id).setNameText(data.name);

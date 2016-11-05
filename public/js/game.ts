@@ -36,6 +36,9 @@ class SimpleGame {
         this.game.load.atlas('objects', 'assets/objects.png','assets/objects.json');
         this.game.load.spritesheet('spells', 'assets/spells.png', 40,40 );
 
+        this.game.load.spritesheet('monster_1', 'assets/monster_1.png', 40,80 );
+        
+
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200,675 );
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120,120 );    
 
@@ -60,6 +63,7 @@ class SimpleGame {
 
         //inicio los monstruos
         this.controlMonsters = new cControlMonsters(this.controlGame);
+        this.controlGame.controlMonsters = this.controlMonsters;
 
         //inicio el chat
         this.controlChat = new cControlChat(this.controlGame,this.controlPlayer,this.controlOtherPlayers);

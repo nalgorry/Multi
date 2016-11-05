@@ -18,6 +18,7 @@ var SimpleGame = (function () {
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 70);
         this.game.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
         this.game.load.spritesheet('spells', 'assets/spells.png', 40, 40);
+        this.game.load.spritesheet('monster_1', 'assets/monster_1.png', 40, 80);
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 675);
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120, 120);
         this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
@@ -35,6 +36,7 @@ var SimpleGame = (function () {
         this.controlOtherPlayers = new cControlOtherPlayers(this.controlGame);
         //inicio los monstruos
         this.controlMonsters = new cControlMonsters(this.controlGame);
+        this.controlGame.controlMonsters = this.controlMonsters;
         //inicio el chat
         this.controlChat = new cControlChat(this.controlGame, this.controlPlayer, this.controlOtherPlayers);
         //inicio el servidor

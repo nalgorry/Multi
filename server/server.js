@@ -6,10 +6,12 @@ var ecstatic = require('ecstatic');
 var ioServer = require('socket.io');
 //require('./cPlayer');
 var cPlayer_1 = require('./cPlayer');
+var cServerControlMonster_1 = require('./cServerControlMonster');
 var port = process.env.PORT || 8080;
 // variables del juego
 var socket; // Socket controller
 var players; // Array of connected players
+var controlMonster;
 // Create and start the http server
 var server = http.createServer(ecstatic({ root: path.resolve(__dirname, '../public') })).listen(port, function (err) {
     if (err) {
@@ -18,10 +20,11 @@ var server = http.createServer(ecstatic({ root: path.resolve(__dirname, '../publ
     init();
 });
 function init() {
-    //aca van los jugadores
-    players = [];
     socket = ioServer.listen(server);
     socket.sockets.on('connection', onSocketConnection);
+    //aca van los jugadores
+    players = [];
+    controlMonster = new cServerControlMonster_1.cServerControlMonster(socket);
 }
 // New socket connection
 function onSocketConnection(client) {
@@ -103,6 +106,7 @@ function onNewPlayer(data) {
             x: existingPlayer.x, y: existingPlayer.y,
             name: existingPlayer.playerName });
     }
+    controlMonster.onNewPlayerConected(this);
     // Add new player to the players array
     players.push(newPlayer);
 }
