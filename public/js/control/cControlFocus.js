@@ -127,36 +127,31 @@ var cControlFocus = (function () {
         else if (this.actualFocusSystem == FocusSystem.mana) {
             this.SelectEnergyFocus();
         }
-        else if (this.actualFocusSystem == FocusSystem.energy) {
-            this.SelectNothingFocus();
-        }
-        else if (this.actualFocusSystem == FocusSystem.nothing) {
+        else if (this.actualFocusSystem == FocusSystem.energy || this.actualFocusSystem == FocusSystem.nothing) {
             this.SelectLifeFocus();
         }
     };
     cControlFocus.prototype.SelectFocus = function (wichFocus) {
+        //seteo todo en normal, y hago el focus en el sel
+        this.actualFocusLife = this.speedNormalLife;
+        this.actualFocusMana = this.speedNormalMana;
+        this.actualFocusEnergy = this.speedNormalEnergy;
         switch (wichFocus) {
             case FocusSystem.life:
                 this.actualFocusLife = this.speedFocusLife;
-                this.actualFocusMana = 0;
-                this.actualFocusEnergy = 0;
                 this.rectangleFocus.cameraOffset.x = this.lifeBar.cameraOffset.x;
                 this.rectangleFocus.cameraOffset.y = this.lifeBar.cameraOffset.y;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.life;
                 break;
             case FocusSystem.mana:
-                this.actualFocusLife = 0;
                 this.actualFocusMana = this.speedFocusMana;
-                this.actualFocusEnergy = 0;
                 this.rectangleFocus.cameraOffset.x = this.manaBar.cameraOffset.x;
                 this.rectangleFocus.cameraOffset.y = this.manaBar.cameraOffset.y;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.mana;
                 break;
             case FocusSystem.energy:
-                this.actualFocusLife = 0;
-                this.actualFocusMana = 0;
                 this.actualFocusEnergy = this.speedFocusEnergy;
                 this.rectangleFocus.cameraOffset.x = this.energyBar.cameraOffset.x;
                 this.rectangleFocus.cameraOffset.y = this.energyBar.cameraOffset.y;
@@ -164,23 +159,12 @@ var cControlFocus = (function () {
                 this.actualFocusSystem = FocusSystem.energy;
                 break;
             case FocusSystem.nothing:
-                this.actualFocusLife = this.speedNormalLife;
-                this.actualFocusMana = this.speedNormalMana;
-                this.actualFocusEnergy = this.speedNormalEnergy;
                 this.rectangleFocus.visible = false;
                 this.actualFocusSystem = FocusSystem.nothing;
                 break;
         }
         //selecciono el circulo de focus
         var spellFocus = this.controlGame.controlPlayer.controlSpells.arrayselSpells[wichFocus];
-        this.borderFocus.cameraOffset.x = spellFocus.spellSprite.cameraOffset.x + spellFocus.spellSprite.width / 2;
-        this.borderFocus.cameraOffset.y = spellFocus.spellSprite.cameraOffset.y + spellFocus.spellSprite.height / 2;
-        if (wichFocus != FocusSystem.nothing) {
-            this.borderFocus.visible = true;
-        }
-        else {
-            this.borderFocus.visible = false;
-        }
     };
     cControlFocus.prototype.LoadBars = function () {
         //esto tendria que venir del server en algun momento
@@ -257,11 +241,6 @@ var cControlFocus = (function () {
         this.rectangleFocus.cameraOffset.x = this.lifeBar.x - this.lifeBar.width;
         this.rectangleFocus.cameraOffset.y = 125;
         this.rectangleFocus.visible = false;
-        //para hacer un circulo en el hechizo focus        //dibujo el marco para el focusthis.borderSpell = this.controlGame.game.add.graphics(0,0);
-        this.borderFocus = this.controlGame.game.add.graphics(0, 0);
-        this.borderFocus.lineStyle(2, 0x141417, 1);
-        this.borderFocus.fixedToCamera = true;
-        this.borderFocus.drawCircle(0, 0, 42);
     };
     return cControlFocus;
 }());

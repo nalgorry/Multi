@@ -23,7 +23,8 @@ class cMonster  {
         this.monsterSprite = this.controlGame.game.add.sprite(
             this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize,
              'monster_1',0);
-        this.monsterSprite.anchor.set(0,1);
+        this.monsterSprite.anchor.set(0.5,1);
+        this.monsterSprite.x += this.monsterSprite.width/2;
 
         this.monsterSprite.inputEnabled = true;
         this.monsterSprite.events.onInputDown.add(this.youHitMonster, this);

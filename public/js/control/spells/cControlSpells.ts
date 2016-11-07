@@ -94,78 +94,47 @@ class cControlSpells {
         
         this.arrayselSpells = new Array<cSpell>();
 
-        //los tres de focus
-
         //hechizo 1
-        var spellOne:cSpell = this.allSpells.arraySpells[0];
-        spellOne.iniciateSpell(new Phaser.Point(gameWidth - 170,208),0);
+        var newSpell:cSpell = this.allSpells.arraySpells[3];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*0,205),2);
+        
+        this.arrayselSpells.push(newSpell);
+        newSpell.signalSpellSel.add(this.spellClick,this);
 
-        this.arrayselSpells.push(spellOne);
-        spellOne.signalSpellSel.add(this.spellClick,this);
+              
+        //seleciono el hechizo uno por defecto
+        this.selSpell = newSpell;
 
         //hechizo 2
-        var spellTwo:cSpell = this.allSpells.arraySpells[1];
-        spellTwo.iniciateSpell(new Phaser.Point(gameWidth - 170 + 48,208),1);
-
-        this.arrayselSpells.push(spellTwo);
-        spellTwo.signalSpellSel.add(this.spellClick,this);
-
-        //hechizo 3
-        var newSpell:cSpell = this.allSpells.arraySpells[2];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 170 + 48*2,208),2);
-        
-        this.arrayselSpells.push(newSpell);
-        newSpell.signalSpellSel.add(this.spellClick,this);
-
-        //resto de hechizos
-        
-        //hechizo 4
-        var newSpell:cSpell = this.allSpells.arraySpells[3];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*0,263),2);
-        
-        this.arrayselSpells.push(newSpell);
-        newSpell.signalSpellSel.add(this.spellClick,this);
-
-        //hechizo 5
         var newSpell:cSpell = this.allSpells.arraySpells[4];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*1,263),2);
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*1,205),2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);          
 
-        //hechizo 6
+        //hechizo 3
         var newSpell:cSpell = this.allSpells.arraySpells[5];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*2,263),2);
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*2,205),2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);                
 
-        //hechizo 7
+        //hechizo 4
         var newSpell:cSpell = this.allSpells.arraySpells[6];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*3,263),2);
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*3,205),2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this); 
-      
 
-        //seleciono el hechioz uno por defecto
-        this.selSpell = spellOne;
 
     }
 
     public spellClick(sender:cSpell) {
 
-        //focus
-        if (sender.idSpell == 0 || sender.idSpell == 1 || sender.idSpell == 2) {
-            this.controlGame.controlPlayer.controlFocus.SelectFocusFromSpell(sender.idSpell) //me devuelve false si salio del focus
-        } else { //resto de los hechizos 
-
             this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width/2;
             this.borderSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height/2;
             this.selSpell = sender;
             this.controlGame.activateAtackMode();
-
-        }
 
     }
 
@@ -173,13 +142,13 @@ class cControlSpells {
 
             //selecciono el hechizo segun la tecla que toco
             if (sender.keyCode == Phaser.Keyboard.ONE) {
-                var spell = this.arrayselSpells[3];
+                var spell = this.arrayselSpells[0];
             } else if (sender.keyCode == Phaser.Keyboard.TWO) {
-                var spell = this.arrayselSpells[4];
+                var spell = this.arrayselSpells[1];
             } else if (sender.keyCode == Phaser.Keyboard.THREE) {
-                var spell = this.arrayselSpells[5];
+                var spell = this.arrayselSpells[2];
             }  else if (sender.keyCode == Phaser.Keyboard.FOUR) {
-                var spell = this.arrayselSpells[6];
+                var spell = this.arrayselSpells[3];
             } 
 
             this.borderSpell.cameraOffset.x = spell.spellSprite.cameraOffset.x + spell.spellSprite.width/2;
