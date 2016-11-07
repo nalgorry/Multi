@@ -31,6 +31,8 @@ class cControlPlayer extends cBasicActor {
     
     private gridSize: number;
 
+    private monstersKills:number = 0 ;
+
     constructor(controlGame:cControlGame) {
         super(controlGame);
 
@@ -127,6 +129,13 @@ class cControlPlayer extends cBasicActor {
         
         this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda y la animación
 
+    }
+
+    public youKillMonster(data) {
+        if (data.damage != 0 ) {
+            this.monstersKills++;
+            this.controlGame.controlConsole.newMessage(enumMessage.youKill,"Mataste al monstruo ("+ this.monstersKills +")")
+        }
     }
 
     public youHit(data) {

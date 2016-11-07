@@ -25,7 +25,19 @@ var cControlServer = (function () {
         this.socket.on('player change', cControlServer.prototype.onPlayerChange.bind(this));
         //monsters controls
         this.socket.on('new Monster', cControlServer.prototype.onNewMonster.bind(this));
+        this.socket.on('monster hit', cControlServer.prototype.onMonsterHit.bind(this));
+        this.socket.on('monster die', cControlServer.prototype.onMonsterDie.bind(this));
+        this.socket.on('you hit monster', cControlServer.prototype.onMosterWereHit.bind(this));
     }
+    cControlServer.prototype.onMosterWereHit = function (data) {
+        this.controlGame.controlMonsters.youHitMonster(data);
+    };
+    cControlServer.prototype.onMonsterDie = function (data) {
+        this.controlGame.controlMonsters.monsterDie(data);
+    };
+    cControlServer.prototype.onMonsterHit = function (data) {
+        this.controlGame.controlMonsters.monsterHit(data);
+    };
     cControlServer.prototype.onNewMonster = function (data) {
         this.controlGame.controlMonsters.newMonster(data);
     };

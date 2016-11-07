@@ -35,9 +35,25 @@ class cControlServer {
 
         //monsters controls
         this.socket.on('new Monster', cControlServer.prototype.onNewMonster.bind(this));
+        this.socket.on('monster hit', cControlServer.prototype.onMonsterHit.bind(this));
+        this.socket.on('monster die', cControlServer.prototype.onMonsterDie.bind(this));
+        this.socket.on('you hit monster', cControlServer.prototype.onMosterWereHit.bind(this));
         
         
         }
+
+    public onMosterWereHit(data) {
+        this.controlGame.controlMonsters.youHitMonster(data);
+    }
+
+
+    public onMonsterDie(data) {
+        this.controlGame.controlMonsters.monsterDie(data)
+    }
+
+    public onMonsterHit(data) {
+        this.controlGame.controlMonsters.monsterHit(data)
+    }
 
     public onNewMonster(data) {
         this.controlGame.controlMonsters.newMonster(data)

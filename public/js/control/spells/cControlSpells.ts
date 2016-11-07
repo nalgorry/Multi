@@ -15,9 +15,33 @@ class cControlSpells {
 
     }
 
-    public spellAnimation(actor:cBasicActor,data) {
+    public spellAnimation(sprite:Phaser.Sprite,data) {
 
-        this.allSpells.arraySpells[data.idSpell].spellAnimation(actor);
+        this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
+    }
+
+    public monsterClick(monster:cMonster) {
+
+        if (this.controlGame.atackMode == true) {
+            
+             if (this.selSpell.enabledTrowOtherPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
+                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
+                    this.controlGame.controlServer.socket.emit('monster click', 
+                    { 
+                        idPlayer:this.controlGame.controlPlayer.idServer,
+                        idMonster:monster.idMonster,
+                        idSpell: this.selSpell.idSpell 
+                    });
+                    
+                    this.selSpell.spellColdDown();
+
+                 }
+             }
+
+            this.controlGame.game.canvas.style.cursor = 'default';
+
+        }
+
     }
 
     public otherPlayerClick(player:cOtherPlayer) {

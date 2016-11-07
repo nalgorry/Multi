@@ -22,6 +22,7 @@ var cControlPlayer = (function (_super) {
         this.seMueveY = false;
         this.playerIdle = false;
         this.lastAnimation = move.right;
+        this.monstersKills = 0;
         this.gridSize = controlGame.gridSize;
         this.startActor();
         this.startPlayer();
@@ -89,6 +90,12 @@ var cControlPlayer = (function (_super) {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit, "Te golpearon por " + data.damage);
         }
         this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda y la animación
+    };
+    cControlPlayer.prototype.youKillMonster = function (data) {
+        if (data.damage != 0) {
+            this.monstersKills++;
+            this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste al monstruo (" + this.monstersKills + ")");
+        }
     };
     cControlPlayer.prototype.youHit = function (data) {
         if (data.damage != 0) {

@@ -8,7 +8,12 @@ export class cPlayer {
     public protectedField:boolean = false;
     public weakEfect:boolean = false;
 
-    constructor(public playerId:string,public playerName:string, public x:number, public y:number) {
+    constructor(public socket:SocketIO.Server ,public playerId:string,public playerName:string, public x:number, public y:number) {
+    }
+
+    public sendPlayerToNewPlayer(socket:SocketIO.Server) {
+        socket.emit('new player', {id: this.playerId, 
+      x: this.x, y: this.y, name:this.playerName})
     }
 
     public spellActivated(data):number {

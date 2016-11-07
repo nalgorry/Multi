@@ -1,7 +1,8 @@
 "use strict";
 var util = require('util');
 var cPlayer = (function () {
-    function cPlayer(playerId, playerName, x, y) {
+    function cPlayer(socket, playerId, playerName, x, y) {
+        this.socket = socket;
         this.playerId = playerId;
         this.playerName = playerName;
         this.x = x;
@@ -9,6 +10,10 @@ var cPlayer = (function () {
         this.protectedField = false;
         this.weakEfect = false;
     }
+    cPlayer.prototype.sendPlayerToNewPlayer = function (socket) {
+        socket.emit('new player', { id: this.playerId,
+            x: this.x, y: this.y, name: this.playerName });
+    };
     cPlayer.prototype.spellActivated = function (data) {
         var _this = this;
         //veo que hechizo se activo 

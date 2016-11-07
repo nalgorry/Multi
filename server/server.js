@@ -11,7 +11,6 @@ var cControlServerPlayers_1 = require('./cControlServerPlayers');
 var port = process.env.PORT || 8080;
 // variables del juego
 var socket; // Socket controller
-var players; // Array of connected players
 var controlPlayers; //control los jugadores
 var controlMonster; //control los mounstros
 // Create and start the http server
@@ -24,10 +23,8 @@ var server = http.createServer(ecstatic({ root: path.resolve(__dirname, '../publ
 function init() {
     socket = ioServer.listen(server);
     socket.sockets.on('connection', onSocketConnection);
-    //aca van los jugadores
-    players = [];
     controlPlayers = new cControlServerPlayers_1.cServerControlPlayers(socket);
-    controlMonster = new cServerControlMonster_1.cServerControlMonster(socket);
+    controlMonster = new cServerControlMonster_1.cServerControlMonster(socket, controlPlayers);
 }
 // New socket connection
 function onSocketConnection(client) {
@@ -46,10 +43,20 @@ function onSocketConnection(client) {
     client.on('you die', onYouDie);
     //Player Change
     client.on('you change', onYouChange);
+    client.on('monster click', onYouClickMonster);
+}
+function onYouClickMonster(data) {
+    var player = controlPlayers.getPlayerById(data.idPlayer);
+    if (player != null) {
+        controlMonster.monsterHit(data, player);
+    }
+    else {
+        console.log("error al procesar golpe a mounstro");
+    }
 }
 function onYouChange(data) {
     if (data.name != null) {
-        var player = playerById(this.id);
+        var player = controlPlayers.getPlayerById(this.id);
         if (player != null) {
             player.playerName = data.name;
             this.broadcast.emit('player change', { id: this.id, name: data.name });
@@ -57,14 +64,16 @@ function onYouChange(data) {
     }
 }
 function onYouDie(data) {
-    var player = playerById(this.id);
+    var player = controlPlayers.getPlayerById(this.id);
     //primero envio al que mato su kill
     if (player != null) {
-        socket.sockets.connected[data.idPlayerKill].emit('you kill', { name: player.playerName });
-        //envio al que murio quien lo mato
-        var playerKill = playerById(data.idPlayerKill);
+        var playerKill = controlPlayers.getPlayerById(data.idPlayerKill);
         if (playerKill != null) {
+            socket.sockets.connected[data.idPlayerKill].emit('you kill', { name: player.playerName });
             this.emit('you die', { name: playerKill.playerName });
+        }
+        else {
+            this.emit('you die', { name: 'un Monstruo' });
         }
     }
 }
@@ -73,7 +82,7 @@ function onChatSend(data) {
     this.broadcast.emit('Chat Receive', { id: this.id, text: data.text });
 }
 function onPlayerClick(data) {
-    var player = playerById(data.idPlayerHit);
+    var player = controlPlayers.getPlayerById(data.idPlayerHit);
     if (player != null) {
         //recorrro los hechizos para actual segun lo que hizo cada uno
         var damage = player.spellActivated(data);
@@ -86,37 +95,20 @@ function onPlayerClick(data) {
 // Socket client has disconnected
 function onClientDisconnect() {
     util.log('Player has disconnected: ' + this.id);
-    var removePlayer = playerById(this.id);
-    // Player not found
-    if (!removePlayer) {
-        util.log('Player not found: ' + this.id);
-        return;
-    }
-    // Remove player from players array
-    players.splice(players.indexOf(removePlayer), 1);
+    controlPlayers.onPlayerDisconected(this);
     this.broadcast.emit('remove player', { id: this.id });
 }
 // New player has joined
 function onNewPlayer(data) {
     // Create a new player
-    var newPlayer = new cPlayer_1.cPlayer(this.id, data.name, data.x, data.y);
-    this.broadcast.emit('new player', { id: newPlayer.playerId, x: newPlayer.x, y: newPlayer.y, name: data.name });
-    var i;
-    var existingPlayer;
-    for (i = 0; i < players.length; i++) {
-        existingPlayer = players[i];
-        this.emit('new player', { id: existingPlayer.playerId,
-            x: existingPlayer.x, y: existingPlayer.y,
-            name: existingPlayer.playerName });
-    }
+    var newPlayer = new cPlayer_1.cPlayer(this, this.id, data.name, data.x, data.y);
+    controlPlayers.onNewPlayerConected(this, this.id, data);
     controlMonster.onNewPlayerConected(this);
-    // Add new player to the players array
-    players.push(newPlayer);
 }
 // Player has moved
 function onMovePlayer(data) {
     // Find player in array
-    var movePlayer = playerById(this.id);
+    var movePlayer = controlPlayers.getPlayerById(this.id);
     // Player not found
     if (!movePlayer) {
         util.log('Player not found: ' + this.id);
@@ -126,22 +118,4 @@ function onMovePlayer(data) {
     movePlayer.y = data.y;
     movePlayer.dirMov = data.dirMov;
     this.broadcast.emit('move player', { id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
-}
-function playerById(id) {
-    var i;
-    for (i = 0; i < players.length; i++) {
-        if (players[i].playerId === id) {
-            return players[i];
-        }
-    }
-    return null;
-}
-function playerByXY(x, y) {
-    var i;
-    for (i = 0; i < players.length; i++) {
-        if (players[i].x === x && players[i].y === y) {
-            return players[i];
-        }
-    }
-    return null;
 }

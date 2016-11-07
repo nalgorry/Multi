@@ -9,18 +9,18 @@ var cSpell = (function () {
         this.coolDownTimeSec = 2;
         this.isSpellOnCoolDown = false;
     }
-    cSpell.prototype.spellAnimation = function (actor) {
+    cSpell.prototype.spellAnimation = function (sprite) {
         //animiacion de la bomba 
         if (this.explotionFollowCharacter == true) {
             var boomSprite = this.controlGame.game.add.sprite(0, this.explotionYOffset, this.explotionSprite);
-            actor.playerSprite.addChild(boomSprite);
+            sprite.addChild(boomSprite);
         }
         else {
-            var boomSprite = this.controlGame.game.add.sprite(actor.playerSprite.x, actor.playerSprite.y + this.explotionYOffset, this.explotionSprite);
+            var boomSprite = this.controlGame.game.add.sprite(sprite.x, sprite.y + this.explotionYOffset, this.explotionSprite);
         }
         boomSprite.anchor.set(0.5, 1);
         var animation = boomSprite.animations.add('boom');
-        actor.playerSprite.addChild(boomSprite);
+        sprite.addChild(boomSprite);
         if (this.explotionTimeSeconds == 0) {
             boomSprite.animations.play('boom', this.explotionFrameRate, false, true);
         }

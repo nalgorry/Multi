@@ -94,7 +94,7 @@ var cBasicActor = (function () {
             var tweenText = this.controlGame.game.add.tween(hitText).to({ y: '-30' }, 1000, undefined, true);
             tweenText.onComplete.add(this.removeTweenText, hitText);
         }
-        this.controlGame.controlPlayer.controlSpells.spellAnimation(this, data);
+        this.controlGame.controlPlayer.controlSpells.spellAnimation(this.playerSprite, data);
     };
     cBasicActor.prototype.removeTweenText = function (sprite) {
         sprite.destroy();

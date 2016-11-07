@@ -132,7 +132,7 @@ class cBasicActor {
             tweenText.onComplete.add(this.removeTweenText,hitText);
         }
 
-        this.controlGame.controlPlayer.controlSpells.spellAnimation(this,data);
+        this.controlGame.controlPlayer.controlSpells.spellAnimation(this.playerSprite,data);
 
     }
 

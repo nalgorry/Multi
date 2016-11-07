@@ -28,14 +28,14 @@ class cSpell {
         
     }
 
-    public spellAnimation(actor:cBasicActor) {
+    public spellAnimation(sprite:Phaser.Sprite) {
         //animiacion de la bomba 
         if (this.explotionFollowCharacter == true) {
             var boomSprite = this.controlGame.game.add.sprite(0 , this.explotionYOffset,
                 this.explotionSprite);
-            actor.playerSprite.addChild(boomSprite);
+            sprite.addChild(boomSprite);
         } else {
-            var boomSprite = this.controlGame.game.add.sprite(actor.playerSprite.x , actor.playerSprite.y + this.explotionYOffset,
+            var boomSprite = this.controlGame.game.add.sprite(sprite.x , sprite.y + this.explotionYOffset,
                 this.explotionSprite);
         }    
 
@@ -43,7 +43,7 @@ class cSpell {
         
         var animation = boomSprite.animations.add('boom');
 
-        actor.playerSprite.addChild(boomSprite);
+        sprite.addChild(boomSprite);
       
         if (this.explotionTimeSeconds == 0) {
             boomSprite.animations.play('boom',this.explotionFrameRate,false,true);
