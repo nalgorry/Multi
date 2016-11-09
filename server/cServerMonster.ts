@@ -8,6 +8,7 @@ export class cServerMonster {
     public monsterLife:number;
     public tileX:number; 
     public tileY:number;
+    public monsterPower:number;
 
     //variables para definir el ataque
     public gridSize:number = 40;
@@ -20,11 +21,12 @@ export class cServerMonster {
 
     }
 
-    public startMonster(monsterLife:number,tileX:number,tileY:number) {
+    public startMonster(tileX:number,tileY:number,monsterLife:number,monsterPower:number) {
 
         this.monsterLife = monsterLife;
         this.tileX = tileX;
         this.tileY = tileY;
+        this.monsterPower = monsterPower;
 
         console.log({id:this.monsterId,tileX:this.tileX, tileY:this.tileY})
 
@@ -66,7 +68,7 @@ export class cServerMonster {
                 {
                     idMonster:this.monsterId,
                     idPlayer:player.playerId,
-                    damage:Math.round(Math.random()*20+1),
+                    damage:Math.round(Math.random()*this.monsterPower+1),
                     idSpell:3,
                 });
 

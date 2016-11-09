@@ -10,11 +10,12 @@ var cServerMonster = (function () {
         this.monsterAtackTilesX = 13;
         this.monsterAtackTilesY = 9;
     }
-    cServerMonster.prototype.startMonster = function (monsterLife, tileX, tileY) {
+    cServerMonster.prototype.startMonster = function (tileX, tileY, monsterLife, monsterPower) {
         var _this = this;
         this.monsterLife = monsterLife;
         this.tileX = tileX;
         this.tileY = tileY;
+        this.monsterPower = monsterPower;
         console.log({ id: this.monsterId, tileX: this.tileX, tileY: this.tileY });
         this.socket.emit('new Monster', { id: this.monsterId, tileX: this.tileX, tileY: this.tileY });
         var timer = setTimeout(function () { return _this.monsterAtack(); }, 650);
@@ -41,7 +42,7 @@ var cServerMonster = (function () {
                 this.socket.emit('monster hit', {
                     idMonster: this.monsterId,
                     idPlayer: player.playerId,
-                    damage: Math.round(Math.random() * 20 + 1),
+                    damage: Math.round(Math.random() * this.monsterPower + 1),
                     idSpell: 3,
                 });
             }

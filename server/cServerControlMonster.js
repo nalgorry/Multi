@@ -7,9 +7,9 @@ var cServerControlMonster = (function () {
         this.nextIdMonster = 0;
         this.arrayMonster = [];
         //creo los primeros monters :)
-        this.createNewMonster(50, 10, 10);
-        this.createNewMonster(50, 30, 30);
-        this.createNewMonster(50, 10, 30);
+        for (var i = 1; i <= 10; i++) {
+            this.createNewMonster(Math.round(Math.random() * 50 + 10), Math.round(Math.random() * 50 + 10), 50, 10);
+        }
     }
     cServerControlMonster.prototype.getMonsterById = function (id) {
         return this.arrayMonster[id];
@@ -20,9 +20,9 @@ var cServerControlMonster = (function () {
             this.arrayMonster[monster].sendMonsterToNewPlayer(socket);
         }
     };
-    cServerControlMonster.prototype.createNewMonster = function (life, tileX, tileY) {
+    cServerControlMonster.prototype.createNewMonster = function (tileX, tileY, life, monsterPower) {
         var newMonster = new cServerMonster_1.cServerMonster("m" + this.nextIdMonster, this.socket, this.controlPlayer);
-        newMonster.startMonster(life, tileX, tileY);
+        newMonster.startMonster(tileX, tileY, life, monsterPower);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };
@@ -38,9 +38,8 @@ var cServerControlMonster = (function () {
         //controlo si se murio el moustro y lo saco del array de moustros
         if (monster.monsterDie == true) {
             delete this.arrayMonster[data.idMonster];
-            //creo un nuevo monster
-            this.createNewMonster(50, Math.round(Math.random() * 30 + 10), Math.round(Math.random() * 30 + 10));
-            this.createNewMonster(50, Math.round(Math.random() * 30 + 10), Math.round(Math.random() * 30 + 10));
+            //creo un nuevo monster mas poderoso
+            this.createNewMonster(Math.round(Math.random() * 30 + 10), Math.round(Math.random() * 30 + 10), 50 + this.nextIdMonster * 3, 10 + this.nextIdMonster * 2);
         }
     };
     return cServerControlMonster;

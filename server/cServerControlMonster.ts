@@ -11,9 +11,10 @@ export class cServerControlMonster {
         this.arrayMonster = [];
         
         //creo los primeros monters :)
-       this.createNewMonster(50,10,10);
-       this.createNewMonster(50,30,30);
-       this.createNewMonster(50,10,30);
+
+       for (var i=1; i<=10;i++) {
+           this.createNewMonster(Math.round(Math.random()*50+10),Math.round(Math.random()*50+10),50,10)
+       }
 
     }
 
@@ -30,11 +31,11 @@ export class cServerControlMonster {
 
     }
 
-    private createNewMonster(life:number,tileX:number,tileY:number) {
+    private createNewMonster(tileX:number,tileY:number,life:number,monsterPower:number) {
         
         var newMonster = new cServerMonster("m" + this.nextIdMonster,this.socket,this.controlPlayer)
 
-        newMonster.startMonster(life,tileX,tileY);
+        newMonster.startMonster(tileX,tileY,life,monsterPower);
         
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
 
@@ -57,9 +58,8 @@ export class cServerControlMonster {
         if (monster.monsterDie == true) { 
             delete this.arrayMonster[data.idMonster];
 
-            //creo un nuevo monster
-            this.createNewMonster(50,Math.round(Math.random()*30+10),Math.round(Math.random()*30+10))
-            this.createNewMonster(50,Math.round(Math.random()*30+10),Math.round(Math.random()*30+10))
+            //creo un nuevo monster mas poderoso
+            this.createNewMonster(Math.round(Math.random()*30+10),Math.round(Math.random()*30+10),50 + this.nextIdMonster * 3 ,10 + this.nextIdMonster * 2)
         }
 
     }
