@@ -60,17 +60,38 @@ export class cServerMonster {
 
             var playerTileX = Math.round(player.x / this.gridSize);
             var playerTileY = Math.round(player.y / this.gridSize);
+            var data;
 
             if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
                 Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
              
-                this.socket.emit('monster hit', 
-                {
-                    idMonster:this.monsterId,
-                    idPlayer:player.playerId,
-                    damage:Math.round(Math.random()*this.monsterPower+1),
-                    idSpell:3,
-                });
+            var randomAtack = Math.random();
+
+            if (randomAtack <= 0.8) {
+                //normal atack 
+                data = {
+                        idMonster:this.monsterId,
+                        idPlayer:player.playerId,
+                        monsterAtackType: 0,
+                        damage:Math.round(Math.random()*this.monsterPower+1),
+                        idSpell:3,
+                    }
+            } else {
+                //especial mega atack!!
+                data = {
+                        idMonster:this.monsterId,
+                        idPlayer:player.playerId,
+                        monsterAtackType: 1,
+                        damage: 50,
+                        tileX: playerTileX,
+                        tileY:playerTileY,
+                        spellSize: 150,
+                        coolDownTimeSec: 1,
+                        idSpell: 3,
+                    }
+            }
+
+                this.socket.emit('monster hit',data );         
 
             }
 

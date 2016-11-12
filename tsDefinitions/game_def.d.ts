@@ -1,8 +1,4 @@
-declare module GameDef {
-    
-    enum monsterAtackType {
+    declare enum monsterAtackType {
         normal = 0,
         area = 1,
     }
-
-}

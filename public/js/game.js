@@ -57,11 +57,11 @@ var SimpleGame = (function () {
         var tile = this.controlGame.map.getTile(x, y, this.controlGame.layer);
         this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
         //this.game.debug.text("vida: " + this.controlPlayer.controlFocus.life.toString(),800,120)
-        //this.game.debug.text('Tile X: ' + this.layer.getTileX(this.player.x), 50, 48, 'rgb(0,0,0)');
-        //this.game.debug.text('Tile Y: ' + this.layer.getTileY(this.player.y), 50, 64, 'rgb(0,0,0)');
+        this.game.debug.text('Tile X: ' + this.controlGame.layer.getTileX(this.controlGame.controlPlayer.playerSprite.x), 50, 48, 'rgb(0,0,0)');
+        this.game.debug.text('Tile Y: ' + this.controlGame.layer.getTileY(this.controlGame.controlPlayer.playerSprite.y), 50, 64, 'rgb(0,0,0)');
         //this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
         this.game.debug.body(this.controlPlayer.playerSprite);
-        this.game.debug.body(this.controlMonsters.spriteAreaAtack);
+        //this.game.debug.body(this.controlMonsters.spriteAreaAtack);
         //this.game.debug.geom(this.controlGame.point, 'rgb(0,255,0)');
         var pos = this.controlGame.game.input.activePointer.position;
         this.controlGame.game.debug.text("x:" + pos.x + " y:" + pos.y, 180, 15);
