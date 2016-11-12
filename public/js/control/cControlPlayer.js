@@ -103,8 +103,8 @@ var cControlPlayer = (function (_super) {
         }
     };
     cControlPlayer.prototype.youDie = function (data) {
-        this.playerSprite.x = 0;
-        this.playerSprite.y = 0;
+        this.playerSprite.x = 44 * this.controlGame.gridSize;
+        this.playerSprite.y = 6 * this.controlGame.gridSize;
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
         this.controlGame.controlServer.socket.emit('you die', { idPlayerKill: data.playerThatHit });
     };

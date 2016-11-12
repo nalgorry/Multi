@@ -7,7 +7,7 @@ var cControlConsole = (function () {
         this.consoleGraph = this.controlGame.game.add.graphics(5, controlGame.game.height - consoleHeight - 48);
         this.consoleGraph.beginFill(0xedeeef);
         this.consoleGraph.fixedToCamera = true;
-        this.consoleGraph.alpha = 0.75;
+        this.consoleGraph.alpha = 0.55;
         this.consoleGraph.drawRect(0, 0, consoleWidth, consoleHeight);
         //inicio el array de mensajes
         this.arrayMessages = new Array();
