@@ -14,6 +14,12 @@ var cPlayer = (function () {
         socket.emit('new player', { id: this.playerId,
             x: this.x, y: this.y, name: this.playerName });
     };
+    cPlayer.prototype.calculateDamage = function (damage) {
+        if (this.protectedField == true) {
+            damage = Math.round(damage / 3);
+        }
+        return damage;
+    };
     cPlayer.prototype.spellActivated = function (data) {
         var _this = this;
         //veo que hechizo se activo 

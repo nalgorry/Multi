@@ -73,7 +73,7 @@ export class cServerMonster {
                         idMonster:this.monsterId,
                         idPlayer:player.playerId,
                         monsterAtackType: 0,
-                        damage:Math.round(Math.random()*this.monsterPower+1),
+                        damage:player.calculateDamage(Math.round(Math.random()*this.monsterPower+1)),
                         idSpell:3,
                     }
             } else {
@@ -82,7 +82,7 @@ export class cServerMonster {
                         idMonster:this.monsterId,
                         idPlayer:player.playerId,
                         monsterAtackType: 1,
-                        damage: 50,
+                        damage: player.calculateDamage(50),
                         tileX: playerTileX,
                         tileY:playerTileY,
                         spellSize: 150,

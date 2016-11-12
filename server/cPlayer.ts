@@ -16,6 +16,15 @@ export class cPlayer {
       x: this.x, y: this.y, name:this.playerName})
     }
 
+    public calculateDamage(damage:number):number {
+    
+        if (this.protectedField == true) {
+            damage = Math.round(damage / 3);
+        }
+
+        return damage;
+    }
+
     public spellActivated(data):number {
         
         //veo que hechizo se activo 

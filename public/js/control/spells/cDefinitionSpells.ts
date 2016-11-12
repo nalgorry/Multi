@@ -84,11 +84,11 @@ class cDefinitionSpells {
 
         newSpell.idSpell = 4;
         newSpell.spellName = "Meteorito Mortal";
-        newSpell.manaCost = 35;
+        newSpell.manaCost = 20;
         newSpell.energyCost = 5;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 5;
-        newSpell.coolDownTimeSec = 0.5;
+        newSpell.coolDownTimeSec = 2.5;
         newSpell.explotionSprite = 'boom3';
         newSpell.explotionFrameRate = 100;
 
@@ -115,7 +115,7 @@ class cDefinitionSpells {
         
         newSpell.idSpell = 6;
         newSpell.spellName = "Escudo Protector";
-        newSpell.manaCost = 50;
+        newSpell.manaCost = 0;
         newSpell.energyCost = 50;
         newSpell.lifeCost = 2;
         newSpell.posInSpritesheet = 3;

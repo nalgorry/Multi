@@ -12,8 +12,8 @@ export class cServerControlMonster {
         
         //creo los primeros monters :)
 
-       for (var i=1; i<=10;i++) {
-           this.createNewMonster(Math.round(Math.random()*50+10),Math.round(Math.random()*50+10),50,-1)
+       for (var i=1; i<=25;i++) {
+           this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),50,1)
        }
 
     }
