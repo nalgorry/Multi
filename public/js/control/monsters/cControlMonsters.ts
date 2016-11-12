@@ -1,6 +1,7 @@
 class cControlMonsters {
 
     private arrayMonster:cMonster[];
+    public spriteAreaAtack
 
     constructor(public controlGame: cControlGame) {
 
@@ -67,6 +68,8 @@ class cControlMonsters {
         //spriteAreaAtack.anchor.set(0.5); 
         spriteAreaAtack.alpha = 0.25;
 
+        this.spriteAreaAtack = spriteAreaAtack;
+
         //configuro el hit test para ver si le pega o no el hechizo
         this.controlGame.game.physics.arcade.enable(spriteAreaAtack);
         var body:Phaser.Physics.Arcade.Body = spriteAreaAtack.body //para acceder a las propiedades ts
@@ -94,7 +97,7 @@ class cControlMonsters {
         var playertileY = this.controlGame.controlPlayer.tileY;
 
         //si el player queda adentro del circulo cuando se dispara le saco vida
-        if (this.controlGame.controlPlayer.armorSprite.overlap(sprite)) {
+        if (this.controlGame.game.physics.arcade.overlap(this.controlGame.controlPlayer.playerSprite,sprite)) {
             this.controlGame.controlPlayer.playerHit(data);
         }  
         
