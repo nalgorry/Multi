@@ -13,7 +13,7 @@ export class cServerControlMonster {
         //creo los primeros monters :)
 
        for (var i=1; i<=10;i++) {
-           this.createNewMonster(Math.round(Math.random()*50+10),Math.round(Math.random()*50+10),50,10)
+           this.createNewMonster(Math.round(Math.random()*50+10),Math.round(Math.random()*50+10),50,-1)
        }
 
     }

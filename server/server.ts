@@ -174,6 +174,7 @@ function onMovePlayer (data) {
   movePlayer.dirMov = data.dirMov;
 
   this.broadcast.emit('move player', {id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y,dirMov: movePlayer.dirMov })
+
 }
 
 
