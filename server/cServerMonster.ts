@@ -60,8 +60,31 @@ export class cServerMonster {
         }
 
         if (playerNear != undefined) {
-            //aca emito el movimiento y cambio el tilex e y del monstruo
-            console.log("llega aca");
+            //sigo al player detectado
+            var playerTileX = Math.round(playerNear.x / this.gridSize);
+            var playerTileY = Math.round(playerNear.y / this.gridSize);
+            var monsterMove:boolean = false;
+
+            if (this.tileX > playerTileX + 1) {
+                this.tileX -= 1
+                monsterMove = true;
+            } else if (this.tileX < playerTileX - 1) {
+                this.tileX += 1
+                monsterMove = true;
+            }
+
+            if (this.tileY > playerTileY + 1) {
+                this.tileY -= 1
+                monsterMove = true;
+            } else if (this.tileY < playerTileY - 1) {
+                this.tileY += 1
+                monsterMove = true;
+            }
+
+            if (monsterMove) {
+                player.socket.emit('monster move', {idMonster:this.monsterId, tileX: this.tileX, tileY: this.tileY })
+            }
+            
         }
 
         if (this.monsterDie == false) {

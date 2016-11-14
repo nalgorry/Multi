@@ -15,6 +15,11 @@ var cMonster = (function () {
         this.monsterSprite.events.onInputDown.add(this.youHitMonster, this);
         this.controlGame.depthGroup.add(this.monsterSprite);
     };
+    cMonster.prototype.monsterMove = function (data) {
+        var x = data.tileX * this.controlGame.gridSize + this.monsterSprite.width / 2;
+        var y = data.tileY * this.controlGame.gridSize;
+        this.moveTween = this.controlGame.game.add.tween(this.monsterSprite).to({ x: x, y: y }, 320, Phaser.Easing.Linear.None, true, 0);
+    };
     cMonster.prototype.youHitMonster = function () {
         this.controlGame.controlPlayer.controlSpells.monsterClick(this);
     };

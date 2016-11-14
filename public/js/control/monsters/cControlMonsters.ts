@@ -15,6 +15,17 @@ class cControlMonsters {
         this.arrayMonster[data.id] = new cMonster(this.controlGame,data);
     }
 
+    public monsterMove(data) {
+
+        var monster:cMonster = this.arrayMonster[data.idMonster];
+
+        //hago desaparecer el moustro del juego
+        if (monster != undefined) {
+            monster.monsterMove(data);
+        }
+
+    }
+
     public monsterDie(data) {
 
         console.log(data);
@@ -22,7 +33,7 @@ class cControlMonsters {
         var monster:cMonster = this.arrayMonster[data.idMonster];
 
         //hago desaparecer el moustro del juego
-        if (monster != null) {
+        if (monster != undefined) {
             monster.killMonster();
         }
 

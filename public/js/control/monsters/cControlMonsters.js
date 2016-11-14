@@ -7,11 +7,18 @@ var cControlMonsters = (function () {
     cControlMonsters.prototype.newMonster = function (data) {
         this.arrayMonster[data.id] = new cMonster(this.controlGame, data);
     };
+    cControlMonsters.prototype.monsterMove = function (data) {
+        var monster = this.arrayMonster[data.idMonster];
+        //hago desaparecer el moustro del juego
+        if (monster != undefined) {
+            monster.monsterMove(data);
+        }
+    };
     cControlMonsters.prototype.monsterDie = function (data) {
         console.log(data);
         var monster = this.arrayMonster[data.idMonster];
         //hago desaparecer el moustro del juego
-        if (monster != null) {
+        if (monster != undefined) {
             monster.killMonster();
         }
         //si fue el que lo mato, hago que aparezca un mensaje 
