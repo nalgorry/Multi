@@ -74,7 +74,7 @@ class cDefinitionSpells {
         newSpell.energyCost = 5;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 0;
-        newSpell.coolDownTimeSec = 1;
+        newSpell.coolDownTimeSec = 0.8;
         newSpell.explotionSprite = 'boom';
         newSpell.explotionFrameRate = 150;
 
@@ -88,7 +88,7 @@ class cDefinitionSpells {
         newSpell.energyCost = 5;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 5;
-        newSpell.coolDownTimeSec = 2.5;
+        newSpell.coolDownTimeSec = 2;
         newSpell.explotionSprite = 'boom3';
         newSpell.explotionFrameRate = 100;
 
@@ -125,8 +125,6 @@ class cDefinitionSpells {
         newSpell.coolDownTimeSec = 5;
         newSpell.enabledTrowOtherPlayer = false;
         newSpell.enabledTrowThisPlayer = true;
-
-
 
     }
 

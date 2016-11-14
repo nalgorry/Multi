@@ -18,7 +18,30 @@ var cServerMonster = (function () {
         this.monsterPower = monsterPower;
         console.log({ id: this.monsterId, tileX: this.tileX, tileY: this.tileY });
         this.socket.emit('new Monster', { id: this.monsterId, tileX: this.tileX, tileY: this.tileY });
-        var timer = setTimeout(function () { return _this.monsterAtack(); }, 650);
+        var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
+        var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
+    };
+    cServerMonster.prototype.monsterMove = function () {
+        var _this = this;
+        var playerNear = undefined;
+        //controlo si hay algun jugador cerca del monstruo
+        for (var idPlayer in this.controlPlayer.arrayPlayers) {
+            var player = this.controlPlayer.arrayPlayers[idPlayer];
+            var playerTileX = Math.round(player.x / this.gridSize);
+            var playerTileY = Math.round(player.y / this.gridSize);
+            var data;
+            if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
+                Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
+                playerNear = player;
+            }
+        }
+        if (playerNear != undefined) {
+            //aca emito el movimiento y cambio el tilex e y del monstruo
+            console.log("llega aca");
+        }
+        if (this.monsterDie == false) {
+            var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
+        }
     };
     cServerMonster.prototype.monsterHit = function (data, player) {
         var damage = player.spellActivated(data);
@@ -32,44 +55,44 @@ var cServerMonster = (function () {
     };
     cServerMonster.prototype.monsterAtack = function () {
         var _this = this;
-        //controlo que jugador esta demasiado cerca de un moustro
-        for (var idPlayer in this.controlPlayer.arrayPlayers) {
-            var player = this.controlPlayer.arrayPlayers[idPlayer];
-            var playerTileX = Math.round(player.x / this.gridSize);
-            var playerTileY = Math.round(player.y / this.gridSize);
-            var data;
-            if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
-                Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
-                var randomAtack = Math.random();
-                if (randomAtack <= 0.8) {
-                    //normal atack 
-                    data = {
-                        idMonster: this.monsterId,
-                        idPlayer: player.playerId,
-                        monsterAtackType: 0,
-                        damage: player.calculateDamage(Math.round(Math.random() * this.monsterPower + 1)),
-                        idSpell: 3,
-                    };
-                }
-                else {
-                    //especial mega atack!!
-                    data = {
-                        idMonster: this.monsterId,
-                        idPlayer: player.playerId,
-                        monsterAtackType: 1,
-                        damage: player.calculateDamage(50),
-                        tileX: playerTileX,
-                        tileY: playerTileY,
-                        spellSize: 150,
-                        coolDownTimeSec: 1,
-                        idSpell: 3,
-                    };
-                }
-                this.socket.emit('monster hit', data);
-            }
-        }
         if (this.monsterDie == false) {
-            var timer = setTimeout(function () { return _this.monsterAtack(); }, 650);
+            //controlo que jugador esta demasiado cerca de un moustro
+            for (var idPlayer in this.controlPlayer.arrayPlayers) {
+                var player = this.controlPlayer.arrayPlayers[idPlayer];
+                var playerTileX = Math.round(player.x / this.gridSize);
+                var playerTileY = Math.round(player.y / this.gridSize);
+                var data;
+                if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
+                    Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
+                    var randomAtack = Math.random();
+                    if (randomAtack <= 0.8) {
+                        //normal atack 
+                        data = {
+                            idMonster: this.monsterId,
+                            idPlayer: player.playerId,
+                            monsterAtackType: 0,
+                            damage: player.calculateDamage(Math.round(Math.random() * this.monsterPower + 1)),
+                            idSpell: 3,
+                        };
+                    }
+                    else {
+                        //especial mega atack!!
+                        data = {
+                            idMonster: this.monsterId,
+                            idPlayer: player.playerId,
+                            monsterAtackType: 1,
+                            damage: player.calculateDamage(50),
+                            tileX: playerTileX,
+                            tileY: playerTileY,
+                            spellSize: 150,
+                            coolDownTimeSec: 1,
+                            idSpell: 3,
+                        };
+                    }
+                    this.socket.emit('monster hit', data);
+                }
+            }
+            var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
         }
     };
     cServerMonster.prototype.sendMonsterToNewPlayer = function (socket) {

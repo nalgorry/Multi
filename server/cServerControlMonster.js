@@ -29,17 +29,17 @@ var cServerControlMonster = (function () {
     cServerControlMonster.prototype.monsterHit = function (data, player) {
         //busco el moustro y le pego
         var monster = this.getMonsterById(data.idMonster);
-        if (monster != null) {
+        if (monster != undefined) {
             monster.monsterHit(data, player);
+            //controlo si se murio el moustro y lo saco del array de moustros
+            if (monster.monsterDie == true) {
+                delete this.arrayMonster[data.idMonster];
+                //creo un nuevo monster mas poderoso
+                this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 12), 50 + this.nextIdMonster * 2, 10 + this.nextIdMonster * 0.5);
+            }
         }
         else {
             console.log("monstruo no encontrado");
-        }
-        //controlo si se murio el moustro y lo saco del array de moustros
-        if (monster.monsterDie == true) {
-            delete this.arrayMonster[data.idMonster];
-            //creo un nuevo monster mas poderoso
-            this.createNewMonster(Math.round(Math.random() * 30 + 10), Math.round(Math.random() * 30 + 10), 50 + this.nextIdMonster * 3, 10 + this.nextIdMonster * 2);
         }
     };
     return cServerControlMonster;
