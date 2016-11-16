@@ -57,7 +57,7 @@ var cServerMonster = (function () {
                 monsterMove = true;
             }
             if (monsterMove) {
-                player.socket.emit('monster move', { idMonster: this.monsterId, tileX: this.tileX, tileY: this.tileY });
+                this.socket.emit('monster move', { idMonster: this.monsterId, tileX: this.tileX, tileY: this.tileY });
             }
         }
         if (this.monsterDie == false) {

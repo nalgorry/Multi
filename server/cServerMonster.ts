@@ -82,7 +82,7 @@ export class cServerMonster {
             }
 
             if (monsterMove) {
-                player.socket.emit('monster move', {idMonster:this.monsterId, tileX: this.tileX, tileY: this.tileY })
+                this.socket.emit('monster move', {idMonster:this.monsterId, tileX: this.tileX, tileY: this.tileY })
             }
             
         }

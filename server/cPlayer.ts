@@ -19,7 +19,7 @@ export class cPlayer {
     public calculateDamage(damage:number):number {
     
         if (this.protectedField == true) {
-            damage = Math.round(damage / 3);
+            damage = Math.round(damage / 2.5);
         }
 
         return damage;
@@ -56,7 +56,7 @@ export class cPlayer {
         }
 
         if (this.protectedField == true) {
-            damage = Math.round(damage / 3);
+            damage = Math.round(damage / 2.5);
         }
 
         if (this.weakEfect == true) {
