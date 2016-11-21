@@ -50,24 +50,26 @@ var cBasicActor = (function () {
         this.weaponSprite.anchor.set(0.5, 1);
         this.playerSprite.addChild(this.weaponSprite);
         //defino las animaciones segun la cantidad de cuadros 
-        this.armorSprite.animations.add('idle', [0, 1, 2, 3, 4], 4, true);
+        this.armorSprite.animations.add('idle_right', [0, 1, 2, 3, 4], 4, true);
+        this.armorSprite.animations.add('idle_left', [24, 25, 26, 27, 28], 4, true);
         this.armorSprite.animations.add('left', [8, 9, 10, 11, 12, 13, 14, 15], 10, true);
         this.armorSprite.animations.add('right', [16, 17, 18, 19, 20, 21, 22, 23], 10, true);
-        this.armorSprite.animations.add('up', [24, 25, 26, 27, 28], 10, true);
-        this.armorSprite.animations.add('down', [32, 33, 34, 35, 36], 10, true);
-        this.weaponSprite.animations.add('idle', [0, 1, 2, 3, 4], 4, true);
+        this.weaponSprite.animations.add('idle_right', [0, 1, 2, 3, 4], 4, true);
+        this.weaponSprite.animations.add('idle_left', [24, 25, 26, 27, 28], 4, true);
         this.weaponSprite.animations.add('left', [8, 9, 10, 11, 12, 13, 14, 15], 10, true);
         this.weaponSprite.animations.add('right', [16, 17, 18, 19, 20, 21, 22, 23], 10, true);
-        this.weaponSprite.animations.add('up', [24, 25, 26, 27, 28], 10, true);
-        this.weaponSprite.animations.add('down', [32, 33, 34, 35, 36], 10, true);
         this.controlGame.depthGroup.add(this.playerSprite);
     };
     cBasicActor.prototype.startAnimation = function (animation) {
         this.armorSprite.animations.play(animation);
         this.weaponSprite.animations.play(animation);
-        if (animation == 'idle') {
-            this.playerSprite.children[0] = this.armorSprite;
+        if (animation == 'idle_right') {
+            this.playerSprite.children[0] = this.weaponSprite;
+            this.playerSprite.children[1] = this.armorSprite;
+        }
+        else if (animation == 'idle_left') {
             this.playerSprite.children[1] = this.weaponSprite;
+            this.playerSprite.children[0] = this.armorSprite;
         }
         else if (animation == 'left') {
             this.playerSprite.children[0] = this.armorSprite;

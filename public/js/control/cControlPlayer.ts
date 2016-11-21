@@ -83,7 +83,13 @@ class cControlPlayer extends cBasicActor {
         A.onDown.add(this.moveKeyPress,this);
         S.onDown.add(this.moveKeyPress,this);
         D.onDown.add(this.moveKeyPress,this);
-        
+
+        //controles del pad
+        if (this.controlGame.game.device.desktop == false) {
+            var controlPad = new cControlPad(this.controlGame, 120, 610);
+            controlPad.onMove.add(this.movePad,this);
+            controlPad.onUp.add(this.stopPad,this);   
+        }
 
         //controles de Hechizos 
         var one = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
@@ -109,6 +115,66 @@ class cControlPlayer extends cBasicActor {
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youClickYou, this);
 
+    }
+
+
+    //todo falta setear los demas movimientos y terminar el pad
+    private movePad(dir:dirPad) {
+
+        switch (dir) {
+            case dirPad.up:
+                this.seMueveY = true;
+                this.lastMoveY = -1;
+                this.seMueveX = false;
+                break;
+            case dirPad.down:
+                this.seMueveY = true;
+                this.lastMoveY = 1;
+                this.seMueveX = false
+                break;
+            case dirPad.left:
+                this.seMueveX = true;
+                this.lastMoveX = -1;
+                this.seMueveY = false
+                break;
+            case dirPad.right:
+                this.seMueveX = true;
+                this.lastMoveX = 1;
+                this.seMueveY = false;
+                break;
+            case dirPad.upLeft:
+                this.seMueveY = true;
+                this.lastMoveY = -1;
+                this.seMueveX = true;
+                this.lastMoveX = -1;
+                break;
+            case dirPad.upRight:
+                this.seMueveY = true;
+                this.lastMoveY = -1;
+                this.seMueveX = true;
+                this.lastMoveX = 1;
+                break;
+            case dirPad.downLeft:
+                this.seMueveY = true;
+                this.lastMoveY = 1;    
+                this.seMueveX = true;
+                this.lastMoveX = -1;            
+                break;
+            case dirPad.downRight:
+                this.seMueveY = true;
+                this.lastMoveY = 1;  
+                this.seMueveX = true;
+                this.lastMoveX = 1;              
+                break;                
+            default:
+                break;
+        }
+
+    }
+
+    private stopPad() {
+        this.seMueveX = false;
+        this.seMueveY = false;
     }
 
     private youClickYou() {
@@ -211,7 +277,11 @@ class cControlPlayer extends cBasicActor {
 
         //control de las animaciones
         if (isMovingX == false && isMovingY == false) {
-            this.startAnimation('idle');
+            if (this.lastAnimation == move.left ) { 
+                this.startAnimation('idle_left');
+            } else if (this.lastAnimation == move.right) {
+                this.startAnimation('idle_right');
+            }
         } else if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
             this.startAnimation('right');
             this.dirMovimiento = move.right;

@@ -10,7 +10,7 @@ class cControlConsole {
         var consoleHeight:number = 120;
 
         //creo el cuadrado donde va a ir la consola
-        this.consoleGraph = this.controlGame.game.add.graphics(5,controlGame.game.height - consoleHeight- 48);
+        this.consoleGraph = this.controlGame.game.add.graphics(5,controlGame.game.height - consoleHeight - 5);
         this.consoleGraph.beginFill(0xedeeef);
         this.consoleGraph.fixedToCamera = true;
         this.consoleGraph.alpha = 0.55;
@@ -48,7 +48,7 @@ class cControlConsole {
 
             var newMessage:cConsoleMessage = this.arrayMessages[i];
 
-            var newText:Phaser.Text = this.controlGame.game.add.text(10, this.controlGame.game.height - 70 - i * messageHeight ,
+            var newText:Phaser.Text = this.controlGame.game.add.text(10, this.controlGame.game.height - 25 - i * messageHeight ,
                 newMessage.message,newMessage.getStyle());
             newText.fixedToCamera = true;
 

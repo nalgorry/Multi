@@ -8,9 +8,11 @@ var cControlGame = (function () {
         // Configuro el mundo para que sea centrado en el personaje
         this.game.world.setBounds(0, 0, tamanoMapa * this.gridSize, tamanoMapa * this.gridSize);
         //controlo que aparezca en todo el navegador.
-        //this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        this.game.scale.pageAlignHorizontally = true;
-        this.game.scale.pageAlignVertically = true;
+        if (this.game.device.desktop == false) {
+            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            this.game.scale.windowConstraints.right = 'layout';
+            this.game.scale.windowConstraints.bottom = 'layout';
+        }
         //  Our tiled scrolling background
         this.map = this.game.add.tilemap('map');
         this.map.addTilesetImage('tiles', 'tiles');
@@ -48,8 +50,6 @@ var cControlGame = (function () {
         //to control the keyboard 
         var atackKeyOne = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
         atackKeyOne.onDown.add(this.activateAtackMode, this);
-        //esto controla el teclado
-        //this.cursors = this.game.input.keyboard.createCursorKeys();
         //inicio la consola
         this.controlConsole = new cControlConsole(this);
     }

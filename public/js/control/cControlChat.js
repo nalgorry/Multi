@@ -8,18 +8,18 @@ var cControlChat = (function () {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
-            width: 984,
+            width: 984 - 315,
             height: 23,
             padding: 8,
-            borderWidth: 1,
-            borderColor: '#000',
+            borderWidth: 0,
+            borderColor: '#ffffff',
             placeHolder: 'Chat',
             borderRadius: 0,
         });
         this.inputTextChat.focusOutOnEnter = true;
         this.inputTextChat.blockInput = true;
         this.inputTextChat.fixedToCamera = true;
-        this.inputTextChat.cameraOffset.setTo(0, 635);
+        this.inputTextChat.cameraOffset.setTo(310, 630);
         Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress, this);
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);

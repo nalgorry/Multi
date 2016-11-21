@@ -16,7 +16,7 @@ var cPlayer = (function () {
     };
     cPlayer.prototype.calculateDamage = function (damage) {
         if (this.protectedField == true) {
-            damage = Math.round(damage / 3);
+            damage = Math.round(damage / 2);
         }
         return damage;
     };
@@ -46,7 +46,7 @@ var cPlayer = (function () {
                 break;
         }
         if (this.protectedField == true) {
-            damage = Math.round(damage / 3);
+            damage = Math.round(damage / 2);
         }
         if (this.weakEfect == true) {
             damage = Math.round(damage * 2);

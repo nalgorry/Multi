@@ -4,7 +4,7 @@ var cControlConsole = (function () {
         var consoleWidth = 300;
         var consoleHeight = 120;
         //creo el cuadrado donde va a ir la consola
-        this.consoleGraph = this.controlGame.game.add.graphics(5, controlGame.game.height - consoleHeight - 48);
+        this.consoleGraph = this.controlGame.game.add.graphics(5, controlGame.game.height - consoleHeight - 5);
         this.consoleGraph.beginFill(0xedeeef);
         this.consoleGraph.fixedToCamera = true;
         this.consoleGraph.alpha = 0.55;
@@ -28,7 +28,7 @@ var cControlConsole = (function () {
         var messagesToShow = Math.min(maxMessages, this.arrayMessages.length);
         for (var i = 0; i < messagesToShow; i++) {
             var newMessage = this.arrayMessages[i];
-            var newText = this.controlGame.game.add.text(10, this.controlGame.game.height - 70 - i * messageHeight, newMessage.message, newMessage.getStyle());
+            var newText = this.controlGame.game.add.text(10, this.controlGame.game.height - 25 - i * messageHeight, newMessage.message, newMessage.getStyle());
             newText.fixedToCamera = true;
             this.arrayPhaserTexts.push(newText);
         }

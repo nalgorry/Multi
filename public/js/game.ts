@@ -43,6 +43,8 @@ class SimpleGame {
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120,120 );    
 
         this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
+
+
 }
 
     create() {
@@ -73,7 +75,6 @@ class SimpleGame {
         this.controlOtherPlayers,this.controlChat);
         this.controlGame.controlServer = this.controlServer;
         this.controlChat.controlServer = this.controlServer;
-
         
     }
 
