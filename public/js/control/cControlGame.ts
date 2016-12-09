@@ -37,7 +37,10 @@ class cControlGame {
             this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.game.scale.windowConstraints.right = 'layout';
             this.game.scale.windowConstraints.bottom = 'layout';
-        }
+        } 
+
+        this.game.scale.pageAlignHorizontally = true;
+        this.game.scale.pageAlignVertically = true;
         
 
         //  Our tiled scrolling background

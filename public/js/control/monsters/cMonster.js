@@ -7,10 +7,15 @@ var cMonster = (function () {
         this.startMonster(data);
     }
     cMonster.prototype.startMonster = function (data) {
-        //creo el moustro
-        this.monsterSprite = this.controlGame.game.add.sprite(this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize, 'monster_1', 0);
+        console.log(data);
+        //creo el moustro segun el tipo de monstruo que toco 
+        var monsterImage = "monster_" + data.monsterType;
+        this.monsterSprite = this.controlGame.game.add.sprite(this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize);
         this.monsterSprite.anchor.set(0.5, 1);
-        this.monsterSprite.x += this.monsterSprite.width / 2;
+        var internalSprite = this.controlGame.game.add.sprite(0, 0, monsterImage, 0);
+        internalSprite.anchor.set(0.5, 1);
+        internalSprite.x += this.monsterSprite.width / 2;
+        this.monsterSprite.addChild(internalSprite);
         this.monsterSprite.inputEnabled = true;
         this.monsterSprite.events.onInputDown.add(this.youHitMonster, this);
         this.controlGame.depthGroup.add(this.monsterSprite);
@@ -18,6 +23,20 @@ var cMonster = (function () {
     cMonster.prototype.monsterMove = function (data) {
         var x = data.tileX * this.controlGame.gridSize + this.monsterSprite.width / 2;
         var y = data.tileY * this.controlGame.gridSize;
+        var spriteRotate = this.monsterSprite.children[0];
+        if (spriteRotate == undefined) {
+            return;
+        }
+        ; //para evitar problemas si matan antes que termine el mov
+        //me fijo si se mueve para la izquiera o derecha y acomodo el sprite
+        if (this.monsterSprite.x > x && spriteRotate.scale.x == 1) {
+            spriteRotate.scale.x *= -1;
+        }
+        else if (this.monsterSprite.x < x && spriteRotate.scale.x == -1) {
+            spriteRotate.scale.x *= -1;
+        }
+        else {
+        }
         this.moveTween = this.controlGame.game.add.tween(this.monsterSprite).to({ x: x, y: y }, 320, Phaser.Easing.Linear.None, true, 0);
     };
     cMonster.prototype.youHitMonster = function () {

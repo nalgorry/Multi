@@ -15,6 +15,7 @@ class cSpell {
     public enabledTrowOtherPlayer: boolean = true;
     public enabledTrowThisPlayer: boolean = false;
     public coolDownTimeSec:number = 2;
+    public tint:number = null;
     
     
     //variables creadas por la clase
@@ -42,6 +43,9 @@ class cSpell {
         boomSprite.anchor.set(0.5,1);
         
         var animation = boomSprite.animations.add('boom');
+
+        //cambio el tint de la explosión si viene con 
+        if (this.tint != null) {boomSprite.tint =  this.tint;}
 
         sprite.addChild(boomSprite);
       

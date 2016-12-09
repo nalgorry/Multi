@@ -1,25 +1,40 @@
 "use strict";
+var cServerDefinitionMonsters_1 = require('./cServerDefinitionMonsters');
 var cServerMonster = (function () {
-    function cServerMonster(monsterId, socket, controlPlayer) {
-        this.monsterId = monsterId;
-        this.socket = socket;
-        this.controlPlayer = controlPlayer;
+    function cServerMonster() {
         this.monsterDie = false; //para chekear si el moustro se murio o no
         //variables para definir el ataque
         this.gridSize = 40;
         this.monsterAtackTilesX = 13;
         this.monsterAtackTilesY = 9;
     }
-    cServerMonster.prototype.startMonster = function (tileX, tileY, monsterLife, monsterPower) {
+    cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, tileX, tileY) {
         var _this = this;
-        this.monsterLife = monsterLife;
+        this.monsterId = monsterId;
+        this.socket = socket;
+        this.controlPlayer = controlPlayer;
         this.tileX = tileX;
         this.tileY = tileY;
-        this.monsterPower = monsterPower;
-        console.log({ id: this.monsterId, tileX: this.tileX, tileY: this.tileY });
-        this.socket.emit('new Monster', { id: this.monsterId, tileX: this.tileX, tileY: this.tileY });
+        //valores que dependen del tipo de monstruo
+        this.monsterType = monsterType;
+        this.monsterPower = 10;
+        this.monsterLife = 100;
+        cServerDefinitionMonsters_1.cServerDefinitionMonsters.defineMonsters(this, monsterType);
+        this.emitNewMonster();
         var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
         var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
+    };
+    cServerMonster.prototype.emitNewMonster = function (socket) {
+        if (socket === void 0) { socket = null; }
+        //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
+        var monsterdata = { id: this.monsterId, tileX: this.tileX, tileY: this.tileY, monsterType: this.monsterType };
+        if (socket == null) {
+            this.socket.emit('new Monster', monsterdata);
+        }
+        else {
+            socket.emit('new Monster', monsterdata);
+        }
+        console.log(monsterdata);
     };
     cServerMonster.prototype.monsterMove = function () {
         var _this = this;
@@ -117,7 +132,10 @@ var cServerMonster = (function () {
         }
     };
     cServerMonster.prototype.sendMonsterToNewPlayer = function (socket) {
-        socket.emit('new Monster', { id: this.monsterId, tileX: this.tileX, tileY: this.tileY });
+        this.emitNewMonster(socket);
+    };
+    cServerMonster.prototype.randomIntFromInterval = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     };
     return cServerMonster;
 }());

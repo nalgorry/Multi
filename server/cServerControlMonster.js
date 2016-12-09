@@ -8,7 +8,7 @@ var cServerControlMonster = (function () {
         this.arrayMonster = [];
         //creo los primeros monters :)
         for (var i = 1; i <= 25; i++) {
-            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 12), 50, 1);
+            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 14));
         }
     }
     cServerControlMonster.prototype.getMonsterById = function (id) {
@@ -20,9 +20,9 @@ var cServerControlMonster = (function () {
             this.arrayMonster[monster].sendMonsterToNewPlayer(socket);
         }
     };
-    cServerControlMonster.prototype.createNewMonster = function (tileX, tileY, life, monsterPower) {
-        var newMonster = new cServerMonster_1.cServerMonster("m" + this.nextIdMonster, this.socket, this.controlPlayer);
-        newMonster.startMonster(tileX, tileY, life, monsterPower);
+    cServerControlMonster.prototype.createNewMonster = function (tileX, tileY) {
+        var newMonster = new cServerMonster_1.cServerMonster();
+        newMonster.startMonster("m" + this.nextIdMonster, this.randomIntFromInterval(1, 2), this.socket, this.controlPlayer, tileX, tileY);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };
@@ -34,13 +34,16 @@ var cServerControlMonster = (function () {
             //controlo si se murio el moustro y lo saco del array de moustros
             if (monster.monsterDie == true) {
                 delete this.arrayMonster[data.idMonster];
-                //creo un nuevo monster mas poderoso
-                this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 12), 50 + this.nextIdMonster * 2, 10 + this.nextIdMonster * 0.5);
+                //creo un nuevo monster
+                this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 12));
             }
         }
         else {
             console.log("monstruo no encontrado");
         }
+    };
+    cServerControlMonster.prototype.randomIntFromInterval = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     };
     return cServerControlMonster;
 }());

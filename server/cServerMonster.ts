@@ -1,5 +1,6 @@
 import {cServerControlPlayers} from './cControlServerPlayers';
 import {cPlayer} from './cPlayer';
+import {cServerDefinitionMonsters} from './cServerDefinitionMonsters';
 
 
 export class cServerMonster {
@@ -9,32 +10,60 @@ export class cServerMonster {
     public tileX:number; 
     public tileY:number;
     public monsterPower:number;
+    public monsterId:string;
+    public socket:SocketIO.Server;
+    public controlPlayer:cServerControlPlayers;
+    public monsterType: enumMonsters; 
 
     //variables para definir el ataque
     public gridSize:number = 40;
     public monsterAtackTilesX:number = 13;
     public monsterAtackTilesY:number = 9;
     
-    constructor(public monsterId:string,
-                public socket:SocketIO.Server,
-                public controlPlayer:cServerControlPlayers ) {
+    constructor() {
 
     }
 
-    public startMonster(tileX:number,tileY:number,monsterLife:number,monsterPower:number) {
+    public startMonster(
+                monsterId:string,
+                monsterType:enumMonsters,
+                socket:SocketIO.Server,
+                controlPlayer:cServerControlPlayers,
+                tileX:number,tileY:number) {
 
-        this.monsterLife = monsterLife;
+        this.monsterId = monsterId;
+
+        this.socket = socket;
+        this.controlPlayer = controlPlayer;
         this.tileX = tileX;
         this.tileY = tileY;
-        this.monsterPower = monsterPower;
+        
+        //valores que dependen del tipo de monstruo
+        this.monsterType = monsterType;
+        this.monsterPower = 10;
+        this.monsterLife = 100;
 
-        console.log({id:this.monsterId,tileX:this.tileX, tileY:this.tileY})
+        cServerDefinitionMonsters.defineMonsters(this,monsterType)
 
-        this.socket.emit('new Monster', {id:this.monsterId,tileX:this.tileX, tileY:this.tileY});
-
+        this.emitNewMonster()
+    
          var timerAtack = setTimeout(() => this.monsterAtack(), 1200);
          var timerMove = setTimeout(() => this.monsterMove(), 800);
 
+    }
+
+    private emitNewMonster(socket:SocketIO.Server = null) {
+        //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
+        var monsterdata =  {id:this.monsterId,tileX:this.tileX, tileY:this.tileY,monsterType:this.monsterType};
+
+        if (socket == null) {
+            this.socket.emit('new Monster',monsterdata);
+        }
+        else {
+            socket.emit('new Monster', monsterdata);
+        }
+
+        console.log(monsterdata)
     }
 
     public monsterMove() {
@@ -162,7 +191,13 @@ export class cServerMonster {
     }
 
     public sendMonsterToNewPlayer(socket:SocketIO.Server) {
-        socket.emit('new Monster', {id:this.monsterId,tileX:this.tileX, tileY:this.tileY});
+        this.emitNewMonster(socket);
+    }
+
+    private randomIntFromInterval(min,max)
+    {
+        return Math.floor(Math.random()*(max-min+1)+min);
     }
 
 }
+

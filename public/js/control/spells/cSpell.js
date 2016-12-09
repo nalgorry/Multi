@@ -7,6 +7,7 @@ var cSpell = (function () {
         this.enabledTrowOtherPlayer = true;
         this.enabledTrowThisPlayer = false;
         this.coolDownTimeSec = 2;
+        this.tint = null;
         this.isSpellOnCoolDown = false;
     }
     cSpell.prototype.spellAnimation = function (sprite) {
@@ -20,6 +21,10 @@ var cSpell = (function () {
         }
         boomSprite.anchor.set(0.5, 1);
         var animation = boomSprite.animations.add('boom');
+        //cambio el tint de la explosión si viene con 
+        if (this.tint != null) {
+            boomSprite.tint = this.tint;
+        }
         sprite.addChild(boomSprite);
         if (this.explotionTimeSeconds == 0) {
             boomSprite.animations.play('boom', this.explotionFrameRate, false, true);

@@ -13,6 +13,8 @@ var cControlGame = (function () {
             this.game.scale.windowConstraints.right = 'layout';
             this.game.scale.windowConstraints.bottom = 'layout';
         }
+        this.game.scale.pageAlignHorizontally = true;
+        this.game.scale.pageAlignVertically = true;
         //  Our tiled scrolling background
         this.map = this.game.add.tilemap('map');
         this.map.addTilesetImage('tiles', 'tiles');

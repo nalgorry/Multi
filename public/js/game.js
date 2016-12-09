@@ -13,14 +13,17 @@ var SimpleGame = (function () {
         this.game.load.spritesheet('boom', 'assets/explosion.png', 50, 50);
         this.game.load.spritesheet('boom2', 'assets/explosion2.png', 96, 96);
         this.game.load.spritesheet('boom3', 'assets/blueexplosion.png', 66.66, 66.66);
-        this.game.load.spritesheet('aura', 'assets/aura80.png', 70, 80);
-        this.game.load.spritesheet('aura2', 'assets/aura2.png', 20, 20);
+        //this.game.load.spritesheet('aura', 'assets/aura80.png',70,80);
+        //this.game.load.spritesheet('aura2', 'assets/aura2.png',20,20);
+        this.game.load.spritesheet('aura', 'assets/aura38.png', 128, 128);
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 70);
         this.game.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
         this.game.load.spritesheet('spells', 'assets/spells.png', 40, 40);
         this.game.load.spritesheet('monster_1', 'assets/monster_1.png', 40, 80);
+        this.game.load.spritesheet('monster_2', 'assets/monster_2.png', 170, 119);
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 675);
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120, 120);
+        this.game.load.spritesheet('portal', 'assets/portal.png', 70, 116);
         this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
     };
     SimpleGame.prototype.create = function () {

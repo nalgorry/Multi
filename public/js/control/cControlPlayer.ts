@@ -16,6 +16,7 @@ class cControlPlayer extends cBasicActor {
 
     public controlFocus: cControlFocus;
     public controlSpells:cControlSpells;
+    public controlPortals:cControlPortal;
 
     private speedplayer: number = 150;
     
@@ -50,6 +51,9 @@ class cControlPlayer extends cBasicActor {
 
         //Cargo el sistema de hechizos.
         this.controlSpells = new cControlSpells(this.controlGame);
+
+        //inicio el sistema de portales que me permite moverme entre los diferentes mapas
+        this.controlPortals = new cControlPortal(this.controlGame);
 
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         
@@ -324,10 +328,14 @@ class cControlPlayer extends cBasicActor {
             this.playerIdle = false;
             
             this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.lastAnimation });
+
+            this.controlPortals.checkPortals(this.tileX,this.tileY);
+            
         } else if (isMovingX == false && isMovingY == false && this.playerIdle == false) {
             this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
             this.playerIdle = true;
         }
+
        
     }
 

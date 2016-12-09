@@ -13,7 +13,7 @@ export class cServerControlMonster {
         //creo los primeros monters :)
 
        for (var i=1; i<=25;i++) {
-           this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),50,1)
+           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 76 + 14));
        }
 
     }
@@ -31,11 +31,11 @@ export class cServerControlMonster {
 
     }
 
-    private createNewMonster(tileX:number,tileY:number,life:number,monsterPower:number) {
+    private createNewMonster(tileX:number,tileY:number) {
         
-        var newMonster = new cServerMonster("m" + this.nextIdMonster,this.socket,this.controlPlayer)
+        var newMonster = new cServerMonster()
 
-        newMonster.startMonster(tileX,tileY,life,monsterPower);
+        newMonster.startMonster("m" + this.nextIdMonster,this.randomIntFromInterval(1,2),this.socket,this.controlPlayer,tileX,tileY);
         
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
 
@@ -55,8 +55,8 @@ export class cServerControlMonster {
             if (monster.monsterDie == true) { 
                 delete this.arrayMonster[data.idMonster];
 
-                //creo un nuevo monster mas poderoso
-                this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),50 + this.nextIdMonster * 2 ,10 + this.nextIdMonster * 0.5)
+                //creo un nuevo monster
+                this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12))
             }   
         } else {
             console.log("monstruo no encontrado")
@@ -64,6 +64,11 @@ export class cServerControlMonster {
 
         
 
+    }
+
+    private randomIntFromInterval(min,max)
+    {
+        return Math.floor(Math.random()*(max-min+1)+min);
     }
 
 }
