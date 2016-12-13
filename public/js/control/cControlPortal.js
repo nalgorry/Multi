@@ -6,15 +6,26 @@ var cControlPortal = (function () {
     cControlPortal.prototype.createPortals = function () {
         this.arrayPortals = new Array();
         var portal = new cPortal(this.controlGame, 1, 50, 4);
-        this.arrayPortals.push(portal);
+        this.arrayPortals['p' + 1] = portal;
+    };
+    //el servidor emite esto cuando entras al portal 
+    cControlPortal.prototype.youEnterPortal = function (data) {
+        console.log("ENTRO AL MEGA SUPER PORTAL");
+        console.log(data.idPortal);
+        switch (data.idPortal) {
+            case 1:
+                console.log("entra aca?");
+                this.controlGame.controlPlayer.teleport(80, 80);
+                break;
+            default:
+                break;
+        }
     };
     cControlPortal.prototype.checkPortals = function (tileX, tileY) {
-        console.log(tileX);
-        console.log(tileY);
-        for (var _i = 0, _a = this.arrayPortals; _i < _a.length; _i++) {
-            var portal = _a[_i];
+        for (var idPortal in this.arrayPortals) {
+            var portal = this.arrayPortals[idPortal];
             if ((tileX == portal.tileX || tileX == portal.tileX + 1) && tileY + 1 == portal.tileY) {
-                console.log("ENTRO AL MEGA SUPER PORTAL");
+                this.controlGame.controlServer.socket.emit('enter portal', { idPortal: portal.portalID });
             }
         }
     };

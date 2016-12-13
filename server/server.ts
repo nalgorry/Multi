@@ -62,7 +62,17 @@ function onSocketConnection (client) {
   //Player Change
   client.on('you change', onYouChange)
 
+  client.on('enter portal',onYouEnterPortal);
+
   client.on('monster click',onYouClickMonster)
+
+}
+
+function onYouEnterPortal(data) {
+  
+  var player = controlPlayers.getPlayerById(this.id);
+
+  this.emit('you enter portal', {idPortal:data.idPortal});
 
 }
 

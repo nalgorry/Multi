@@ -225,6 +225,14 @@ class cControlPlayer extends cBasicActor {
         this.controlGame.controlConsole.newMessage(enumMessage.youKill,"Mataste a " + data.name);
     }
 
+    public teleport(tileX,tileY) {
+        this.playerSprite.x = tileX * this.controlGame.gridSize;
+        this.playerSprite.y = tileY * this.controlGame.gridSize;
+
+        this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
+
+    }
+
     public playerUpdate() {
 
         //me fijo para que lado se esta moviendo 

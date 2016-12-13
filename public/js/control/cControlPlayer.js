@@ -174,6 +174,11 @@ var cControlPlayer = (function (_super) {
     cControlPlayer.prototype.youKill = function (data) {
         this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste a " + data.name);
     };
+    cControlPlayer.prototype.teleport = function (tileX, tileY) {
+        this.playerSprite.x = tileX * this.controlGame.gridSize;
+        this.playerSprite.y = tileY * this.controlGame.gridSize;
+        this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
+    };
     cControlPlayer.prototype.playerUpdate = function () {
         //me fijo para que lado se esta moviendo 
         if (this.seMueveX == true && this.seMueveY == false) {
