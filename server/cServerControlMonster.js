@@ -22,7 +22,7 @@ var cServerControlMonster = (function () {
     };
     cServerControlMonster.prototype.createNewMonster = function (tileX, tileY) {
         var newMonster = new cServerMonster_1.cServerMonster();
-        newMonster.startMonster("m" + this.nextIdMonster, this.randomIntFromInterval(1, 2), this.socket, this.controlPlayer, tileX, tileY);
+        newMonster.startMonster("m" + this.nextIdMonster, this.randomIntFromInterval(1, 4), this.socket, this.controlPlayer, tileX, tileY);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };

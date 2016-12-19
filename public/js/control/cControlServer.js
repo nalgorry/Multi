@@ -29,9 +29,22 @@ var cControlServer = (function () {
         this.socket.on('monster die', cControlServer.prototype.onMonsterDie.bind(this));
         this.socket.on('you hit monster', cControlServer.prototype.onMosterWereHit.bind(this));
         this.socket.on('monster move', cControlServer.prototype.onMonsterMove.bind(this));
+        //items controls
+        this.socket.on('new item', cControlServer.prototype.onNewItem.bind(this));
+        this.socket.on('you get item', cControlServer.prototype.onYouGetItem.bind(this));
+        this.socket.on('item get', cControlServer.prototype.onItemGet.bind(this));
         //control de portalese 
         this.socket.on('you enter portal', cControlServer.prototype.youEnterPortal.bind(this));
     }
+    cControlServer.prototype.onItemGet = function (data) {
+        this.controlPlayer.controlItems.itemGet(data);
+    };
+    cControlServer.prototype.onYouGetItem = function (data) {
+        this.controlPlayer.controlItems.youGetItem(data);
+    };
+    cControlServer.prototype.onNewItem = function (data) {
+        this.controlGame.controlPlayer.controlItems.newItem(data);
+    };
     cControlServer.prototype.youEnterPortal = function (data) {
         this.controlGame.controlPlayer.controlPortals.youEnterPortal(data);
     };

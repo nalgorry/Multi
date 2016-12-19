@@ -40,11 +40,28 @@ class cControlServer {
         this.socket.on('you hit monster', cControlServer.prototype.onMosterWereHit.bind(this));
         this.socket.on('monster move', cControlServer.prototype.onMonsterMove.bind(this));
 
+        //items controls
+        this.socket.on('new item', cControlServer.prototype.onNewItem.bind(this));
+        this.socket.on('you get item', cControlServer.prototype.onYouGetItem.bind(this));
+        this.socket.on('item get', cControlServer.prototype.onItemGet.bind(this));
+      
+
         //control de portalese 
         this.socket.on('you enter portal', cControlServer.prototype.youEnterPortal.bind(this));
         
         }
+    
+    public onItemGet(data) {
+        this.controlPlayer.controlItems.itemGet(data);
+    }
 
+    public onYouGetItem(data) {
+        this.controlPlayer.controlItems.youGetItem(data);
+    }
+
+    public onNewItem(data) {
+        this.controlGame.controlPlayer.controlItems.newItem(data);
+    }
 
     public youEnterPortal(data) {
         this.controlGame.controlPlayer.controlPortals.youEnterPortal(data);

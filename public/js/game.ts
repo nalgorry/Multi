@@ -37,8 +37,10 @@ class SimpleGame {
         this.game.load.atlas('objects', 'assets/objects.png','assets/objects.json');
         this.game.load.spritesheet('spells', 'assets/spells.png', 40,40 );
 
-        this.game.load.spritesheet('monster_1', 'assets/monster_1.png', 40,80 );
+        this.game.load.image('monster_1', 'assets/monster_1.png');
         this.game.load.spritesheet('monster_2', 'assets/monster_2.png',170 ,119 );
+        this.game.load.image('monster_3', 'assets/monster_3.png' );
+        this.game.load.image('monster_4', 'assets/monster_4.png' );
         
 
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200,675 );
@@ -46,6 +48,8 @@ class SimpleGame {
         this.game.load.spritesheet('portal', 'assets/portal.png', 70,116 );       
 
         this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
+
+        this.game.load.spritesheet('items', 'assets/items.png',40,40);
 
 
 }
@@ -104,8 +108,8 @@ class SimpleGame {
 
         //this.game.debug.text("vida: " + this.controlPlayer.controlFocus.life.toString(),800,120)
 
-        this.game.debug.text('Tile X: ' + this.controlGame.layer.getTileX(this.controlGame.controlPlayer.playerSprite.x), 50, 48, 'rgb(0,0,0)');
-        this.game.debug.text('Tile Y: ' + this.controlGame.layer.getTileY(this.controlGame.controlPlayer.playerSprite.y), 50, 64, 'rgb(0,0,0)');
+        this.game.debug.text('Tile X: ' + this.controlGame.controlPlayer.tileX, 50, 48, 'rgb(0,0,0)');
+        this.game.debug.text('Tile Y: ' + this.controlGame.controlPlayer.tileY, 50, 64, 'rgb(0,0,0)');
         
         //this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
         //this.game.debug.body(this.controlPlayer.playerSprite);

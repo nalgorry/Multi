@@ -4,6 +4,7 @@ class cMonster  {
     public tileX:number;
     public tileY:number;
     public monsterSprite:Phaser.Sprite;
+    public monsterInternalSprite:Phaser.Sprite
 
     private moveTween:Phaser.Tween;
 
@@ -20,20 +21,18 @@ class cMonster  {
 
     private startMonster(data) {
 
-        console.log(data);
-
         //creo el moustro segun el tipo de monstruo que toco 
         var monsterImage = "monster_" + data.monsterType;
 
         this.monsterSprite = this.controlGame.game.add.sprite(this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize)
-        this.monsterSprite.anchor.set(0.5,1)
+        this.monsterSprite.anchor.set(1,1)
 
-        var internalSprite = this.controlGame.game.add.sprite(0,0,
+        this.monsterInternalSprite = this.controlGame.game.add.sprite(0,0,
              monsterImage,0);
-        internalSprite.anchor.set(0.5,1);
-        internalSprite.x += this.monsterSprite.width/2;
+        this.monsterInternalSprite.anchor.set(0.5,1);
+        this.monsterInternalSprite.x += this.monsterSprite.width/2;
 
-        this.monsterSprite.addChild(internalSprite);
+        this.monsterSprite.addChild(this.monsterInternalSprite);
         this.monsterSprite.inputEnabled = true;
         this.monsterSprite.events.onInputDown.add(this.youHitMonster, this);
 

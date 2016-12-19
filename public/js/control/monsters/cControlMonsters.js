@@ -2,7 +2,6 @@ var cControlMonsters = (function () {
     function cControlMonsters(controlGame) {
         this.controlGame = controlGame;
         this.arrayMonster = [];
-        this.mosterSpecialHit('data');
     }
     cControlMonsters.prototype.newMonster = function (data) {
         this.arrayMonster[data.id] = new cMonster(this.controlGame, data);
@@ -81,7 +80,7 @@ var cControlMonsters = (function () {
             //pongo una animación sobre el pj 
             var monster = this.arrayMonster[data.idMonster];
             if (monster != null) {
-                this.controlGame.controlPlayer.controlSpells.spellAnimation(monster.monsterSprite, data);
+                this.controlGame.controlPlayer.controlSpells.spellAnimation(monster.monsterInternalSprite, data);
             }
         }
     };

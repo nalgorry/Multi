@@ -8,11 +8,13 @@ var ioServer = require('socket.io');
 var cPlayer_1 = require('./cPlayer');
 var cServerControlMonster_1 = require('./cServerControlMonster');
 var cControlServerPlayers_1 = require('./cControlServerPlayers');
+var cServerControlItems_1 = require('./items/cServerControlItems');
 var port = process.env.PORT || 8080;
 // variables del juego
 var socket; // Socket controller
 var controlPlayers; //control los jugadores
 var controlMonster; //control los mounstros
+var controlItems;
 // Create and start the http server
 var server = http.createServer(ecstatic({ root: path.resolve(__dirname, '../public') })).listen(port, function (err) {
     if (err) {
@@ -24,6 +26,7 @@ function init() {
     socket = ioServer.listen(server);
     socket.sockets.on('connection', onSocketConnection);
     controlPlayers = new cControlServerPlayers_1.cServerControlPlayers(socket);
+    controlItems = new cServerControlItems_1.cServerControlItems(socket);
     controlMonster = new cServerControlMonster_1.cServerControlMonster(socket, controlPlayers);
 }
 // New socket connection
@@ -45,6 +48,10 @@ function onSocketConnection(client) {
     client.on('you change', onYouChange);
     client.on('enter portal', onYouEnterPortal);
     client.on('monster click', onYouClickMonster);
+    client.on('you try get item', onYouTryGetItem);
+}
+function onYouTryGetItem(data) {
+    controlItems.youGetItem(this, data);
 }
 function onYouEnterPortal(data) {
     var player = controlPlayers.getPlayerById(this.id);
@@ -109,6 +116,7 @@ function onNewPlayer(data) {
     var newPlayer = new cPlayer_1.cPlayer(this, this.id, data.name, data.x, data.y);
     controlPlayers.onNewPlayerConected(this, this.id, data);
     controlMonster.onNewPlayerConected(this);
+    controlItems.onNewPlayerConected(this);
 }
 // Player has moved
 function onMovePlayer(data) {

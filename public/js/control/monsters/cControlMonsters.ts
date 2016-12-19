@@ -7,8 +7,6 @@ class cControlMonsters {
 
         this.arrayMonster = [];
 
-        this.mosterSpecialHit('data');
-
     }
 
     public newMonster(data) {
@@ -28,6 +26,7 @@ class cControlMonsters {
 
     public monsterDie(data) {
 
+        
         console.log(data);
         
         var monster:cMonster = this.arrayMonster[data.idMonster];
@@ -124,7 +123,7 @@ class cControlMonsters {
             //pongo una animación sobre el pj 
             var monster = this.arrayMonster[data.idMonster];
             if (monster != null) {
-                this.controlGame.controlPlayer.controlSpells.spellAnimation(monster.monsterSprite,data);
+                this.controlGame.controlPlayer.controlSpells.spellAnimation(monster.monsterInternalSprite,data);
             }
         }
     }

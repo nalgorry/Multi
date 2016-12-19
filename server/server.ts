@@ -8,6 +8,7 @@ var ioServer:SocketIO.Server = require('socket.io');
 import {cPlayer} from './cPlayer';
 import {cServerControlMonster} from './cServerControlMonster';
 import {cServerControlPlayers} from './cControlServerPlayers';
+import {cServerControlItems} from './items/cServerControlItems';
 
 var port = process.env.PORT || 8080
 
@@ -16,6 +17,7 @@ var socket:SocketIO.Server	// Socket controller
 
 var controlPlayers:cServerControlPlayers; //control los jugadores
 var controlMonster:cServerControlMonster; //control los mounstros
+var controlItems:cServerControlItems;
 
 // Create and start the http server
 var server = http.createServer(
@@ -34,6 +36,7 @@ function init () {
   socket.sockets.on('connection', onSocketConnection)
 
   controlPlayers = new cServerControlPlayers(socket);
+  controlItems = new cServerControlItems(socket);
   controlMonster = new cServerControlMonster(socket,controlPlayers);
 }
 
@@ -64,8 +67,17 @@ function onSocketConnection (client) {
 
   client.on('enter portal',onYouEnterPortal);
 
-  client.on('monster click',onYouClickMonster)
+  client.on('monster click',onYouClickMonster);
 
+  client.on('you try get item',onYouTryGetItem)
+
+}
+
+function onYouTryGetItem(data) {
+      
+      controlItems.youGetItem(this, data);
+
+      
 }
 
 function onYouEnterPortal(data) {
@@ -165,6 +177,7 @@ function onNewPlayer (data) {
 
   controlPlayers.onNewPlayerConected(this,this.id,data)
   controlMonster.onNewPlayerConected(this);
+  controlItems.onNewPlayerConected(this);
 
 }
 

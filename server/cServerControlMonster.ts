@@ -35,7 +35,7 @@ export class cServerControlMonster {
         
         var newMonster = new cServerMonster()
 
-        newMonster.startMonster("m" + this.nextIdMonster,this.randomIntFromInterval(1,2),this.socket,this.controlPlayer,tileX,tileY);
+        newMonster.startMonster("m" + this.nextIdMonster,this.randomIntFromInterval(1,4),this.socket,this.controlPlayer,tileX,tileY);
         
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
 

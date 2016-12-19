@@ -127,8 +127,8 @@ class cControlGame {
     mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {
 
         if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {
-            this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;
-            this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.gridSize;
+            //this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;
+            //this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.gridSize;
         }
 
     }
