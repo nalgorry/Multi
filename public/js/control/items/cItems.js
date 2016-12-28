@@ -6,6 +6,7 @@ var cItems = (function () {
         cItemsDefinitions.defineItem(this);
         this.signalItemInventoryClick = new Phaser.Signal();
         this.signalItemOnFloorClick = new Phaser.Signal();
+        this.signalItemEquiped = new Phaser.Signal();
         //inicio el array con todas las posiciones, en el orden que indica el enumItemEquipType
         this.arrayInventoryPoss = [];
         this.arrayInventoryPoss[1 /* weapon */] = new Phaser.Point(1034, 387);
@@ -64,6 +65,8 @@ var cItems = (function () {
         var gridSize = 40;
         if (mousePos.x > destination.x && mousePos.x < destination.x + gridSize &&
             mousePos.y > destination.y && mousePos.y < destination.y + gridSize) {
+            //equipo correctamente el item 
+            this.signalItemEquiped.dispatch(this);
             this.sprite.cameraOffset.copyFrom(destination);
             this.spriteOriginalPoss = destination.clone();
         }

@@ -1,6 +1,7 @@
 class cControlItems {
 
     private arrayItems:cItems[];
+    private arrayEqupipedItems:cItems[];
     private inventoryItemId:number = 1;
     public rectInventoryItem:Phaser.Graphics;
     public selectedItem:cItems;
@@ -8,6 +9,7 @@ class cControlItems {
     constructor(public controlGame:cControlGame) {
 
         this.arrayItems = [];
+        this.arrayEqupipedItems = [];
 
         //armo el cuadrado para el item seleccionado en el inventario
         this.rectInventoryItem = this.controlGame.game.add.graphics(0,0);
@@ -51,8 +53,25 @@ class cControlItems {
         
         item.putItemInInventory(this.inventoryItemId);
         item.signalItemInventoryClick.add(this.itemClick,this); //agrego una señal para despues poder hacer click en el item  
+        item.signalItemEquiped.add(this.itemEquiped,this); //agrego una señal para despues poder hacer click en el item
 
         this.inventoryItemId += 1
+
+    }
+
+    public itemEquiped(item:cItems) {
+        
+        console.log(item);
+
+        //me fijo si hay un item ya equipado
+        if (this.arrayEqupipedItems[item.itemEquipType] != undefined) {
+                console.log("entra hasta aca");
+                this.arrayEqupipedItems[item.itemEquipType].sprite.cameraOffset.copyFrom(item.sprite.cameraOffset);
+        }
+
+        this.arrayEqupipedItems[item.itemEquipType] = item;
+
+        console.log(this.arrayEqupipedItems);
 
     }
 

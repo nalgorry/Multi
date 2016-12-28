@@ -11,6 +11,7 @@ class cItems {
 
     public signalItemInventoryClick:Phaser.Signal;
     public signalItemOnFloorClick:Phaser.Signal;
+    public signalItemEquiped:Phaser.Signal;
 
     public spriteOriginalPoss:Phaser.Point;
 
@@ -27,6 +28,7 @@ class cItems {
 
         this.signalItemInventoryClick = new Phaser.Signal();
         this.signalItemOnFloorClick = new Phaser.Signal();
+        this.signalItemEquiped = new Phaser.Signal();
 
         //inicio el array con todas las posiciones, en el orden que indica el enumItemEquipType
         this.arrayInventoryPoss = [];
@@ -116,8 +118,13 @@ class cItems {
 
         if (mousePos.x > destination.x && mousePos.x < destination.x + gridSize && 
             mousePos.y > destination.y && mousePos.y < destination.y + gridSize) {
+            //equipo correctamente el item 
+            this.signalItemEquiped.dispatch(this);
+            
             this.sprite.cameraOffset.copyFrom(destination);
             this.spriteOriginalPoss = destination.clone();
+            
+
         } else {
             this.sprite.cameraOffset.copyFrom(this.spriteOriginalPoss);
         }

@@ -3,6 +3,7 @@ var cControlItems = (function () {
         this.controlGame = controlGame;
         this.inventoryItemId = 1;
         this.arrayItems = [];
+        this.arrayEqupipedItems = [];
         //armo el cuadrado para el item seleccionado en el inventario
         this.rectInventoryItem = this.controlGame.game.add.graphics(0, 0);
         this.rectInventoryItem.lineStyle(2, 0x000000, 1);
@@ -30,7 +31,18 @@ var cControlItems = (function () {
         var item = new cItems(this.controlGame, data.itemID, data.itemType);
         item.putItemInInventory(this.inventoryItemId);
         item.signalItemInventoryClick.add(this.itemClick, this); //agrego una señal para despues poder hacer click en el item  
+        item.signalItemEquiped.add(this.itemEquiped, this); //agrego una señal para despues poder hacer click en el item
         this.inventoryItemId += 1;
+    };
+    cControlItems.prototype.itemEquiped = function (item) {
+        console.log(item);
+        //me fijo si hay un item ya equipado
+        if (this.arrayEqupipedItems[item.itemEquipType] != undefined) {
+            console.log("entra hasta aca");
+            this.arrayEqupipedItems[item.itemEquipType].sprite.cameraOffset.copyFrom(item.sprite.cameraOffset);
+        }
+        this.arrayEqupipedItems[item.itemEquipType] = item;
+        console.log(this.arrayEqupipedItems);
     };
     cControlItems.prototype.itemOnFloorClick = function (item) {
         if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 1 &&
