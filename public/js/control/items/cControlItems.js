@@ -37,9 +37,10 @@ var cControlItems = (function () {
     cControlItems.prototype.itemEquiped = function (item) {
         console.log(item);
         //me fijo si hay un item ya equipado
-        if (this.arrayEqupipedItems[item.itemEquipType] != undefined) {
-            console.log("entra hasta aca");
-            this.arrayEqupipedItems[item.itemEquipType].sprite.cameraOffset.copyFrom(item.sprite.cameraOffset);
+        var itemToReplace = this.arrayEqupipedItems[item.itemEquipType];
+        if (itemToReplace != undefined) {
+            itemToReplace.sprite.cameraOffset.copyFrom(item.spriteOriginalPoss);
+            itemToReplace.spriteOriginalPoss.copyFrom(item.spriteOriginalPoss);
         }
         this.arrayEqupipedItems[item.itemEquipType] = item;
         console.log(this.arrayEqupipedItems);

@@ -62,6 +62,11 @@ var cItems = (function () {
         this.groupRectangles.destroy();
         var destination = this.arrayInventoryPoss[this.itemEquipType];
         var mousePos = this.controlGame.game.input.activePointer.position;
+        //controlo primero si el item es un item equipable
+        if (destination == undefined) {
+            this.sprite.cameraOffset.copyFrom(this.spriteOriginalPoss);
+            return;
+        }
         var gridSize = 40;
         if (mousePos.x > destination.x && mousePos.x < destination.x + gridSize &&
             mousePos.y > destination.y && mousePos.y < destination.y + gridSize) {
