@@ -114,7 +114,7 @@ class cItems {
         var destination = this.arrayInventoryPoss[this.itemEquipType];
         var mousePos = this.controlGame.game.input.activePointer.position;
 
-        //controlo primero si el item es un item equipable
+        //controlo primero si el item es un item equipable  
         if (destination == undefined) {
             this.sprite.cameraOffset.copyFrom(this.spriteOriginalPoss);
             return

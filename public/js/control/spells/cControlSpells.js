@@ -1,3 +1,10 @@
+var enumSelectedActor;
+(function (enumSelectedActor) {
+    enumSelectedActor[enumSelectedActor["nothing"] = 0] = "nothing";
+    enumSelectedActor[enumSelectedActor["monster"] = 1] = "monster";
+    enumSelectedActor[enumSelectedActor["thisPlayer"] = 2] = "thisPlayer";
+    enumSelectedActor[enumSelectedActor["otherPlayer"] = 3] = "otherPlayer";
+})(enumSelectedActor || (enumSelectedActor = {}));
 var cControlSpells = (function () {
     function cControlSpells(controlGame) {
         this.controlGame = controlGame;

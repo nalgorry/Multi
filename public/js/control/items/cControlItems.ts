@@ -22,7 +22,7 @@ class cControlItems {
     }
 
     public newItem(data) {
-        console.log(data);
+
         var item = new cItems(this.controlGame,data.itemID,data.itemType);
         item.putItemInTile(data.tileX,data.tileY);
 
@@ -61,8 +61,6 @@ class cControlItems {
 
     public itemEquiped(item:cItems) {
         
-        console.log(item);
-
         //me fijo si hay un item ya equipado
         var itemToReplace = this.arrayEqupipedItems[item.itemEquipType];
 
@@ -72,8 +70,6 @@ class cControlItems {
         }
 
         this.arrayEqupipedItems[item.itemEquipType] = item;
-
-        console.log(this.arrayEqupipedItems);
 
     }
 

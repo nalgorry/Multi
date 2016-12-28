@@ -1,9 +1,19 @@
+enum enumSelectedActor {
+    nothing = 0,
+    monster = 1,
+    thisPlayer = 2,
+    otherPlayer = 3
+}
+
 class cControlSpells {
 
     public selSpell:cSpell;
     public arrayselSpells: Array<cSpell>;
     public borderSpell:Phaser.Graphics;
     private allSpells:cDefinitionSpells;
+
+    public selActor:enumSelectedActor;
+    public selActorId:string;
 
     constructor(public controlGame:cControlGame) {
 
