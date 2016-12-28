@@ -9,51 +9,13 @@ export class cServerControlItems {
 
         this.arrayItems = [];
         
-        var newItem = new cServerItems(socket,this.nextIdItems,1,50,5);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
 
-        var newItem = new cServerItems(socket,this.nextIdItems,5,40,5);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        var newItem = new cServerItems(socket,this.nextIdItems,8,35,10);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        var newItem = new cServerItems(socket,this.nextIdItems,1,44,4);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        var newItem = new cServerItems(socket,this.nextIdItems,2,44,5);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        var newItem = new cServerItems(socket,this.nextIdItems,3,44,6);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        var newItem = new cServerItems(socket,this.nextIdItems,4,44,7);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        
-        var newItem = new cServerItems(socket,this.nextIdItems,5,45,4);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        var newItem = new cServerItems(socket,this.nextIdItems,6,45,5);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        var newItem = new cServerItems(socket,this.nextIdItems,7,45,6);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
-        var newItem = new cServerItems(socket,this.nextIdItems,8,45,7);
-        this.arrayItems[this.nextIdItems] = newItem;
-        this.nextIdItems += 1;
-
+        for (var i = 0; i<30;i++) {
+            var newItem = new cServerItems(socket,this.nextIdItems,i,40 + i,5);
+            this.arrayItems[this.nextIdItems] = newItem;
+            this.nextIdItems += 1;
+        }
+      
 
 
     }

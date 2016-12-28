@@ -2,44 +2,41 @@ class cItems {
 
     public itemID:number;
     public itemType:number; //tiene que coincidir con el id del item en el sprite de items
-    public itemEquipType:number;
+    public itemEquipType:enumItemEquipType; //define si es arma, escudo etc
 
     public tileX:number; //si esta en el piso viene aca
     public tileY:number;
     public tileInventory:number; //si esta en el inventorio viene aca
     public sprite:Phaser.Sprite;
 
-    public signalItemClick:Phaser.Signal;
+    public signalItemInventoryClick:Phaser.Signal;
+    public signalItemOnFloorClick:Phaser.Signal;
 
     public spriteOriginalPoss:Phaser.Point;
+
+    public arrayInventoryPoss:Phaser.Point[];
+    public groupRectangles:Phaser.Group;
 
 
     constructor(public controlGame:cControlGame,itemID:number,itemType:number) {
         this.itemType = itemType;
         this.itemID = itemID;
+        
 
         cItemsDefinitions.defineItem(this);
 
-        this.signalItemClick = new Phaser.Signal();
+        this.signalItemInventoryClick = new Phaser.Signal();
+        this.signalItemOnFloorClick = new Phaser.Signal();
 
-        
-    }
+        //inicio el array con todas las posiciones, en el orden que indica el enumItemEquipType
+        this.arrayInventoryPoss = [];
 
-    getItemEquipTypeDestination():Phaser.Point {
-        var point:Phaser.Point
+        this.arrayInventoryPoss[enumItemEquipType.weapon] = new Phaser.Point(1034,387)
+        this.arrayInventoryPoss[enumItemEquipType.boots] = new Phaser.Point(1079,433)
+        this.arrayInventoryPoss[enumItemEquipType.helmet] = new Phaser.Point(1079,340)
+        this.arrayInventoryPoss[enumItemEquipType.special] = new Phaser.Point(1125,387)
+        this.arrayInventoryPoss[enumItemEquipType.armor] = new Phaser.Point(1079,387)
 
-        switch (this.itemEquipType) {
-            case enumItemEquipType.weapon:
-                point = new Phaser.Point(1033,386)
-                break;
-        
-            default:
-                point = new Phaser.Point(0,0)
-                break;
-        }
-
-
-        return point;
     }
 
     putItemInTile(tileX:number,tileY:number) {
@@ -49,7 +46,14 @@ class cItems {
 
         var gridSize = this.controlGame.gridSize;
         this.sprite = this.controlGame.game.add.sprite(tileX * gridSize,tileY * gridSize,'items',this.itemType);
+        this.sprite.inputEnabled = true;
+        this.sprite.events.onInputUp.add(this.floorItemClick,this)
+    
 
+    }
+
+     floorItemClick() {
+        this.signalItemOnFloorClick.dispatch(this);
     }
 
     putItemInInventory(inventoryID:number) {
@@ -75,16 +79,43 @@ class cItems {
 
     onDragStart() {
 
+        //dibujo un cuadrado en cada lugar donde va el item
+        this.groupRectangles = new Phaser.Group(this.controlGame.game);
+        
+        for (var num in this.arrayInventoryPoss) {
+            var inventoryPoss = this.arrayInventoryPoss[num];
+
+            var rectangle = this.controlGame.game.add.graphics(0,0);
+
+            if (num.toString() == this.itemEquipType.toString()) {
+                rectangle.beginFill(0x18770f,0.5); //recuadro verde
+            } else {
+                rectangle.beginFill(0xb52113,0.5); //recuadro rojo
+            }
+
+            rectangle.fixedToCamera = true;
+            rectangle.drawRect(0, 0, 40,40);
+            rectangle.cameraOffset.copyFrom(inventoryPoss);
+
+            this.groupRectangles.add(rectangle);
+    
+        }
+
+
+
     }
 
     onDragStop() {     
+
+        this.groupRectangles.destroy();
          
-        var destination = this.getItemEquipTypeDestination();
+        var destination = this.arrayInventoryPoss[this.itemEquipType];
         var mousePos = this.controlGame.game.input.activePointer.position
         
         var gridSize = 40;
 
-        if (mousePos.x > destination.x && mousePos.x < destination.x + gridSize) {
+        if (mousePos.x > destination.x && mousePos.x < destination.x + gridSize && 
+            mousePos.y > destination.y && mousePos.y < destination.y + gridSize) {
             this.sprite.cameraOffset.copyFrom(destination);
             this.spriteOriginalPoss = destination.clone();
         } else {
@@ -95,7 +126,7 @@ class cItems {
 
     public inventoryClick() {
         
-        this.signalItemClick.dispatch(this);
+        this.signalItemInventoryClick.dispatch(this);
 
     }
 

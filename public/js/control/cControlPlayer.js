@@ -86,9 +86,6 @@ var cControlPlayer = (function (_super) {
         //para poder tirar poderes sobre si mismo.
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youClickYou, this);
-        //controles de items
-        var G = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.G);
-        G.onDown.add(this.controlItems.getItemFromTile, this.controlItems);
     };
     //todo falta setear los demas movimientos y terminar el pad
     cControlPlayer.prototype.movePad = function (dir) {

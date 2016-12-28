@@ -11,15 +11,22 @@
     }
 
     declare const enum enumItemType {
-        smallDager = 1,
-        dager = 2,
-        sword = 3,
-        specialDager = 4,
-        javelin = 5,
-        hammer = 6,
-        wand = 7,
-        gloves = 8,
-        bow = 9,
+        smallDager = 0,
+        dager = 1,
+        sword = 2,
+        specialDager = 3,
+        javelin = 4,
+        hammer = 5,
+        wand = 6,
+        goldenGloves = 7,
+        bow = 8,
+        boot = 10,
+        gloves = 11,
+        helmet = 12,
+        armor = 13,
+        leaderGloves = 14,
+        shield = 20,
+        bigShield = 21,
 
     }
 

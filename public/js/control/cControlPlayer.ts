@@ -123,11 +123,6 @@ class cControlPlayer extends cBasicActor {
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youClickYou, this);
 
-        //controles de items
-        var G = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.G);
-        G.onDown.add(this.controlItems.getItemFromTile,this.controlItems);
-
-
     }
 
 

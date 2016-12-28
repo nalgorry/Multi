@@ -21,24 +21,16 @@ class cControlItems {
 
     public newItem(data) {
         console.log(data);
-        this.arrayItems[data.itemID] = new cItems(this.controlGame,data.itemID,data.itemType);
-        this.arrayItems[data.itemID].putItemInTile(data.tileX,data.tileY);
+        var item = new cItems(this.controlGame,data.itemID,data.itemType);
+        item.putItemInTile(data.tileX,data.tileY);
+
+        this.arrayItems[data.itemID] = item;
+
+        item.signalItemOnFloorClick.add(this.itemOnFloorClick,this); //agrego una señal para despues poder hacer click en el item
 
     }
 
-    public getItemFromTile() {
-        for (var itemName in this.arrayItems) {
-            var item = this.arrayItems[itemName];  
-            
-            if (item.tileX == this.controlGame.controlPlayer.tileX && 
-                item.tileY == this.controlGame.controlPlayer.tileY) {
-                    
-                    this.controlGame.controlServer.socket.emit('you try get item', { itemID: item.itemID });
-                    
-                }  
-        }
     
-    }
 
     //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
     public itemGet(data) {
@@ -58,16 +50,24 @@ class cControlItems {
         var item =  new cItems(this.controlGame, data.itemID, data.itemType);
         
         item.putItemInInventory(this.inventoryItemId);
-        
-        item.signalItemClick.add(this.itemClick,this); //agrego una señal para despues poder hacer click en el item  
+        item.signalItemInventoryClick.add(this.itemClick,this); //agrego una señal para despues poder hacer click en el item  
 
         this.inventoryItemId += 1
 
     }
 
-    public itemClick(item:cItems) {
+    public itemOnFloorClick(item:cItems) {
+        
+        if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 1 && 
+            Math.abs(item.tileY - this.controlGame.controlPlayer.tileY) <= 1 ) {
+                this.controlGame.controlServer.socket.emit('you try get item', { itemID: item.itemID });
+        } else {
+            this.controlGame.controlConsole.newMessage(enumMessage.information,"The item is to far to grab")
+        }
 
-        console.log(item);
+    }
+
+    public itemClick(item:cItems) {
 
         this.rectInventoryItem.visible = true;
         this.rectInventoryItem.cameraOffset.x = item.sprite.cameraOffset.x;
