@@ -13,6 +13,7 @@ class cSpell {
     public explotionFollowCharacter:boolean = true;
     public explotionYOffset:number = -10;
     public enabledTrowOtherPlayer: boolean = true;
+    public enabledTrowOnMonster: boolean = true;
     public enabledTrowThisPlayer: boolean = false;
     public coolDownTimeSec:number = 2;
     public tint:number = null;

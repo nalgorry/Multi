@@ -9,11 +9,13 @@ class cControlSpells {
 
     public selSpell:cSpell;
     public arrayselSpells: Array<cSpell>;
-    public borderSpell:Phaser.Graphics;
     private allSpells:cDefinitionSpells;
 
-    public selActor:enumSelectedActor;
-    public selActorId:string;
+    public borderSpell:Phaser.Graphics;
+    public rectangleFocus:Phaser.Graphics
+
+    public selActorType:enumSelectedActor;
+    public selActor:Object;
 
     constructor(public controlGame:cControlGame) {
 
@@ -32,60 +34,45 @@ class cControlSpells {
 
     public monsterClick(monster:cMonster) {
 
-        if (this.controlGame.atackMode == true) {
-            
-             if (this.selSpell.enabledTrowOtherPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
-                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
-                    this.controlGame.controlServer.socket.emit('monster click', 
-                    { 
-                        idPlayer:this.controlGame.controlPlayer.idServer,
-                        idMonster:monster.idMonster,
-                        idSpell: this.selSpell.idSpell 
-                    });
-                    
-                    this.selSpell.spellColdDown();
+        this.selActorType = enumSelectedActor.monster;
+        this.selActor = monster;
 
-                 }
-             }
-
-            this.controlGame.game.canvas.style.cursor = 'default';
-
-        }
-
+        this.drawFocusRectangle(monster.monsterSprite)
     }
 
     public otherPlayerClick(player:cOtherPlayer) {
 
-        if (this.controlGame.atackMode == true) {
-            
-             if (this.selSpell.enabledTrowOtherPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
-                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
-                    this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:player.idServer,idSpell: this.selSpell.idSpell });
-                    this.selSpell.spellColdDown();
-                 }
-             }
+        this.selActorType = enumSelectedActor.otherPlayer;
+        this.selActor = player; 
 
-            this.controlGame.game.canvas.style.cursor = 'default';
-
-        }
-
+        this.drawFocusRectangle(player.playerSprite)
     }
 
     public thisPlayerClick(player:cControlPlayer) {
         
-        if (this.controlGame.atackMode == true) {
-            
-             if (this.selSpell.enabledTrowThisPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
-                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {                   
-                        this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:player.idServer,idSpell: this.selSpell.idSpell });
-                        this.selSpell.spellColdDown();
-                 }
-             }
+        this.selActorType = enumSelectedActor.thisPlayer;
+        this.selActor = player;
 
-            this.controlGame.game.canvas.style.cursor = 'default';
+        this.drawFocusRectangle(player.playerSprite,true)
 
+    }
+
+    private drawFocusRectangle(sprite:Phaser.Sprite,colorGreen:boolean = false) {
+
+        if (this.rectangleFocus != undefined) {
+            this.rectangleFocus.destroy();
+        }
+        this.rectangleFocus = this.controlGame.game.add.graphics(0,0);
+
+        //dibujo el rectangulo
+        if (colorGreen == true) {
+            this.rectangleFocus .beginFill(0x18770f,0.3); //recuadro verde
+        } else {
+            this.rectangleFocus .beginFill(0xb52113,0.3); //recuadro rojo
         }
 
+        this.rectangleFocus .drawRect(-sprite.width/2, -sprite.width + 5, sprite.width, sprite.width);
+        sprite.addChild(this.rectangleFocus);
     }
 
     private iniciateSpellSystem() {
@@ -124,14 +111,14 @@ class cControlSpells {
 
         //hechizo 3
         var newSpell:cSpell = this.allSpells.arraySpells[5];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*2,205),2);
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 2, 205), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);                
 
         //hechizo 4
         var newSpell:cSpell = this.allSpells.arraySpells[6];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*3,205),2);
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 3, 205), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this); 
@@ -141,10 +128,60 @@ class cControlSpells {
 
     public spellClick(sender:cSpell) {
 
+            console.log(this.selActor);
+
             this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width/2;
             this.borderSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height/2;
             this.selSpell = sender;
-            this.controlGame.activateAtackMode();
+
+            //me fijo si es posible utilizar el hechizo seleccionado, segun las caracteristicas del mismo y el personaje enfocado
+
+            if (this.selSpell.isSpellOnCoolDown == false) {
+                
+                //me fijo si es posible tirar el hechizo en el pj selecionado
+                var spellAllowed:boolean = false;
+                if (this.selActorType == enumSelectedActor.monster && sender.enabledTrowOnMonster == true) {
+                    spellAllowed = true;
+                } else if (this.selActorType == enumSelectedActor.otherPlayer && sender.enabledTrowOtherPlayer == true) {
+                    spellAllowed = true;
+                } else if (this.selActorType == enumSelectedActor.thisPlayer && sender.enabledTrowThisPlayer == true) {
+                    spellAllowed = true;
+                }   
+
+                if (spellAllowed == true) {                
+                    if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
+                        
+                        //mando al server laa accion 
+                        if (this.selActorType == enumSelectedActor.monster){
+                            var monster = this.selActor as cMonster
+                            this.controlGame.controlServer.socket.emit('monster click', 
+                            { 
+                                idPlayer:this.controlGame.controlPlayer.idServer,
+                                idMonster:monster.idMonster,
+                                idSpell: this.selSpell.idSpell 
+                            });
+
+                        } else if (this.selActorType == enumSelectedActor.otherPlayer){
+                            var otherplayer = this.selActor as cOtherPlayer
+                            this.controlGame.controlServer.socket.emit('player click', 
+                            { 
+                                idPlayerHit:otherplayer.idServer,
+                                idSpell: this.selSpell.idSpell 
+                            });
+                        } else if (this.selActorType == enumSelectedActor.thisPlayer){
+                            var thisPlayer = this.selActor as cControlPlayer
+                            this.controlGame.controlServer.socket.emit('player click', 
+                            { 
+                                idPlayerHit:thisPlayer.idServer,
+                                idSpell: this.selSpell.idSpell 
+                            });
+                        }
+                        
+                        this.selSpell.spellColdDown();
+                    }
+                }
+
+            }
 
     }
 
@@ -161,10 +198,8 @@ class cControlSpells {
                 var spell = this.arrayselSpells[3];
             } 
 
-            this.borderSpell.cameraOffset.x = spell.spellSprite.cameraOffset.x + spell.spellSprite.width/2;
-            this.borderSpell.cameraOffset.y = spell.spellSprite.cameraOffset.y + spell.spellSprite.height/2;
             this.selSpell = spell;
-            this.controlGame.activateAtackMode();
+            spell.spellSelected()
 
     }
 

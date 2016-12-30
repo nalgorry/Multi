@@ -50,7 +50,7 @@ class cItems {
         this.sprite = this.controlGame.game.add.sprite(tileX * gridSize,tileY * gridSize,'items',this.itemType);
         this.sprite.inputEnabled = true;
         this.sprite.events.onInputUp.add(this.floorItemClick,this)
-    
+        this.controlGame.depthGroup.add(this.sprite);
 
     }
 

@@ -1,6 +1,6 @@
 class cMonster  {
 
-    public idMonster:number;
+    public idMonster:string;
     public tileX:number;
     public tileY:number;
     public monsterSprite:Phaser.Sprite;

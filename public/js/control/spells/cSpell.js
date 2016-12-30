@@ -5,6 +5,7 @@ var cSpell = (function () {
         this.explotionFollowCharacter = true;
         this.explotionYOffset = -10;
         this.enabledTrowOtherPlayer = true;
+        this.enabledTrowOnMonster = true;
         this.enabledTrowThisPlayer = false;
         this.coolDownTimeSec = 2;
         this.tint = null;

@@ -9,7 +9,7 @@ var cControlItems = (function () {
         this.rectInventoryItem.lineStyle(2, 0x000000, 1);
         this.rectInventoryItem.fixedToCamera = true;
         this.rectInventoryItem.drawRect(0, 0, 40, 40);
-        //this.rectInventoryItem.visible = false;
+        this.rectInventoryItem.visible = false;
     }
     cControlItems.prototype.newItem = function (data) {
         var item = new cItems(this.controlGame, data.itemID, data.itemType);

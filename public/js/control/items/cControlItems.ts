@@ -5,6 +5,7 @@ class cControlItems {
     private inventoryItemId:number = 1;
     public rectInventoryItem:Phaser.Graphics;
     public selectedItem:cItems;
+    public itemsGroup:Phaser.Group;
 
     constructor(public controlGame:cControlGame) {
 
@@ -17,7 +18,7 @@ class cControlItems {
         this.rectInventoryItem.fixedToCamera = true;
         this.rectInventoryItem.drawRect(0, 0, 40,40);
 
-        //this.rectInventoryItem.visible = false;
+        this.rectInventoryItem.visible = false;
 
     }
 
