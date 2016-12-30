@@ -118,8 +118,9 @@ var cControlServer = (function () {
     };
     // Te hicieron pure, veamos quien fue
     cControlServer.prototype.onPlayerDie = function (data) {
-        console.log("entra");
         this.controlGame.controlConsole.newMessage(enumMessage.youDie, "Has Muerto. Te Mató " + data.name);
+        //borro el focus si el player murio (esto probablemente sea necesario moverlo de aca...)
+        this.controlGame.controlPlayer.controlSpells.releaseFocus(this.controlGame.controlPlayer.controlSpells.getSelActorID());
     };
     cControlServer.prototype.onYouKill = function (data) {
         this.controlPlayer.youKill(data);

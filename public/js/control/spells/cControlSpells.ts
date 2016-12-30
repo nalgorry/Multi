@@ -27,6 +27,32 @@ class cControlSpells {
 
     }
 
+    public getSelActorID():string {
+        var id:string
+
+         if (this.selActorType == enumSelectedActor.monster){
+             var monster = this.selActor as cMonster
+             id = monster.idMonster;
+         } else if (this.selActorType == enumSelectedActor.otherPlayer){
+                var otherPlayer = this.selActor as cOtherPlayer
+                id = otherPlayer.idServer;
+         } else if (this.selActorType == enumSelectedActor.thisPlayer){
+             var thisPlayer = this.selActor as cControlPlayer
+             id = thisPlayer.idServer;
+         }
+
+        return id 
+    }
+
+    public releaseFocus(idActor:string) {
+
+        if(idActor == this.getSelActorID()) {
+            this.selActor = undefined;
+            this.selActorType = enumSelectedActor.nothing;
+        }
+
+    }
+
     public spellAnimation(sprite:Phaser.Sprite,data) {
 
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
@@ -71,7 +97,9 @@ class cControlSpells {
             this.rectangleFocus .beginFill(0xb52113,0.3); //recuadro rojo
         }
 
-        this.rectangleFocus .drawRect(-sprite.width/2, -sprite.width + 5, sprite.width, sprite.width);
+        this.rectangleFocus.drawCircle(0, -sprite.width + 5, sprite.width + 15);
+        this.rectangleFocus.pivot.x = 0.5;
+
         sprite.addChild(this.rectangleFocus);
     }
 
@@ -128,8 +156,6 @@ class cControlSpells {
 
     public spellClick(sender:cSpell) {
 
-            console.log(this.selActor);
-
             this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width/2;
             this.borderSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height/2;
             this.selSpell = sender;
@@ -148,41 +174,84 @@ class cControlSpells {
                     spellAllowed = true;
                 }   
 
-                if (spellAllowed == true) {                
-                    if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
-                        
-                        //mando al server laa accion 
-                        if (this.selActorType == enumSelectedActor.monster){
-                            var monster = this.selActor as cMonster
-                            this.controlGame.controlServer.socket.emit('monster click', 
-                            { 
-                                idPlayer:this.controlGame.controlPlayer.idServer,
-                                idMonster:monster.idMonster,
-                                idSpell: this.selSpell.idSpell 
-                            });
+                if (spellAllowed == true) {
+                    if (this.checkSpellDistance() == true) {                 
+                        if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
+                            
+                            //mando al server laa accion 
+                            if (this.selActorType == enumSelectedActor.monster){
+                                var monster = this.selActor as cMonster
+                                this.controlGame.controlServer.socket.emit('monster click', 
+                                { 
+                                    idPlayer:this.controlGame.controlPlayer.idServer,
+                                    idMonster:monster.idMonster,
+                                    idSpell: this.selSpell.idSpell 
+                                });
 
-                        } else if (this.selActorType == enumSelectedActor.otherPlayer){
-                            var otherplayer = this.selActor as cOtherPlayer
-                            this.controlGame.controlServer.socket.emit('player click', 
-                            { 
-                                idPlayerHit:otherplayer.idServer,
-                                idSpell: this.selSpell.idSpell 
-                            });
-                        } else if (this.selActorType == enumSelectedActor.thisPlayer){
-                            var thisPlayer = this.selActor as cControlPlayer
-                            this.controlGame.controlServer.socket.emit('player click', 
-                            { 
-                                idPlayerHit:thisPlayer.idServer,
-                                idSpell: this.selSpell.idSpell 
-                            });
+                            } else if (this.selActorType == enumSelectedActor.otherPlayer){
+                                var otherplayer = this.selActor as cOtherPlayer
+                                this.controlGame.controlServer.socket.emit('player click', 
+                                { 
+                                    idPlayerHit:otherplayer.idServer,
+                                    idSpell: this.selSpell.idSpell 
+                                });
+                            } else if (this.selActorType == enumSelectedActor.thisPlayer){
+                                var thisPlayer = this.selActor as cControlPlayer
+                                this.controlGame.controlServer.socket.emit('player click', 
+                                { 
+                                    idPlayerHit:thisPlayer.idServer,
+                                    idSpell: this.selSpell.idSpell 
+                                });
+                            }
+                            
+                            this.selSpell.spellColdDown();
                         }
-                        
-                        this.selSpell.spellColdDown();
                     }
                 }
 
             }
 
+    }
+
+    public checkSpellDistance():boolean {
+        var isAllowed:boolean;
+
+        var actorTileX:number;
+        var actorTileY:number;
+
+        if (this.selActorType == enumSelectedActor.monster){
+             var monster = this.selActor as cMonster
+             
+             actorTileX = monster.tileX;
+             actorTileY = monster.tileY;
+
+         } else if (this.selActorType == enumSelectedActor.otherPlayer){
+            var otherPlayer = this.selActor as cOtherPlayer
+            
+            actorTileX = otherPlayer.tileX;
+            actorTileY = otherPlayer.tileY;
+
+         } else if (this.selActorType == enumSelectedActor.thisPlayer){
+            var thisPlayer = this.selActor as cControlPlayer
+            
+            actorTileX = thisPlayer.tileX;
+            actorTileY = thisPlayer.tileY;
+        
+         }
+
+        if (Math.abs(actorTileX - this.controlGame.controlPlayer.tileX) <= 10 && 
+            Math.abs(actorTileY - this.controlGame.controlPlayer.tileY) <= 10 ) {
+            
+                isAllowed = true;
+
+            } else {
+            
+                isAllowed = false;
+                this.controlGame.controlConsole.newMessage(enumMessage.information,"The Character is too far away to Atack.");
+
+            }
+
+        return isAllowed
     }
 
     public spellSelectKeyboard(sender:Phaser.Key) {

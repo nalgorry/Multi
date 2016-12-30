@@ -20,6 +20,8 @@ var cMonster = (function () {
         this.controlGame.depthGroup.add(this.monsterSprite);
     };
     cMonster.prototype.monsterMove = function (data) {
+        this.tileX = data.tileX;
+        this.tileY = data.tileY;
         var x = data.tileX * this.controlGame.gridSize + this.monsterSprite.width / 2;
         var y = data.tileY * this.controlGame.gridSize;
         var spriteRotate = this.monsterSprite.children[0];

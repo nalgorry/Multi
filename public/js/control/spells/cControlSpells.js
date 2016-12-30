@@ -12,6 +12,28 @@ var cControlSpells = (function () {
         this.createSpells();
         this.iniciateSpellSystem();
     }
+    cControlSpells.prototype.getSelActorID = function () {
+        var id;
+        if (this.selActorType == enumSelectedActor.monster) {
+            var monster = this.selActor;
+            id = monster.idMonster;
+        }
+        else if (this.selActorType == enumSelectedActor.otherPlayer) {
+            var otherPlayer = this.selActor;
+            id = otherPlayer.idServer;
+        }
+        else if (this.selActorType == enumSelectedActor.thisPlayer) {
+            var thisPlayer = this.selActor;
+            id = thisPlayer.idServer;
+        }
+        return id;
+    };
+    cControlSpells.prototype.releaseFocus = function (idActor) {
+        if (idActor == this.getSelActorID()) {
+            this.selActor = undefined;
+            this.selActorType = enumSelectedActor.nothing;
+        }
+    };
     cControlSpells.prototype.spellAnimation = function (sprite, data) {
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
     };
@@ -43,7 +65,8 @@ var cControlSpells = (function () {
         else {
             this.rectangleFocus.beginFill(0xb52113, 0.3); //recuadro rojo
         }
-        this.rectangleFocus.drawRect(-sprite.width / 2, -sprite.width + 5, sprite.width, sprite.width);
+        this.rectangleFocus.drawCircle(0, -sprite.width + 5, sprite.width + 15);
+        this.rectangleFocus.pivot.x = 0.5;
         sprite.addChild(this.rectangleFocus);
     };
     cControlSpells.prototype.iniciateSpellSystem = function () {
@@ -80,7 +103,6 @@ var cControlSpells = (function () {
         newSpell.signalSpellSel.add(this.spellClick, this);
     };
     cControlSpells.prototype.spellClick = function (sender) {
-        console.log(this.selActor);
         this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width / 2;
         this.borderSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height / 2;
         this.selSpell = sender;
@@ -98,34 +120,65 @@ var cControlSpells = (function () {
                 spellAllowed = true;
             }
             if (spellAllowed == true) {
-                if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
-                    //mando al server laa accion 
-                    if (this.selActorType == enumSelectedActor.monster) {
-                        var monster = this.selActor;
-                        this.controlGame.controlServer.socket.emit('monster click', {
-                            idPlayer: this.controlGame.controlPlayer.idServer,
-                            idMonster: monster.idMonster,
-                            idSpell: this.selSpell.idSpell
-                        });
+                if (this.checkSpellDistance() == true) {
+                    if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
+                        //mando al server laa accion 
+                        if (this.selActorType == enumSelectedActor.monster) {
+                            var monster = this.selActor;
+                            this.controlGame.controlServer.socket.emit('monster click', {
+                                idPlayer: this.controlGame.controlPlayer.idServer,
+                                idMonster: monster.idMonster,
+                                idSpell: this.selSpell.idSpell
+                            });
+                        }
+                        else if (this.selActorType == enumSelectedActor.otherPlayer) {
+                            var otherplayer = this.selActor;
+                            this.controlGame.controlServer.socket.emit('player click', {
+                                idPlayerHit: otherplayer.idServer,
+                                idSpell: this.selSpell.idSpell
+                            });
+                        }
+                        else if (this.selActorType == enumSelectedActor.thisPlayer) {
+                            var thisPlayer = this.selActor;
+                            this.controlGame.controlServer.socket.emit('player click', {
+                                idPlayerHit: thisPlayer.idServer,
+                                idSpell: this.selSpell.idSpell
+                            });
+                        }
+                        this.selSpell.spellColdDown();
                     }
-                    else if (this.selActorType == enumSelectedActor.otherPlayer) {
-                        var otherplayer = this.selActor;
-                        this.controlGame.controlServer.socket.emit('player click', {
-                            idPlayerHit: otherplayer.idServer,
-                            idSpell: this.selSpell.idSpell
-                        });
-                    }
-                    else if (this.selActorType == enumSelectedActor.thisPlayer) {
-                        var thisPlayer = this.selActor;
-                        this.controlGame.controlServer.socket.emit('player click', {
-                            idPlayerHit: thisPlayer.idServer,
-                            idSpell: this.selSpell.idSpell
-                        });
-                    }
-                    this.selSpell.spellColdDown();
                 }
             }
         }
+    };
+    cControlSpells.prototype.checkSpellDistance = function () {
+        var isAllowed;
+        var actorTileX;
+        var actorTileY;
+        if (this.selActorType == enumSelectedActor.monster) {
+            var monster = this.selActor;
+            actorTileX = monster.tileX;
+            actorTileY = monster.tileY;
+        }
+        else if (this.selActorType == enumSelectedActor.otherPlayer) {
+            var otherPlayer = this.selActor;
+            actorTileX = otherPlayer.tileX;
+            actorTileY = otherPlayer.tileY;
+        }
+        else if (this.selActorType == enumSelectedActor.thisPlayer) {
+            var thisPlayer = this.selActor;
+            actorTileX = thisPlayer.tileX;
+            actorTileY = thisPlayer.tileY;
+        }
+        if (Math.abs(actorTileX - this.controlGame.controlPlayer.tileX) <= 10 &&
+            Math.abs(actorTileY - this.controlGame.controlPlayer.tileY) <= 10) {
+            isAllowed = true;
+        }
+        else {
+            isAllowed = false;
+            this.controlGame.controlConsole.newMessage(enumMessage.information, "The Character is too far away to Atack.");
+        }
+        return isAllowed;
     };
     cControlSpells.prototype.spellSelectKeyboard = function (sender) {
         //selecciono el hechizo segun la tecla que toco

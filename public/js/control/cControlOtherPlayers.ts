@@ -8,7 +8,7 @@ class cControlOtherPlayers {
 
     }
 
-    public  playerById (id:Text): cOtherPlayer {
+    public  playerById (id:string): cOtherPlayer {
         var i:number;
         
         for (i = 0; i < this.arrayPlayers .length; i++) {

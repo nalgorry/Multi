@@ -27,8 +27,6 @@ class cControlMonsters {
     public monsterDie(data) {
 
         
-        console.log(data);
-        
         var monster:cMonster = this.arrayMonster[data.idMonster];
 
         //hago desaparecer el moustro del juego
@@ -41,6 +39,8 @@ class cControlMonsters {
             this.controlGame.controlPlayer.youKillMonster(data);
         }
 
+        //borro el focus
+        this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idMonster);
 
     }
 
