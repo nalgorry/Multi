@@ -12,7 +12,7 @@ class cControlSpells {
     private allSpells:cDefinitionSpells;
 
     public borderSpell:Phaser.Graphics;
-    public rectangleFocus:Phaser.Graphics
+    public circleFocus:Phaser.Graphics
 
     public selActorType:enumSelectedActor;
     public selActor:Object;
@@ -63,7 +63,7 @@ class cControlSpells {
         this.selActorType = enumSelectedActor.monster;
         this.selActor = monster;
 
-        this.drawFocusRectangle(monster.monsterSprite)
+        this.drawFocusCircle(monster.monsterSprite)
     }
 
     public otherPlayerClick(player:cOtherPlayer) {
@@ -71,7 +71,7 @@ class cControlSpells {
         this.selActorType = enumSelectedActor.otherPlayer;
         this.selActor = player; 
 
-        this.drawFocusRectangle(player.playerSprite)
+        this.drawFocusCircle(player.playerSprite)
     }
 
     public thisPlayerClick(player:cControlPlayer) {
@@ -79,28 +79,29 @@ class cControlSpells {
         this.selActorType = enumSelectedActor.thisPlayer;
         this.selActor = player;
 
-        this.drawFocusRectangle(player.playerSprite,true)
+        this.drawFocusCircle(player.playerSprite,true)
 
     }
 
-    private drawFocusRectangle(sprite:Phaser.Sprite,colorGreen:boolean = false) {
+    private drawFocusCircle(sprite:Phaser.Sprite,colorGreen:boolean = false) {
 
-        if (this.rectangleFocus != undefined) {
-            this.rectangleFocus.destroy();
+        if (this.circleFocus != undefined) {
+            this.circleFocus.destroy();
         }
-        this.rectangleFocus = this.controlGame.game.add.graphics(0,0);
+        this.circleFocus = this.controlGame.game.add.graphics(0,0);
 
         //dibujo el rectangulo
         if (colorGreen == true) {
-            this.rectangleFocus .beginFill(0x18770f,0.3); //recuadro verde
+            this.circleFocus .beginFill(0x18770f,0.3); //recuadro verde
         } else {
-            this.rectangleFocus .beginFill(0xb52113,0.3); //recuadro rojo
+            this.circleFocus .beginFill(0xb52113,0.3); //recuadro rojo
         }
 
-        this.rectangleFocus.drawCircle(0, -sprite.width + 5, sprite.width + 15);
-        this.rectangleFocus.pivot.x = 0.5;
+        console.log(-sprite.height);
+        this.circleFocus.drawCircle(0, - sprite.children[0].getLocalBounds().height - 5, 20);
+        this.circleFocus.pivot.x = 0.5;
 
-        sprite.addChild(this.rectangleFocus);
+        sprite.addChild(this.circleFocus);
     }
 
     private iniciateSpellSystem() {
