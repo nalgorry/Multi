@@ -73,8 +73,9 @@ var cControlSpells = (function () {
         else {
             this.circleFocus.beginFill(0xb52113, 0.3); //recuadro rojo
         }
-        console.log(-sprite.height);
-        this.circleFocus.drawCircle(0, -sprite.children[0].getLocalBounds().height - 5, 20);
+        //de aca saco las dimensionese de los sprites
+        var spriteObject = sprite;
+        this.circleFocus.drawRect(-14, 2, 28, 5);
         this.circleFocus.pivot.x = 0.5;
         sprite.addChild(this.circleFocus);
     };
