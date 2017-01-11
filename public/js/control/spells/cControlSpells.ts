@@ -64,6 +64,8 @@ class cControlSpells {
         this.selActor = monster;
 
         this.drawFocusCircle(monster.monsterSprite)
+        this.checkAtackMode()
+
     }
 
     public otherPlayerClick(player:cOtherPlayer) {
@@ -71,7 +73,8 @@ class cControlSpells {
         this.selActorType = enumSelectedActor.otherPlayer;
         this.selActor = player; 
 
-        this.drawFocusCircle(player.playerSprite)
+        this.drawFocusCircle(player.playerSprite);
+        this.checkAtackMode()
     }
 
     public thisPlayerClick(player:cControlPlayer) {
@@ -80,7 +83,13 @@ class cControlSpells {
         this.selActor = player;
 
         this.drawFocusCircle(player.playerSprite,true)
+        this.checkAtackMode()
+    }
 
+    private checkAtackMode() {
+        if (this.controlGame.atackMode == true) {
+            this.spellClick(this.selSpell)
+        }
     }
 
     private drawFocusCircle(sprite:Phaser.Sprite,colorGreen:boolean = false) {
@@ -208,6 +217,8 @@ class cControlSpells {
                             this.selSpell.spellColdDown();
                         }
                     }
+                } else {
+                    this.controlGame.activateAtackMode();
                 }
 
             }

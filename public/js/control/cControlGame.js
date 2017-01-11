@@ -75,8 +75,10 @@ var cControlGame = (function () {
         }
     };
     cControlGame.prototype.mouseMove = function (pointer, x, y, a) {
-        if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {
-        }
+        // if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {
+        //this.marker.x = this.layer.getTileX(this.game.input.activePointer.worldX) * this.gridSize;
+        //this.marker.y = this.layer.getTileY(this.game.input.activePointer.worldY) * this.gridSize;
+        // }
     };
     return cControlGame;
 }());

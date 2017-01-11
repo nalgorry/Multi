@@ -41,16 +41,24 @@ var cControlSpells = (function () {
         this.selActorType = enumSelectedActor.monster;
         this.selActor = monster;
         this.drawFocusCircle(monster.monsterSprite);
+        this.checkAtackMode();
     };
     cControlSpells.prototype.otherPlayerClick = function (player) {
         this.selActorType = enumSelectedActor.otherPlayer;
         this.selActor = player;
         this.drawFocusCircle(player.playerSprite);
+        this.checkAtackMode();
     };
     cControlSpells.prototype.thisPlayerClick = function (player) {
         this.selActorType = enumSelectedActor.thisPlayer;
         this.selActor = player;
         this.drawFocusCircle(player.playerSprite, true);
+        this.checkAtackMode();
+    };
+    cControlSpells.prototype.checkAtackMode = function () {
+        if (this.controlGame.atackMode == true) {
+            this.spellClick(this.selSpell);
+        }
     };
     cControlSpells.prototype.drawFocusCircle = function (sprite, colorGreen) {
         if (colorGreen === void 0) { colorGreen = false; }
@@ -149,6 +157,9 @@ var cControlSpells = (function () {
                         this.selSpell.spellColdDown();
                     }
                 }
+            }
+            else {
+                this.controlGame.activateAtackMode();
             }
         }
     };
