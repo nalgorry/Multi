@@ -1,6 +1,6 @@
 class cOtherPlayer extends cBasicActor {
 
-    idServer:Text;
+    idServer:string;
     moveTween:Phaser.Tween;
 
     constructor(controlGame:cControlGame,data) {
@@ -21,7 +21,6 @@ class cOtherPlayer extends cBasicActor {
         
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youHitPlayer, this);
-        console.log(data);
         this.setNameText(data.name);
 
         this.startAnimation('idle');
@@ -62,6 +61,9 @@ class cOtherPlayer extends cBasicActor {
     }
 
     public removePlayer() {
+        //borro el focus
+        this.controlGame.controlPlayer.controlSpells.releaseFocus(this.idServer);
+
         this.playerSprite.kill();
     }
 

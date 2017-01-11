@@ -22,6 +22,7 @@ var cItems = (function () {
         this.sprite = this.controlGame.game.add.sprite(tileX * gridSize, tileY * gridSize, 'items', this.itemType);
         this.sprite.inputEnabled = true;
         this.sprite.events.onInputUp.add(this.floorItemClick, this);
+        this.controlGame.depthGroup.add(this.sprite);
     };
     cItems.prototype.floorItemClick = function () {
         this.signalItemOnFloorClick.dispatch(this);
@@ -62,7 +63,7 @@ var cItems = (function () {
         this.groupRectangles.destroy();
         var destination = this.arrayInventoryPoss[this.itemEquipType];
         var mousePos = this.controlGame.game.input.activePointer.position;
-        //controlo primero si el item es un item equipable
+        //controlo primero si el item es un item equipable  
         if (destination == undefined) {
             this.sprite.cameraOffset.copyFrom(this.spriteOriginalPoss);
             return;

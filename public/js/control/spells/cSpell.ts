@@ -13,6 +13,7 @@ class cSpell {
     public explotionFollowCharacter:boolean = true;
     public explotionYOffset:number = -10;
     public enabledTrowOtherPlayer: boolean = true;
+    public enabledTrowOnMonster: boolean = true;
     public enabledTrowThisPlayer: boolean = false;
     public coolDownTimeSec:number = 2;
     public tint:number = null;
@@ -79,7 +80,7 @@ class cSpell {
         //creo el recuadro para el coolDownTimeSec
         //circulo interior
         this.spriteFocusCool = this.controlGame.game.add.graphics(this.spellSprite.cameraOffset.x + this.spellSprite.width/2,
-            this.spellSprite.cameraOffset.y + this.spellSprite.height/2);
+        this.spellSprite.cameraOffset.y + this.spellSprite.height/2);
         this.spriteFocusCool.lineStyle(2, 0x141417, 1);
         this.spriteFocusCool.pivot.x = 0.5;
         this.spriteFocusCool.pivot.y = 0.5;

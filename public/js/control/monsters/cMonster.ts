@@ -1,6 +1,6 @@
 class cMonster  {
 
-    public idMonster:number;
+    public idMonster:string;
     public tileX:number;
     public tileY:number;
     public monsterSprite:Phaser.Sprite;
@@ -38,11 +38,13 @@ class cMonster  {
 
         this.controlGame.depthGroup.add(this.monsterSprite);
 
-        
     }
 
     public monsterMove(data) {
 
+        this.tileX = data.tileX;
+        this.tileY = data.tileY;
+        
         var x = data.tileX * this.controlGame.gridSize + this.monsterSprite.width/2;
         var y = data.tileY * this.controlGame.gridSize;
         var spriteRotate = this.monsterSprite.children[0];

@@ -9,10 +9,9 @@ var cControlItems = (function () {
         this.rectInventoryItem.lineStyle(2, 0x000000, 1);
         this.rectInventoryItem.fixedToCamera = true;
         this.rectInventoryItem.drawRect(0, 0, 40, 40);
-        //this.rectInventoryItem.visible = false;
+        this.rectInventoryItem.visible = false;
     }
     cControlItems.prototype.newItem = function (data) {
-        console.log(data);
         var item = new cItems(this.controlGame, data.itemID, data.itemType);
         item.putItemInTile(data.tileX, data.tileY);
         this.arrayItems[data.itemID] = item;
@@ -35,7 +34,6 @@ var cControlItems = (function () {
         this.inventoryItemId += 1;
     };
     cControlItems.prototype.itemEquiped = function (item) {
-        console.log(item);
         //me fijo si hay un item ya equipado
         var itemToReplace = this.arrayEqupipedItems[item.itemEquipType];
         if (itemToReplace != undefined) {
@@ -43,7 +41,6 @@ var cControlItems = (function () {
             itemToReplace.spriteOriginalPoss.copyFrom(item.spriteOriginalPoss);
         }
         this.arrayEqupipedItems[item.itemEquipType] = item;
-        console.log(this.arrayEqupipedItems);
     };
     cControlItems.prototype.itemOnFloorClick = function (item) {
         if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 1 &&

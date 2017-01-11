@@ -106,6 +106,7 @@ var cDefinitionSpells = (function () {
         newSpell.coolDownTimeSec = 5;
         newSpell.enabledTrowOtherPlayer = false;
         newSpell.enabledTrowThisPlayer = true;
+        newSpell.enabledTrowOnMonster = false;
     };
     return cDefinitionSpells;
 }());

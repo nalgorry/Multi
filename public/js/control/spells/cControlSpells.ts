@@ -1,9 +1,21 @@
+enum enumSelectedActor {
+    nothing = 0,
+    monster = 1,
+    thisPlayer = 2,
+    otherPlayer = 3
+}
+
 class cControlSpells {
 
     public selSpell:cSpell;
     public arrayselSpells: Array<cSpell>;
-    public borderSpell:Phaser.Graphics;
     private allSpells:cDefinitionSpells;
+
+    public borderSpell:Phaser.Graphics;
+    public circleFocus:Phaser.Graphics
+
+    public selActorType:enumSelectedActor;
+    public selActor:Object;
 
     constructor(public controlGame:cControlGame) {
 
@@ -15,6 +27,32 @@ class cControlSpells {
 
     }
 
+    public getSelActorID():string {
+        var id:string
+
+         if (this.selActorType == enumSelectedActor.monster){
+             var monster = this.selActor as cMonster
+             id = monster.idMonster;
+         } else if (this.selActorType == enumSelectedActor.otherPlayer){
+                var otherPlayer = this.selActor as cOtherPlayer
+                id = otherPlayer.idServer;
+         } else if (this.selActorType == enumSelectedActor.thisPlayer){
+             var thisPlayer = this.selActor as cControlPlayer
+             id = thisPlayer.idServer;
+         }
+
+        return id 
+    }
+
+    public releaseFocus(idActor:string) {
+
+        if(idActor == this.getSelActorID()) {
+            this.selActor = undefined;
+            this.selActorType = enumSelectedActor.nothing;
+        }
+
+    }
+
     public spellAnimation(sprite:Phaser.Sprite,data) {
 
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
@@ -22,60 +60,58 @@ class cControlSpells {
 
     public monsterClick(monster:cMonster) {
 
-        if (this.controlGame.atackMode == true) {
-            
-             if (this.selSpell.enabledTrowOtherPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
-                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
-                    this.controlGame.controlServer.socket.emit('monster click', 
-                    { 
-                        idPlayer:this.controlGame.controlPlayer.idServer,
-                        idMonster:monster.idMonster,
-                        idSpell: this.selSpell.idSpell 
-                    });
-                    
-                    this.selSpell.spellColdDown();
+        this.selActorType = enumSelectedActor.monster;
+        this.selActor = monster;
 
-                 }
-             }
-
-            this.controlGame.game.canvas.style.cursor = 'default';
-
-        }
+        this.drawFocusCircle(monster.monsterSprite)
+        this.checkAtackMode()
 
     }
 
     public otherPlayerClick(player:cOtherPlayer) {
 
-        if (this.controlGame.atackMode == true) {
-            
-             if (this.selSpell.enabledTrowOtherPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
-                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
-                    this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:player.idServer,idSpell: this.selSpell.idSpell });
-                    this.selSpell.spellColdDown();
-                 }
-             }
+        this.selActorType = enumSelectedActor.otherPlayer;
+        this.selActor = player; 
 
-            this.controlGame.game.canvas.style.cursor = 'default';
-
-        }
-
+        this.drawFocusCircle(player.playerSprite);
+        this.checkAtackMode()
     }
 
     public thisPlayerClick(player:cControlPlayer) {
         
+        this.selActorType = enumSelectedActor.thisPlayer;
+        this.selActor = player;
+
+        this.drawFocusCircle(player.playerSprite,true)
+        this.checkAtackMode()
+    }
+
+    private checkAtackMode() {
         if (this.controlGame.atackMode == true) {
-            
-             if (this.selSpell.enabledTrowThisPlayer == true && this.selSpell.isSpellOnCoolDown == false) {
-                 if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {                   
-                        this.controlGame.controlServer.socket.emit('player click', { idPlayerHit:player.idServer,idSpell: this.selSpell.idSpell });
-                        this.selSpell.spellColdDown();
-                 }
-             }
+            this.spellClick(this.selSpell)
+        }
+    }
 
-            this.controlGame.game.canvas.style.cursor = 'default';
+    private drawFocusCircle(sprite:Phaser.Sprite,colorGreen:boolean = false) {
 
+        if (this.circleFocus != undefined) {
+            this.circleFocus.destroy();
+        }
+        this.circleFocus = this.controlGame.game.add.graphics(0,0);
+
+        //dibujo el rectangulo
+        if (colorGreen == true) {
+            this.circleFocus .beginFill(0x18770f,0.3); //recuadro verde
+        } else {
+            this.circleFocus .beginFill(0xb52113,0.3); //recuadro rojo
         }
 
+        //de aca saco las dimensionese de los sprites
+        var spriteObject:Phaser.Sprite = sprite as Phaser.Sprite
+        this.circleFocus.drawRect(-14, 2, 28 , 5);
+        this.circleFocus.pivot.x = 0.5;
+
+        sprite.addChild(this.circleFocus);
     }
 
     private iniciateSpellSystem() {
@@ -114,14 +150,14 @@ class cControlSpells {
 
         //hechizo 3
         var newSpell:cSpell = this.allSpells.arraySpells[5];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*2,205),2);
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 2, 205), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);                
 
         //hechizo 4
         var newSpell:cSpell = this.allSpells.arraySpells[6];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*3,205),2);
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 3, 205), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this); 
@@ -134,8 +170,101 @@ class cControlSpells {
             this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width/2;
             this.borderSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height/2;
             this.selSpell = sender;
-            this.controlGame.activateAtackMode();
 
+            //me fijo si es posible utilizar el hechizo seleccionado, segun las caracteristicas del mismo y el personaje enfocado
+
+            if (this.selSpell.isSpellOnCoolDown == false) {
+                
+                //me fijo si es posible tirar el hechizo en el pj selecionado
+                var spellAllowed:boolean = false;
+                if (this.selActorType == enumSelectedActor.monster && sender.enabledTrowOnMonster == true) {
+                    spellAllowed = true;
+                } else if (this.selActorType == enumSelectedActor.otherPlayer && sender.enabledTrowOtherPlayer == true) {
+                    spellAllowed = true;
+                } else if (this.selActorType == enumSelectedActor.thisPlayer && sender.enabledTrowThisPlayer == true) {
+                    spellAllowed = true;
+                }   
+
+                if (spellAllowed == true) {
+                    if (this.checkSpellDistance() == true) {                 
+                        if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
+                            
+                            //mando al server laa accion 
+                            if (this.selActorType == enumSelectedActor.monster){
+                                var monster = this.selActor as cMonster
+                                this.controlGame.controlServer.socket.emit('monster click', 
+                                { 
+                                    idPlayer:this.controlGame.controlPlayer.idServer,
+                                    idMonster:monster.idMonster,
+                                    idSpell: this.selSpell.idSpell 
+                                });
+
+                            } else if (this.selActorType == enumSelectedActor.otherPlayer){
+                                var otherplayer = this.selActor as cOtherPlayer
+                                this.controlGame.controlServer.socket.emit('player click', 
+                                { 
+                                    idPlayerHit:otherplayer.idServer,
+                                    idSpell: this.selSpell.idSpell 
+                                });
+                            } else if (this.selActorType == enumSelectedActor.thisPlayer){
+                                var thisPlayer = this.selActor as cControlPlayer
+                                this.controlGame.controlServer.socket.emit('player click', 
+                                { 
+                                    idPlayerHit:thisPlayer.idServer,
+                                    idSpell: this.selSpell.idSpell 
+                                });
+                            }
+                            
+                            this.selSpell.spellColdDown();
+                        }
+                    }
+                } else {
+                    this.controlGame.activateAtackMode();
+                }
+
+            }
+
+    }
+
+    public checkSpellDistance():boolean {
+        var isAllowed:boolean;
+
+        var actorTileX:number;
+        var actorTileY:number;
+
+        if (this.selActorType == enumSelectedActor.monster){
+             var monster = this.selActor as cMonster
+             
+             actorTileX = monster.tileX;
+             actorTileY = monster.tileY;
+
+         } else if (this.selActorType == enumSelectedActor.otherPlayer){
+            var otherPlayer = this.selActor as cOtherPlayer
+            
+            actorTileX = otherPlayer.tileX;
+            actorTileY = otherPlayer.tileY;
+
+         } else if (this.selActorType == enumSelectedActor.thisPlayer){
+            var thisPlayer = this.selActor as cControlPlayer
+            
+            actorTileX = thisPlayer.tileX;
+            actorTileY = thisPlayer.tileY;
+        
+         }
+
+        if (Math.abs(actorTileX - this.controlGame.controlPlayer.tileX) <= 10 && 
+            Math.abs(actorTileY - this.controlGame.controlPlayer.tileY) <= 10 ) {
+            
+                isAllowed = true;
+
+            } else {
+            
+                isAllowed = false;
+                this.controlGame.controlConsole.newMessage(enumMessage.information,"The Character is too far away to Atack.");
+
+            }
+
+        return isAllowed
     }
 
     public spellSelectKeyboard(sender:Phaser.Key) {
@@ -151,10 +280,8 @@ class cControlSpells {
                 var spell = this.arrayselSpells[3];
             } 
 
-            this.borderSpell.cameraOffset.x = spell.spellSprite.cameraOffset.x + spell.spellSprite.width/2;
-            this.borderSpell.cameraOffset.y = spell.spellSprite.cameraOffset.y + spell.spellSprite.height/2;
             this.selSpell = spell;
-            this.controlGame.activateAtackMode();
+            spell.spellSelected()
 
     }
 

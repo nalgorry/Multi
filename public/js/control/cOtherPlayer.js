@@ -16,7 +16,6 @@ var cOtherPlayer = (function (_super) {
     cOtherPlayer.prototype.startPlayer = function (data) {
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youHitPlayer, this);
-        console.log(data);
         this.setNameText(data.name);
         this.startAnimation('idle');
     };
@@ -47,6 +46,8 @@ var cOtherPlayer = (function (_super) {
         this.controlGame.controlPlayer.controlSpells.otherPlayerClick(this);
     };
     cOtherPlayer.prototype.removePlayer = function () {
+        //borro el focus
+        this.controlGame.controlPlayer.controlSpells.releaseFocus(this.idServer);
         this.playerSprite.kill();
     };
     return cOtherPlayer;

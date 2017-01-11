@@ -14,7 +14,6 @@ var cControlMonsters = (function () {
         }
     };
     cControlMonsters.prototype.monsterDie = function (data) {
-        console.log(data);
         var monster = this.arrayMonster[data.idMonster];
         //hago desaparecer el moustro del juego
         if (monster != undefined) {
@@ -24,6 +23,8 @@ var cControlMonsters = (function () {
         if (data.idPlayer == this.controlGame.controlPlayer.idServer) {
             this.controlGame.controlPlayer.youKillMonster(data);
         }
+        //borro el focus
+        this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idMonster);
     };
     //esto es cuando el moustro le pega a alguien
     cControlMonsters.prototype.monsterHit = function (data) {
