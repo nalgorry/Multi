@@ -8,8 +8,8 @@ class cOtherPlayer extends cBasicActor {
         super(controlGame);
 
         this.idServer = data.id;
-        this.tileX = data.x;
-        this.tileY = data.y;
+        this.tileX = this.controlGame.layer.getTileX(data.x);
+        this.tileY = this.controlGame.layer.getTileY(data.y);
 
         this.startActor(); //esto inicia todo el jugador con sus elementos
         this.startPlayer(data);
@@ -45,8 +45,8 @@ class cOtherPlayer extends cBasicActor {
             this.moveTween.onComplete.add(this.resetAnimation, this)
         }
 
-        this.tileX = data.x;
-        this.tileY = data.y;
+        this.tileX = this.controlGame.layer.getTileX(data.x);
+        this.tileY = this.controlGame.layer.getTileY(data.y);
 
     }
 

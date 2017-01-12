@@ -8,8 +8,8 @@ var cOtherPlayer = (function (_super) {
     function cOtherPlayer(controlGame, data) {
         _super.call(this, controlGame);
         this.idServer = data.id;
-        this.tileX = data.x;
-        this.tileY = data.y;
+        this.tileX = this.controlGame.layer.getTileX(data.x);
+        this.tileY = this.controlGame.layer.getTileY(data.y);
         this.startActor(); //esto inicia todo el jugador con sus elementos
         this.startPlayer(data);
     }
@@ -36,8 +36,8 @@ var cOtherPlayer = (function (_super) {
         else if (data.dirMov == move.idle) {
             this.moveTween.onComplete.add(this.resetAnimation, this);
         }
-        this.tileX = data.x;
-        this.tileY = data.y;
+        this.tileX = this.controlGame.layer.getTileX(data.x);
+        this.tileY = this.controlGame.layer.getTileY(data.y);
     };
     cOtherPlayer.prototype.resetAnimation = function () {
         this.startAnimation('idle');
