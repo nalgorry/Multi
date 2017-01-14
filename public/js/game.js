@@ -18,7 +18,7 @@ var SimpleGame = (function () {
         this.game.load.spritesheet('aura', 'assets/aura38.png', 128, 128);
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 70);
         this.game.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
-        this.game.load.spritesheet('spells', 'assets/spells.png', 40, 40);
+        this.game.load.spritesheet('spells', 'assets/spells.png', 50, 50);
         this.game.load.image('monster_1', 'assets/monster_1.png');
         this.game.load.spritesheet('monster_2', 'assets/monster_2.png', 170, 119);
         this.game.load.image('monster_3', 'assets/monster_3.png');

@@ -123,7 +123,7 @@ class cControlMonsters {
             //pongo una animación sobre el pj 
             var monster = this.arrayMonster[data.idMonster];
             if (monster != null) {
-                this.controlGame.controlPlayer.controlSpells.spellAnimation(monster.monsterInternalSprite,data);
+                this.controlGame.controlPlayer.controlSpells.onHit(data,monster.monsterSprite);
             }
         }
     }

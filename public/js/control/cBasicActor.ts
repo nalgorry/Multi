@@ -12,9 +12,6 @@ class cBasicActor {
 
     private styleChat;
     private styleName;
-    private styleHit;
-
-    private hitTextPosition:number = 0;
 
 
     constructor(_controlGame:cControlGame) {
@@ -22,7 +19,6 @@ class cBasicActor {
         this.controlGame = _controlGame;
         this.styleChat = { font: "16px Arial", fill: "#000000" };
         this.styleName = { font: "16px Arial", fill: "#3e76d1" };
-        this.styleHit = { font: "18px Arial", fill: "#612131", fontWeight: 900 };
 
     }
 
@@ -126,31 +122,5 @@ class cBasicActor {
         }
     }
 
-    public onHit(data) {
-        
-        //texto con el daño
-        if (data.damage != 0) {
-
-            //para cambiar la posicion del daño si te golpean muy rapido
-            if (this.hitTextPosition == -30) {
-                this.hitTextPosition = 10;
-            } else {
-                this.hitTextPosition = -30;
-            }
-
-            var hitText = this.controlGame.game.add.text(this.hitTextPosition , -40, data.damage, this.styleHit);
-            this.playerSprite.addChild(hitText);
-
-            var tweenText = this.controlGame.game.add.tween(hitText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
-            tweenText.onComplete.add(this.removeTweenText,hitText);
-        }
-
-        this.controlGame.controlPlayer.controlSpells.spellAnimation(this.playerSprite,data);
-
-    }
-
-    removeTweenText(sprite:Phaser.Sprite) {        
-        sprite.destroy();        
-    }
-    
+ 
 }

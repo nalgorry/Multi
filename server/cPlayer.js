@@ -25,22 +25,28 @@ var cPlayer = (function () {
         //veo que hechizo se activo 
         var damage = 0;
         switch (data.idSpell) {
-            case enumActiveSpells.FireBall:
+            case 1 /* BasicAtack */:
                 damage = Math.round(Math.random() * 50 + 20);
                 break;
-            case enumActiveSpells.CriticalBall:
+            case 2 /* CriticalBall */:
                 damage = Math.round(Math.random() * 30 + 15);
                 if (Math.random() < 0.15) {
                     damage = damage + 50;
                 }
                 break;
-            case enumActiveSpells.ProtectField:
+            case 6 /* LightingStorm */:
+                damage = Math.round(Math.random() * 100 + 50);
+                break;
+            case 4 /* ProtectField */:
                 this.protectedField = true;
                 var timer = setTimeout(function () { return _this.protectedField = false; }, 4500);
                 break;
-            case enumActiveSpells.WeakBall:
+            case 3 /* WeakBall */:
                 this.weakEfect = true;
                 var timer = setTimeout(function () { return _this.weakEfect = false; }, 6500);
+                break;
+            case 5 /* HealHand */:
+                damage = -Math.round(Math.random() * 40 + 40);
                 break;
             default:
                 break;
@@ -56,10 +62,3 @@ var cPlayer = (function () {
     return cPlayer;
 }());
 exports.cPlayer = cPlayer;
-var enumActiveSpells;
-(function (enumActiveSpells) {
-    enumActiveSpells[enumActiveSpells["FireBall"] = 3] = "FireBall";
-    enumActiveSpells[enumActiveSpells["CriticalBall"] = 4] = "CriticalBall";
-    enumActiveSpells[enumActiveSpells["WeakBall"] = 5] = "WeakBall";
-    enumActiveSpells[enumActiveSpells["ProtectField"] = 6] = "ProtectField";
-})(enumActiveSpells || (enumActiveSpells = {}));

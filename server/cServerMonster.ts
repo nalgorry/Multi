@@ -159,23 +159,23 @@ export class cServerMonster {
                     //normal atack 
                     data = {
                             idMonster:this.monsterId,
-                            idPlayer:player.playerId,
+                            idPlayer: player.playerId,
                             monsterAtackType: 0,
-                            damage:player.calculateDamage(Math.round(Math.random()*this.monsterPower+1)),
-                            idSpell:3,
+                            damage: player.calculateDamage(Math.round(Math.random()*this.monsterPower+1)),
+                            idSpell: eSpells.BasicAtack,
                         }
                 } else {
                     //especial mega atack!!
                     data = {
-                            idMonster:this.monsterId,
-                            idPlayer:player.playerId,
+                            idMonster: this.monsterId,
+                            idPlayer: player.playerId,
                             monsterAtackType: 1,
                             damage: player.calculateDamage(50),
                             tileX: playerTileX,
-                            tileY:playerTileY,
+                            tileY: playerTileY,
                             spellSize: 150,
                             coolDownTimeSec: 1,
-                            idSpell: 3,
+                            idSpell: eSpells.BasicAtack,
                         }
                 }
 

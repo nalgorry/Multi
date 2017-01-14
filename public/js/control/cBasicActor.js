@@ -1,10 +1,8 @@
 var cBasicActor = (function () {
     function cBasicActor(_controlGame) {
-        this.hitTextPosition = 0;
         this.controlGame = _controlGame;
         this.styleChat = { font: "16px Arial", fill: "#000000" };
         this.styleName = { font: "16px Arial", fill: "#3e76d1" };
-        this.styleHit = { font: "18px Arial", fill: "#612131", fontWeight: 900 };
     }
     cBasicActor.prototype.setChatText = function (texto) {
         if (this.textChat == null) {
@@ -88,26 +86,6 @@ var cBasicActor = (function () {
             this.playerSprite.children[0] = this.armorSprite;
             this.playerSprite.children[1] = this.weaponSprite;
         }
-    };
-    cBasicActor.prototype.onHit = function (data) {
-        //texto con el daño
-        if (data.damage != 0) {
-            //para cambiar la posicion del daño si te golpean muy rapido
-            if (this.hitTextPosition == -30) {
-                this.hitTextPosition = 10;
-            }
-            else {
-                this.hitTextPosition = -30;
-            }
-            var hitText = this.controlGame.game.add.text(this.hitTextPosition, -40, data.damage, this.styleHit);
-            this.playerSprite.addChild(hitText);
-            var tweenText = this.controlGame.game.add.tween(hitText).to({ y: '-40' }, 1000, Phaser.Easing.Cubic.Out, true);
-            tweenText.onComplete.add(this.removeTweenText, hitText);
-        }
-        this.controlGame.controlPlayer.controlSpells.spellAnimation(this.playerSprite, data);
-    };
-    cBasicActor.prototype.removeTweenText = function (sprite) {
-        sprite.destroy();
     };
     return cBasicActor;
 }());

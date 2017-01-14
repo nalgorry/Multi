@@ -57,7 +57,7 @@ class cControlOtherPlayers {
     public playerHit(data) {
 
         var player = this.playerById(data.id);
-        player.onHit(data);
+        this.controlGame.controlPlayer.controlSpells.onHit(data,player.playerSprite);
 
     }
 

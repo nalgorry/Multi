@@ -17,6 +17,9 @@ class cControlSpells {
     public selActorType:enumSelectedActor;
     public selActor:Object;
 
+    private styleHit;
+    private hitTextPosition:number = 0;
+
     constructor(public controlGame:cControlGame) {
 
             this.allSpells = new cDefinitionSpells(this.controlGame); 
@@ -54,6 +57,8 @@ class cControlSpells {
     }
 
     public spellAnimation(sprite:Phaser.Sprite,data) {
+        
+        console.log(data);
 
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
     }
@@ -120,7 +125,7 @@ class cControlSpells {
         this.borderSpell = this.controlGame.game.add.graphics(0,0);
         this.borderSpell.lineStyle(2, 0xffffff, 1);
         this.borderSpell.fixedToCamera = true;
-        this.borderSpell.drawCircle(0, 0, 40);
+        this.borderSpell.drawCircle(0, 0, 50);
 
     }
 
@@ -131,8 +136,8 @@ class cControlSpells {
         this.arrayselSpells = new Array<cSpell>();
 
         //hechizo 1
-        var newSpell:cSpell = this.allSpells.arraySpells[3];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*0,205),2);
+        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.BasicAtack];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 0, 205),2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);
@@ -142,25 +147,40 @@ class cControlSpells {
         this.selSpell = newSpell;
 
         //hechizo 2
-        var newSpell:cSpell = this.allSpells.arraySpells[4];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48*1,205),2);
+        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.CriticalBall];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 1, 205),2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);          
 
         //hechizo 3
-        var newSpell:cSpell = this.allSpells.arraySpells[5];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 2, 205), 2);
+        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.LightingStorm];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 2, 205), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);                
 
         //hechizo 4
-        var newSpell:cSpell = this.allSpells.arraySpells[6];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 190 + 48 * 3, 205), 2);
+        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.ProtectField];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 0, 265), 2);
         
         this.arrayselSpells.push(newSpell);
-        newSpell.signalSpellSel.add(this.spellClick,this); 
+        newSpell.signalSpellSel.add(this.spellClick,this);
+
+        //hechizo 5
+        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.HealHand];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 1, 265), 2);
+        
+        this.arrayselSpells.push(newSpell);
+        newSpell.signalSpellSel.add(this.spellClick,this);
+
+        //hechizo 6
+        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.WeakBall];
+        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 2, 265), 2);
+        
+        this.arrayselSpells.push(newSpell);
+        newSpell.signalSpellSel.add(this.spellClick,this);  
+ 
 
 
     }
@@ -284,6 +304,41 @@ class cControlSpells {
             spell.spellSelected()
 
     }
+
+       public onHit(data,sprite:Phaser.Sprite) {
+        
+        //texto con el daño
+        if (data.damage != 0) {
+
+            if (data.damage > 0) { //daño real 
+                this.styleHit = { font: "18px Arial", fill: "#612131", fontWeight: 900 }
+            } else { //curacción
+                this.styleHit = { font: "18px Arial", fill: "#0b4708", fontWeight: 900 }
+                data.damage = -data.damage;
+            };
+
+            //para cambiar la posicion del daño si te golpean muy rapido
+            if (this.hitTextPosition == -30) {
+                this.hitTextPosition = 10;
+            } else {
+                this.hitTextPosition = -30;
+            }
+
+            var hitText = this.controlGame.game.add.text(this.hitTextPosition , -40, data.damage, this.styleHit);
+            sprite.addChild(hitText);
+
+            var tweenText = this.controlGame.game.add.tween(hitText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
+            tweenText.onComplete.add(this.removeTweenText,hitText);
+        }
+
+        this.spellAnimation(sprite,data);
+
+    }
+
+    removeTweenText(sprite:Phaser.Sprite) {        
+        sprite.destroy();        
+    }
+    
 
 
 }

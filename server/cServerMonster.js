@@ -108,7 +108,7 @@ var cServerMonster = (function () {
                             idPlayer: player.playerId,
                             monsterAtackType: 0,
                             damage: player.calculateDamage(Math.round(Math.random() * this.monsterPower + 1)),
-                            idSpell: 3,
+                            idSpell: 1 /* BasicAtack */,
                         };
                     }
                     else {
@@ -122,7 +122,7 @@ var cServerMonster = (function () {
                             tileY: playerTileY,
                             spellSize: 150,
                             coolDownTimeSec: 1,
-                            idSpell: 3,
+                            idSpell: 1 /* BasicAtack */,
                         };
                     }
                     this.socket.emit('monster hit', data);

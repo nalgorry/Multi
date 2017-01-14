@@ -201,7 +201,7 @@ class cControlPlayer extends cBasicActor {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit,"Te golpearon por " + data.damage)
         }
         
-        this.onHit(data); //esto hace aparecer el cartelito con la vida que te queda y la animación
+        this.controlGame.controlPlayer.controlSpells.onHit(data,this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
 
     }
 

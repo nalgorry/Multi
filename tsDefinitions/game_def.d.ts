@@ -10,6 +10,16 @@
         RedWolf = 4,
     }
 
+    declare const enum eSpells {
+        BasicAtack = 1,
+        CriticalBall = 2,
+        WeakBall = 3,
+        ProtectField = 4,
+        HealHand = 5,
+        LightingStorm = 6,
+
+    }
+
     declare const enum enumItemType {
         smallDager = 0,
         dager = 1,
