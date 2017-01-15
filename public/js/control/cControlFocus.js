@@ -11,12 +11,18 @@ var cControlFocus = (function () {
         this.controlGame = controlGame;
         //constantes para velocidad del focus
         this.speedFocus = 50;
+        this.baseSpeedNormalLife = 0.1;
+        this.baseSpeedNormalMana = 0.25;
+        this.baseSpeedNormalEnergy = 0.5;
+        this.baseSpeedFocusLife = 0.8;
+        this.baseSpeedFocusMana = 2;
+        this.baseSpeedFocusEnergy = 4;
         this.speedNormalLife = 0.1;
         this.speedNormalMana = 0.25;
         this.speedNormalEnergy = 0.5;
-        this.speedFocusLife = this.speedNormalLife * 8;
-        this.speedFocusMana = this.speedNormalMana * 8;
-        this.speedFocusEnergy = this.speedNormalEnergy * 8;
+        this.speedFocusLife = 0.8;
+        this.speedFocusMana = 2;
+        this.speedFocusEnergy = 4;
         this.actualFocusSystem = FocusSystem.nothing;
         //valores actuales utilizados por el focus sistem
         this.actualFocusLife = this.speedNormalLife;
@@ -27,7 +33,7 @@ var cControlFocus = (function () {
         this.LoadBars();
         this.createBars(gameWidth, gameHeight);
         this.createPotions();
-        this.updateAtackDefence();
+        this.createAtackDefence();
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
     }
     cControlFocus.prototype.createPotions = function () {
@@ -96,9 +102,6 @@ var cControlFocus = (function () {
         }
         else {
             value = maxValue;
-            //si paso el maximo con alguna de las barras, me fijo si es necesario resetear el sistema de focus
-            if (this.actualFocusSystem == FocusSystem.life || this.actualFocusSystem == FocusSystem.mana || this.actualFocusSystem == FocusSystem.energy) {
-            }
         }
         this.ResizeBar(bar, value, maxValue);
         return value;
@@ -198,11 +201,15 @@ var cControlFocus = (function () {
         this.maxAtack = 2;
         this.maxDefence = 2;
     };
-    cControlFocus.prototype.updateAtackDefence = function () {
+    cControlFocus.prototype.createAtackDefence = function () {
         this.textAtack = this.controlGame.game.add.text(1168, 50, this.maxAtack.toString(), this.styleText);
         this.textAtack.fixedToCamera = true;
-        this.textDefence = this.controlGame.game.add.text(1168, 73, this.maxAtack.toString(), this.styleText);
+        this.textDefence = this.controlGame.game.add.text(1168, 73, this.maxDefence.toString(), this.styleText);
         this.textDefence.fixedToCamera = true;
+    };
+    cControlFocus.prototype.updateAtackDefence = function () {
+        this.textAtack.text = this.maxAtack.toString();
+        this.textDefence.text = this.maxDefence.toString();
     };
     cControlFocus.prototype.createBars = function (gameWidth, gameHeight) {
         //creo las barras de vida y energia
@@ -246,7 +253,7 @@ var cControlFocus = (function () {
         this.ResizeBar(this.manaBar, this.mana, this.maxMana);
         this.ResizeBar(this.energyBar, this.energy, this.maxEnergy);
         //para los textos de las barras
-        this.styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 700 };
+        this.styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600 };
         this.textLife = this.controlGame.game.add.text(gameWidth - 165, 125, "200", this.styleText);
         this.textLife.fixedToCamera = true;
         this.textMana = this.controlGame.game.add.text(gameWidth - 165, 125 + 25, "200", this.styleText);
@@ -261,7 +268,6 @@ var cControlFocus = (function () {
         this.rectangleFocus.cameraOffset.x = this.lifeBar.x - this.lifeBar.width;
         this.rectangleFocus.cameraOffset.y = 125;
         this.rectangleFocus.visible = false;
-        //ataque y defenza!! se viene :)
         //exp
         //var bitmapExp = this.controlGame.game.add.bitmapData(25, 130);
         //bitmapExp.ctx.beginPath();

@@ -84,7 +84,7 @@ class cControlItems {
 
     }
 
-    private calculateItemsEfects()   {
+    private calculateItemsEfects() {
 
         var arrayItemEfects:cItemProperty[]; //aca guardo todos los efectos de los items equipados, para aplicarlos al jugador
         arrayItemEfects = [];
@@ -106,11 +106,29 @@ class cControlItems {
 
         //reseteo todas las estadisticas del player antes de aplicar las propiedades de los items
         this.controlGame.controlPlayer.controlFocus.maxLife =
-            this.controlGame.controlPlayer.controlFocus.baseMaxLife
+            this.controlGame.controlPlayer.controlFocus.baseMaxLife;
         this.controlGame.controlPlayer.controlFocus.maxMana = 
-            this.controlGame.controlPlayer.controlFocus.baseMaxMana
+            this.controlGame.controlPlayer.controlFocus.baseMaxMana;
         this.controlGame.controlPlayer.controlFocus.maxEnergy = 
-                        this.controlGame.controlPlayer.controlFocus.baseMaxEnergy
+            this.controlGame.controlPlayer.controlFocus.baseMaxEnergy;
+        this.controlGame.controlPlayer.controlFocus.maxAtack = 
+            this.controlGame.controlPlayer.controlFocus.baseMaxAtack;
+        this.controlGame.controlPlayer.controlFocus.maxDefence = 
+            this.controlGame.controlPlayer.controlFocus.baseMaxDefence;
+        
+        this.controlGame.controlPlayer.controlFocus.speedFocusLife = 
+            this.controlGame.controlPlayer.controlFocus.baseSpeedFocusLife;
+        this.controlGame.controlPlayer.controlFocus.speedFocusMana = 
+            this.controlGame.controlPlayer.controlFocus.baseSpeedFocusMana;
+        this.controlGame.controlPlayer.controlFocus.speedFocusEnergy = 
+            this.controlGame.controlPlayer.controlFocus.baseSpeedFocusEnergy;
+
+        this.controlGame.controlPlayer.controlFocus.speedNormalLife = 
+            this.controlGame.controlPlayer.controlFocus.baseSpeedNormalLife;
+        this.controlGame.controlPlayer.controlFocus.speedNormalMana = 
+            this.controlGame.controlPlayer.controlFocus.baseSpeedNormalMana;
+        this.controlGame.controlPlayer.controlFocus.speedNormalEnergy = 
+            this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy;
 
         //ya tengo las propiedades de todos los items, simplemente aplico esas propiedades al pj activo.
         arrayItemEfects.forEach(efect => {
@@ -127,11 +145,47 @@ class cControlItems {
                     this.controlGame.controlPlayer.controlFocus.maxEnergy = 
                         this.controlGame.controlPlayer.controlFocus.baseMaxEnergy + efect.value;
                     break;
+                case enumItemEfects.atack:
+                    this.controlGame.controlPlayer.controlFocus.maxAtack = 
+                        this.controlGame.controlPlayer.controlFocus.baseMaxAtack + efect.value;
+                    break;
+                case enumItemEfects.defense:
+                    this.controlGame.controlPlayer.controlFocus.maxDefence = 
+                        this.controlGame.controlPlayer.controlFocus.baseMaxDefence + efect.value;
+                    break;
+                case enumItemEfects.normalLife:
+                    this.controlGame.controlPlayer.controlFocus.speedNormalLife = 
+                    this.controlGame.controlPlayer.controlFocus.baseSpeedNormalLife * (1 + efect.value / 100);
+                    break
+                case enumItemEfects.normalMana:
+                    this.controlGame.controlPlayer.controlFocus.speedNormalMana = 
+                    this.controlGame.controlPlayer.controlFocus.baseSpeedNormalMana * (1 + efect.value / 100);
+                    break
+                case enumItemEfects.normalEnergy:
+                    this.controlGame.controlPlayer.controlFocus.speedNormalEnergy = 
+                    this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy * (1 + efect.value / 100);
+                    break
+                case enumItemEfects.focusLife:
+                    this.controlGame.controlPlayer.controlFocus.speedFocusLife = 
+                    this.controlGame.controlPlayer.controlFocus.baseSpeedFocusLife * (1 + efect.value / 100);
+                    break
+                case enumItemEfects.focusMana:
+                    this.controlGame.controlPlayer.controlFocus.speedFocusMana = 
+                    this.controlGame.controlPlayer.controlFocus.baseSpeedFocusMana * (1 + efect.value / 100);
+                    break
+                case enumItemEfects.focusEnergy:
+                    this.controlGame.controlPlayer.controlFocus.speedFocusEnergy = 
+                    this.controlGame.controlPlayer.controlFocus.baseSpeedFocusEnergy * (1 + efect.value / 100);
+                    break
             
                 default:
                     break;
             }
         })
+
+        //actualizo las estadisticas del jugador
+        this.controlGame.controlPlayer.controlFocus.updateAtackDefence();
+        this.controlGame.controlPlayer.controlFocus.SelectFocus(this.controlGame.controlPlayer.controlFocus.actualFocusSystem)
 
     }
 

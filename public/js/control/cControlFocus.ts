@@ -11,15 +11,23 @@ class cControlFocus {
     //constantes para velocidad del focus
     speedFocus:number = 50;
 
+    baseSpeedNormalLife:number = 0.1;
+    baseSpeedNormalMana:number = 0.25;
+    baseSpeedNormalEnergy:number = 0.5;
+
+    baseSpeedFocusLife:number = 0.8;
+    baseSpeedFocusMana:number = 2;
+    baseSpeedFocusEnergy:number = 4;
+
     speedNormalLife:number = 0.1;
     speedNormalMana:number = 0.25;
     speedNormalEnergy:number = 0.5;
 
-    speedFocusLife:number = this.speedNormalLife * 8;
-    speedFocusMana:number = this.speedNormalMana * 8;
-    speedFocusEnergy:number = this.speedNormalEnergy * 8;
+    speedFocusLife:number = 0.8;
+    speedFocusMana:number = 2;
+    speedFocusEnergy:number = 4;
 
-    actualFocusSystem:FocusSystem = FocusSystem.nothing;
+    public actualFocusSystem:FocusSystem = FocusSystem.nothing;
 
     textLife: Phaser.Text;
     textMana: Phaser.Text;
@@ -34,7 +42,7 @@ class cControlFocus {
     actualFocusEnergy:number = this.speedNormalEnergy;
     
     //estadisticas basicas del jugador sin items
-    baseMaxLife:number
+    baseMaxLife:number;
     baseMaxMana: number;
     baseMaxEnergy: number;
     baseMaxAtack:number;
@@ -70,7 +78,7 @@ class cControlFocus {
         this.LoadBars();
         this.createBars(gameWidth,gameHeight);
         this.createPotions();
-        this.updateAtackDefence();
+        this.createAtackDefence();
 
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
 
@@ -161,11 +169,6 @@ class cControlFocus {
             value += addValue;
         } else {
             value = maxValue;
-            //si paso el maximo con alguna de las barras, me fijo si es necesario resetear el sistema de focus
-            if (this.actualFocusSystem == FocusSystem.life || this.actualFocusSystem == FocusSystem.mana || this.actualFocusSystem == FocusSystem.energy) {
-                //this.SelectNothingFocus();
-            }
-
         }
 
         this.ResizeBar(bar,value,maxValue);
@@ -226,7 +229,7 @@ class cControlFocus {
 
     }
 
-    private SelectFocus(wichFocus:FocusSystem) {
+    public SelectFocus(wichFocus:FocusSystem) {
         
         //seteo todo en normal, y hago el focus en el sel
         this.actualFocusLife = this.speedNormalLife;
@@ -293,12 +296,19 @@ class cControlFocus {
 
     }
 
-    public updateAtackDefence() {
+    public createAtackDefence() {
         this.textAtack = this.controlGame.game.add.text(1168, 50, this.maxAtack.toString() , this.styleText);
         this.textAtack.fixedToCamera = true;
 
-        this.textDefence = this.controlGame.game.add.text(1168, 73, this.maxAtack.toString() , this.styleText);
+        this.textDefence = this.controlGame.game.add.text(1168, 73, this.maxDefence.toString() , this.styleText);
         this.textDefence.fixedToCamera = true;
+    }
+
+    public updateAtackDefence() {
+        
+        this.textAtack.text = this.maxAtack.toString();
+        this.textDefence.text = this.maxDefence.toString();
+
     }
 
     private createBars(gameWidth:number,gameHeight:number) {
@@ -349,7 +359,7 @@ class cControlFocus {
         this.ResizeBar(this.energyBar,this.energy,this.maxEnergy);
 
         //para los textos de las barras
-        this.styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 700};
+        this.styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600};
         this.textLife = this.controlGame.game.add.text(gameWidth - 165, 125, "200" , this.styleText);
         this.textLife.fixedToCamera = true;
 
@@ -370,7 +380,6 @@ class cControlFocus {
         
         this.rectangleFocus.visible = false;
 
-        //ataque y defenza!! se viene :)
 
         //exp
         //var bitmapExp = this.controlGame.game.add.bitmapData(25, 130);
