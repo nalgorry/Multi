@@ -23,7 +23,7 @@ class cOtherPlayer extends cBasicActor {
         this.armorSprite.events.onInputDown.add(this.youHitPlayer, this);
         this.setNameText(data.name);
 
-        this.startAnimation('idle');
+        this.startAnimation('idle_right');
 
     }
 
@@ -32,7 +32,9 @@ class cOtherPlayer extends cBasicActor {
         this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to(
             { x: data.x , y: data.y }
             , 320, Phaser.Easing.Linear.None, true, 0);      
-     
+            
+        console.log(data.dirMov);
+
         if (data.dirMov == move.right) {
             this.startAnimation('right');
         } else if (data.dirMov == move.left) {
@@ -41,8 +43,10 @@ class cOtherPlayer extends cBasicActor {
             this.startAnimation('up');
         } else if (data.dirMov == move.down) {
             this.startAnimation('down');
-        } else if (data.dirMov == move.idle) {
-            this.moveTween.onComplete.add(this.resetAnimation, this)
+        } else if (data.dirMov == move.idleLeft) {
+            this.moveTween.onComplete.add(this.resetAnimation, this,undefined,move.idleLeft)
+        } else if (data.dirMov == move.idleRight) {
+            this.moveTween.onComplete.add(this.resetAnimation, this,undefined,move.idleRight)
         }
 
         this.tileX = this.controlGame.layer.getTileX(data.x);
@@ -50,8 +54,13 @@ class cOtherPlayer extends cBasicActor {
 
     }
 
-    public resetAnimation() {
-            this.startAnimation('idle');
+    public resetAnimation(sprite, tween , dir:move) {
+
+            if (dir == move.idleLeft) {
+                this.startAnimation('idle_left');
+            } else {
+                this.startAnimation('idle_right');
+            }
     }
 
     public youHitPlayer() {

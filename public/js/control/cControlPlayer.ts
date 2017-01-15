@@ -3,7 +3,8 @@ enum move {
     down = Phaser.Keyboard.S,
     left = Phaser.Keyboard.A,
     right = Phaser.Keyboard.D,
-    idle = 0
+    idleLeft = 0,
+    idleRight = -1,
     }
 
 class cControlPlayer extends cBasicActor {
@@ -26,7 +27,7 @@ class cControlPlayer extends cBasicActor {
     private seMueveX:boolean = false;
     private seMueveY:boolean = false;
     private playerIdle:boolean = false;
-    private lastAnimation:move = move.right;
+    private lastAnimation:move = move.idleRight;
 
     private dirMovimiento:move;
     private lastdirMov:move; //para guardar el ultimo moviemiento enviado
@@ -233,7 +234,7 @@ class cControlPlayer extends cBasicActor {
         this.playerSprite.x = tileX * this.controlGame.gridSize;
         this.playerSprite.y = tileY * this.controlGame.gridSize;
 
-        this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
+        this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idleLeft });
 
     }
 
@@ -293,10 +294,12 @@ class cControlPlayer extends cBasicActor {
 
         //control de las animaciones
         if (isMovingX == false && isMovingY == false) {
-            if (this.lastAnimation == move.left ) { 
+            if (this.dirMovimiento == move.left ) { 
                 this.startAnimation('idle_left');
-            } else if (this.lastAnimation == move.right) {
+                this.lastAnimation = move.idleLeft;
+            } else if (this.dirMovimiento == move.right) {
                 this.startAnimation('idle_right');
+                this.lastAnimation = move.idleRight;
             }
         } else if (this.lastMoveX == 1) { //se esta moviendo hacia la derecha
             this.startAnimation('right');
@@ -306,27 +309,17 @@ class cControlPlayer extends cBasicActor {
             this.startAnimation('left');
             this.dirMovimiento = move.left;
             this.lastAnimation = move.left;
-        } else if (this.lastMoveY == 1) { //mantego el ultimo movimiento del costado
-            if (this.lastAnimation == move.left)
+        } else if (this.lastMoveY == 1 || this.lastMoveY == -1) { //mantego el ultimo movimiento del costado
+            if (this.dirMovimiento == move.left)
             {
                 this.startAnimation('left');
+                this.lastAnimation = move.left;
             } else
             {
                 this.startAnimation('right');
+                this.lastAnimation = move.right;
             }
-
-            this.dirMovimiento = move.down;
-        } else if (this.lastMoveY == -1) { //mantengo el ultimo moviemiento del costado
-            if (this.lastAnimation == move.left)
-            {
-                this.startAnimation('left');
-            } else
-            {
-                this.startAnimation('right');
-            }
-
-            this.dirMovimiento = move.up;
-        }
+        } 
 
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
         this.tileX = this.controlGame.layer.getTileX(xOffset);
@@ -344,7 +337,7 @@ class cControlPlayer extends cBasicActor {
             this.controlPortals.checkPortals(this.tileX,this.tileY);
             
         } else if (isMovingX == false && isMovingY == false && this.playerIdle == false) {
-            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
+            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.lastAnimation });
             this.playerIdle = true;
         }
 

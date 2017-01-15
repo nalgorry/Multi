@@ -17,10 +17,11 @@ var cOtherPlayer = (function (_super) {
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youHitPlayer, this);
         this.setNameText(data.name);
-        this.startAnimation('idle');
+        this.startAnimation('idle_right');
     };
     cOtherPlayer.prototype.MoverJugador = function (data) {
         this.moveTween = this.controlGame.game.add.tween(this.playerSprite).to({ x: data.x, y: data.y }, 320, Phaser.Easing.Linear.None, true, 0);
+        console.log(data.dirMov);
         if (data.dirMov == move.right) {
             this.startAnimation('right');
         }
@@ -33,14 +34,22 @@ var cOtherPlayer = (function (_super) {
         else if (data.dirMov == move.down) {
             this.startAnimation('down');
         }
-        else if (data.dirMov == move.idle) {
-            this.moveTween.onComplete.add(this.resetAnimation, this);
+        else if (data.dirMov == move.idleLeft) {
+            this.moveTween.onComplete.add(this.resetAnimation, this, undefined, move.idleLeft);
+        }
+        else if (data.dirMov == move.idleRight) {
+            this.moveTween.onComplete.add(this.resetAnimation, this, undefined, move.idleRight);
         }
         this.tileX = this.controlGame.layer.getTileX(data.x);
         this.tileY = this.controlGame.layer.getTileY(data.y);
     };
-    cOtherPlayer.prototype.resetAnimation = function () {
-        this.startAnimation('idle');
+    cOtherPlayer.prototype.resetAnimation = function (sprite, tween, dir) {
+        if (dir == move.idleLeft) {
+            this.startAnimation('idle_left');
+        }
+        else {
+            this.startAnimation('idle_right');
+        }
     };
     cOtherPlayer.prototype.youHitPlayer = function () {
         this.controlGame.controlPlayer.controlSpells.otherPlayerClick(this);

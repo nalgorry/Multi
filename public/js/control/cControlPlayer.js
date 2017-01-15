@@ -9,7 +9,8 @@ var move;
     move[move["down"] = Phaser.Keyboard.S] = "down";
     move[move["left"] = Phaser.Keyboard.A] = "left";
     move[move["right"] = Phaser.Keyboard.D] = "right";
-    move[move["idle"] = 0] = "idle";
+    move[move["idleLeft"] = 0] = "idleLeft";
+    move[move["idleRight"] = -1] = "idleRight";
 })(move || (move = {}));
 var cControlPlayer = (function (_super) {
     __extends(cControlPlayer, _super);
@@ -21,7 +22,7 @@ var cControlPlayer = (function (_super) {
         this.seMueveX = false;
         this.seMueveY = false;
         this.playerIdle = false;
-        this.lastAnimation = move.right;
+        this.lastAnimation = move.idleRight;
         this.monstersKills = 0;
         this.gridSize = controlGame.gridSize;
         this.startActor();
@@ -179,7 +180,7 @@ var cControlPlayer = (function (_super) {
     cControlPlayer.prototype.teleport = function (tileX, tileY) {
         this.playerSprite.x = tileX * this.controlGame.gridSize;
         this.playerSprite.y = tileY * this.controlGame.gridSize;
-        this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
+        this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idleLeft });
     };
     cControlPlayer.prototype.playerUpdate = function () {
         //me fijo para que lado se esta moviendo 
@@ -229,11 +230,13 @@ var cControlPlayer = (function (_super) {
         var isMovingY = this.playerSprite.body.position.y != this.playerSprite.body.prev.y;
         //control de las animaciones
         if (isMovingX == false && isMovingY == false) {
-            if (this.lastAnimation == move.left) {
+            if (this.dirMovimiento == move.left) {
                 this.startAnimation('idle_left');
+                this.lastAnimation = move.idleLeft;
             }
-            else if (this.lastAnimation == move.right) {
+            else if (this.dirMovimiento == move.right) {
                 this.startAnimation('idle_right');
+                this.lastAnimation = move.idleRight;
             }
         }
         else if (this.lastMoveX == 1) {
@@ -246,23 +249,15 @@ var cControlPlayer = (function (_super) {
             this.dirMovimiento = move.left;
             this.lastAnimation = move.left;
         }
-        else if (this.lastMoveY == 1) {
-            if (this.lastAnimation == move.left) {
+        else if (this.lastMoveY == 1 || this.lastMoveY == -1) {
+            if (this.dirMovimiento == move.left) {
                 this.startAnimation('left');
+                this.lastAnimation = move.left;
             }
             else {
                 this.startAnimation('right');
+                this.lastAnimation = move.right;
             }
-            this.dirMovimiento = move.down;
-        }
-        else if (this.lastMoveY == -1) {
-            if (this.lastAnimation == move.left) {
-                this.startAnimation('left');
-            }
-            else {
-                this.startAnimation('right');
-            }
-            this.dirMovimiento = move.up;
         }
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
         this.tileX = this.controlGame.layer.getTileX(xOffset);
@@ -276,7 +271,7 @@ var cControlPlayer = (function (_super) {
             this.controlPortals.checkPortals(this.tileX, this.tileY);
         }
         else if (isMovingX == false && isMovingY == false && this.playerIdle == false) {
-            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: move.idle });
+            this.controlGame.controlServer.socket.emit('move player', { x: this.playerSprite.x, y: this.playerSprite.y, dirMov: this.lastAnimation });
             this.playerIdle = true;
         }
     };
