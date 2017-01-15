@@ -4,12 +4,12 @@ class cDefinitionSpells {
 
     constructor(public controlGame:cControlGame) {
 
-        this.defineSpells();
+        this.definenumSpells();
 
 
     }
 
-    defineSpells() {
+    definenumSpells() {
 
         this.arraySpells = new Array<cSpell>();
 
@@ -17,9 +17,9 @@ class cDefinitionSpells {
         
         //BasicAtack
         var newSpell = new cSpell(this.controlGame);
-        this.arraySpells[eSpells.BasicAtack] = newSpell;
+        this.arraySpells[enumSpells.BasicAtack] = newSpell;
 
-        newSpell.idSpell = eSpells.BasicAtack;
+        newSpell.idSpell = enumSpells.BasicAtack;
         newSpell.spellName = "Bola de Fuego";
         newSpell.manaCost = 30;
         newSpell.energyCost = 5;
@@ -32,9 +32,9 @@ class cDefinitionSpells {
 
         //CriticalBall
         var newSpell = new cSpell(this.controlGame);
-        this.arraySpells[eSpells.CriticalBall] = newSpell;
+        this.arraySpells[enumSpells.CriticalBall] = newSpell;
 
-        newSpell.idSpell = eSpells.CriticalBall;
+        newSpell.idSpell = enumSpells.CriticalBall;
         newSpell.spellName = "Meteorito Mortal";
         newSpell.manaCost = 20;
         newSpell.energyCost = 5;
@@ -46,9 +46,9 @@ class cDefinitionSpells {
 
         //WeakBall
         var newSpell = new cSpell(this.controlGame);
-        this.arraySpells[eSpells.WeakBall] = newSpell;
+        this.arraySpells[enumSpells.WeakBall] = newSpell;
         
-        newSpell.idSpell = eSpells.WeakBall;
+        newSpell.idSpell = enumSpells.WeakBall;
         newSpell.spellName = "Ataque Mortal";
         newSpell.manaCost = 50;
         newSpell.energyCost = 50;
@@ -65,9 +65,9 @@ class cDefinitionSpells {
 
         //ProtectField
         var newSpell = new cSpell(this.controlGame);
-         this.arraySpells[eSpells.ProtectField] = newSpell;
+         this.arraySpells[enumSpells.ProtectField] = newSpell;
         
-        newSpell.idSpell = eSpells.ProtectField;
+        newSpell.idSpell = enumSpells.ProtectField;
         newSpell.spellName = "Escudo Protector";
         newSpell.manaCost = 0;
         newSpell.energyCost = 50;
@@ -84,9 +84,9 @@ class cDefinitionSpells {
 
         //HealHand
         var newSpell = new cSpell(this.controlGame);
-         this.arraySpells[eSpells.HealHand] = newSpell;
+         this.arraySpells[enumSpells.HealHand] = newSpell;
         
-        newSpell.idSpell = eSpells.HealHand;
+        newSpell.idSpell = enumSpells.HealHand;
         newSpell.spellName = "Heal Hand";
         newSpell.manaCost = 30;
         newSpell.energyCost = 50;
@@ -101,9 +101,9 @@ class cDefinitionSpells {
 
         //LightingStorm
         var newSpell = new cSpell(this.controlGame);
-         this.arraySpells[eSpells.LightingStorm] = newSpell;
+         this.arraySpells[enumSpells.LightingStorm] = newSpell;
         
-        newSpell.idSpell = eSpells.LightingStorm;
+        newSpell.idSpell = enumSpells.LightingStorm;
         newSpell.spellName = "Lighting Storm";
         newSpell.manaCost = 30;
         newSpell.energyCost = 50;

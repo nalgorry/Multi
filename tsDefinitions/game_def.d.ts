@@ -1,4 +1,4 @@
-    declare enum monsterAtackType {
+    declare enum enumMonsterAtackType {
         normal = 0,
         area = 1,
     }
@@ -10,7 +10,7 @@
         RedWolf = 4,
     }
 
-    declare const enum eSpells {
+    declare const enum enumSpells {
         BasicAtack = 1,
         CriticalBall = 2,
         WeakBall = 3,
@@ -40,3 +40,16 @@
 
     }
 
+    declare const enum enumItemEfects {
+        focusLife,
+        focusMana,
+        focusEnergy,
+        normalLife,
+        normalMana,
+        normalEnergy,
+        life,
+        mana,
+        energy,
+        atack,
+        defense,
+    }

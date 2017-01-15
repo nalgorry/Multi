@@ -21,7 +21,6 @@ var cServerControlItems = (function () {
         return this.arrayItems[id];
     };
     cServerControlItems.prototype.youGetItem = function (socket, data) {
-        console.log(data);
         var item = this.getItemById(data.itemID);
         if (item != undefined) {
             item.youGetItem(socket, data);

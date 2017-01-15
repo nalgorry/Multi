@@ -18,6 +18,9 @@ class cItems {
     public arrayInventoryPoss:Phaser.Point[];
     public groupRectangles:Phaser.Group;
 
+    public arrayItemEfects:cItemProperty[];
+
+    private groupDesc:Phaser.Group;
 
     constructor(public controlGame:cControlGame,itemID:number,itemType:number) {
         this.itemType = itemType;
@@ -30,6 +33,9 @@ class cItems {
         this.signalItemOnFloorClick = new Phaser.Signal();
         this.signalItemEquiped = new Phaser.Signal();
 
+        //inicio el vector para determinar las propiedades
+        this.arrayItemEfects = [];
+        
         //inicio el array con todas las posiciones, en el orden que indica el enumItemEquipType
         this.arrayInventoryPoss = [];
 
@@ -69,14 +75,60 @@ class cItems {
 
         this.sprite.inputEnabled = true;
         this.sprite.input.enableDrag();
+        
         this.sprite.events.onInputDown.add(this.inventoryClick, this);
         this.sprite.events.onDragStart.add(this.onDragStart, this);
         this.sprite.events.onDragStop.add(this.onDragStop, this);
+        this.sprite.events.onInputOver.add(this.onInputOver,this);
+        this.sprite.events.onInputOut.add(this.onInputOut,this);
+
         this.spriteOriginalPoss = this.sprite.position.clone();
         
         this.tileInventory = inventoryID;
 
 
+    }
+
+    onInputOver() {
+
+        console.log("entra");
+        var bitmapDescItem = this.controlGame.game.add.bitmapData(180, 60);
+        bitmapDescItem.ctx.beginPath();
+        bitmapDescItem.ctx.rect(0, 0, 180, 60);
+        bitmapDescItem.ctx.fillStyle = '#164084';
+        bitmapDescItem.ctx.fill();
+
+        this.groupDesc = new Phaser.Group(this.controlGame.game);
+        
+        var itemDescX = this.sprite.cameraOffset.x - 150 / 2;
+        var itemDescY = this.sprite.cameraOffset.y + 40
+
+        var itemDesc = this.controlGame.game.add.sprite(itemDescX, itemDescY,bitmapDescItem);
+        itemDesc.anchor.setTo(0);
+        itemDesc.fixedToCamera = true;
+        itemDesc.alpha = 0.8;
+        
+        this.groupDesc.add(itemDesc);
+
+        //armo el texto con la propiedades del item
+        var styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 400};
+        var i = 0;
+
+        this.arrayItemEfects.forEach(efect => {
+
+            var text = cItemsDefinitions.defineItemEfectsName(efect);
+            var textLife = this.controlGame.game.add.text(itemDescX + 2, itemDescY + 2 + 15 * i, text , styleText);
+            textLife.anchor.setTo(0);
+            textLife.fixedToCamera = true;
+            this.groupDesc.add(textLife);
+            i++;
+            
+        })      
+ 
+    }
+
+    onInputOut() {
+        this.groupDesc.destroy();
     }
 
     onDragStart() {

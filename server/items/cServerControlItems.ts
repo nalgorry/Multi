@@ -35,7 +35,6 @@ export class cServerControlItems {
 
     public youGetItem(socket:SocketIO.Server, data) {
     
-    console.log(data);
       var item = this.getItemById(data.itemID)
 
       if (item != undefined) {
@@ -50,6 +49,5 @@ export class cServerControlItems {
 
 
     }
-
 
 }

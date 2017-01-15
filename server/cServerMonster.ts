@@ -63,7 +63,6 @@ export class cServerMonster {
             socket.emit('new Monster', monsterdata);
         }
 
-        console.log(monsterdata)
     }
 
     public monsterMove() {
@@ -162,7 +161,7 @@ export class cServerMonster {
                             idPlayer: player.playerId,
                             monsterAtackType: 0,
                             damage: player.calculateDamage(Math.round(Math.random()*this.monsterPower+1)),
-                            idSpell: eSpells.BasicAtack,
+                            idSpell: enumSpells.BasicAtack,
                         }
                 } else {
                     //especial mega atack!!
@@ -175,7 +174,7 @@ export class cServerMonster {
                             tileY: playerTileY,
                             spellSize: 150,
                             coolDownTimeSec: 1,
-                            idSpell: eSpells.BasicAtack,
+                            idSpell: enumSpells.BasicAtack,
                         }
                 }
 

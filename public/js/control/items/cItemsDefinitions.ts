@@ -44,6 +44,53 @@ class cItemsDefinitions {
 
 
     }
+    
+
+    static defineItemEfectsName(itemProperty:cItemProperty):string {
+
+        var finalText:string = "";
+
+        switch (itemProperty.itemEfect) {
+            case enumItemEfects.life:
+                finalText = "Life: +" + itemProperty.value;
+                break;
+            case enumItemEfects.mana:
+                finalText = "Mana: +" + itemProperty.value;
+                break;
+            case enumItemEfects.energy:
+                finalText = "Energy: +" + itemProperty.value;
+                break;
+            case enumItemEfects.normalLife:
+                finalText = "Speed Normal Life: +" + itemProperty.value + "%";
+                break;
+            case enumItemEfects.normalMana:
+                finalText = "Speed Normal Mana: +" + itemProperty.value + "%";
+                break;
+            case enumItemEfects.normalEnergy:
+                finalText = "Speed Normal Energy: +" + itemProperty.value + "%";
+                break;
+            case enumItemEfects.focusLife:
+                finalText = "Speed Focus Life: +" + itemProperty.value + "%";
+                break;
+            case enumItemEfects.focusMana:
+                finalText = "Speed Focus Mana: +" + itemProperty.value + "%";
+                break;
+            case enumItemEfects.focusEnergy:
+                finalText = "Speed Focus Energy: +" + itemProperty.value + "%";
+                break;
+            case enumItemEfects.atack:
+                finalText = "Atack: +" + itemProperty.value;
+                break;
+            case enumItemEfects.defense:
+                finalText = "Defense: +" + itemProperty.value;
+                break;
+            default:
+                break;
+        }
+
+        return finalText
+    }
+
 
 
 }

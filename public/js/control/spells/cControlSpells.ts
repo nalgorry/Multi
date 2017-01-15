@@ -24,9 +24,9 @@ class cControlSpells {
 
             this.allSpells = new cDefinitionSpells(this.controlGame); 
 
-            this.createSpells();
+            this.createnumSpells();
 
-            this.iniciateSpellSystem();
+            this.iniciatenumSpellsystem();
 
     }
 
@@ -119,7 +119,7 @@ class cControlSpells {
         sprite.addChild(this.circleFocus);
     }
 
-    private iniciateSpellSystem() {
+    private iniciatenumSpellsystem() {
 
         //dibujo el marco para el hechizo seleccionado
         this.borderSpell = this.controlGame.game.add.graphics(0,0);
@@ -129,14 +129,14 @@ class cControlSpells {
 
     }
 
-    private createSpells() {
+    private createnumSpells() {
 
         var gameWidth:number = this.controlGame.game.width;
         
         this.arrayselSpells = new Array<cSpell>();
 
         //hechizo 1
-        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.BasicAtack];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.BasicAtack];
         newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 0, 205),2);
         
         this.arrayselSpells.push(newSpell);
@@ -147,35 +147,35 @@ class cControlSpells {
         this.selSpell = newSpell;
 
         //hechizo 2
-        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.CriticalBall];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.CriticalBall];
         newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 1, 205),2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);          
 
         //hechizo 3
-        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.LightingStorm];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.LightingStorm];
         newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 2, 205), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);                
 
         //hechizo 4
-        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.ProtectField];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.ProtectField];
         newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 0, 265), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);
 
         //hechizo 5
-        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.HealHand];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.HealHand];
         newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 1, 265), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);
 
         //hechizo 6
-        var newSpell:cSpell = this.allSpells.arraySpells[eSpells.WeakBall];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.WeakBall];
         newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 2, 265), 2);
         
         this.arrayselSpells.push(newSpell);

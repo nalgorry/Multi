@@ -33,5 +33,46 @@ var cItemsDefinitions = (function () {
                 break;
         }
     };
+    cItemsDefinitions.defineItemEfectsName = function (itemProperty) {
+        var finalText = "";
+        switch (itemProperty.itemEfect) {
+            case 6 /* life */:
+                finalText = "Life: +" + itemProperty.value;
+                break;
+            case 7 /* mana */:
+                finalText = "Mana: +" + itemProperty.value;
+                break;
+            case 8 /* energy */:
+                finalText = "Energy: +" + itemProperty.value;
+                break;
+            case 3 /* normalLife */:
+                finalText = "Speed Normal Life: +" + itemProperty.value + "%";
+                break;
+            case 4 /* normalMana */:
+                finalText = "Speed Normal Mana: +" + itemProperty.value + "%";
+                break;
+            case 5 /* normalEnergy */:
+                finalText = "Speed Normal Energy: +" + itemProperty.value + "%";
+                break;
+            case 0 /* focusLife */:
+                finalText = "Speed Focus Life: +" + itemProperty.value + "%";
+                break;
+            case 1 /* focusMana */:
+                finalText = "Speed Focus Mana: +" + itemProperty.value + "%";
+                break;
+            case 2 /* focusEnergy */:
+                finalText = "Speed Focus Energy: +" + itemProperty.value + "%";
+                break;
+            case 9 /* atack */:
+                finalText = "Atack: +" + itemProperty.value;
+                break;
+            case 10 /* defense */:
+                finalText = "Defense: +" + itemProperty.value;
+                break;
+            default:
+                break;
+        }
+        return finalText;
+    };
     return cItemsDefinitions;
 }());

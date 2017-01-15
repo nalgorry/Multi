@@ -10,8 +10,8 @@ var cControlSpells = (function () {
         this.controlGame = controlGame;
         this.hitTextPosition = 0;
         this.allSpells = new cDefinitionSpells(this.controlGame);
-        this.createSpells();
-        this.iniciateSpellSystem();
+        this.createnumSpells();
+        this.iniciatenumSpellsystem();
     }
     cControlSpells.prototype.getSelActorID = function () {
         var id;
@@ -81,14 +81,14 @@ var cControlSpells = (function () {
         this.circleFocus.pivot.x = 0.5;
         sprite.addChild(this.circleFocus);
     };
-    cControlSpells.prototype.iniciateSpellSystem = function () {
+    cControlSpells.prototype.iniciatenumSpellsystem = function () {
         //dibujo el marco para el hechizo seleccionado
         this.borderSpell = this.controlGame.game.add.graphics(0, 0);
         this.borderSpell.lineStyle(2, 0xffffff, 1);
         this.borderSpell.fixedToCamera = true;
         this.borderSpell.drawCircle(0, 0, 50);
     };
-    cControlSpells.prototype.createSpells = function () {
+    cControlSpells.prototype.createnumSpells = function () {
         var gameWidth = this.controlGame.game.width;
         this.arrayselSpells = new Array();
         //hechizo 1

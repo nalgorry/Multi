@@ -34,7 +34,6 @@ var cServerMonster = (function () {
         else {
             socket.emit('new Monster', monsterdata);
         }
-        console.log(monsterdata);
     };
     cServerMonster.prototype.monsterMove = function () {
         var _this = this;

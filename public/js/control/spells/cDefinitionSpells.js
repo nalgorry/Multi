@@ -1,9 +1,9 @@
 var cDefinitionSpells = (function () {
     function cDefinitionSpells(controlGame) {
         this.controlGame = controlGame;
-        this.defineSpells();
+        this.definenumSpells();
     }
-    cDefinitionSpells.prototype.defineSpells = function () {
+    cDefinitionSpells.prototype.definenumSpells = function () {
         this.arraySpells = new Array();
         //Defino los hechizos que voy a usar en el juego, esto lo hacemos aca pero puede ir en un csv o txt.
         //BasicAtack

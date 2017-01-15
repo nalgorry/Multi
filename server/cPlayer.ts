@@ -31,31 +31,31 @@ export class cPlayer {
         var damage:number = 0;
 
         switch (data.idSpell) {
-            case eSpells.BasicAtack :
+            case enumSpells.BasicAtack :
             damage = Math.round(Math.random() * 50 + 20);
 
             break;
-            case eSpells.CriticalBall :
+            case enumSpells.CriticalBall :
               damage = Math.round(Math.random() * 30 + 15);
               if (Math.random() < 0.15) { //daño critico!
                 damage = damage + 50;
               } 
             break;
-            case eSpells.LightingStorm :
+            case enumSpells.LightingStorm :
             damage = Math.round(Math.random() * 100 + 50);
 
             break;
-            case eSpells.ProtectField:
+            case enumSpells.ProtectField:
                 this.protectedField = true;
                 var timer = setTimeout(() => this.protectedField = false, 4500);
                 break;
 
-            case eSpells.WeakBall:
+            case enumSpells.WeakBall:
                 this.weakEfect = true;
                 var timer = setTimeout(() => this.weakEfect = false, 6500);
                 break;
 
-            case eSpells.HealHand:
+            case enumSpells.HealHand:
                 damage = -Math.round(Math.random() * 40 + 40);
                 break;
         
