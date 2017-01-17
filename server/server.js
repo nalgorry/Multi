@@ -58,7 +58,7 @@ function onYouEnterPortal(data) {
     this.emit('you enter portal', { idPortal: data.idPortal });
 }
 function onYouClickMonster(data) {
-    var player = controlPlayers.getPlayerById(data.idPlayer);
+    var player = controlPlayers.getPlayerById(this.id);
     if (player != null) {
         controlMonster.monsterHit(data, player);
     }

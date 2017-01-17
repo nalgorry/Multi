@@ -209,14 +209,13 @@ class cControlSpells {
                     if (this.checkSpellDistance() == true) {                 
                         if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
                             
-                            //mando al server laa accion 
+                            //mando al server laa accion (esto se puede unificar mas TODO)
                             if (this.selActorType == enumSelectedActor.monster){
                                 var monster = this.selActor as cMonster
                                 this.controlGame.controlServer.socket.emit('monster click', 
                                 { 
-                                    idPlayer:this.controlGame.controlPlayer.idServer,
                                     idMonster:monster.idMonster,
-                                    idSpell: this.selSpell.idSpell 
+                                    idSpell: this.selSpell.idSpell,
                                 });
 
                             } else if (this.selActorType == enumSelectedActor.otherPlayer){
@@ -224,14 +223,14 @@ class cControlSpells {
                                 this.controlGame.controlServer.socket.emit('player click', 
                                 { 
                                     idPlayerHit:otherplayer.idServer,
-                                    idSpell: this.selSpell.idSpell 
+                                    idSpell: this.selSpell.idSpell,
                                 });
                             } else if (this.selActorType == enumSelectedActor.thisPlayer){
                                 var thisPlayer = this.selActor as cControlPlayer
                                 this.controlGame.controlServer.socket.emit('player click', 
                                 { 
                                     idPlayerHit:thisPlayer.idServer,
-                                    idSpell: this.selSpell.idSpell 
+                                    idSpell: this.selSpell.idSpell,
                                 });
                             }
                             
@@ -311,9 +310,9 @@ class cControlSpells {
         if (data.damage != 0) {
 
             if (data.damage > 0) { //daño real 
-                this.styleHit = { font: "18px Arial", fill: "#612131", fontWeight: 900 }
+                this.styleHit = { font: "18px Arial", fill: "#750303", fontWeight: 900 }
             } else { //curacción
-                this.styleHit = { font: "18px Arial", fill: "#0b4708", fontWeight: 900 }
+                this.styleHit = { font: "18px Arial", fill: "#113d01", fontWeight: 900 }
                 data.damage = -data.damage;
             };
 
@@ -324,11 +323,28 @@ class cControlSpells {
                 this.hitTextPosition = -30;
             }
 
-            var hitText = this.controlGame.game.add.text(this.hitTextPosition , -40, data.damage, this.styleHit);
-            sprite.addChild(hitText);
+            var completeText = this.controlGame.game.add.sprite(this.hitTextPosition , -40);
+            
+            //texto que se muestra
+            var hitText = this.controlGame.game.add.text(0,0, data.damage, this.styleHit);            
 
-            var tweenText = this.controlGame.game.add.tween(hitText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
-            tweenText.onComplete.add(this.removeTweenText,hitText);
+            //hago un recuadro blanco abajo del texto
+            var rectangleBack = this.controlGame.game.add.bitmapData(hitText.width, 20);
+            rectangleBack.ctx.beginPath();
+            rectangleBack.ctx.rect(0, 0, hitText.width, 20);
+            rectangleBack.ctx.fillStyle = '#ffffff';
+            rectangleBack.ctx.fill();
+
+            var textBack = this.controlGame.game.add.sprite(0, 0, rectangleBack);
+            textBack.alpha = 0.6;
+
+            completeText.addChild(textBack);
+            completeText.addChild(hitText);
+            
+            sprite.addChild(completeText);
+
+            var tweenText = this.controlGame.game.add.tween(completeText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
+            tweenText.onComplete.add(this.removeTweenText,completeText);
         }
 
         this.spellAnimation(sprite,data);

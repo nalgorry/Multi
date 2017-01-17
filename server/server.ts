@@ -90,7 +90,7 @@ function onYouEnterPortal(data) {
 
 function onYouClickMonster(data) {
 
-    var player = controlPlayers.getPlayerById(data.idPlayer);
+    var player = controlPlayers.getPlayerById(this.id);
 
     if (player != null) {
       controlMonster.monsterHit(data,player)
