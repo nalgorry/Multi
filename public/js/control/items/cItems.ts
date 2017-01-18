@@ -91,7 +91,6 @@ class cItems {
 
     onInputOver() {
 
-        console.log("entra");
         var bitmapDescItem = this.controlGame.game.add.bitmapData(180, 60);
         bitmapDescItem.ctx.beginPath();
         bitmapDescItem.ctx.rect(0, 0, 180, 60);

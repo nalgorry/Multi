@@ -1,7 +1,8 @@
 "use strict";
 var cServerDefinitionMonsters_1 = require('./cServerDefinitionMonsters');
 var cServerMonster = (function () {
-    function cServerMonster() {
+    function cServerMonster(controlItems) {
+        this.controlItems = controlItems;
         this.monsterDie = false; //para chekear si el moustro se murio o no
         //variables para definir el ataque
         this.gridSize = 40;
@@ -86,6 +87,9 @@ var cServerMonster = (function () {
         if (this.monsterLife <= 0) {
             this.socket.emit('monster die', { idMonster: this.monsterId, idPlayer: player.playerId });
             this.monsterDie = true;
+            //creo un item para que tire el monstruo
+            var itemType = this.randomIntFromInterval(0, 21); //TODO tengo que ver donde va a quedar esto
+            this.controlItems.createNewItem(itemType, this.tileX, this.tileY);
         }
     };
     cServerMonster.prototype.monsterAtack = function () {

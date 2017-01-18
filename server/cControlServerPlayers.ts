@@ -35,7 +35,22 @@ export class cServerControlPlayers {
         delete this.arrayPlayers[socket.id];       
     }
 
+    public youEquipItem(socket:any, data) {
+    
+         // Find player in array
+        var player = this.getPlayerById(socket.id)
 
+        // Player not found
+        if (player == undefined) {
+            console.log('Player not found: ' + socket.id)
+            return
+        }
+
+        player.equipItems(data);
+
+        
+
+    }
 
 
  

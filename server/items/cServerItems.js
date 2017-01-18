@@ -22,12 +22,12 @@ var cServerItems = (function () {
         socket.emit('new item', itemData);
     };
     cServerItems.prototype.defineItemsProperties = function (itemLevel) {
-        var itemEfect = this.randomIntFromInterval(0, this.maxNumberEfects);
-        var itemEfectValue = this.randomIntFromInterval(1, 25);
-        this.arrayItemProperties.push(new cItemProperty(itemEfect, itemEfectValue));
-        itemEfect = this.randomIntFromInterval(0, this.maxNumberEfects);
-        itemEfectValue = this.randomIntFromInterval(1, 25);
-        this.arrayItemProperties.push(new cItemProperty(itemEfect, itemEfectValue));
+        var numberEfects = this.randomIntFromInterval(1, 3);
+        for (var i = 0; i < numberEfects; i++) {
+            var itemEfect = this.randomIntFromInterval(0, this.maxNumberEfects);
+            var itemEfectValue = this.randomIntFromInterval(1, 25);
+            this.arrayItemProperties.push(new cItemProperty(itemEfect, itemEfectValue));
+        }
     };
     cServerItems.prototype.youGetItem = function (socket, data) {
         console.log(this.arrayItemProperties);

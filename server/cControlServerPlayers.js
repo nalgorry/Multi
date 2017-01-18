@@ -20,6 +20,16 @@ var cServerControlPlayers = (function () {
     cServerControlPlayers.prototype.onPlayerDisconected = function (socket) {
         delete this.arrayPlayers[socket.id];
     };
+    cServerControlPlayers.prototype.youEquipItem = function (socket, data) {
+        // Find player in array
+        var player = this.getPlayerById(socket.id);
+        // Player not found
+        if (player == undefined) {
+            console.log('Player not found: ' + socket.id);
+            return;
+        }
+        player.equipItems(data);
+    };
     return cServerControlPlayers;
 }());
 exports.cServerControlPlayers = cServerControlPlayers;

@@ -7,6 +7,8 @@ var cPlayer = (function () {
         this.playerName = playerName;
         this.x = x;
         this.y = y;
+        this.atack = 2;
+        this.defense = 2;
         this.protectedField = false;
         this.weakEfect = false;
     }
@@ -15,6 +17,12 @@ var cPlayer = (function () {
             x: this.x, y: this.y, name: this.playerName });
     };
     cPlayer.prototype.calculateDamage = function (damage) {
+        if (damage > 0) {
+            damage -= this.randomIntFromInterval(this.defense / 2, this.defense);
+            if (damage <= 0) {
+                damage = 1;
+            }
+        }
         if (this.protectedField == true) {
             damage = Math.round(damage / 2);
         }
@@ -57,10 +65,20 @@ var cPlayer = (function () {
         if (this.weakEfect == true) {
             damage = Math.round(damage * 2);
         }
+        damage += this.randomIntFromInterval(this.atack / 2, this.atack);
         return damage;
     };
     cPlayer.prototype.randomIntFromInterval = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+    cPlayer.prototype.equipItems = function (data) {
+        //actualizo el ataque y la defensa del player
+        if (data.itemsEfects[9 /* atack */] != undefined) {
+            this.atack = data.itemsEfects[9 /* atack */].value;
+        }
+        if (data.itemsEfects[10 /* defense */] != undefined) {
+            this.defense = data.itemsEfects[10 /* defense */].value;
+        }
     };
     return cPlayer;
 }());

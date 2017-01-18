@@ -1,9 +1,10 @@
 "use strict";
 var cServerMonster_1 = require('./cServerMonster');
 var cServerControlMonster = (function () {
-    function cServerControlMonster(socket, controlPlayer) {
+    function cServerControlMonster(socket, controlPlayer, controlItems) {
         this.socket = socket;
         this.controlPlayer = controlPlayer;
+        this.controlItems = controlItems;
         this.nextIdMonster = 0;
         this.arrayMonster = [];
         //creo los primeros monters :)
@@ -21,7 +22,7 @@ var cServerControlMonster = (function () {
         }
     };
     cServerControlMonster.prototype.createNewMonster = function (tileX, tileY) {
-        var newMonster = new cServerMonster_1.cServerMonster();
+        var newMonster = new cServerMonster_1.cServerMonster(this.controlItems);
         newMonster.startMonster("m" + this.nextIdMonster, this.randomIntFromInterval(1, 4), this.socket, this.controlPlayer, tileX, tileY);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;

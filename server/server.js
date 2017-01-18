@@ -27,7 +27,7 @@ function init() {
     socket.sockets.on('connection', onSocketConnection);
     controlPlayers = new cControlServerPlayers_1.cServerControlPlayers(socket);
     controlItems = new cServerControlItems_1.cServerControlItems(socket);
-    controlMonster = new cServerControlMonster_1.cServerControlMonster(socket, controlPlayers);
+    controlMonster = new cServerControlMonster_1.cServerControlMonster(socket, controlPlayers, controlItems);
 }
 // New socket connection
 function onSocketConnection(client) {
@@ -49,6 +49,10 @@ function onSocketConnection(client) {
     client.on('enter portal', onYouEnterPortal);
     client.on('monster click', onYouClickMonster);
     client.on('you try get item', onYouTryGetItem);
+    client.on('you equip item', onYouEquipItem);
+}
+function onYouEquipItem(data) {
+    controlPlayers.youEquipItem(this, data);
 }
 function onYouTryGetItem(data) {
     controlItems.youGetItem(this, data);
@@ -94,13 +98,15 @@ function onChatSend(data) {
     this.broadcast.emit('Chat Receive', { id: this.id, text: data.text });
 }
 function onPlayerClick(data) {
-    var player = controlPlayers.getPlayerById(data.idPlayerHit);
-    if (player != null) {
+    var player = controlPlayers.getPlayerById(this.id);
+    var playerHit = controlPlayers.getPlayerById(data.idPlayerHit);
+    if (playerHit != null) {
         //recorrro los hechizos para actual segun lo que hizo cada uno
-        var damage = player.spellActivated(data);
+        var damage = player.spellActivated(data); //saco del player por cuanto golpeo
+        damage = playerHit.calculateDamage(damage); //calculo el daño restando la defensa y demas 
         // mando el golpe a los jugadores
-        this.broadcast.emit('player hit', { id: player.playerId, playerThatHit: this.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
-        this.emit('you hit', { id: player.playerId, damage: damage, idSpell: data.idSpell });
+        this.broadcast.emit('player hit', { id: playerHit.playerId, playerThatHit: this.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
+        this.emit('you hit', { id: playerHit.playerId, damage: damage, idSpell: data.idSpell });
     }
     socket.emit('power throw', { x: player.x, y: player.y }); //esto manda a todos, incluso al jugador actual
 }

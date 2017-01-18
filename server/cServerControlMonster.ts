@@ -1,12 +1,13 @@
 import {cServerMonster} from './cServerMonster';
 import {cServerControlPlayers} from './cControlServerPlayers';
+import {cServerControlItems} from './items/cServerControlItems';
 
 export class cServerControlMonster {
 
     public arrayMonster:cServerMonster[];
     private nextIdMonster:number = 0;
 
-    constructor(public socket:SocketIO.Server,  public controlPlayer:cServerControlPlayers) {
+    constructor(public socket:SocketIO.Server,  public controlPlayer:cServerControlPlayers, public controlItems:cServerControlItems) {
 
         this.arrayMonster = [];
         
@@ -33,7 +34,7 @@ export class cServerControlMonster {
 
     private createNewMonster(tileX:number,tileY:number) {
         
-        var newMonster = new cServerMonster()
+        var newMonster = new cServerMonster(this.controlItems);
 
         newMonster.startMonster("m" + this.nextIdMonster,this.randomIntFromInterval(1,4),this.socket,this.controlPlayer,tileX,tileY);
         

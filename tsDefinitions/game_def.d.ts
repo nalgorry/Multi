@@ -19,7 +19,7 @@
         LightingStorm = 6,
 
     }
-
+    
     declare const enum enumItemType {
         smallDager = 0,
         dager = 1,

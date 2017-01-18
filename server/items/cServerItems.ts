@@ -43,15 +43,14 @@ export class cServerItems {
 
     public defineItemsProperties(itemLevel:number) {
 
-        var itemEfect = this.randomIntFromInterval(0,this.maxNumberEfects);
-        var itemEfectValue = this.randomIntFromInterval(1,25);
+        var numberEfects = this.randomIntFromInterval(1,3);
 
-        this.arrayItemProperties.push(new cItemProperty(itemEfect,itemEfectValue));
+        for (var i = 0; i < numberEfects; i++) {
+            var itemEfect = this.randomIntFromInterval(0,this.maxNumberEfects);
+            var itemEfectValue = this.randomIntFromInterval(1,25);
 
-        itemEfect = this.randomIntFromInterval(0,this.maxNumberEfects);
-        itemEfectValue = this.randomIntFromInterval(1,25);
-
-        this.arrayItemProperties.push(new cItemProperty(itemEfect,itemEfectValue));
+            this.arrayItemProperties.push(new cItemProperty(itemEfect,itemEfectValue));
+        }
 
     }
 

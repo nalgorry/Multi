@@ -4,6 +4,9 @@ export class cPlayer {
 
     public playerLife:number;
     public dirMov:number;
+    
+    public atack:number = 2;
+    public defense:number = 2;
 
     public protectedField:boolean = false;
     public weakEfect:boolean = false;
@@ -18,6 +21,14 @@ export class cPlayer {
 
     public calculateDamage(damage:number):number {
     
+        if (damage > 0) { //puede ser que este curando
+            damage -= this.randomIntFromInterval(this.defense / 2,this.defense);
+
+            if (damage <= 0) {
+                damage = 1;
+            }
+        }
+
         if (this.protectedField == true) {
             damage = Math.round(damage / 2);
         }
@@ -71,12 +82,26 @@ export class cPlayer {
             damage = Math.round(damage * 2);
         }  
 
+        damage += this.randomIntFromInterval(this.atack / 2, this.atack);
+
         return damage;
     }
 
     private randomIntFromInterval(min,max)
     {
         return Math.floor(Math.random()*(max-min+1)+min);
+    }
+
+    public equipItems(data) {
+
+        //actualizo el ataque y la defensa del player
+        if (data.itemsEfects[enumItemEfects.atack] != undefined)  {
+            this.atack = data.itemsEfects[enumItemEfects.atack].value;
+        } 
+        if (data.itemsEfects[enumItemEfects.defense] != undefined)  {
+            this.defense = data.itemsEfects[enumItemEfects.defense].value;
+        }
+
     }
 
 }

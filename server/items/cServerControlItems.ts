@@ -20,6 +20,13 @@ export class cServerControlItems {
 
     }
 
+    public createNewItem(itemType:number, tileX:number, tileY:number) {
+
+        var newItem = new cServerItems(this.socket,this.nextIdItems, itemType, tileX, tileY);
+        this.arrayItems[this.nextIdItems] = newItem;
+        this.nextIdItems += 1;
+    }
+
     public onNewPlayerConected(socket:SocketIO.Server) {
 
         //le mando al nuevo cliente todos los moustros del mapa
@@ -46,7 +53,6 @@ export class cServerControlItems {
       } else {
           console.log("el item ya fue agarrado");
       }
-
 
     }
 

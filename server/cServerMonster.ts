@@ -1,6 +1,7 @@
 import {cServerControlPlayers} from './cControlServerPlayers';
 import {cPlayer} from './cPlayer';
 import {cServerDefinitionMonsters} from './cServerDefinitionMonsters';
+import {cServerControlItems} from './items/cServerControlItems';
 
 
 export class cServerMonster {
@@ -20,7 +21,7 @@ export class cServerMonster {
     public monsterAtackTilesX:number = 13;
     public monsterAtackTilesY:number = 9;
     
-    constructor() {
+    constructor(public controlItems:cServerControlItems) {
 
     }
 
@@ -132,6 +133,11 @@ export class cServerMonster {
         if (this.monsterLife <= 0) {
             this.socket.emit('monster die', {idMonster: this.monsterId, idPlayer:player.playerId});
             this.monsterDie = true;
+
+            //creo un item para que tire el monstruo
+            var itemType = this.randomIntFromInterval(0,21); //TODO tengo que ver donde va a quedar esto
+            this.controlItems.createNewItem(itemType, this.tileX, this.tileY);
+
         } 
    
     }

@@ -11,6 +11,11 @@ var cServerControlItems = (function () {
             this.nextIdItems += 1;
         }
     }
+    cServerControlItems.prototype.createNewItem = function (itemType, tileX, tileY) {
+        var newItem = new cServerItems_1.cServerItems(this.socket, this.nextIdItems, itemType, tileX, tileY);
+        this.arrayItems[this.nextIdItems] = newItem;
+        this.nextIdItems += 1;
+    };
     cServerControlItems.prototype.onNewPlayerConected = function (socket) {
         //le mando al nuevo cliente todos los moustros del mapa
         for (var item in this.arrayItems) {
