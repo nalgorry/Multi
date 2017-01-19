@@ -56,8 +56,6 @@ export class cServerItems {
 
     public youGetItem(socket:SocketIO.Server,data) {
 
-        console.log(this.arrayItemProperties);
-
         var itemData = {
             itemID: this.itemID, 
             itemType:this.itemType,

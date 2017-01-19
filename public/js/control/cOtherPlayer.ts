@@ -33,8 +33,6 @@ class cOtherPlayer extends cBasicActor {
             { x: data.x , y: data.y }
             , 320, Phaser.Easing.Linear.None, true, 0);      
             
-        console.log(data.dirMov);
-
         if (data.dirMov == move.right) {
             this.startAnimation('right');
         } else if (data.dirMov == move.left) {

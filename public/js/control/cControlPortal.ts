@@ -17,12 +17,10 @@ class cControlPortal {
 
     //el servidor emite esto cuando entras al portal 
     public youEnterPortal(data) {
-            console.log("ENTRO AL MEGA SUPER PORTAL");
-        console.log(data.idPortal)
 
         switch (data.idPortal) {
             case 1:
-                console.log("entra aca?")
+
                 this.controlGame.controlPlayer.teleport(80,80);
                 break;
         
@@ -61,8 +59,6 @@ class cPortal {
         var sprite = this.controlGame.game.add.sprite(tileX * gridSize,tileY * gridSize,'portal');
 
         sprite.anchor.y = 1;
-
-        console.log(sprite.y)
 
         this.controlGame.depthGroup.add(sprite);      
 

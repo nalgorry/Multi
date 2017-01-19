@@ -30,7 +30,6 @@ var cServerItems = (function () {
         }
     };
     cServerItems.prototype.youGetItem = function (socket, data) {
-        console.log(this.arrayItemProperties);
         var itemData = {
             itemID: this.itemID,
             itemType: this.itemType,
