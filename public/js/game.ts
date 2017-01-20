@@ -31,7 +31,7 @@ class SimpleGame {
 
         //this.game.load.spritesheet('aura', 'assets/aura80.png',70,80);
         //this.game.load.spritesheet('aura2', 'assets/aura2.png',20,20);
-        this.game.load.spritesheet('aura', 'assets/aura38.png',128,128);
+        this.game.load.spritesheet('aura', 'assets/aura_escudo.png',128,128);
 
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40,70 );
         this.game.load.atlas('objects', 'assets/objects.png','assets/objects.json');

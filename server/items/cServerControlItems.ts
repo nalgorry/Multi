@@ -10,19 +10,36 @@ export class cServerControlItems {
         this.arrayItems = [];
         
 
-        for (var i = 0; i<30;i++) {
-            var newItem = new cServerItems(socket,this.nextIdItems,i,40 + i,5);
-            this.arrayItems[this.nextIdItems] = newItem;
+        for (var i = 0; i<5;i++) {
+
+            var itemId = "i" + this.nextIdItems;
+
+            var newItem = new cServerItems(socket, itemId, i, 40 + i, 5);
+            this.arrayItems[itemId] = newItem; 
             this.nextIdItems += 1;
         }
-      
 
+    }
+
+    public dropItemToFloor(data) {
+
+        var itemDrop = this.arrayItems[data.itemId];
+
+        if (itemDrop != undefined)  {
+            itemDrop.tileX = data.tileX;
+            itemDrop.tileY = data.tileY;
+            itemDrop.onFloor = true;
+            itemDrop.emitNewItem()
+        } else {
+            console.log("itemNoEncontrado");
+        }
 
     }
 
     public createNewItem(itemType:number, tileX:number, tileY:number) {
 
-        var newItem = new cServerItems(this.socket,this.nextIdItems, itemType, tileX, tileY);
+        var itemId = "i" + this.nextIdItems;
+        var newItem = new cServerItems(this.socket, itemId, itemType, tileX, tileY);
         this.arrayItems[this.nextIdItems] = newItem;
         this.nextIdItems += 1;
     }
@@ -31,7 +48,7 @@ export class cServerControlItems {
 
         //le mando al nuevo cliente todos los moustros del mapa
         for (var item in this.arrayItems) {
-            this.arrayItems[item].emitNewItem(socket);    
+            this.arrayItems[item].emitNewItem();    
         }
 
     }
@@ -47,8 +64,6 @@ export class cServerControlItems {
       if (item != undefined) {
         
         item.youGetItem(socket, data);
-
-        delete this.arrayItems[item.itemID];
 
       } else {
           console.log("el item ya fue agarrado");

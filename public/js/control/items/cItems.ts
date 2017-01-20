@@ -12,6 +12,7 @@ class cItems {
     public signalItemInventoryClick:Phaser.Signal;
     public signalItemOnFloorClick:Phaser.Signal;
     public signalItemEquiped:Phaser.Signal;
+    public signalItemDropToFloor:Phaser.Signal;
 
     public spriteOriginalPoss:Phaser.Point;
 
@@ -19,6 +20,8 @@ class cItems {
     public groupRectangles:Phaser.Group;
 
     public arrayItemEfects:cItemProperty[];
+
+    public itemEquiped = false;
 
     private groupDesc:Phaser.Group;
 
@@ -32,6 +35,7 @@ class cItems {
         this.signalItemInventoryClick = new Phaser.Signal();
         this.signalItemOnFloorClick = new Phaser.Signal();
         this.signalItemEquiped = new Phaser.Signal();
+        this.signalItemDropToFloor = new Phaser.Signal();
 
         //inicio el vector para determinar las propiedades
         this.arrayItemEfects = [];
@@ -154,7 +158,8 @@ class cItems {
     
         }
 
-
+        //elimino la desc
+        this.groupDesc.destroy();
 
     }
 
@@ -180,9 +185,14 @@ class cItems {
             
             this.sprite.cameraOffset.copyFrom(destination);
             this.spriteOriginalPoss = destination.clone();
+            this.itemEquiped = true;
             
 
-        } else {
+        } else if (mousePos.x < this.controlGame.game.width - 200) 
+        {//item tirado al piso
+            this.signalItemDropToFloor.dispatch(this); 
+        }
+        else { //la solto en un lugar no valido 
             this.sprite.cameraOffset.copyFrom(this.spriteOriginalPoss);
         }
         

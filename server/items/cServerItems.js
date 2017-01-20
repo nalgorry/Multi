@@ -1,6 +1,7 @@
 "use strict";
 var cServerItems = (function () {
     function cServerItems(socket, itemID, itemType, tileX, tileY) {
+        this.onFloor = true;
         this.maxNumberItems = 21;
         this.maxNumberEfects = 10;
         this.itemID = itemID;
@@ -10,16 +11,18 @@ var cServerItems = (function () {
         this.socket = socket;
         this.arrayItemProperties = [];
         this.defineItemsProperties(1);
-        this.emitNewItem(socket);
+        this.emitNewItem();
     }
-    cServerItems.prototype.emitNewItem = function (socket) {
-        //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
-        var itemData = {
-            itemID: this.itemID,
-            tileX: this.tileX,
-            tileY: this.tileY,
-            itemType: this.itemType };
-        socket.emit('new item', itemData);
+    cServerItems.prototype.emitNewItem = function () {
+        //emito el item si esta en el piso 
+        if (this.onFloor == true) {
+            var itemData = {
+                itemID: this.itemID,
+                tileX: this.tileX,
+                tileY: this.tileY,
+                itemType: this.itemType };
+            this.socket.emit('new item', itemData);
+        }
     };
     cServerItems.prototype.defineItemsProperties = function (itemLevel) {
         var numberEfects = this.randomIntFromInterval(1, 3);
@@ -39,6 +42,7 @@ var cServerItems = (function () {
         socket.emit('you get item', itemData);
         //le mando a todos que el item se agarro
         this.socket.emit('item get', { itemID: this.itemID });
+        this.onFloor = false;
     };
     cServerItems.prototype.randomIntFromInterval = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);

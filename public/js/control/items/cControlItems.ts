@@ -36,6 +36,8 @@ class cControlItems {
     
     //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
     public itemGet(data) {
+
+        console.log(data);
         
         var item = this.arrayItems[data.itemID];
         
@@ -49,13 +51,12 @@ class cControlItems {
     //pongo el item en el inventario
     public youGetItem(data) {
 
-        console.log(data);
-
         var item =  new cItems(this.controlGame, data.itemID, data.itemType);
         
         item.putItemInInventory(this.inventoryItemId);
         item.signalItemInventoryClick.add(this.itemClick,this); //agrego una señal para despues poder hacer click en el item  
         item.signalItemEquiped.add(this.itemEquiped,this); //agrego una señal para despues poder hacer click en el item
+        item.signalItemDropToFloor.add(this.itemDropToFlor,this); //para cuando tira un item al piso
 
         this.inventoryItemId += 1;
 
@@ -65,6 +66,22 @@ class cControlItems {
         })
 
         
+
+    }
+
+    public itemDropToFlor(item:cItems)  {
+
+        if (item.itemEquiped == true) { //si el item esta equipado tengo que desequiparlo, y recalcular el efecto de los items
+            delete this.arrayEquipedItems[item.itemEquipType];
+            this.calculateItemsEfects();
+            item.itemEquiped = false;
+        }
+
+        var player = this.controlGame.controlPlayer
+
+        this.controlGame.controlServer.socket.emit('you drop item', { itemId: item.itemID, tileX: player.tileX, tileY: player.tileY});
+        item.deleteItem()
+        delete this.arrayItems[item.itemID];
 
     }
 

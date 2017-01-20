@@ -19,6 +19,7 @@ var cControlItems = (function () {
     };
     //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
     cControlItems.prototype.itemGet = function (data) {
+        console.log(data);
         var item = this.arrayItems[data.itemID];
         if (item != undefined) {
             item.deleteItem();
@@ -27,16 +28,27 @@ var cControlItems = (function () {
     };
     //pongo el item en el inventario
     cControlItems.prototype.youGetItem = function (data) {
-        console.log(data);
         var item = new cItems(this.controlGame, data.itemID, data.itemType);
         item.putItemInInventory(this.inventoryItemId);
         item.signalItemInventoryClick.add(this.itemClick, this); //agrego una señal para despues poder hacer click en el item  
         item.signalItemEquiped.add(this.itemEquiped, this); //agrego una señal para despues poder hacer click en el item
+        item.signalItemDropToFloor.add(this.itemDropToFlor, this); //para cuando tira un item al piso
         this.inventoryItemId += 1;
         //saco la info del item desde el server.
         data.itemEfects.forEach(function (property) {
             item.arrayItemEfects.push(new cItemProperty(property.itemEfect, property.value));
         });
+    };
+    cControlItems.prototype.itemDropToFlor = function (item) {
+        if (item.itemEquiped == true) {
+            delete this.arrayEquipedItems[item.itemEquipType];
+            this.calculateItemsEfects();
+            item.itemEquiped = false;
+        }
+        var player = this.controlGame.controlPlayer;
+        this.controlGame.controlServer.socket.emit('you drop item', { itemId: item.itemID, tileX: player.tileX, tileY: player.tileY });
+        item.deleteItem();
+        delete this.arrayItems[item.itemID];
     };
     cControlItems.prototype.itemEquiped = function (item) {
         //me fijo si hay un item ya equipado

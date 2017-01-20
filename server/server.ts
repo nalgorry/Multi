@@ -73,6 +73,16 @@ function onSocketConnection (client) {
 
   client.on('you equip item',onYouEquipItem);
 
+  client.on('you drop item',onYouDropItem)
+
+}
+
+function onYouDropItem(data) {
+
+    console.log(data);
+
+    controlItems.dropItemToFloor(data);
+
 }
 
 function onYouEquipItem(data) {

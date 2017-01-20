@@ -3,8 +3,9 @@ export class cServerItems {
     public tileX:number;
     public tileY:number;
     public itemType:number;
-    public itemID:number;
+    public itemID:string;
     public socket:SocketIO.Server;
+    public onFloor:boolean = true;
 
     private arrayItemProperties:cItemProperty[];
 
@@ -12,7 +13,7 @@ export class cServerItems {
     private maxNumberItems:number = 21;
     private maxNumberEfects:number = 10;
 
-    constructor(socket:SocketIO.Server, itemID:number, itemType:enumItemType, tileX:number, tileY:number) {
+    constructor(socket:SocketIO.Server, itemID:string, itemType:enumItemType, tileX:number, tileY:number) {
 
         this.itemID = itemID;
         this.itemType = itemType;
@@ -24,20 +25,26 @@ export class cServerItems {
 
         this.defineItemsProperties(1);
 
-        this.emitNewItem(socket);
+        this.emitNewItem();
 
     }
 
 
-    public emitNewItem(socket:SocketIO.Server) {
-        //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
-        var itemData =  {
-            itemID:this.itemID,
-            tileX:this.tileX, 
-            tileY:this.tileY,
-            itemType:this.itemType};
+    public emitNewItem() {
 
-            socket.emit('new item', itemData);
+
+        //emito el item si esta en el piso 
+        if (this.onFloor == true) {
+
+            var itemData =  {
+                itemID:this.itemID,
+                tileX:this.tileX, 
+                tileY:this.tileY,
+                itemType:this.itemType};
+
+            this.socket.emit('new item', itemData);
+
+        }
 
     }
 
@@ -67,6 +74,8 @@ export class cServerItems {
 
         //le mando a todos que el item se agarro
         this.socket.emit('item get', {itemID: this.itemID})
+
+        this.onFloor = false;
  
     }
 

@@ -1,12 +1,14 @@
 var cItems = (function () {
     function cItems(controlGame, itemID, itemType) {
         this.controlGame = controlGame;
+        this.itemEquiped = false;
         this.itemType = itemType;
         this.itemID = itemID;
         cItemsDefinitions.defineItem(this);
         this.signalItemInventoryClick = new Phaser.Signal();
         this.signalItemOnFloorClick = new Phaser.Signal();
         this.signalItemEquiped = new Phaser.Signal();
+        this.signalItemDropToFloor = new Phaser.Signal();
         //inicio el vector para determinar las propiedades
         this.arrayItemEfects = [];
         //inicio el array con todas las posiciones, en el orden que indica el enumItemEquipType
@@ -92,6 +94,8 @@ var cItems = (function () {
             rectangle.cameraOffset.copyFrom(inventoryPoss);
             this.groupRectangles.add(rectangle);
         }
+        //elimino la desc
+        this.groupDesc.destroy();
     };
     cItems.prototype.onDragStop = function () {
         this.groupRectangles.destroy();
@@ -109,6 +113,10 @@ var cItems = (function () {
             this.signalItemEquiped.dispatch(this);
             this.sprite.cameraOffset.copyFrom(destination);
             this.spriteOriginalPoss = destination.clone();
+            this.itemEquiped = true;
+        }
+        else if (mousePos.x < this.controlGame.game.width - 200) {
+            this.signalItemDropToFloor.dispatch(this);
         }
         else {
             this.sprite.cameraOffset.copyFrom(this.spriteOriginalPoss);

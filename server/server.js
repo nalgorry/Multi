@@ -50,6 +50,11 @@ function onSocketConnection(client) {
     client.on('monster click', onYouClickMonster);
     client.on('you try get item', onYouTryGetItem);
     client.on('you equip item', onYouEquipItem);
+    client.on('you drop item', onYouDropItem);
+}
+function onYouDropItem(data) {
+    console.log(data);
+    controlItems.dropItemToFloor(data);
 }
 function onYouEquipItem(data) {
     controlPlayers.youEquipItem(this, data);

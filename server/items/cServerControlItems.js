@@ -5,21 +5,35 @@ var cServerControlItems = (function () {
         this.socket = socket;
         this.nextIdItems = 0;
         this.arrayItems = [];
-        for (var i = 0; i < 30; i++) {
-            var newItem = new cServerItems_1.cServerItems(socket, this.nextIdItems, i, 40 + i, 5);
-            this.arrayItems[this.nextIdItems] = newItem;
+        for (var i = 0; i < 5; i++) {
+            var itemId = "i" + this.nextIdItems;
+            var newItem = new cServerItems_1.cServerItems(socket, itemId, i, 40 + i, 5);
+            this.arrayItems[itemId] = newItem;
             this.nextIdItems += 1;
         }
     }
+    cServerControlItems.prototype.dropItemToFloor = function (data) {
+        var itemDrop = this.arrayItems[data.itemId];
+        if (itemDrop != undefined) {
+            itemDrop.tileX = data.tileX;
+            itemDrop.tileY = data.tileY;
+            itemDrop.onFloor = true;
+            itemDrop.emitNewItem();
+        }
+        else {
+            console.log("itemNoEncontrado");
+        }
+    };
     cServerControlItems.prototype.createNewItem = function (itemType, tileX, tileY) {
-        var newItem = new cServerItems_1.cServerItems(this.socket, this.nextIdItems, itemType, tileX, tileY);
+        var itemId = "i" + this.nextIdItems;
+        var newItem = new cServerItems_1.cServerItems(this.socket, itemId, itemType, tileX, tileY);
         this.arrayItems[this.nextIdItems] = newItem;
         this.nextIdItems += 1;
     };
     cServerControlItems.prototype.onNewPlayerConected = function (socket) {
         //le mando al nuevo cliente todos los moustros del mapa
         for (var item in this.arrayItems) {
-            this.arrayItems[item].emitNewItem(socket);
+            this.arrayItems[item].emitNewItem();
         }
     };
     cServerControlItems.prototype.getItemById = function (id) {
@@ -29,7 +43,6 @@ var cServerControlItems = (function () {
         var item = this.getItemById(data.itemID);
         if (item != undefined) {
             item.youGetItem(socket, data);
-            delete this.arrayItems[item.itemID];
         }
         else {
             console.log("el item ya fue agarrado");
