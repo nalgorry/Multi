@@ -19,6 +19,7 @@ class cItemsDefinitions {
             case enumItemType.sword:
             case enumItemType.wand:
             case enumItemType.bow:
+            case enumItemType.specialDager:
                 item.itemEquipType = enumItemEquipType.weapon              
                 break;
             case enumItemType.gloves:

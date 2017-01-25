@@ -45,13 +45,13 @@ var cItems = (function () {
         this.sprite.events.onInputOver.add(this.onInputOver, this);
         this.sprite.events.onInputOut.add(this.onInputOut, this);
         this.spriteOriginalPoss = this.sprite.position.clone();
-        this.tileInventory = inventoryID;
+        this.inventoryID = inventoryID;
     };
     cItems.prototype.onInputOver = function () {
         var _this = this;
-        var bitmapDescItem = this.controlGame.game.add.bitmapData(180, 60);
+        var bitmapDescItem = this.controlGame.game.add.bitmapData(180, 70);
         bitmapDescItem.ctx.beginPath();
-        bitmapDescItem.ctx.rect(0, 0, 180, 60);
+        bitmapDescItem.ctx.rect(0, 0, 180, 70);
         bitmapDescItem.ctx.fillStyle = '#164084';
         bitmapDescItem.ctx.fill();
         this.groupDesc = new Phaser.Group(this.controlGame.game);
@@ -63,9 +63,21 @@ var cItems = (function () {
         itemDesc.alpha = 0.8;
         this.groupDesc.add(itemDesc);
         //armo el texto con la propiedades del item
-        var styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 400 };
+        var styleText;
         var i = 0;
         this.arrayItemEfects.forEach(function (efect) {
+            if (efect.itemPropRank == 0 /* normal */) {
+                styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 400 };
+            }
+            else if (efect.itemPropRank == 1 /* silver */) {
+                styleText = { font: "14px Arial", fill: "#79a9f7", textalign: "center", fontWeight: 400 };
+            }
+            else if (efect.itemPropRank == 2 /* gold */) {
+                styleText = { font: "14px Arial", fill: "#efd59b", textalign: "center", fontWeight: 400 };
+            }
+            else if (efect.itemPropRank == 3 /* diamont */) {
+                styleText = { font: "14px Arial", fill: "#e87f7f", textalign: "center", fontWeight: 600 };
+            }
             var text = cItemsDefinitions.defineItemEfectsName(efect);
             var textLife = _this.controlGame.game.add.text(itemDescX + 2, itemDescY + 2 + 15 * i, text, styleText);
             textLife.anchor.setTo(0);

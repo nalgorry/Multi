@@ -1,9 +1,14 @@
 var cControlItems = (function () {
     function cControlItems(controlGame) {
         this.controlGame = controlGame;
-        this.inventoryItemId = 1;
         this.arrayItems = [];
         this.arrayEquipedItems = [];
+        this.arrayInventoryItems = [];
+        this.arrayfreeInventoryItems = [];
+        //defino los lugares del inventario disponibles
+        for (var i = 1; i <= 12; i++) {
+            this.arrayfreeInventoryItems.push(i);
+        }
         //armo el cuadrado para el item seleccionado en el inventario
         this.rectInventoryItem = this.controlGame.game.add.graphics(0, 0);
         this.rectInventoryItem.lineStyle(2, 0x000000, 1);
@@ -19,7 +24,6 @@ var cControlItems = (function () {
     };
     //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
     cControlItems.prototype.itemGet = function (data) {
-        console.log(data);
         var item = this.arrayItems[data.itemID];
         if (item != undefined) {
             item.deleteItem();
@@ -28,22 +32,34 @@ var cControlItems = (function () {
     };
     //pongo el item en el inventario
     cControlItems.prototype.youGetItem = function (data) {
+        console.log(data);
         var item = new cItems(this.controlGame, data.itemID, data.itemType);
-        item.putItemInInventory(this.inventoryItemId);
         item.signalItemInventoryClick.add(this.itemClick, this); //agrego una señal para despues poder hacer click en el item  
         item.signalItemEquiped.add(this.itemEquiped, this); //agrego una señal para despues poder hacer click en el item
         item.signalItemDropToFloor.add(this.itemDropToFlor, this); //para cuando tira un item al piso
-        this.inventoryItemId += 1;
-        //saco la info del item desde el server.
-        data.itemEfects.forEach(function (property) {
-            item.arrayItemEfects.push(new cItemProperty(property.itemEfect, property.value));
-        });
+        //me fijo en que posición del inventario colocal el item 
+        var itemPoss = this.arrayfreeInventoryItems.shift();
+        if (itemPoss != undefined) {
+            item.putItemInInventory(itemPoss);
+            //saco la info del item desde el server.
+            data.itemEfects.forEach(function (property) {
+                item.arrayItemEfects.push(new cItemProperty(property.itemEfect, property.value, property.propRank));
+            });
+            // agrego el item al array del inventario
+            this.arrayInventoryItems.push(item);
+        }
+        else {
+            this.controlGame.controlConsole.newMessage(enumMessage.information, "Your inventory is full");
+        }
     };
     cControlItems.prototype.itemDropToFlor = function (item) {
         if (item.itemEquiped == true) {
             delete this.arrayEquipedItems[item.itemEquipType];
             this.calculateItemsEfects();
             item.itemEquiped = false;
+        }
+        else {
+            this.arrayfreeInventoryItems.unshift(item.inventoryID);
         }
         var player = this.controlGame.controlPlayer;
         this.controlGame.controlServer.socket.emit('you drop item', { itemId: item.itemID, tileX: player.tileX, tileY: player.tileY });
@@ -56,6 +72,10 @@ var cControlItems = (function () {
         if (itemToReplace != undefined) {
             itemToReplace.sprite.cameraOffset.copyFrom(item.spriteOriginalPoss);
             itemToReplace.spriteOriginalPoss.copyFrom(item.spriteOriginalPoss);
+            itemToReplace.inventoryID = item.inventoryID;
+        }
+        else {
+            this.arrayfreeInventoryItems.unshift(item.inventoryID);
         }
         this.arrayEquipedItems[item.itemEquipType] = item;
         this.calculateItemsEfects();
@@ -88,13 +108,13 @@ var cControlItems = (function () {
         this.controlGame.controlPlayer.controlFocus.speedNormalEnergy =
             this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy;
         //el ataque y defensa la seteo para enviarlas al server
-        arrayItemEfects[9 /* atack */] = new cItemProperty(9 /* atack */, this.controlGame.controlPlayer.controlFocus.maxAtack);
-        arrayItemEfects[10 /* defense */] = new cItemProperty(10 /* defense */, this.controlGame.controlPlayer.controlFocus.maxDefence);
+        arrayItemEfects[9 /* atack */] = new cItemProperty(9 /* atack */, this.controlGame.controlPlayer.controlFocus.maxAtack, 0);
+        arrayItemEfects[10 /* defense */] = new cItemProperty(10 /* defense */, this.controlGame.controlPlayer.controlFocus.maxDefence, 0);
         //sumo para todos los items los efectos de cada propiedad
         this.arrayEquipedItems.forEach(function (item) {
             item.arrayItemEfects.forEach(function (ItemProperty) {
                 if (arrayItemEfects[ItemProperty.itemEfect] == undefined) {
-                    arrayItemEfects[ItemProperty.itemEfect] = new cItemProperty(ItemProperty.itemEfect, ItemProperty.value);
+                    arrayItemEfects[ItemProperty.itemEfect] = new cItemProperty(ItemProperty.itemEfect, ItemProperty.value, 0);
                 }
                 else {
                     arrayItemEfects[ItemProperty.itemEfect].value += ItemProperty.value;
@@ -159,7 +179,12 @@ var cControlItems = (function () {
     cControlItems.prototype.itemOnFloorClick = function (item) {
         if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 1 &&
             Math.abs(item.tileY - this.controlGame.controlPlayer.tileY) <= 1) {
-            this.controlGame.controlServer.socket.emit('you try get item', { itemID: item.itemID });
+            if (this.arrayfreeInventoryItems.length > 0) {
+                this.controlGame.controlServer.socket.emit('you try get item', { itemID: item.itemID });
+            }
+            else {
+                this.controlGame.controlConsole.newMessage(enumMessage.information, "Your inventory is full");
+            }
         }
         else {
             this.controlGame.controlConsole.newMessage(enumMessage.information, "The item is to far to grab");

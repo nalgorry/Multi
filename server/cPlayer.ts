@@ -27,11 +27,18 @@ export class cPlayer {
             if (damage <= 0) {
                 damage = 1;
             }
-        }
+            
+            //me fijo si tiene el escudo protector
+            if (this.protectedField == true) {
+                damage = Math.round(damage / 2);
+            }
 
-        if (this.protectedField == true) {
-            damage = Math.round(damage / 2);
-        }
+            //me fijo si tiene el efecto de daño incrementado
+            if (this.weakEfect == true) {
+                damage = Math.round(damage * 2);
+            }  
+
+        } 
 
         return damage;
     }
@@ -74,16 +81,10 @@ export class cPlayer {
                 break;
         }
 
-        if (this.protectedField == true) {
-            damage = Math.round(damage / 2);
+        if ( damage > 0  ) { //me fijo si es un hechizo de daño
+            damage += this.randomIntFromInterval(this.atack / 2, this.atack);
         }
-
-        if (this.weakEfect == true) {
-            damage = Math.round(damage * 2);
-        }  
-
-        damage += this.randomIntFromInterval(this.atack / 2, this.atack);
-
+        
         return damage;
     }
 

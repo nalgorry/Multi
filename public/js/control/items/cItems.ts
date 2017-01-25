@@ -3,10 +3,10 @@ class cItems {
     public itemID:number;
     public itemType:number; //tiene que coincidir con el id del item en el sprite de items
     public itemEquipType:enumItemEquipType; //define si es arma, escudo etc
+    public inventoryID; //lugar que ocupa el item en el inventario
 
     public tileX:number; //si esta en el piso viene aca
     public tileY:number;
-    public tileInventory:number; //si esta en el inventorio viene aca
     public sprite:Phaser.Sprite;
 
     public signalItemInventoryClick:Phaser.Signal;
@@ -88,16 +88,16 @@ class cItems {
 
         this.spriteOriginalPoss = this.sprite.position.clone();
         
-        this.tileInventory = inventoryID;
+        this.inventoryID = inventoryID;
 
 
     }
 
     onInputOver() {
 
-        var bitmapDescItem = this.controlGame.game.add.bitmapData(180, 60);
+        var bitmapDescItem = this.controlGame.game.add.bitmapData(180, 70);
         bitmapDescItem.ctx.beginPath();
-        bitmapDescItem.ctx.rect(0, 0, 180, 60);
+        bitmapDescItem.ctx.rect(0, 0, 180, 70);
         bitmapDescItem.ctx.fillStyle = '#164084';
         bitmapDescItem.ctx.fill();
 
@@ -114,10 +114,20 @@ class cItems {
         this.groupDesc.add(itemDesc);
 
         //armo el texto con la propiedades del item
-        var styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 400};
+        var styleText;
         var i = 0;
 
         this.arrayItemEfects.forEach(efect => {
+
+            if (efect.itemPropRank == enumPropRank.normal) {
+                styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 400};
+            } else if (efect.itemPropRank == enumPropRank.silver) {
+                styleText = { font: "14px Arial", fill: "#79a9f7", textalign: "center", fontWeight: 400};
+            } else if (efect.itemPropRank == enumPropRank.gold) {
+                styleText = { font: "14px Arial", fill: "#efd59b", textalign: "center", fontWeight: 400};
+            } else if (efect.itemPropRank == enumPropRank.diamont) {
+                styleText = { font: "14px Arial", fill: "#e87f7f", textalign: "center", fontWeight: 600};
+            }
 
             var text = cItemsDefinitions.defineItemEfectsName(efect);
             var textLife = this.controlGame.game.add.text(itemDescX + 2, itemDescY + 2 + 15 * i, text , styleText);

@@ -22,9 +22,14 @@ var cPlayer = (function () {
             if (damage <= 0) {
                 damage = 1;
             }
-        }
-        if (this.protectedField == true) {
-            damage = Math.round(damage / 2);
+            //me fijo si tiene el escudo protector
+            if (this.protectedField == true) {
+                damage = Math.round(damage / 2);
+            }
+            //me fijo si tiene el efecto de daño incrementado
+            if (this.weakEfect == true) {
+                damage = Math.round(damage * 2);
+            }
         }
         return damage;
     };
@@ -59,13 +64,9 @@ var cPlayer = (function () {
             default:
                 break;
         }
-        if (this.protectedField == true) {
-            damage = Math.round(damage / 2);
+        if (damage > 0) {
+            damage += this.randomIntFromInterval(this.atack / 2, this.atack);
         }
-        if (this.weakEfect == true) {
-            damage = Math.round(damage * 2);
-        }
-        damage += this.randomIntFromInterval(this.atack / 2, this.atack);
         return damage;
     };
     cPlayer.prototype.randomIntFromInterval = function (min, max) {

@@ -1,8 +1,9 @@
 class cControlItems {
 
     private arrayItems:cItems[];
+    private arrayInventoryItems:cItems[];
     private arrayEquipedItems:cItems[];
-    private inventoryItemId:number = 1;
+    private arrayfreeInventoryItems:number[];
     public rectInventoryItem:Phaser.Graphics;
     public selectedItem:cItems;
     public itemsGroup:Phaser.Group;
@@ -11,6 +12,13 @@ class cControlItems {
 
         this.arrayItems = [];
         this.arrayEquipedItems = [];
+        this.arrayInventoryItems = [];
+        this.arrayfreeInventoryItems = [];
+
+        //defino los lugares del inventario disponibles
+        for(var i = 1; i <= 12 ; i++ ) {
+            this.arrayfreeInventoryItems.push(i);
+        }
 
         //armo el cuadrado para el item seleccionado en el inventario
         this.rectInventoryItem = this.controlGame.game.add.graphics(0,0);
@@ -36,9 +44,7 @@ class cControlItems {
     
     //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
     public itemGet(data) {
-
-        console.log(data);
-        
+       
         var item = this.arrayItems[data.itemID];
         
         if (item != undefined) {
@@ -51,21 +57,29 @@ class cControlItems {
     //pongo el item en el inventario
     public youGetItem(data) {
 
+        console.log(data);
+
         var item =  new cItems(this.controlGame, data.itemID, data.itemType);
         
-        item.putItemInInventory(this.inventoryItemId);
         item.signalItemInventoryClick.add(this.itemClick,this); //agrego una señal para despues poder hacer click en el item  
         item.signalItemEquiped.add(this.itemEquiped,this); //agrego una señal para despues poder hacer click en el item
         item.signalItemDropToFloor.add(this.itemDropToFlor,this); //para cuando tira un item al piso
 
-        this.inventoryItemId += 1;
+        //me fijo en que posición del inventario colocal el item 
+        var itemPoss = this.arrayfreeInventoryItems.shift();
+        if (itemPoss != undefined) { 
+            item.putItemInInventory(itemPoss);
 
-        //saco la info del item desde el server.
-        data.itemEfects.forEach(property => {
-            item.arrayItemEfects.push(new cItemProperty(property.itemEfect,property.value))
-        })
-
+            //saco la info del item desde el server.
+            data.itemEfects.forEach(property => {
+                item.arrayItemEfects.push(new cItemProperty(property.itemEfect, property.value, property.propRank))
+            })
         
+            // agrego el item al array del inventario
+            this.arrayInventoryItems.push(item);
+        } else {
+            this.controlGame.controlConsole.newMessage(enumMessage.information,"Your inventory is full");
+        }            
 
     }
 
@@ -75,6 +89,8 @@ class cControlItems {
             delete this.arrayEquipedItems[item.itemEquipType];
             this.calculateItemsEfects();
             item.itemEquiped = false;
+        } else { //si no esta equipado, lo remuevo del inventario y dejo libre el espacio para otro item
+            this.arrayfreeInventoryItems.unshift(item.inventoryID);
         }
 
         var player = this.controlGame.controlPlayer
@@ -93,11 +109,15 @@ class cControlItems {
         if (itemToReplace != undefined) {
                 itemToReplace.sprite.cameraOffset.copyFrom(item.spriteOriginalPoss);
                 itemToReplace.spriteOriginalPoss.copyFrom(item.spriteOriginalPoss);
+                itemToReplace.inventoryID = item.inventoryID;
+        } else {
+            this.arrayfreeInventoryItems.unshift(item.inventoryID);
         }
 
         this.arrayEquipedItems[item.itemEquipType] = item;
 
         this.calculateItemsEfects();
+
 
     }
 
@@ -134,9 +154,9 @@ class cControlItems {
 
         //el ataque y defensa la seteo para enviarlas al server
         arrayItemEfects[enumItemEfects.atack] = new cItemProperty(
-            enumItemEfects.atack,this.controlGame.controlPlayer.controlFocus.maxAtack);
+            enumItemEfects.atack,this.controlGame.controlPlayer.controlFocus.maxAtack,0);
         arrayItemEfects[enumItemEfects.defense] = new cItemProperty(
-            enumItemEfects.defense,this.controlGame.controlPlayer.controlFocus.maxDefence); 
+            enumItemEfects.defense,this.controlGame.controlPlayer.controlFocus.maxDefence,0); 
 
         //sumo para todos los items los efectos de cada propiedad
         this.arrayEquipedItems.forEach(item => {
@@ -144,7 +164,7 @@ class cControlItems {
             item.arrayItemEfects.forEach(ItemProperty => {
 
                 if (arrayItemEfects[ItemProperty.itemEfect] == undefined) {
-                    arrayItemEfects[ItemProperty.itemEfect] = new cItemProperty(ItemProperty.itemEfect,ItemProperty.value)
+                    arrayItemEfects[ItemProperty.itemEfect] = new cItemProperty(ItemProperty.itemEfect,ItemProperty.value,0)
                 } else {
                     arrayItemEfects[ItemProperty.itemEfect].value += ItemProperty.value;
                 }
@@ -217,10 +237,14 @@ class cControlItems {
     public itemOnFloorClick(item:cItems) {
         
         if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 1 && 
-            Math.abs(item.tileY - this.controlGame.controlPlayer.tileY) <= 1 ) {
-                this.controlGame.controlServer.socket.emit('you try get item', { itemID: item.itemID });
+            Math.abs(item.tileY - this.controlGame.controlPlayer.tileY) <= 1 ) { //me fijo si estoy cerca
+                if (this.arrayfreeInventoryItems.length > 0) { //me fijo si el inventario no esta lleno
+                    this.controlGame.controlServer.socket.emit('you try get item', { itemID: item.itemID });
+                } else { 
+                    this.controlGame.controlConsole.newMessage(enumMessage.information,"Your inventory is full");
+                }       
         } else {
-            this.controlGame.controlConsole.newMessage(enumMessage.information,"The item is to far to grab")
+            this.controlGame.controlConsole.newMessage(enumMessage.information,"The item is to far to grab");
         }
 
     }

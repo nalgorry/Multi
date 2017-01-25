@@ -1,8 +1,10 @@
+import {cServerItemDef} from './cServerItemDef';
+
 export class cServerItems {
 
     public tileX:number;
     public tileY:number;
-    public itemType:number;
+    public itemType:enumItemType;
     public itemID:string;
     public socket:SocketIO.Server;
     public onFloor:boolean = true;
@@ -11,7 +13,6 @@ export class cServerItems {
 
         
     private maxNumberItems:number = 21;
-    private maxNumberEfects:number = 10;
 
     constructor(socket:SocketIO.Server, itemID:string, itemType:enumItemType, tileX:number, tileY:number) {
 
@@ -25,12 +26,12 @@ export class cServerItems {
 
         this.defineItemsProperties(1);
 
-        this.emitNewItem();
+        this.emitNewItem(this.socket);
 
     }
 
 
-    public emitNewItem() {
+    public emitNewItem(socket:SocketIO.Server) {
 
 
         //emito el item si esta en el piso 
@@ -42,7 +43,7 @@ export class cServerItems {
                 tileY:this.tileY,
                 itemType:this.itemType};
 
-            this.socket.emit('new item', itemData);
+            socket.emit('new item', itemData);
 
         }
 
@@ -50,14 +51,7 @@ export class cServerItems {
 
     public defineItemsProperties(itemLevel:number) {
 
-        var numberEfects = this.randomIntFromInterval(1,3);
-
-        for (var i = 0; i < numberEfects; i++) {
-            var itemEfect = this.randomIntFromInterval(0,this.maxNumberEfects);
-            var itemEfectValue = this.randomIntFromInterval(1,25);
-
-            this.arrayItemProperties.push(new cItemProperty(itemEfect,itemEfectValue));
-        }
+        this.arrayItemProperties = cServerItemDef.defineProperties(itemLevel,this.itemType);
 
     }
 
@@ -87,9 +81,11 @@ export class cServerItems {
 
 }
 
-class cItemProperty {
+export class cItemProperty {
 
-    constructor(public itemEfect:enumItemEfects,public value:number) {
+    constructor(public itemEfect:enumItemEfects,
+        public value:number,
+        public propRank:enumPropRank) {
 
     }
 

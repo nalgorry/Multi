@@ -53,3 +53,10 @@
         atack,
         defense,
     }
+
+    declare const enum enumPropRank {
+        normal,
+        silver,
+        gold,
+        diamont
+    }

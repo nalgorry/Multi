@@ -10,6 +10,7 @@ var cItemsDefinitions = (function () {
             case 2 /* sword */:
             case 6 /* wand */:
             case 8 /* bow */:
+            case 3 /* specialDager */:
                 item.itemEquipType = 1 /* weapon */;
                 break;
             case 11 /* gloves */:

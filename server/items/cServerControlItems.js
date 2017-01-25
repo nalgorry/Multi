@@ -5,7 +5,7 @@ var cServerControlItems = (function () {
         this.socket = socket;
         this.nextIdItems = 0;
         this.arrayItems = [];
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 15; i++) {
             var itemId = "i" + this.nextIdItems;
             var newItem = new cServerItems_1.cServerItems(socket, itemId, i, 40 + i, 5);
             this.arrayItems[itemId] = newItem;
@@ -18,7 +18,7 @@ var cServerControlItems = (function () {
             itemDrop.tileX = data.tileX;
             itemDrop.tileY = data.tileY;
             itemDrop.onFloor = true;
-            itemDrop.emitNewItem();
+            itemDrop.emitNewItem(this.socket);
         }
         else {
             console.log("itemNoEncontrado");
@@ -27,13 +27,13 @@ var cServerControlItems = (function () {
     cServerControlItems.prototype.createNewItem = function (itemType, tileX, tileY) {
         var itemId = "i" + this.nextIdItems;
         var newItem = new cServerItems_1.cServerItems(this.socket, itemId, itemType, tileX, tileY);
-        this.arrayItems[this.nextIdItems] = newItem;
+        this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
     };
     cServerControlItems.prototype.onNewPlayerConected = function (socket) {
         //le mando al nuevo cliente todos los moustros del mapa
         for (var item in this.arrayItems) {
-            this.arrayItems[item].emitNewItem();
+            this.arrayItems[item].emitNewItem(socket);
         }
     };
     cServerControlItems.prototype.getItemById = function (id) {

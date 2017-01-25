@@ -1,9 +1,9 @@
 "use strict";
+var cServerItemDef_1 = require('./cServerItemDef');
 var cServerItems = (function () {
     function cServerItems(socket, itemID, itemType, tileX, tileY) {
         this.onFloor = true;
         this.maxNumberItems = 21;
-        this.maxNumberEfects = 10;
         this.itemID = itemID;
         this.itemType = itemType;
         this.tileX = tileX;
@@ -11,9 +11,9 @@ var cServerItems = (function () {
         this.socket = socket;
         this.arrayItemProperties = [];
         this.defineItemsProperties(1);
-        this.emitNewItem();
+        this.emitNewItem(this.socket);
     }
-    cServerItems.prototype.emitNewItem = function () {
+    cServerItems.prototype.emitNewItem = function (socket) {
         //emito el item si esta en el piso 
         if (this.onFloor == true) {
             var itemData = {
@@ -21,16 +21,11 @@ var cServerItems = (function () {
                 tileX: this.tileX,
                 tileY: this.tileY,
                 itemType: this.itemType };
-            this.socket.emit('new item', itemData);
+            socket.emit('new item', itemData);
         }
     };
     cServerItems.prototype.defineItemsProperties = function (itemLevel) {
-        var numberEfects = this.randomIntFromInterval(1, 3);
-        for (var i = 0; i < numberEfects; i++) {
-            var itemEfect = this.randomIntFromInterval(0, this.maxNumberEfects);
-            var itemEfectValue = this.randomIntFromInterval(1, 25);
-            this.arrayItemProperties.push(new cItemProperty(itemEfect, itemEfectValue));
-        }
+        this.arrayItemProperties = cServerItemDef_1.cServerItemDef.defineProperties(itemLevel, this.itemType);
     };
     cServerItems.prototype.youGetItem = function (socket, data) {
         var itemData = {
@@ -51,9 +46,11 @@ var cServerItems = (function () {
 }());
 exports.cServerItems = cServerItems;
 var cItemProperty = (function () {
-    function cItemProperty(itemEfect, value) {
+    function cItemProperty(itemEfect, value, propRank) {
         this.itemEfect = itemEfect;
         this.value = value;
+        this.propRank = propRank;
     }
     return cItemProperty;
 }());
+exports.cItemProperty = cItemProperty;

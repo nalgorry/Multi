@@ -10,7 +10,7 @@ export class cServerControlItems {
         this.arrayItems = [];
         
 
-        for (var i = 0; i<5;i++) {
+        for (var i = 0; i<15;i++) {
 
             var itemId = "i" + this.nextIdItems;
 
@@ -29,7 +29,7 @@ export class cServerControlItems {
             itemDrop.tileX = data.tileX;
             itemDrop.tileY = data.tileY;
             itemDrop.onFloor = true;
-            itemDrop.emitNewItem()
+            itemDrop.emitNewItem(this.socket)
         } else {
             console.log("itemNoEncontrado");
         }
@@ -40,7 +40,7 @@ export class cServerControlItems {
 
         var itemId = "i" + this.nextIdItems;
         var newItem = new cServerItems(this.socket, itemId, itemType, tileX, tileY);
-        this.arrayItems[this.nextIdItems] = newItem;
+        this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
     }
 
@@ -48,7 +48,7 @@ export class cServerControlItems {
 
         //le mando al nuevo cliente todos los moustros del mapa
         for (var item in this.arrayItems) {
-            this.arrayItems[item].emitNewItem();    
+            this.arrayItems[item].emitNewItem(socket);    
         }
 
     }
