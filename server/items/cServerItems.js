@@ -20,18 +20,21 @@ var cServerItems = (function () {
                 itemID: this.itemID,
                 tileX: this.tileX,
                 tileY: this.tileY,
-                itemType: this.itemType };
+                itemType: this.itemType,
+                maxRank: this.maxRank };
             socket.emit('new item', itemData);
         }
     };
     cServerItems.prototype.defineItemsProperties = function (itemLevel) {
         this.arrayItemProperties = cServerItemDef_1.cServerItemDef.defineProperties(itemLevel, this.itemType);
+        this.maxRank = cServerItemDef_1.cServerItemDef.getItemMaxRank(this.arrayItemProperties);
     };
     cServerItems.prototype.youGetItem = function (socket, data) {
         var itemData = {
             itemID: this.itemID,
             itemType: this.itemType,
-            itemEfects: this.arrayItemProperties
+            itemEfects: this.arrayItemProperties,
+            maxRank: this.maxRank
         };
         //le mando al que agarro su item
         socket.emit('you get item', itemData);

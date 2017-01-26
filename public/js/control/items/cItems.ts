@@ -4,6 +4,7 @@ class cItems {
     public itemType:number; //tiene que coincidir con el id del item en el sprite de items
     public itemEquipType:enumItemEquipType; //define si es arma, escudo etc
     public inventoryID; //lugar que ocupa el item en el inventario
+    public maxRank; //define el color del item 
 
     public tileX:number; //si esta en el piso viene aca
     public tileY:number;
@@ -25,10 +26,10 @@ class cItems {
 
     private groupDesc:Phaser.Group;
 
-    constructor(public controlGame:cControlGame,itemID:number,itemType:number) {
+    constructor(public controlGame:cControlGame,itemID:number,itemType:number,maxRank:enumPropRank) {
         this.itemType = itemType;
         this.itemID = itemID;
-        
+        this.maxRank = maxRank;
 
         cItemsDefinitions.defineItem(this);
 
@@ -51,16 +52,41 @@ class cItems {
 
     }
 
+    private createItemSprite() {
+
+        this.sprite = this.controlGame.game.add.sprite(0, 0);
+        
+        this.sprite.inputEnabled = true;
+        this.sprite.events.onInputUp.add(this.floorItemClick,this)
+
+        var rankColorString = this.getRankCircleColor(this.maxRank);
+        var rankColor = 0x000000 + parseInt(rankColorString, 16);
+
+        var backCircle = this.controlGame.game.add.graphics(20,20);
+        backCircle.beginFill(rankColor);
+        backCircle.alpha = 0.3;
+        backCircle.drawCircle(0, 0, 40);
+
+        this.sprite.addChild(backCircle);
+
+        var itemSprite = this.controlGame.game.add.sprite(0, 0, 'items', this.itemType);
+        
+        this.sprite.addChild(itemSprite);
+    }
+
     putItemInTile(tileX:number,tileY:number) {
 
         this.tileX = tileX;
         this.tileY = tileY;
 
-        var gridSize = this.controlGame.gridSize;
-        this.sprite = this.controlGame.game.add.sprite(tileX * gridSize,tileY * gridSize,'items',this.itemType);
-        this.sprite.inputEnabled = true;
-        this.sprite.events.onInputUp.add(this.floorItemClick,this)
+        this.createItemSprite();
+
         this.controlGame.depthGroup.add(this.sprite);
+
+        var gridSize = this.controlGame.gridSize;
+
+        this.sprite.x = tileX * gridSize;
+        this.sprite.y = tileY * gridSize;
 
     }
 
@@ -74,10 +100,12 @@ class cItems {
         var tileX:number = 1010 + ( (inventoryID - 1 ) - Math.floor( (inventoryID - 1 ) / 4) * 4 ) * inventoryGridSize;   
         var tileY:number = 509 + Math.floor((inventoryID - 1) / 4) *  inventoryGridSize;
 
-        this.sprite = this.controlGame.game.add.sprite(tileX, tileY, 'items', this.itemType);
-        this.sprite.fixedToCamera = true;
+        this.createItemSprite();
 
-        this.sprite.inputEnabled = true;
+        this.sprite.fixedToCamera = true;
+        this.sprite.cameraOffset.x = tileX;
+        this.sprite.cameraOffset.y = tileY;
+
         this.sprite.input.enableDrag();
         
         this.sprite.events.onInputDown.add(this.inventoryClick, this);
@@ -106,6 +134,17 @@ class cItems {
         var itemDescX = this.sprite.cameraOffset.x - 150 / 2;
         var itemDescY = this.sprite.cameraOffset.y + 40
 
+        //si se pasa del borde, los corrijo
+        if(itemDescX + 180 > this.controlGame.game.width - 5 ) {
+            itemDescX = this.controlGame.game.width - 185;
+        }
+
+        //si se pasa del borde para abajo, subo el cartel
+        if(itemDescY + 70 > this.controlGame.game.height - 5 ) {
+            itemDescY = this.sprite.cameraOffset.y - 50;
+        }
+
+
         var itemDesc = this.controlGame.game.add.sprite(itemDescX, itemDescY,bitmapDescItem);
         itemDesc.anchor.setTo(0);
         itemDesc.fixedToCamera = true;
@@ -119,15 +158,9 @@ class cItems {
 
         this.arrayItemEfects.forEach(efect => {
 
-            if (efect.itemPropRank == enumPropRank.normal) {
-                styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 400};
-            } else if (efect.itemPropRank == enumPropRank.silver) {
-                styleText = { font: "14px Arial", fill: "#79a9f7", textalign: "center", fontWeight: 400};
-            } else if (efect.itemPropRank == enumPropRank.gold) {
-                styleText = { font: "14px Arial", fill: "#efd59b", textalign: "center", fontWeight: 400};
-            } else if (efect.itemPropRank == enumPropRank.diamont) {
-                styleText = { font: "14px Arial", fill: "#e87f7f", textalign: "center", fontWeight: 600};
-            }
+            var color = this.getRankColor(efect.itemPropRank);
+
+            styleText = { font: "14px Arial", fill: "#" + color, textalign: "center", fontWeight: 400};
 
             var text = cItemsDefinitions.defineItemEfectsName(efect);
             var textLife = this.controlGame.game.add.text(itemDescX + 2, itemDescY + 2 + 15 * i, text , styleText);
@@ -142,6 +175,46 @@ class cItems {
 
     onInputOut() {
         this.groupDesc.destroy();
+    }
+
+    getRankCircleColor(rank:enumPropRank):string {
+        var color:string;
+
+        if (rank == enumPropRank.normal) {
+            color = "000000";
+        } else if (rank == enumPropRank.silver) {
+            color = "79a9f7";
+        } else if (rank == enumPropRank.gold) {
+            color = "efd59b";
+        } else if (rank == enumPropRank.diamont) {
+            color = "e87f7f";
+        }
+
+        return color;
+    }
+
+    getRankColor(rank:enumPropRank):string {
+        var color:string;
+
+        if (rank == enumPropRank.normal) {
+            color = "ffffff";
+        } else if (rank == enumPropRank.silver) {
+            color = "79a9f7";
+        } else if (rank == enumPropRank.gold) {
+            color = "efd59b";
+        } else if (rank == enumPropRank.diamont) {
+            color = "e87f7f";
+        }
+
+        return color;
+    }
+
+    hashCode(str) {
+        var hash = 0;
+        for (var i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return hash;
     }
 
     onDragStart() {

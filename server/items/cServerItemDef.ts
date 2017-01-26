@@ -11,11 +11,13 @@ export class cServerItemDef {
         var valuesItemsEfect:cValuesItemsEfect[];
         valuesItemsEfect = [];
 
-        valuesItemsEfect[enumItemEfects.atack] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
-        valuesItemsEfect[enumItemEfects.defense] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
+        valuesItemsEfect[enumItemEfects.atack] = new cValuesItemsEfect(enumItemEfects.atack,2, 5, 5, 10, 10, 15, 15, 25);
+        valuesItemsEfect[enumItemEfects.defense] = new cValuesItemsEfect(enumItemEfects.atack,2, 5, 5, 10, 10, 15, 15, 25);
+
         valuesItemsEfect[enumItemEfects.energy] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
         valuesItemsEfect[enumItemEfects.mana] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
         valuesItemsEfect[enumItemEfects.life] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
+
         valuesItemsEfect[enumItemEfects.focusEnergy] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
         valuesItemsEfect[enumItemEfects.focusMana] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
         valuesItemsEfect[enumItemEfects.focusLife] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
@@ -139,7 +141,22 @@ export class cServerItemDef {
         return Math.floor(Math.random()*(max-min+1)+min);
     }
 
+    //busca la propiedad con mayor rank dele item 
+    static getItemMaxRank(arrayItemProperties:cItemProperty[]) {
+        var maxRank = enumPropRank.normal
+
+        arrayItemProperties.forEach(item => {
+            if (item.propRank > maxRank) {
+                maxRank = item.propRank;
+            }
+        })
+
+        return maxRank;
+
+    }
+
 }
+
 
 class cValuesItemsEfect {
 

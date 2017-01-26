@@ -1,9 +1,10 @@
 var cItems = (function () {
-    function cItems(controlGame, itemID, itemType) {
+    function cItems(controlGame, itemID, itemType, maxRank) {
         this.controlGame = controlGame;
         this.itemEquiped = false;
         this.itemType = itemType;
         this.itemID = itemID;
+        this.maxRank = maxRank;
         cItemsDefinitions.defineItem(this);
         this.signalItemInventoryClick = new Phaser.Signal();
         this.signalItemOnFloorClick = new Phaser.Signal();
@@ -19,14 +20,28 @@ var cItems = (function () {
         this.arrayInventoryPoss[3 /* special */] = new Phaser.Point(1125, 387);
         this.arrayInventoryPoss[5 /* armor */] = new Phaser.Point(1079, 387);
     }
+    cItems.prototype.createItemSprite = function () {
+        this.sprite = this.controlGame.game.add.sprite(0, 0);
+        this.sprite.inputEnabled = true;
+        this.sprite.events.onInputUp.add(this.floorItemClick, this);
+        var rankColorString = this.getRankCircleColor(this.maxRank);
+        var rankColor = 0x000000 + parseInt(rankColorString, 16);
+        var backCircle = this.controlGame.game.add.graphics(20, 20);
+        backCircle.beginFill(rankColor);
+        backCircle.alpha = 0.3;
+        backCircle.drawCircle(0, 0, 40);
+        this.sprite.addChild(backCircle);
+        var itemSprite = this.controlGame.game.add.sprite(0, 0, 'items', this.itemType);
+        this.sprite.addChild(itemSprite);
+    };
     cItems.prototype.putItemInTile = function (tileX, tileY) {
         this.tileX = tileX;
         this.tileY = tileY;
-        var gridSize = this.controlGame.gridSize;
-        this.sprite = this.controlGame.game.add.sprite(tileX * gridSize, tileY * gridSize, 'items', this.itemType);
-        this.sprite.inputEnabled = true;
-        this.sprite.events.onInputUp.add(this.floorItemClick, this);
+        this.createItemSprite();
         this.controlGame.depthGroup.add(this.sprite);
+        var gridSize = this.controlGame.gridSize;
+        this.sprite.x = tileX * gridSize;
+        this.sprite.y = tileY * gridSize;
     };
     cItems.prototype.floorItemClick = function () {
         this.signalItemOnFloorClick.dispatch(this);
@@ -35,9 +50,10 @@ var cItems = (function () {
         var inventoryGridSize = 46;
         var tileX = 1010 + ((inventoryID - 1) - Math.floor((inventoryID - 1) / 4) * 4) * inventoryGridSize;
         var tileY = 509 + Math.floor((inventoryID - 1) / 4) * inventoryGridSize;
-        this.sprite = this.controlGame.game.add.sprite(tileX, tileY, 'items', this.itemType);
+        this.createItemSprite();
         this.sprite.fixedToCamera = true;
-        this.sprite.inputEnabled = true;
+        this.sprite.cameraOffset.x = tileX;
+        this.sprite.cameraOffset.y = tileY;
         this.sprite.input.enableDrag();
         this.sprite.events.onInputDown.add(this.inventoryClick, this);
         this.sprite.events.onDragStart.add(this.onDragStart, this);
@@ -57,6 +73,14 @@ var cItems = (function () {
         this.groupDesc = new Phaser.Group(this.controlGame.game);
         var itemDescX = this.sprite.cameraOffset.x - 150 / 2;
         var itemDescY = this.sprite.cameraOffset.y + 40;
+        //si se pasa del borde, los corrijo
+        if (itemDescX + 180 > this.controlGame.game.width - 5) {
+            itemDescX = this.controlGame.game.width - 185;
+        }
+        //si se pasa del borde para abajo, subo el cartel
+        if (itemDescY + 70 > this.controlGame.game.height - 5) {
+            itemDescY = this.sprite.cameraOffset.y - 50;
+        }
         var itemDesc = this.controlGame.game.add.sprite(itemDescX, itemDescY, bitmapDescItem);
         itemDesc.anchor.setTo(0);
         itemDesc.fixedToCamera = true;
@@ -66,18 +90,8 @@ var cItems = (function () {
         var styleText;
         var i = 0;
         this.arrayItemEfects.forEach(function (efect) {
-            if (efect.itemPropRank == 0 /* normal */) {
-                styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 400 };
-            }
-            else if (efect.itemPropRank == 1 /* silver */) {
-                styleText = { font: "14px Arial", fill: "#79a9f7", textalign: "center", fontWeight: 400 };
-            }
-            else if (efect.itemPropRank == 2 /* gold */) {
-                styleText = { font: "14px Arial", fill: "#efd59b", textalign: "center", fontWeight: 400 };
-            }
-            else if (efect.itemPropRank == 3 /* diamont */) {
-                styleText = { font: "14px Arial", fill: "#e87f7f", textalign: "center", fontWeight: 600 };
-            }
+            var color = _this.getRankColor(efect.itemPropRank);
+            styleText = { font: "14px Arial", fill: "#" + color, textalign: "center", fontWeight: 400 };
             var text = cItemsDefinitions.defineItemEfectsName(efect);
             var textLife = _this.controlGame.game.add.text(itemDescX + 2, itemDescY + 2 + 15 * i, text, styleText);
             textLife.anchor.setTo(0);
@@ -88,6 +102,45 @@ var cItems = (function () {
     };
     cItems.prototype.onInputOut = function () {
         this.groupDesc.destroy();
+    };
+    cItems.prototype.getRankCircleColor = function (rank) {
+        var color;
+        if (rank == 0 /* normal */) {
+            color = "000000";
+        }
+        else if (rank == 1 /* silver */) {
+            color = "79a9f7";
+        }
+        else if (rank == 2 /* gold */) {
+            color = "efd59b";
+        }
+        else if (rank == 3 /* diamont */) {
+            color = "e87f7f";
+        }
+        return color;
+    };
+    cItems.prototype.getRankColor = function (rank) {
+        var color;
+        if (rank == 0 /* normal */) {
+            color = "ffffff";
+        }
+        else if (rank == 1 /* silver */) {
+            color = "79a9f7";
+        }
+        else if (rank == 2 /* gold */) {
+            color = "efd59b";
+        }
+        else if (rank == 3 /* diamont */) {
+            color = "e87f7f";
+        }
+        return color;
+    };
+    cItems.prototype.hashCode = function (str) {
+        var hash = 0;
+        for (var i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return hash;
     };
     cItems.prototype.onDragStart = function () {
         //dibujo un cuadrado en cada lugar donde va el item

@@ -9,8 +9,8 @@ var cServerItemDef = (function () {
         //defino el minimo y maximo para cada propiedad 
         var valuesItemsEfect;
         valuesItemsEfect = [];
-        valuesItemsEfect[9 /* atack */] = new cValuesItemsEfect(9 /* atack */, 5, 20, 20, 30, 30, 40, 45, 50);
-        valuesItemsEfect[10 /* defense */] = new cValuesItemsEfect(9 /* atack */, 5, 20, 20, 30, 30, 40, 45, 50);
+        valuesItemsEfect[9 /* atack */] = new cValuesItemsEfect(9 /* atack */, 2, 5, 5, 10, 10, 15, 15, 25);
+        valuesItemsEfect[10 /* defense */] = new cValuesItemsEfect(9 /* atack */, 2, 5, 5, 10, 10, 15, 15, 25);
         valuesItemsEfect[8 /* energy */] = new cValuesItemsEfect(9 /* atack */, 5, 20, 20, 30, 30, 40, 45, 50);
         valuesItemsEfect[7 /* mana */] = new cValuesItemsEfect(9 /* atack */, 5, 20, 20, 30, 30, 40, 45, 50);
         valuesItemsEfect[6 /* life */] = new cValuesItemsEfect(9 /* atack */, 5, 20, 20, 30, 30, 40, 45, 50);
@@ -116,6 +116,16 @@ var cServerItemDef = (function () {
     };
     cServerItemDef.randomIntFromInterval = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+    //busca la propiedad con mayor rank dele item 
+    cServerItemDef.getItemMaxRank = function (arrayItemProperties) {
+        var maxRank = 0 /* normal */;
+        arrayItemProperties.forEach(function (item) {
+            if (item.propRank > maxRank) {
+                maxRank = item.propRank;
+            }
+        });
+        return maxRank;
     };
     cServerItemDef.maxNumberEfects = 10;
     return cServerItemDef;

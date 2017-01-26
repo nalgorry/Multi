@@ -7,7 +7,7 @@ var cServerControlItems = (function () {
         this.arrayItems = [];
         for (var i = 0; i < 15; i++) {
             var itemId = "i" + this.nextIdItems;
-            var newItem = new cServerItems_1.cServerItems(socket, itemId, i, 40 + i, 5);
+            var newItem = new cServerItems_1.cServerItems(socket, itemId, i, 40 + i, 95);
             this.arrayItems[itemId] = newItem;
             this.nextIdItems += 1;
         }

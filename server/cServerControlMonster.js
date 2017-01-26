@@ -9,7 +9,7 @@ var cServerControlMonster = (function () {
         this.arrayMonster = [];
         //creo los primeros monters :)
         for (var i = 1; i <= 25; i++) {
-            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 14));
+            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14));
         }
     }
     cServerControlMonster.prototype.getMonsterById = function (id) {

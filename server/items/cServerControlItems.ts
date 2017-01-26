@@ -14,7 +14,7 @@ export class cServerControlItems {
 
             var itemId = "i" + this.nextIdItems;
 
-            var newItem = new cServerItems(socket, itemId, i, 40 + i, 5);
+            var newItem = new cServerItems(socket, itemId, i, 40 + i, 95);
             this.arrayItems[itemId] = newItem; 
             this.nextIdItems += 1;
         }

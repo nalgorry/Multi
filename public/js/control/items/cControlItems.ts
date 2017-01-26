@@ -31,8 +31,9 @@ class cControlItems {
     }
 
     public newItem(data) {
+        console.log(data);
 
-        var item = new cItems(this.controlGame,data.itemID,data.itemType);
+        var item = new cItems(this.controlGame,data.itemID,data.itemType,data.maxRank);
         item.putItemInTile(data.tileX,data.tileY);
 
         this.arrayItems[data.itemID] = item;
@@ -44,7 +45,6 @@ class cControlItems {
     
     //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
     public itemGet(data) {
-       
         var item = this.arrayItems[data.itemID];
         
         if (item != undefined) {
@@ -57,9 +57,7 @@ class cControlItems {
     //pongo el item en el inventario
     public youGetItem(data) {
 
-        console.log(data);
-
-        var item =  new cItems(this.controlGame, data.itemID, data.itemType);
+        var item =  new cItems(this.controlGame, data.itemID, data.itemType,data.maxRank);
         
         item.signalItemInventoryClick.add(this.itemClick,this); //agrego una señal para despues poder hacer click en el item  
         item.signalItemEquiped.add(this.itemEquiped,this); //agrego una señal para despues poder hacer click en el item
@@ -83,6 +81,7 @@ class cControlItems {
 
     }
 
+    //cuando el player decide tirar un item 
     public itemDropToFlor(item:cItems)  {
 
         if (item.itemEquiped == true) { //si el item esta equipado tengo que desequiparlo, y recalcular el efecto de los items

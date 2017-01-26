@@ -17,7 +17,8 @@ var cControlItems = (function () {
         this.rectInventoryItem.visible = false;
     }
     cControlItems.prototype.newItem = function (data) {
-        var item = new cItems(this.controlGame, data.itemID, data.itemType);
+        console.log(data);
+        var item = new cItems(this.controlGame, data.itemID, data.itemType, data.maxRank);
         item.putItemInTile(data.tileX, data.tileY);
         this.arrayItems[data.itemID] = item;
         item.signalItemOnFloorClick.add(this.itemOnFloorClick, this); //agrego una señal para despues poder hacer click en el item
@@ -32,8 +33,7 @@ var cControlItems = (function () {
     };
     //pongo el item en el inventario
     cControlItems.prototype.youGetItem = function (data) {
-        console.log(data);
-        var item = new cItems(this.controlGame, data.itemID, data.itemType);
+        var item = new cItems(this.controlGame, data.itemID, data.itemType, data.maxRank);
         item.signalItemInventoryClick.add(this.itemClick, this); //agrego una señal para despues poder hacer click en el item  
         item.signalItemEquiped.add(this.itemEquiped, this); //agrego una señal para despues poder hacer click en el item
         item.signalItemDropToFloor.add(this.itemDropToFlor, this); //para cuando tira un item al piso
@@ -52,6 +52,7 @@ var cControlItems = (function () {
             this.controlGame.controlConsole.newMessage(enumMessage.information, "Your inventory is full");
         }
     };
+    //cuando el player decide tirar un item 
     cControlItems.prototype.itemDropToFlor = function (item) {
         if (item.itemEquiped == true) {
             delete this.arrayEquipedItems[item.itemEquipType];

@@ -8,6 +8,7 @@ export class cServerItems {
     public itemID:string;
     public socket:SocketIO.Server;
     public onFloor:boolean = true;
+    public maxRank:enumPropRank;
 
     private arrayItemProperties:cItemProperty[];
 
@@ -41,7 +42,8 @@ export class cServerItems {
                 itemID:this.itemID,
                 tileX:this.tileX, 
                 tileY:this.tileY,
-                itemType:this.itemType};
+                itemType:this.itemType,
+                maxRank: this.maxRank};
 
             socket.emit('new item', itemData);
 
@@ -52,6 +54,7 @@ export class cServerItems {
     public defineItemsProperties(itemLevel:number) {
 
         this.arrayItemProperties = cServerItemDef.defineProperties(itemLevel,this.itemType);
+        this.maxRank = cServerItemDef.getItemMaxRank(this.arrayItemProperties)
 
     }
 
@@ -60,7 +63,8 @@ export class cServerItems {
         var itemData = {
             itemID: this.itemID, 
             itemType:this.itemType,
-            itemEfects: this.arrayItemProperties
+            itemEfects: this.arrayItemProperties,
+            maxRank: this.maxRank
             }
 
         //le mando al que agarro su item

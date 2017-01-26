@@ -66,7 +66,7 @@ class cBasicActor {
         pjFull.animations.play('test',10,true);
 
         //sprite del jugador, aca se  cargan todas las partes del jugador
-        this.playerSprite = this.controlGame.game.add.sprite(44 * this.controlGame.gridSize, 5 * this.controlGame.gridSize);
+        this.playerSprite = this.controlGame.game.add.sprite(44 * this.controlGame.gridSize, 90 * this.controlGame.gridSize);
         this.playerSprite.anchor.set(0.5,1);
         this.playerSprite.x += this.playerSprite.width/2;
 
