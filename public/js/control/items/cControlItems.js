@@ -5,6 +5,7 @@ var cControlItems = (function () {
         this.arrayEquipedItems = [];
         this.arrayInventoryItems = [];
         this.arrayfreeInventoryItems = [];
+        this.arrayItemEfects = [];
         //defino los lugares del inventario disponibles
         for (var i = 1; i <= 12; i++) {
             this.arrayfreeInventoryItems.push(i);
@@ -17,7 +18,6 @@ var cControlItems = (function () {
         this.rectInventoryItem.visible = false;
     }
     cControlItems.prototype.newItem = function (data) {
-        console.log(data);
         var item = new cItems(this.controlGame, data.itemID, data.itemType, data.maxRank);
         item.putItemInTile(data.tileX, data.tileY);
         this.arrayItems[data.itemID] = item;
@@ -29,6 +29,21 @@ var cControlItems = (function () {
         if (item != undefined) {
             item.deleteItem();
             delete this.arrayItems[data.itemID];
+        }
+    };
+    //borra todos los items levantados y equipados
+    cControlItems.prototype.clearItems = function () {
+        this.arrayEquipedItems.forEach(function (item) {
+            item.deleteItem();
+        });
+        this.arrayInventoryItems.forEach(function (item) {
+            item.deleteItem();
+        });
+        this.arrayEquipedItems = [];
+        this.arrayInventoryItems = [];
+        //defino los lugares del inventario disponibles
+        for (var i = 1; i <= 12; i++) {
+            this.arrayfreeInventoryItems.push(i);
         }
     };
     //pongo el item en el inventario
@@ -83,8 +98,7 @@ var cControlItems = (function () {
     };
     cControlItems.prototype.calculateItemsEfects = function () {
         var _this = this;
-        var arrayItemEfects; //aca guardo todos los efectos de los items equipados, para aplicarlos al jugador
-        arrayItemEfects = [];
+        this.arrayItemEfects = []; //aca guardo todos los efectos de los items equipados, para aplicarlos al jugador
         //reseteo todas las estadisticas del player antes de aplicar las propiedades de los items
         this.controlGame.controlPlayer.controlFocus.maxLife =
             this.controlGame.controlPlayer.controlFocus.baseMaxLife;
@@ -109,21 +123,21 @@ var cControlItems = (function () {
         this.controlGame.controlPlayer.controlFocus.speedNormalEnergy =
             this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy;
         //el ataque y defensa la seteo para enviarlas al server
-        arrayItemEfects[9 /* atack */] = new cItemProperty(9 /* atack */, this.controlGame.controlPlayer.controlFocus.maxAtack, 0);
-        arrayItemEfects[10 /* defense */] = new cItemProperty(10 /* defense */, this.controlGame.controlPlayer.controlFocus.maxDefence, 0);
+        this.arrayItemEfects[9 /* atack */] = new cItemProperty(9 /* atack */, this.controlGame.controlPlayer.controlFocus.maxAtack, 0);
+        this.arrayItemEfects[10 /* defense */] = new cItemProperty(10 /* defense */, this.controlGame.controlPlayer.controlFocus.maxDefence, 0);
         //sumo para todos los items los efectos de cada propiedad
         this.arrayEquipedItems.forEach(function (item) {
             item.arrayItemEfects.forEach(function (ItemProperty) {
-                if (arrayItemEfects[ItemProperty.itemEfect] == undefined) {
-                    arrayItemEfects[ItemProperty.itemEfect] = new cItemProperty(ItemProperty.itemEfect, ItemProperty.value, 0);
+                if (_this.arrayItemEfects[ItemProperty.itemEfect] == undefined) {
+                    _this.arrayItemEfects[ItemProperty.itemEfect] = new cItemProperty(ItemProperty.itemEfect, ItemProperty.value, 0);
                 }
                 else {
-                    arrayItemEfects[ItemProperty.itemEfect].value += ItemProperty.value;
+                    _this.arrayItemEfects[ItemProperty.itemEfect].value += ItemProperty.value;
                 }
             });
         });
         //ya tengo las propiedades de todos los items, simplemente aplico esas propiedades al pj activo.
-        arrayItemEfects.forEach(function (efect) {
+        this.arrayItemEfects.forEach(function (efect) {
             switch (efect.itemEfect) {
                 case 6 /* life */:
                     _this.controlGame.controlPlayer.controlFocus.maxLife =
@@ -175,7 +189,7 @@ var cControlItems = (function () {
         this.controlGame.controlPlayer.controlFocus.updateAtackDefence();
         this.controlGame.controlPlayer.controlFocus.SelectFocus(this.controlGame.controlPlayer.controlFocus.actualFocusSystem);
         //envio los items equipados al servidor
-        this.controlGame.controlServer.socket.emit('you equip item', { itemsEfects: arrayItemEfects });
+        this.controlGame.controlServer.socket.emit('you equip item', { itemsEfects: this.arrayItemEfects });
     };
     cControlItems.prototype.itemOnFloorClick = function (item) {
         if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 1 &&

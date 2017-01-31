@@ -9,23 +9,25 @@ export class cServerItems {
     public socket:SocketIO.Server;
     public onFloor:boolean = true;
     public maxRank:enumPropRank;
+    public itemLevel:number;
 
     private arrayItemProperties:cItemProperty[];
 
         
     private maxNumberItems:number = 21;
 
-    constructor(socket:SocketIO.Server, itemID:string, itemType:enumItemType, tileX:number, tileY:number) {
+    constructor(socket:SocketIO.Server, itemID:string, itemType:enumItemType, itemLevel:number , tileX:number, tileY:number) {
 
         this.itemID = itemID;
         this.itemType = itemType;
         this.tileX = tileX;
         this.tileY = tileY;
         this.socket = socket;
+        this.itemLevel = itemLevel;
 
         this.arrayItemProperties = [];
 
-        this.defineItemsProperties(1);
+        this.defineItemsProperties(this.itemLevel);
 
         this.emitNewItem(this.socket);
 

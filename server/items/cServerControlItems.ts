@@ -10,11 +10,11 @@ export class cServerControlItems {
         this.arrayItems = [];
         
 
-        for (var i = 0; i<15;i++) {
+        for (var i = 0; i<5;i++) {
 
             var itemId = "i" + this.nextIdItems;
 
-            var newItem = new cServerItems(socket, itemId, i, 40 + i, 95);
+            var newItem = new cServerItems(socket, itemId, i, 10 , 40 + i, 95);
             this.arrayItems[itemId] = newItem; 
             this.nextIdItems += 1;
         }
@@ -36,10 +36,10 @@ export class cServerControlItems {
 
     }
 
-    public createNewItem(itemType:number, tileX:number, tileY:number) {
+    public createNewItem(itemType:number, itemLevel, tileX:number, tileY:number) {
 
         var itemId = "i" + this.nextIdItems;
-        var newItem = new cServerItems(this.socket, itemId, itemType, tileX, tileY);
+        var newItem = new cServerItems(this.socket, itemId, itemType, itemLevel, tileX, tileY);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
     }

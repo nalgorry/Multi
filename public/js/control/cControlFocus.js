@@ -23,7 +23,7 @@ var cControlFocus = (function () {
         this.speedFocusLife = 0.8;
         this.speedFocusMana = 2;
         this.speedFocusEnergy = 4;
-        this.actualFocusSystem = FocusSystem.nothing;
+        this.actualFocusSystem = FocusSystem.mana;
         //valores actuales utilizados por el focus sistem
         this.actualFocusLife = this.speedNormalLife;
         this.actualFocusMana = this.speedNormalMana;
@@ -34,8 +34,110 @@ var cControlFocus = (function () {
         this.createBars(gameWidth, gameHeight);
         this.createPotions();
         this.createAtackDefence();
+        this.createPlayerStats();
+        //seteo por defecto el focus en mana
+        this.SelectManaFocus();
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
     }
+    cControlFocus.prototype.createPlayerStats = function () {
+        //genero un circulo en la imagen del jugador 
+        var backCircle = this.controlGame.game.add.graphics(0, 0);
+        backCircle.beginFill(0x000000);
+        backCircle.drawCircle(0, 0, 80);
+        var playerImageSprite = this.controlGame.game.add.sprite(1065, 50);
+        playerImageSprite.addChild(backCircle);
+        playerImageSprite.alpha = 0.5;
+        playerImageSprite.fixedToCamera = true;
+        playerImageSprite.inputEnabled = true;
+        playerImageSprite.events.onInputOver.add(this.showPlayerStats, this);
+        playerImageSprite.events.onInputOut.add(this.hidePlayerStats, this);
+    };
+    cControlFocus.prototype.showPlayerStats = function () {
+        console.log("hola");
+        this.groupPlayerStats = new Phaser.Group(this.controlGame.game);
+        //genero el fondo de las estadisticas
+        var height = 610;
+        var width = 200;
+        var bitmapDescItem = this.controlGame.game.add.bitmapData(width, height);
+        bitmapDescItem.ctx.beginPath();
+        bitmapDescItem.ctx.rect(0, 0, width, height);
+        bitmapDescItem.ctx.fillStyle = '#363636';
+        bitmapDescItem.ctx.fill();
+        var backGroundDesc = this.controlGame.game.add.sprite(790, 10, bitmapDescItem);
+        backGroundDesc.anchor.setTo(0);
+        backGroundDesc.fixedToCamera = true;
+        backGroundDesc.alpha = 0.9;
+        this.groupPlayerStats.add(backGroundDesc);
+        var colWidth = 40;
+        var colHeight = 25;
+        var textStart = 68;
+        var textWidth = 30;
+        var heightStart = 150;
+        var styleText = { font: "14px Arial", fill: "#ffffff", boundsAlignH: "center", fontWeight: 600 };
+        ;
+        //agrego ataque y defenza
+        var atackDefense = this.controlGame.game.add.sprite(5, 20, "atackDefense");
+        backGroundDesc.addChild(atackDefense);
+        var value = this.controlGame.game.add.text(105, 27, this.maxAtack.toString(), styleText);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(165, 27, this.maxDefence.toString(), styleText);
+        backGroundDesc.addChild(value);
+        //agrego las posiciones y las estadisticas basicas
+        //vida 
+        var label = this.controlGame.game.add.sprite(textStart - 4, heightStart - 40, 'items', 35);
+        backGroundDesc.addChild(label);
+        //mana
+        var label = this.controlGame.game.add.sprite(textStart - 4 + colWidth, heightStart - 40, 'items', 33);
+        backGroundDesc.addChild(label);
+        //energia
+        var label = this.controlGame.game.add.sprite(textStart - 4 + colWidth * 2, heightStart - 40, 'items', 31);
+        backGroundDesc.addChild(label);
+        //label de las propiedades
+        //voy a sacar las propiedades de los items de aca 
+        var value = this.controlGame.game.add.text(textStart, heightStart, this.maxLife.toString(), styleText);
+        value.setTextBounds(0, 0, textWidth, 0);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart, this.maxMana.toString(), styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart, this.maxEnergy.toString(), styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart, heightStart + colHeight, this.getItemValue(3 /* normalLife */) + "%", styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart + colHeight, this.getItemValue(4 /* normalMana */) + "%", styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart + colHeight, this.getItemValue(5 /* normalEnergy */) + "%", styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart, heightStart + colHeight * 2, this.getItemValue(0 /* focusLife */) + "%", styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart + colHeight * 2, this.getItemValue(1 /* focusMana */) + "%", styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart + colHeight * 2, this.getItemValue(2 /* focusEnergy */) + "%", styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+    };
+    cControlFocus.prototype.getItemValue = function (enumItemProp) {
+        var arrayitemProp = this.controlGame.controlPlayer.controlItems.arrayItemEfects;
+        var itemProp = arrayitemProp[enumItemProp];
+        var itemvalue;
+        if (itemProp != undefined) {
+            itemvalue = itemProp.value.toString();
+        }
+        else {
+            itemvalue = '0';
+        }
+        ;
+        return itemvalue;
+    };
+    cControlFocus.prototype.hidePlayerStats = function () {
+        this.groupPlayerStats.destroy();
+    };
     cControlFocus.prototype.createPotions = function () {
         var spriteHeal = this.controlGame.game.add.sprite(1000, 114, 'items', 35);
         spriteHeal.fixedToCamera = true;
@@ -182,8 +284,6 @@ var cControlFocus = (function () {
                 this.actualFocusSystem = FocusSystem.nothing;
                 break;
         }
-        //selecciono el circulo de focus
-        var spellFocus = this.controlGame.controlPlayer.controlSpells.arrayselSpells[wichFocus];
     };
     cControlFocus.prototype.LoadBars = function () {
         //esto tendria que venir del server en algun momento

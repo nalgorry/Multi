@@ -8,6 +8,7 @@
         Dragon = 2,
         Wolf = 3,
         RedWolf = 4,
+        Cosmic = 5
     }
 
     declare const enum enumSpells {

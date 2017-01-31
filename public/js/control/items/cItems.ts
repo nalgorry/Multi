@@ -114,7 +114,7 @@ class cItems {
         this.sprite.events.onInputOver.add(this.onInputOver,this);
         this.sprite.events.onInputOut.add(this.onInputOut,this);
 
-        this.spriteOriginalPoss = this.sprite.position.clone();
+        this.spriteOriginalPoss = this.sprite.cameraOffset.clone();
         
         this.inventoryID = inventoryID;
 
@@ -185,7 +185,7 @@ class cItems {
         } else if (rank == enumPropRank.silver) {
             color = "79a9f7";
         } else if (rank == enumPropRank.gold) {
-            color = "efd59b";
+            color = "7A7600";
         } else if (rank == enumPropRank.diamont) {
             color = "e87f7f";
         }

@@ -29,7 +29,7 @@ class cControlPlayer extends cBasicActor {
     private playerIdle:boolean = false;
     private lastAnimation:move = move.idleRight;
 
-    private dirMovimiento:move;
+    private dirMovimiento:move =move.right;
     private lastdirMov:move; //para guardar el ultimo moviemiento enviado
     
     private gridSize: number;
@@ -43,7 +43,6 @@ class cControlPlayer extends cBasicActor {
         this.startActor();
         this.startPlayer();
         
-
     }
 
     public startPlayer() {
@@ -221,9 +220,12 @@ class cControlPlayer extends cBasicActor {
 
     public youDie(data) {
         this.playerSprite.x = 44 * this.controlGame.gridSize;
-        this.playerSprite.y = 6 * this.controlGame.gridSize;
+        this.playerSprite.y = 95 * this.controlGame.gridSize;
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
         this.controlGame.controlServer.socket.emit('you die', {idPlayerKill:data.playerThatHit });
+
+        this.controlItems.clearItems();
+
     }
 
     public youKill(data) {

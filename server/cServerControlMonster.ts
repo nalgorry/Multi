@@ -14,8 +14,11 @@ export class cServerControlMonster {
         //creo los primeros monters :)
 
        for (var i=1; i<=25;i++) {
-           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14));
+           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),this.randomIntFromInterval(1,4));
        }
+
+       //creo el mounstro COSMICO
+       this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),5);
 
     }
 
@@ -32,11 +35,11 @@ export class cServerControlMonster {
 
     }
 
-    private createNewMonster(tileX:number,tileY:number) {
+    private createNewMonster(tileX:number,tileY:number,monsterType:enumMonsters) {
         
         var newMonster = new cServerMonster(this.controlItems);
 
-        newMonster.startMonster("m" + this.nextIdMonster,this.randomIntFromInterval(1,4),this.socket,this.controlPlayer,tileX,tileY);
+        newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, tileX, tileY);
         
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
 
@@ -57,10 +60,10 @@ export class cServerControlMonster {
                 delete this.arrayMonster[data.idMonster];
 
                 //creo un nuevo monster
-                this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12))
+                this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),this.randomIntFromInterval(1,4))
             }   
         } else {
-            console.log("monstruo no encontrado")
+            console.log("monstruo no encontrado");
         }
 
         

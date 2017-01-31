@@ -72,16 +72,17 @@ var cServerItemDef = (function () {
             arrayPropTypes.push(itemEfectType);
         }
         var arrayItemProperties = []; //aca se guardan las propiedades finales que son enviadas al server
+        console.log(itemLevel);
         arrayPropTypes.forEach(function (itemProp) {
             var randomPropRank = _this.randomIntFromInterval(0, 1000); //normal silver gold etc.
             var propRank;
-            if (randomPropRank < 500) {
+            if (randomPropRank < 850 - itemLevel) {
                 propRank = 0 /* normal */;
             }
-            else if (randomPropRank < 700) {
+            else if (randomPropRank < 900 - itemLevel) {
                 propRank = 1 /* silver */;
             }
-            else if (randomPropRank < 950) {
+            else if (randomPropRank < 990 - itemLevel) {
                 propRank = 2 /* gold */;
             }
             else {

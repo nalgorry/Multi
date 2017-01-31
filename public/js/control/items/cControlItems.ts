@@ -4,9 +4,12 @@ class cControlItems {
     private arrayInventoryItems:cItems[];
     private arrayEquipedItems:cItems[];
     private arrayfreeInventoryItems:number[];
+    public arrayItemEfects:cItemProperty[];
+
     public rectInventoryItem:Phaser.Graphics;
     public selectedItem:cItems;
     public itemsGroup:Phaser.Group;
+
 
     constructor(public controlGame:cControlGame) {
 
@@ -14,6 +17,7 @@ class cControlItems {
         this.arrayEquipedItems = [];
         this.arrayInventoryItems = [];
         this.arrayfreeInventoryItems = [];
+        this.arrayItemEfects = [];
 
         //defino los lugares del inventario disponibles
         for(var i = 1; i <= 12 ; i++ ) {
@@ -31,7 +35,6 @@ class cControlItems {
     }
 
     public newItem(data) {
-        console.log(data);
 
         var item = new cItems(this.controlGame,data.itemID,data.itemType,data.maxRank);
         item.putItemInTile(data.tileX,data.tileY);
@@ -41,7 +44,6 @@ class cControlItems {
         item.signalItemOnFloorClick.add(this.itemOnFloorClick,this); //agrego una señal para despues poder hacer click en el item
 
     }
-
     
     //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
     public itemGet(data) {
@@ -52,6 +54,28 @@ class cControlItems {
             delete this.arrayItems[data.itemID];
         }
         
+    }
+
+    //borra todos los items levantados y equipados
+    public clearItems(){
+
+        this.arrayEquipedItems.forEach(item => {
+            item.deleteItem();
+        })
+
+        this.arrayInventoryItems.forEach(item => {
+            item.deleteItem();
+        })
+
+        this.arrayEquipedItems = [];
+        this.arrayInventoryItems = [];
+        
+        //defino los lugares del inventario disponibles
+        for(var i = 1; i <= 12 ; i++ ) {
+            this.arrayfreeInventoryItems.push(i);
+        }
+
+
     }
 
     //pongo el item en el inventario
@@ -122,8 +146,7 @@ class cControlItems {
 
     private calculateItemsEfects() {
 
-        var arrayItemEfects:cItemProperty[]; //aca guardo todos los efectos de los items equipados, para aplicarlos al jugador
-        arrayItemEfects = [];
+        this.arrayItemEfects = []; //aca guardo todos los efectos de los items equipados, para aplicarlos al jugador
 
         //reseteo todas las estadisticas del player antes de aplicar las propiedades de los items
         this.controlGame.controlPlayer.controlFocus.maxLife =
@@ -152,9 +175,9 @@ class cControlItems {
             this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy;
 
         //el ataque y defensa la seteo para enviarlas al server
-        arrayItemEfects[enumItemEfects.atack] = new cItemProperty(
+        this.arrayItemEfects[enumItemEfects.atack] = new cItemProperty(
             enumItemEfects.atack,this.controlGame.controlPlayer.controlFocus.maxAtack,0);
-        arrayItemEfects[enumItemEfects.defense] = new cItemProperty(
+        this.arrayItemEfects[enumItemEfects.defense] = new cItemProperty(
             enumItemEfects.defense,this.controlGame.controlPlayer.controlFocus.maxDefence,0); 
 
         //sumo para todos los items los efectos de cada propiedad
@@ -162,10 +185,10 @@ class cControlItems {
             
             item.arrayItemEfects.forEach(ItemProperty => {
 
-                if (arrayItemEfects[ItemProperty.itemEfect] == undefined) {
-                    arrayItemEfects[ItemProperty.itemEfect] = new cItemProperty(ItemProperty.itemEfect,ItemProperty.value,0)
+                if (this.arrayItemEfects[ItemProperty.itemEfect] == undefined) {
+                    this.arrayItemEfects[ItemProperty.itemEfect] = new cItemProperty(ItemProperty.itemEfect,ItemProperty.value,0)
                 } else {
-                    arrayItemEfects[ItemProperty.itemEfect].value += ItemProperty.value;
+                    this.arrayItemEfects[ItemProperty.itemEfect].value += ItemProperty.value;
                 }
                 
             })
@@ -174,7 +197,7 @@ class cControlItems {
 
 
         //ya tengo las propiedades de todos los items, simplemente aplico esas propiedades al pj activo.
-        arrayItemEfects.forEach(efect => {
+        this.arrayItemEfects.forEach(efect => {
             switch (efect.itemEfect) {
                 case enumItemEfects.life:
                     this.controlGame.controlPlayer.controlFocus.maxLife = 
@@ -229,7 +252,7 @@ class cControlItems {
         this.controlGame.controlPlayer.controlFocus.SelectFocus(this.controlGame.controlPlayer.controlFocus.actualFocusSystem)
 
         //envio los items equipados al servidor
-        this.controlGame.controlServer.socket.emit('you equip item', { itemsEfects: arrayItemEfects});
+        this.controlGame.controlServer.socket.emit('you equip item', { itemsEfects: this.arrayItemEfects});
 
     }
 

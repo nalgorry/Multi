@@ -23,6 +23,7 @@ var cControlPlayer = (function (_super) {
         this.seMueveY = false;
         this.playerIdle = false;
         this.lastAnimation = move.idleRight;
+        this.dirMovimiento = move.right;
         this.monstersKills = 0;
         this.gridSize = controlGame.gridSize;
         this.startActor();
@@ -170,9 +171,10 @@ var cControlPlayer = (function (_super) {
     };
     cControlPlayer.prototype.youDie = function (data) {
         this.playerSprite.x = 44 * this.controlGame.gridSize;
-        this.playerSprite.y = 6 * this.controlGame.gridSize;
+        this.playerSprite.y = 95 * this.controlGame.gridSize;
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
         this.controlGame.controlServer.socket.emit('you die', { idPlayerKill: data.playerThatHit });
+        this.controlItems.clearItems();
     };
     cControlPlayer.prototype.youKill = function (data) {
         this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste a " + data.name);

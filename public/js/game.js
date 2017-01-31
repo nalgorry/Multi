@@ -23,11 +23,13 @@ var SimpleGame = (function () {
         this.game.load.spritesheet('monster_2', 'assets/monster_2.png', 170, 119);
         this.game.load.image('monster_3', 'assets/monster_3.png');
         this.game.load.image('monster_4', 'assets/monster_4.png');
+        this.game.load.image('monster_5', 'assets/cosmic_monster.png');
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 675);
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120, 120);
         this.game.load.spritesheet('portal', 'assets/portal.png', 70, 116);
         this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
         this.game.load.spritesheet('items', 'assets/items.png', 40, 40);
+        this.game.load.image('atackDefense', 'assets/atack_defense.png');
     };
     SimpleGame.prototype.create = function () {
         //inicio todos los parametros dele juego

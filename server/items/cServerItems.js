@@ -1,7 +1,7 @@
 "use strict";
 var cServerItemDef_1 = require('./cServerItemDef');
 var cServerItems = (function () {
-    function cServerItems(socket, itemID, itemType, tileX, tileY) {
+    function cServerItems(socket, itemID, itemType, itemLevel, tileX, tileY) {
         this.onFloor = true;
         this.maxNumberItems = 21;
         this.itemID = itemID;
@@ -9,8 +9,9 @@ var cServerItems = (function () {
         this.tileX = tileX;
         this.tileY = tileY;
         this.socket = socket;
+        this.itemLevel = itemLevel;
         this.arrayItemProperties = [];
-        this.defineItemsProperties(1);
+        this.defineItemsProperties(this.itemLevel);
         this.emitNewItem(this.socket);
     }
     cServerItems.prototype.emitNewItem = function (socket) {

@@ -10,11 +10,15 @@ export class cServerMonster {
     public monsterLife:number;
     public tileX:number; 
     public tileY:number;
-    public monsterPower:number;
+    public randomPower:number;
+    public fixPower:number;
     public monsterId:string;
     public socket:SocketIO.Server;
     public controlPlayer:cServerControlPlayers;
     public monsterType: enumMonsters; 
+    public specialAtackPercent:number = 0 //porcentaje de que lance el hechizo especial
+
+    public monsterItemLevelDrop:number;
 
     //variables para definir el ataque
     public gridSize:number = 40;
@@ -41,8 +45,6 @@ export class cServerMonster {
         
         //valores que dependen del tipo de monstruo
         this.monsterType = monsterType;
-        this.monsterPower = 10;
-        this.monsterLife = 100;
 
         cServerDefinitionMonsters.defineMonsters(this,monsterType)
 
@@ -136,7 +138,7 @@ export class cServerMonster {
 
             //creo un item para que tire el monstruo
             var itemType = this.randomIntFromInterval(0,21); //TODO tengo que ver donde va a quedar esto
-            this.controlItems.createNewItem(itemType, this.tileX, this.tileY);
+            this.controlItems.createNewItem(itemType, this.monsterItemLevelDrop, this.tileX, this.tileY);
 
         } 
    
@@ -160,13 +162,13 @@ export class cServerMonster {
                 
                 var randomAtack = Math.random();
 
-                if (randomAtack <= 0.8) {
+                if (randomAtack >= this.specialAtackPercent) {
                     //normal atack 
                     data = {
                             idMonster:this.monsterId,
                             idPlayer: player.playerId,
                             monsterAtackType: 0,
-                            damage: player.calculateDamage(Math.round(Math.random()*this.monsterPower+1)),
+                            damage: player.calculateDamage(Math.round(Math.random()*this.randomPower+1) + this.fixPower),
                             idSpell: enumSpells.BasicAtack,
                         }
                 } else {

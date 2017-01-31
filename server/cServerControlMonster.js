@@ -9,8 +9,10 @@ var cServerControlMonster = (function () {
         this.arrayMonster = [];
         //creo los primeros monters :)
         for (var i = 1; i <= 25; i++) {
-            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14));
+            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), this.randomIntFromInterval(1, 4));
         }
+        //creo el mounstro COSMICO
+        this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), 5);
     }
     cServerControlMonster.prototype.getMonsterById = function (id) {
         return this.arrayMonster[id];
@@ -21,9 +23,9 @@ var cServerControlMonster = (function () {
             this.arrayMonster[monster].sendMonsterToNewPlayer(socket);
         }
     };
-    cServerControlMonster.prototype.createNewMonster = function (tileX, tileY) {
+    cServerControlMonster.prototype.createNewMonster = function (tileX, tileY, monsterType) {
         var newMonster = new cServerMonster_1.cServerMonster(this.controlItems);
-        newMonster.startMonster("m" + this.nextIdMonster, this.randomIntFromInterval(1, 4), this.socket, this.controlPlayer, tileX, tileY);
+        newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, tileX, tileY);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };
@@ -36,7 +38,7 @@ var cServerControlMonster = (function () {
             if (monster.monsterDie == true) {
                 delete this.arrayMonster[data.idMonster];
                 //creo un nuevo monster
-                this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 12));
+                this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 12), this.randomIntFromInterval(1, 4));
             }
         }
         else {

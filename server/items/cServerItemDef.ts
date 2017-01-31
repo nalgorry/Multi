@@ -86,16 +86,18 @@ export class cServerItemDef {
 
         var arrayItemProperties = []; //aca se guardan las propiedades finales que son enviadas al server
 
+        console.log(itemLevel);
+
         arrayPropTypes.forEach(itemProp => {
 
             var randomPropRank = this.randomIntFromInterval(0,1000); //normal silver gold etc.
             var propRank:enumPropRank; 
 
-            if (randomPropRank < 500) { //normal item 
+            if (randomPropRank < 850 - itemLevel) { //normal item 
                 propRank = enumPropRank.normal;
-            } else if (randomPropRank < 700) { 
+            } else if (randomPropRank < 900 - itemLevel) { 
                 propRank = enumPropRank.silver;
-            }  else if (randomPropRank < 950) { 
+            }  else if (randomPropRank < 990 - itemLevel) { 
                 propRank = enumPropRank.gold;
             } else { 
                 propRank = enumPropRank.diamont;

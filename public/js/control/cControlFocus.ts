@@ -27,7 +27,7 @@ class cControlFocus {
     speedFocusMana:number = 2;
     speedFocusEnergy:number = 4;
 
-    public actualFocusSystem:FocusSystem = FocusSystem.nothing;
+    public actualFocusSystem:FocusSystem = FocusSystem.mana;
 
     textLife: Phaser.Text;
     textMana: Phaser.Text;
@@ -66,6 +66,9 @@ class cControlFocus {
     manaBar:Phaser.Sprite;
     energyBar:Phaser.Sprite;
     expBar:Phaser.Sprite;
+
+    //estadisticas del jugador
+    groupPlayerStats:Phaser.Group;
     
     //recuadro para seleccionar una de las barrasy el circulo
     public rectangleFocus:Phaser.Graphics;
@@ -80,9 +83,141 @@ class cControlFocus {
         this.createPotions();
         this.createAtackDefence();
 
+        this.createPlayerStats();
+
+        //seteo por defecto el focus en mana
+        this.SelectManaFocus();
+
         var timer = this.controlGame.game.time.events.loop(this.speedFocus, this.UpdateFocus, this);
 
     }
+
+    private createPlayerStats() {
+          //genero un circulo en la imagen del jugador 
+        var backCircle = this.controlGame.game.add.graphics(0,0);
+        backCircle.beginFill(0x000000);
+        backCircle.drawCircle(0, 0, 80);
+
+        var playerImageSprite = this.controlGame.game.add.sprite(1065, 50);
+        playerImageSprite.addChild(backCircle);
+        playerImageSprite.alpha = 0.5;
+        playerImageSprite.fixedToCamera = true;
+        playerImageSprite.inputEnabled = true;
+
+        playerImageSprite.events.onInputOver.add(this.showPlayerStats,this);
+        playerImageSprite.events.onInputOut.add(this.hidePlayerStats,this);
+
+
+    }
+
+    private showPlayerStats() {
+
+        console.log("hola");
+
+        this.groupPlayerStats = new Phaser.Group(this.controlGame.game);
+
+        //genero el fondo de las estadisticas
+        var height = 610;
+        var width = 200;
+        var bitmapDescItem = this.controlGame.game.add.bitmapData(width, height);
+        bitmapDescItem.ctx.beginPath();
+        bitmapDescItem.ctx.rect(0, 0, width, height);
+        bitmapDescItem.ctx.fillStyle = '#363636';
+        bitmapDescItem.ctx.fill();
+        
+        var backGroundDesc = this.controlGame.game.add.sprite(790, 10, bitmapDescItem);
+        backGroundDesc.anchor.setTo(0);
+        backGroundDesc.fixedToCamera = true;
+        backGroundDesc.alpha = 0.9;
+
+        this.groupPlayerStats.add(backGroundDesc);
+
+        var colWidth = 40;
+        var colHeight = 25;
+        var textStart = 68;
+        var textWidth = 30;
+        var heightStart = 150;
+        var styleText = { font: "14px Arial", fill: "#ffffff", boundsAlignH: "center", fontWeight: 600};;
+
+        //agrego ataque y defenza
+        var atackDefense = this.controlGame.game.add.sprite(5, 20, "atackDefense");
+        backGroundDesc.addChild(atackDefense);
+
+        var value = this.controlGame.game.add.text(105, 27, this.maxAtack.toString() , styleText);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(165, 27, this.maxDefence.toString() , styleText);
+        backGroundDesc.addChild(value);
+
+        //agrego las posiciones y las estadisticas basicas
+        //vida 
+        var label = this.controlGame.game.add.sprite(textStart - 4 , heightStart - 40, 'items', 35);
+        backGroundDesc.addChild(label);
+
+        //mana
+        var label = this.controlGame.game.add.sprite(textStart - 4 + colWidth, heightStart - 40, 'items', 33);        
+        backGroundDesc.addChild(label);
+
+        //energia
+        var label = this.controlGame.game.add.sprite(textStart - 4 + colWidth * 2, heightStart - 40, 'items', 31);
+        backGroundDesc.addChild(label);
+
+        //label de las propiedades
+
+        //voy a sacar las propiedades de los items de aca 
+        var value = this.controlGame.game.add.text(textStart, heightStart, this.maxLife.toString() , styleText);
+        value.setTextBounds(0, 0, textWidth, 0);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart, this.maxMana.toString() , styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart, this.maxEnergy.toString() , styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+
+
+        var value = this.controlGame.game.add.text(textStart, heightStart + colHeight, this.getItemValue(enumItemEfects.normalLife) + "%" , styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart + colHeight, this.getItemValue(enumItemEfects.normalMana) + "%" , styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart + colHeight, this.getItemValue(enumItemEfects.normalEnergy) + "%" , styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+
+        var value = this.controlGame.game.add.text(textStart, heightStart + colHeight * 2, this.getItemValue(enumItemEfects.focusLife) + "%" , styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart + colHeight * 2, this.getItemValue(enumItemEfects.focusMana) + "%" , styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart + colHeight * 2, this.getItemValue(enumItemEfects.focusEnergy) + "%" , styleText);
+        value.setTextBounds(0, 0, textWidth);
+        backGroundDesc.addChild(value);
+         
+    }
+
+    private getItemValue(enumItemProp:enumItemEfects):string {
+
+        var arrayitemProp = this.controlGame.controlPlayer.controlItems.arrayItemEfects;
+        var itemProp = arrayitemProp[enumItemProp];
+
+        var itemvalue:string;
+        if (itemProp != undefined ) { 
+            itemvalue = itemProp.value.toString(); 
+        } else {
+            itemvalue = '0';
+        }; 
+        
+        return itemvalue;
+    }
+
+    private hidePlayerStats() {
+        this.groupPlayerStats.destroy();
+    }
+    
+
+
 
     public createPotions() {
         var spriteHeal = this.controlGame.game.add.sprite(1000,114,'items',35);
@@ -268,9 +403,6 @@ class cControlFocus {
                 
                 break;
         }  
-
-        //selecciono el circulo de focus
-        var spellFocus:cSpell = this.controlGame.controlPlayer.controlSpells.arrayselSpells[wichFocus];
 
     }
 

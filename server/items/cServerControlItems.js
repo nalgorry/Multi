@@ -5,9 +5,9 @@ var cServerControlItems = (function () {
         this.socket = socket;
         this.nextIdItems = 0;
         this.arrayItems = [];
-        for (var i = 0; i < 15; i++) {
+        for (var i = 0; i < 5; i++) {
             var itemId = "i" + this.nextIdItems;
-            var newItem = new cServerItems_1.cServerItems(socket, itemId, i, 40 + i, 95);
+            var newItem = new cServerItems_1.cServerItems(socket, itemId, i, 10, 40 + i, 95);
             this.arrayItems[itemId] = newItem;
             this.nextIdItems += 1;
         }
@@ -24,9 +24,9 @@ var cServerControlItems = (function () {
             console.log("itemNoEncontrado");
         }
     };
-    cServerControlItems.prototype.createNewItem = function (itemType, tileX, tileY) {
+    cServerControlItems.prototype.createNewItem = function (itemType, itemLevel, tileX, tileY) {
         var itemId = "i" + this.nextIdItems;
-        var newItem = new cServerItems_1.cServerItems(this.socket, itemId, itemType, tileX, tileY);
+        var newItem = new cServerItems_1.cServerItems(this.socket, itemId, itemType, itemLevel, tileX, tileY);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
     };

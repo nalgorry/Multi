@@ -4,6 +4,7 @@ var cServerMonster = (function () {
     function cServerMonster(controlItems) {
         this.controlItems = controlItems;
         this.monsterDie = false; //para chekear si el moustro se murio o no
+        this.specialAtackPercent = 0; //porcentaje de que lance el hechizo especial
         //variables para definir el ataque
         this.gridSize = 40;
         this.monsterAtackTilesX = 13;
@@ -18,8 +19,6 @@ var cServerMonster = (function () {
         this.tileY = tileY;
         //valores que dependen del tipo de monstruo
         this.monsterType = monsterType;
-        this.monsterPower = 10;
-        this.monsterLife = 100;
         cServerDefinitionMonsters_1.cServerDefinitionMonsters.defineMonsters(this, monsterType);
         this.emitNewMonster();
         var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
@@ -89,7 +88,7 @@ var cServerMonster = (function () {
             this.monsterDie = true;
             //creo un item para que tire el monstruo
             var itemType = this.randomIntFromInterval(0, 21); //TODO tengo que ver donde va a quedar esto
-            this.controlItems.createNewItem(itemType, this.tileX, this.tileY);
+            this.controlItems.createNewItem(itemType, this.monsterItemLevelDrop, this.tileX, this.tileY);
         }
     };
     cServerMonster.prototype.monsterAtack = function () {
@@ -104,13 +103,13 @@ var cServerMonster = (function () {
                 if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
                     Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
                     var randomAtack = Math.random();
-                    if (randomAtack <= 0.8) {
+                    if (randomAtack >= this.specialAtackPercent) {
                         //normal atack 
                         data = {
                             idMonster: this.monsterId,
                             idPlayer: player.playerId,
                             monsterAtackType: 0,
-                            damage: player.calculateDamage(Math.round(Math.random() * this.monsterPower + 1)),
+                            damage: player.calculateDamage(Math.round(Math.random() * this.randomPower + 1) + this.fixPower),
                             idSpell: 1 /* BasicAtack */,
                         };
                     }
