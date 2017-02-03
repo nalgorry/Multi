@@ -190,10 +190,6 @@ var cItems = (function () {
     cItems.prototype.inventoryClick = function () {
         this.signalItemInventoryClick.dispatch(this);
     };
-    cItems.prototype.equipItem = function (itemID) {
-    };
-    cItems.prototype.getItemFromTile = function () {
-    };
     cItems.prototype.deleteItem = function () {
         this.sprite.destroy(true);
     };

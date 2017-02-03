@@ -2,7 +2,11 @@ import {cItemProperty} from './cServerItems';
 
 export class cServerItemDef {
 
+    static arrayItemsDeff:cItemDef[];
+    static arrayItemByEquipType:number[][]; //array de [itemEquipType][itemType] para poder seleccionar aleatoriamente por equiptype
+    
     static maxNumberEfects:number = 10;
+    static maxNumberOfItemEquipTypes:number = 6;
 
     //define las propiedades del items segun su nivel
     static defineProperties(itemLevel:number,itemType:enumItemType) {
@@ -26,52 +30,13 @@ export class cServerItemDef {
         valuesItemsEfect[enumItemEfects.normalLife] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
 
         //me fijo que tipo de item es
-          var itemEquipType:enumItemEquipType;
-          var itemFixEfect:enumItemEfects;
-
-          switch (itemType) {
-            case enumItemType.smallDager:
-            case enumItemType.dager: 
-            case enumItemType.javelin:
-            case enumItemType.hammer:
-            case enumItemType.sword:
-            case enumItemType.wand:
-            case enumItemType.bow:
-            case enumItemType.specialDager:
-                itemEquipType = enumItemEquipType.weapon;   
-                itemFixEfect = enumItemEfects.atack;   
-                break;
-            case enumItemType.gloves:
-            case enumItemType.goldenGloves:
-            case enumItemType.leaderGloves:
-            case enumItemType.shield:
-            case enumItemType.bigShield:
-                itemEquipType = enumItemEquipType.special;
-                itemFixEfect = enumItemEfects.defense;              
-                break;
-            case enumItemType.armor:
-                itemEquipType = enumItemEquipType.armor
-                itemFixEfect = enumItemEfects.defense;              
-                break;
-            case enumItemType.boot:
-                itemEquipType = enumItemEquipType.boots
-                itemFixEfect = -1;         
-                break;
-            case enumItemType.helmet:
-                itemEquipType = enumItemEquipType.helmet
-                itemFixEfect = enumItemEfects.defense;              
-                break;
-            default:
-                itemEquipType = enumItemEquipType.others
-                itemFixEfect = -1 //no tiene efectos fijos
-                break;
-        }
+        var itemDef:cItemDef = this.arrayItemsDeff[itemType]
 
         var arrayPropTypes = []; //aca se guardan todas las propiedades del item 
         
         //defino la propiedad principal segun el tipo de objeto que es
-        if (itemFixEfect != -1) {
-            arrayPropTypes.push(itemFixEfect); //la agrego al array de prop
+        if (itemDef.itemFixEfect != -1) {
+            arrayPropTypes.push(itemDef.itemFixEfect); //la agrego al array de prop
         }
 
         //agrego las propiedades adicionales aleatorias
@@ -85,8 +50,6 @@ export class cServerItemDef {
 
 
         var arrayItemProperties = []; //aca se guardan las propiedades finales que son enviadas al server
-
-        console.log(itemLevel);
 
         arrayPropTypes.forEach(itemProp => {
 
@@ -138,10 +101,6 @@ export class cServerItemDef {
 
     }
 
-    static randomIntFromInterval(min,max):number
-    {
-        return Math.floor(Math.random()*(max-min+1)+min);
-    }
 
     //busca la propiedad con mayor rank dele item 
     static getItemMaxRank(arrayItemProperties:cItemProperty[]) {
@@ -155,6 +114,152 @@ export class cServerItemDef {
 
         return maxRank;
 
+    }
+
+    //devuelve un item en forma totalmente aleatoria
+    static getRandomItemDef():enumItemType {
+
+        var arrayPosibleItems = []
+        
+        //primero definimos el tipo de item 
+        var randItemEquip:enumItemEquipType = this.randomIntFromInterval(1,this.maxNumberOfItemEquipTypes);
+
+        //busco la cantidad de item de ese tipo de item
+        var numItemEquip:number = this.arrayItemByEquipType[randItemEquip].length;
+
+        //elijo un item aleatoriamente de los items
+        var randType:enumItemType = this.randomIntFromInterval(0,numItemEquip - 1 );
+
+        //devuelvo el item type
+        return this.arrayItemByEquipType[randItemEquip][randType];
+
+    }
+
+    //aca defino todos los items y sus propiedades
+    static defineItems() {
+        this.arrayItemsDeff = [];
+
+        //defino los items, aca se deberian agregar todos los nuevos items que se crean
+        //TODO cambiar a diccionario mejor. y contar cuantos hay de cada tipo.
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.smallDager;
+        item.itemEquipType = enumItemEquipType.weapon;
+        item.itemFixEfect = enumItemEfects.atack;
+        this.arrayItemsDeff[item.itemType] =item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.dager;
+        item.itemEquipType = enumItemEquipType.weapon;
+        item.itemFixEfect = enumItemEfects.atack;
+        this.arrayItemsDeff[item.itemType] =item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.sword;
+        item.itemEquipType = enumItemEquipType.weapon;
+        item.itemFixEfect = enumItemEfects.atack;
+        this.arrayItemsDeff[item.itemType] =item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.specialDager;
+        item.itemEquipType = enumItemEquipType.weapon;
+        item.itemFixEfect = enumItemEfects.atack;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.javelin;
+        item.itemEquipType = enumItemEquipType.weapon;
+        item.itemFixEfect = enumItemEfects.atack;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.hammer;
+        item.itemEquipType = enumItemEquipType.weapon;
+        item.itemFixEfect = enumItemEfects.atack;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.wand;
+        item.itemEquipType = enumItemEquipType.weapon;
+        item.itemFixEfect = enumItemEfects.atack;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.goldenGloves;
+        item.itemEquipType = enumItemEquipType.special;
+        item.itemFixEfect = enumItemEfects.defense;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.bow;
+        item.itemEquipType = enumItemEquipType.weapon;
+        item.itemFixEfect = enumItemEfects.atack;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.boot;
+        item.itemEquipType = enumItemEquipType.boots;
+        item.itemFixEfect = enumItemEfects.none;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.gloves;
+        item.itemEquipType = enumItemEquipType.special;
+        item.itemFixEfect = enumItemEfects.defense;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.helmet;
+        item.itemEquipType = enumItemEquipType.helmet;
+        item.itemFixEfect = enumItemEfects.defense;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.armor;
+        item.itemEquipType = enumItemEquipType.armor;
+        item.itemFixEfect = enumItemEfects.defense;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.leaderGloves;
+        item.itemEquipType = enumItemEquipType.special;
+        item.itemFixEfect = enumItemEfects.none;
+        this.arrayItemsDeff[item.itemType] = item;
+        
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.shield;
+        item.itemEquipType = enumItemEquipType.special;
+        item.itemFixEfect = enumItemEfects.defense;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        var item:cItemDef = new cItemDef();
+        item.itemType = enumItemType.bigShield;
+        item.itemEquipType = enumItemEquipType.special;
+        item.itemFixEfect = enumItemEfects.defense;
+        this.arrayItemsDeff[item.itemType] = item;
+
+        //lleno el array de los items por equip type para poder elegir aleatoriamente
+        this.arrayItemByEquipType = [];
+
+        for (var i = 1; i <= this.maxNumberOfItemEquipTypes; i++) {
+            this.arrayItemByEquipType[i] = [];
+        }
+
+        this.arrayItemByEquipType[enumItemEquipType.weapon] = [];
+        this.arrayItemByEquipType[enumItemEquipType.boots] = [];
+        this.arrayItemByEquipType[enumItemEquipType.special] = [];
+        this.arrayItemByEquipType[enumItemEquipType.helmet] = [];
+        this.arrayItemByEquipType[enumItemEquipType.armor] = [];
+        this.arrayItemByEquipType[enumItemEquipType.others] = [];
+
+        this.arrayItemsDeff.forEach(item => {
+            this.arrayItemByEquipType[item.itemEquipType].push(item.itemType);
+        })
+
+    }
+
+    static randomIntFromInterval(min,max):number
+    {
+        return Math.floor(Math.random()*(max-min+1)+min);
     }
 
 }
@@ -175,4 +280,11 @@ class cValuesItemsEfect {
 
     }
 
+}
+
+class cItemDef {
+    public itemType:enumItemType;
+    public itemEquipType:enumItemEquipType;
+    public itemFixEfect:enumItemEfects;
+    
 }

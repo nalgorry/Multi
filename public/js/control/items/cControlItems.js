@@ -89,6 +89,7 @@ var cControlItems = (function () {
             itemToReplace.sprite.cameraOffset.copyFrom(item.spriteOriginalPoss);
             itemToReplace.spriteOriginalPoss.copyFrom(item.spriteOriginalPoss);
             itemToReplace.inventoryID = item.inventoryID;
+            itemToReplace.itemEquiped = false;
         }
         else {
             this.arrayfreeInventoryItems.unshift(item.inventoryID);
@@ -192,8 +193,8 @@ var cControlItems = (function () {
         this.controlGame.controlServer.socket.emit('you equip item', { itemsEfects: this.arrayItemEfects });
     };
     cControlItems.prototype.itemOnFloorClick = function (item) {
-        if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 1 &&
-            Math.abs(item.tileY - this.controlGame.controlPlayer.tileY) <= 1) {
+        if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 2 &&
+            Math.abs(item.tileY - this.controlGame.controlPlayer.tileY) <= 2) {
             if (this.arrayfreeInventoryItems.length > 0) {
                 this.controlGame.controlServer.socket.emit('you try get item', { itemID: item.itemID });
             }

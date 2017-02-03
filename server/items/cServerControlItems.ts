@@ -1,4 +1,6 @@
 import {cServerItems} from './cServerItems';
+import {cServerItemDef} from './cServerItemDef';
+
 
 export class cServerControlItems {
 
@@ -8,7 +10,9 @@ export class cServerControlItems {
     constructor(public socket:SocketIO.Server){
 
         this.arrayItems = [];
-        
+
+        //defino todos los objetos
+        cServerItemDef.defineItems();
 
         for (var i = 0; i<5;i++) {
 
@@ -21,6 +25,8 @@ export class cServerControlItems {
 
     }
 
+
+
     public dropItemToFloor(data) {
 
         var itemDrop = this.arrayItems[data.itemId];
@@ -32,6 +38,18 @@ export class cServerControlItems {
             itemDrop.emitNewItem(this.socket)
         } else {
             console.log("itemNoEncontrado");
+        }
+
+    }
+
+    public createNewRandomItem(itemLevel, tileX:number, tileY:number) {
+        
+        var itemType = cServerItemDef.getRandomItemDef();
+
+        if (itemType != undefined) {
+            this.createNewItem(itemType, itemLevel, tileX, tileY);
+        } else {
+            console.log("item no definido correctamente");
         }
 
     }
@@ -70,5 +88,11 @@ export class cServerControlItems {
       }
 
     }
+
+    private randomIntFromInterval(min,max)
+    {
+        return Math.floor(Math.random()*(max-min+1)+min);
+    }
+
 
 }

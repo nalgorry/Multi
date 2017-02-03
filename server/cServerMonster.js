@@ -5,10 +5,12 @@ var cServerMonster = (function () {
         this.controlItems = controlItems;
         this.monsterDie = false; //para chekear si el moustro se murio o no
         this.specialAtackPercent = 0; //porcentaje de que lance el hechizo especial
+        this.agresiveMonster = false; //determina si el moustro ataca por defecto o solo si lo atacan 
         //variables para definir el ataque
         this.gridSize = 40;
         this.monsterAtackTilesX = 13;
         this.monsterAtackTilesY = 9;
+        this.arrayAgresivePlayers = [];
     }
     cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, tileX, tileY) {
         var _this = this;
@@ -44,9 +46,15 @@ var cServerMonster = (function () {
             var playerTileX = Math.round(player.x / this.gridSize);
             var playerTileY = Math.round(player.y / this.gridSize);
             var data;
+            //me fijo si el moustro es pacifico, y si no ya salgo de esta funcion
+            if (this.arrayAgresivePlayers[idPlayer] == undefined && this.agresiveMonster == false) {
+                break;
+            }
+            //me fijo si el jugador esta cerca del monstruo
             if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
                 Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
                 playerNear = player;
+                break;
             }
         }
         if (playerNear != undefined) {
@@ -82,13 +90,14 @@ var cServerMonster = (function () {
         var damage = player.spellActivated(data);
         player.socket.emit('you hit monster', { idMonster: this.monsterId, damage: damage, idSpell: data.idSpell });
         this.monsterLife -= damage;
+        this.arrayAgresivePlayers[player.playerId] = true;
+        console.log(this.arrayAgresivePlayers);
         //controlo si se murio el moustro 
         if (this.monsterLife <= 0) {
             this.socket.emit('monster die', { idMonster: this.monsterId, idPlayer: player.playerId });
             this.monsterDie = true;
             //creo un item para que tire el monstruo
-            var itemType = this.randomIntFromInterval(0, 21); //TODO tengo que ver donde va a quedar esto
-            this.controlItems.createNewItem(itemType, this.monsterItemLevelDrop, this.tileX, this.tileY);
+            this.controlItems.createNewRandomItem(this.monsterItemLevelDrop, this.tileX, this.tileY);
         }
     };
     cServerMonster.prototype.monsterAtack = function () {
@@ -100,34 +109,37 @@ var cServerMonster = (function () {
                 var playerTileX = Math.round(player.x / this.gridSize);
                 var playerTileY = Math.round(player.y / this.gridSize);
                 var data;
-                if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
-                    Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
-                    var randomAtack = Math.random();
-                    if (randomAtack >= this.specialAtackPercent) {
-                        //normal atack 
-                        data = {
-                            idMonster: this.monsterId,
-                            idPlayer: player.playerId,
-                            monsterAtackType: 0,
-                            damage: player.calculateDamage(Math.round(Math.random() * this.randomPower + 1) + this.fixPower),
-                            idSpell: 1 /* BasicAtack */,
-                        };
+                //me fijo si el mostruo es agresivo, o si el jugador lo golpio 
+                if (this.arrayAgresivePlayers[idPlayer] != undefined || this.agresiveMonster == true) {
+                    if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
+                        Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
+                        var randomAtack = Math.random();
+                        if (randomAtack >= this.specialAtackPercent) {
+                            //normal atack 
+                            data = {
+                                idMonster: this.monsterId,
+                                idPlayer: player.playerId,
+                                monsterAtackType: 0,
+                                damage: player.calculateDamage(Math.round(Math.random() * this.randomPower + 1) + this.fixPower),
+                                idSpell: 1 /* BasicAtack */,
+                            };
+                        }
+                        else {
+                            //especial mega atack!!
+                            data = {
+                                idMonster: this.monsterId,
+                                idPlayer: player.playerId,
+                                monsterAtackType: 1,
+                                damage: player.calculateDamage(50),
+                                tileX: playerTileX,
+                                tileY: playerTileY,
+                                spellSize: 150,
+                                coolDownTimeSec: 1,
+                                idSpell: 1 /* BasicAtack */,
+                            };
+                        }
+                        this.socket.emit('monster hit', data);
                     }
-                    else {
-                        //especial mega atack!!
-                        data = {
-                            idMonster: this.monsterId,
-                            idPlayer: player.playerId,
-                            monsterAtackType: 1,
-                            damage: player.calculateDamage(50),
-                            tileX: playerTileX,
-                            tileY: playerTileY,
-                            spellSize: 150,
-                            coolDownTimeSec: 1,
-                            idSpell: 1 /* BasicAtack */,
-                        };
-                    }
-                    this.socket.emit('monster hit', data);
                 }
             }
             var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);

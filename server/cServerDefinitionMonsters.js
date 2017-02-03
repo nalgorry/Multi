@@ -11,6 +11,7 @@ var cServerDefinitionMonsters = (function () {
                 monster.monsterLife = 60;
                 monster.monsterItemLevelDrop = 0;
                 monster.specialAtackPercent = 0;
+                monster.agresiveMonster = false;
                 break;
             case 2 /* Dragon */:
                 monster.randomPower = 25;
@@ -18,6 +19,7 @@ var cServerDefinitionMonsters = (function () {
                 monster.monsterLife = 250;
                 monster.monsterItemLevelDrop = 20;
                 monster.specialAtackPercent = 0.2;
+                monster.agresiveMonster = true;
                 break;
             case 3 /* Wolf */:
                 monster.randomPower = 15;
@@ -25,6 +27,7 @@ var cServerDefinitionMonsters = (function () {
                 monster.monsterLife = 100;
                 monster.monsterItemLevelDrop = 4;
                 monster.specialAtackPercent = 0.1;
+                monster.agresiveMonster = true;
                 break;
             case 4 /* RedWolf */:
                 monster.randomPower = 20;
@@ -32,6 +35,7 @@ var cServerDefinitionMonsters = (function () {
                 monster.monsterLife = 150;
                 monster.monsterItemLevelDrop = 10;
                 monster.specialAtackPercent = 0.5;
+                monster.agresiveMonster = true;
                 break;
             case 5 /* Cosmic */:
                 monster.randomPower = 50;
@@ -39,6 +43,7 @@ var cServerDefinitionMonsters = (function () {
                 monster.monsterLife = 1000;
                 monster.monsterItemLevelDrop = 50;
                 monster.specialAtackPercent = 0.2;
+                monster.agresiveMonster = false;
                 break;
             default:
                 break;

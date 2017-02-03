@@ -133,6 +133,7 @@ class cControlItems {
                 itemToReplace.sprite.cameraOffset.copyFrom(item.spriteOriginalPoss);
                 itemToReplace.spriteOriginalPoss.copyFrom(item.spriteOriginalPoss);
                 itemToReplace.inventoryID = item.inventoryID;
+                itemToReplace.itemEquiped = false;
         } else {
             this.arrayfreeInventoryItems.unshift(item.inventoryID);
         }
@@ -194,7 +195,6 @@ class cControlItems {
             })
 
         });
-
 
         //ya tengo las propiedades de todos los items, simplemente aplico esas propiedades al pj activo.
         this.arrayItemEfects.forEach(efect => {
@@ -258,8 +258,8 @@ class cControlItems {
 
     public itemOnFloorClick(item:cItems) {
         
-        if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 1 && 
-            Math.abs(item.tileY - this.controlGame.controlPlayer.tileY) <= 1 ) { //me fijo si estoy cerca
+        if (Math.abs(item.tileX - this.controlGame.controlPlayer.tileX) <= 2 && 
+            Math.abs(item.tileY - this.controlGame.controlPlayer.tileY) <= 2 ) { //me fijo si estoy cerca
                 if (this.arrayfreeInventoryItems.length > 0) { //me fijo si el inventario no esta lleno
                     this.controlGame.controlServer.socket.emit('you try get item', { itemID: item.itemID });
                 } else { 

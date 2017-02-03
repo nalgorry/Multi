@@ -287,14 +287,6 @@ class cItems {
 
     }
 
-    equipItem(itemID:number)    {
-
-    }
-
-    getItemFromTile() {
-     
-    }
-
 
     public deleteItem() {
         this.sprite.destroy(true);

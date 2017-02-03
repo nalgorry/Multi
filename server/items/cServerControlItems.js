@@ -1,10 +1,13 @@
 "use strict";
 var cServerItems_1 = require('./cServerItems');
+var cServerItemDef_1 = require('./cServerItemDef');
 var cServerControlItems = (function () {
     function cServerControlItems(socket) {
         this.socket = socket;
         this.nextIdItems = 0;
         this.arrayItems = [];
+        //defino todos los objetos
+        cServerItemDef_1.cServerItemDef.defineItems();
         for (var i = 0; i < 5; i++) {
             var itemId = "i" + this.nextIdItems;
             var newItem = new cServerItems_1.cServerItems(socket, itemId, i, 10, 40 + i, 95);
@@ -22,6 +25,15 @@ var cServerControlItems = (function () {
         }
         else {
             console.log("itemNoEncontrado");
+        }
+    };
+    cServerControlItems.prototype.createNewRandomItem = function (itemLevel, tileX, tileY) {
+        var itemType = cServerItemDef_1.cServerItemDef.getRandomItemDef();
+        if (itemType != undefined) {
+            this.createNewItem(itemType, itemLevel, tileX, tileY);
+        }
+        else {
+            console.log("item no definido correctamente");
         }
     };
     cServerControlItems.prototype.createNewItem = function (itemType, itemLevel, tileX, tileY) {
@@ -47,6 +59,9 @@ var cServerControlItems = (function () {
         else {
             console.log("el item ya fue agarrado");
         }
+    };
+    cServerControlItems.prototype.randomIntFromInterval = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     };
     return cServerControlItems;
 }());

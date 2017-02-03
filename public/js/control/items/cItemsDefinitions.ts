@@ -1,12 +1,3 @@
-const enum enumItemEquipType {
-    weapon = 1,
-    boots = 2,
-    special = 3, //escudos, anillos, etc
-    helmet = 4,
-    armor = 5,
-    others = 6,
-}
-
 class cItemsDefinitions {
 
     static defineItem(item:cItems) {

@@ -59,8 +59,12 @@ export class cServerControlMonster {
             if (monster.monsterDie == true) { 
                 delete this.arrayMonster[data.idMonster];
 
-                //creo un nuevo monster
-                this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),this.randomIntFromInterval(1,4))
+                //creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo 
+                if (monster.monsterType != enumMonsters.Cosmic) {
+                    this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),this.randomIntFromInterval(1,4))
+                } else {
+                    this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),enumMonsters.Cosmic);
+                }
             }   
         } else {
             console.log("monstruo no encontrado");

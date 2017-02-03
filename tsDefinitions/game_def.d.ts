@@ -20,6 +20,16 @@
         LightingStorm = 6,
 
     }
+
+    declare const enum enumItemEquipType {
+    weapon = 1,
+    boots = 2,
+    special = 3, //escudos, anillos, etc
+    helmet = 4,
+    armor = 5,
+    others = 6,
+    }
+
     
     declare const enum enumItemType {
         smallDager = 0,
@@ -42,6 +52,7 @@
     }
 
     declare const enum enumItemEfects {
+        none = -1,
         focusLife,
         focusMana,
         focusEnergy,

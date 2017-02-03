@@ -12,6 +12,7 @@ export class cServerDefinitionMonsters {
                 monster.monsterLife = 60;
                 monster.monsterItemLevelDrop = 0;
                 monster.specialAtackPercent = 0;
+                monster.agresiveMonster = false;
                 break;
             case enumMonsters.Dragon:
                 monster.randomPower = 25;
@@ -19,6 +20,7 @@ export class cServerDefinitionMonsters {
                 monster.monsterLife = 250;
                 monster.monsterItemLevelDrop = 20;
                 monster.specialAtackPercent = 0.2;
+                monster.agresiveMonster = true;
                 break;
             case enumMonsters.Wolf:
                 monster.randomPower = 15;
@@ -26,6 +28,7 @@ export class cServerDefinitionMonsters {
                 monster.monsterLife = 100;
                 monster.monsterItemLevelDrop = 4;
                 monster.specialAtackPercent = 0.1;
+                monster.agresiveMonster = true;
                 break;
             case enumMonsters.RedWolf:
                 monster.randomPower = 20;
@@ -33,6 +36,7 @@ export class cServerDefinitionMonsters {
                 monster.monsterLife = 150;
                 monster.monsterItemLevelDrop = 10;
                 monster.specialAtackPercent = 0.5;
+                monster.agresiveMonster = true;
                 break;
             case enumMonsters.Cosmic:
                 monster.randomPower = 50;
@@ -40,6 +44,7 @@ export class cServerDefinitionMonsters {
                 monster.monsterLife = 1000;
                 monster.monsterItemLevelDrop = 50;
                 monster.specialAtackPercent = 0.2;
+                monster.agresiveMonster = false;
                 break;
             default:
                 break;
