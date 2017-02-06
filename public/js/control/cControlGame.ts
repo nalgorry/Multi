@@ -34,18 +34,7 @@ class cControlGame {
         // Configuro el mundo para que sea centrado en el personaje
         this.game.world.setBounds(0, 0, tamanoMapa*this.gridSize, tamanoMapa*this.gridSize);
         
-        //controlo que aparezca en todo el navegador.
-        if (this.game.device.desktop == false) {
-            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            this.game.scale.windowConstraints.right = 'layout';
-            this.game.scale.windowConstraints.bottom = 'layout';
-        } 
-
-        this.game.scale.pageAlignHorizontally = true;
-        this.game.scale.pageAlignVertically = true;
-        
-
-        //  Our tiled scrolling background
+         //  Our tiled scrolling background
         this.map = this.game.add.tilemap('map');
         this.map.addTilesetImage('tiles', 'tiles');
         this.hitLayer = this.map.createLayer('HitTest',this.game.width - this.interfazWidth);
