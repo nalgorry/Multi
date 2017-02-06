@@ -20,6 +20,7 @@ export class cServerControlMonster {
        //creo el mounstro COSMICO
        this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),5);
 
+
     }
 
     public getMonsterById(id:string):cServerMonster {
@@ -32,6 +33,15 @@ export class cServerControlMonster {
         for (var monster in this.arrayMonster) {
             this.arrayMonster[monster].sendMonsterToNewPlayer(socket);    
         }
+
+        //le mando el moustro para el tutorial.
+        //var tutorialMonster:cServerMonster = new cServerMonster(this.controlItems);
+        //tutorialMonster.tileX = 52;
+        //tutorialMonster.tileY = 93;
+        //tutorialMonster.monsterType = enumMonsters.FirstMonster;
+        //tutorialMonster.sendMonsterToNewPlayer(socket);
+        //this.arrayMonster.push(tutorialMonster);
+
 
     }
 

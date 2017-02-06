@@ -17,6 +17,8 @@ class cControlGame {
     public controlConsole:cControlConsole;
     public controlMonsters:cControlMonsters;
 
+    private groupInitialHelp:Phaser.Group;
+
     interfazWidth:number;
     marker; //to get the mouse
     point;
@@ -93,7 +95,47 @@ class cControlGame {
         //inicio la consola
         this.controlConsole = new cControlConsole(this);
 
+        //inicio las ayudas 
+        this.addTutorial();
 
+
+    }
+
+    private addTutorial() {
+        //agrego todas las ayudas
+        this.groupInitialHelp = new Phaser.Group(this.game);
+
+        var controls = this.game.add.sprite(40 * this.gridSize, 90 * this.gridSize,'controls');
+        var yourItems = this.game.add.sprite(45 * this.gridSize, 95 * this.gridSize,'help_arrow');
+        var yourItemsText = this.game.add.bitmapText(46.5 * this.gridSize, 95.5 * this.gridSize, 'gotic', 'Items!\nGet Close And Click!', 16);
+
+        var yourSpells = this.game.add.sprite(950, 225, 'help_arrow_2');
+        yourSpells.fixedToCamera = true;
+        var yourSpellsText = this.game.add.bitmapText(850, 250, 'gotic', 'Your Spells', 16);
+        yourSpellsText.fixedToCamera = true;
+
+        var closseHelp = this.game.add.bitmapText(825, 600, 'gotic', 'Close All Helps (X)', 16);
+        closseHelp.fixedToCamera = true;
+
+        var monsterHelp = this.game.add.sprite(50 * this.gridSize, 90.5 * this.gridSize, 'help_arrow_3');
+        var monsterHelpText = this.game.add.bitmapText(46 * this.gridSize, 90 * this.gridSize, 'gotic', 'Select Monster to Focus!', 16);
+
+        this.groupInitialHelp.add(controls);
+        this.groupInitialHelp.add(yourItems);
+        this.groupInitialHelp.add(yourItemsText);
+        this.groupInitialHelp.add(yourSpells);
+        this.groupInitialHelp.add(yourSpellsText);
+        this.groupInitialHelp.add(monsterHelp);
+        this.groupInitialHelp.add(monsterHelpText);
+        this.groupInitialHelp.add(closseHelp);
+
+        //para sacar la ayuda inicial con X
+        var closeHelp = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+        closeHelp.onDown.add(this.closeHelp,this);
+    }
+
+    private closeHelp() {
+        this.groupInitialHelp.destroy();
     }
 
     ObjectsConfiguration (child:Phaser.Sprite) {

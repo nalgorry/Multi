@@ -22,6 +22,13 @@ var cServerControlMonster = (function () {
         for (var monster in this.arrayMonster) {
             this.arrayMonster[monster].sendMonsterToNewPlayer(socket);
         }
+        //le mando el moustro para el tutorial.
+        //var tutorialMonster:cServerMonster = new cServerMonster(this.controlItems);
+        //tutorialMonster.tileX = 52;
+        //tutorialMonster.tileY = 93;
+        //tutorialMonster.monsterType = enumMonsters.FirstMonster;
+        //tutorialMonster.sendMonsterToNewPlayer(socket);
+        //this.arrayMonster.push(tutorialMonster);
     };
     cServerControlMonster.prototype.createNewMonster = function (tileX, tileY, monsterType) {
         var newMonster = new cServerMonster_1.cServerMonster(this.controlItems);
