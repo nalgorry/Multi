@@ -12,30 +12,25 @@ var cServerMonster = (function () {
         this.monsterAtackTilesY = 9;
         this.arrayAgresivePlayers = [];
     }
-    cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, tileX, tileY) {
+    cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, monsterRespawn, tileX, tileY) {
         var _this = this;
         this.monsterId = monsterId;
         this.socket = socket;
         this.controlPlayer = controlPlayer;
         this.tileX = tileX;
         this.tileY = tileY;
+        this.monsterRespawn = monsterRespawn;
         //valores que dependen del tipo de monstruo
         this.monsterType = monsterType;
         cServerDefinitionMonsters_1.cServerDefinitionMonsters.defineMonsters(this, monsterType);
-        this.emitNewMonster();
+        this.emitNewMonster(socket);
         var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
         var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
     };
     cServerMonster.prototype.emitNewMonster = function (socket) {
-        if (socket === void 0) { socket = null; }
         //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
         var monsterdata = { id: this.monsterId, tileX: this.tileX, tileY: this.tileY, monsterType: this.monsterType };
-        if (socket == null) {
-            this.socket.emit('new Monster', monsterdata);
-        }
-        else {
-            socket.emit('new Monster', monsterdata);
-        }
+        socket.emit('new Monster', monsterdata);
     };
     cServerMonster.prototype.monsterMove = function () {
         var _this = this;

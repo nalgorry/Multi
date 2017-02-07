@@ -18,6 +18,8 @@ class cControlGame {
     public controlMonsters:cControlMonsters;
 
     private groupInitialHelp:Phaser.Group;
+    private groupInitialHelpBotons:Phaser.Group;
+    private tutorialNumber:number = 1;
 
     interfazWidth:number;
     marker; //to get the mouse
@@ -85,46 +87,141 @@ class cControlGame {
         this.controlConsole = new cControlConsole(this);
 
         //inicio las ayudas 
-        this.addTutorial();
+        this.addTutorial(this.tutorialNumber);
 
 
     }
 
-    private addTutorial() {
-        //agrego todas las ayudas
-        this.groupInitialHelp = new Phaser.Group(this.game);
+    private addTutorial(tutorialNumber:number) {
+        
+        switch (tutorialNumber) {
+            case 1: //enseño a levantar Items
 
-        var controls = this.game.add.sprite(40 * this.gridSize, 90 * this.gridSize,'controls');
-        var yourItems = this.game.add.sprite(45 * this.gridSize, 95 * this.gridSize,'help_arrow');
-        var yourItemsText = this.game.add.bitmapText(46.5 * this.gridSize, 95.5 * this.gridSize, 'gotic', 'Items!\nGet Close And Click!', 16);
+                //grupo de todos los elementos de ayuda
+                this.groupInitialHelp = new Phaser.Group(this.game);
+                this.groupInitialHelpBotons = new Phaser.Group(this.game);
 
-        var yourSpells = this.game.add.sprite(950, 225, 'help_arrow_2');
-        yourSpells.fixedToCamera = true;
-        var yourSpellsText = this.game.add.bitmapText(850, 250, 'gotic', 'Your Spells', 16);
-        yourSpellsText.fixedToCamera = true;
+                //enseñamos a levantar items
+                var controls = this.game.add.sprite(40 * this.gridSize, 90 * this.gridSize,'controls');
+                this.groupInitialHelp.add(controls)
+                
+                var yourItems = this.game.add.sprite(45 * this.gridSize, 95 * this.gridSize,'help_arrow');
+                var yourItemsText = this.game.add.bitmapText(46.5 * this.gridSize, 95.5 * this.gridSize, 'gotic', 'I - Items!\nGet Close And Click!', 16);
+                this.groupInitialHelp.add(yourItems);
+                this.groupInitialHelp.add(yourItemsText);
 
-        var closseHelp = this.game.add.bitmapText(825, 600, 'gotic', 'Close All Helps (X)', 16);
-        closseHelp.fixedToCamera = true;
+                var yourItems = this.game.add.sprite(960, 500, 'help_arrow_3');
+                yourItems.fixedToCamera = true;
+                var yourItemsText = this.game.add.bitmapText(700, 470, 'gotic', 'II - After you get a item\n it will apear in you inventory!', 16);
+                yourItemsText.fixedToCamera = true;
+                this.groupInitialHelp.add(yourItems);
+                this.groupInitialHelp.add(yourItemsText);
 
-        var monsterHelp = this.game.add.sprite(50 * this.gridSize, 90.5 * this.gridSize, 'help_arrow_3');
-        var monsterHelpText = this.game.add.bitmapText(46 * this.gridSize, 90 * this.gridSize, 'gotic', 'Select Monster to Focus!', 16);
+                var yourItems = this.game.add.sprite(970, 350, 'help_arrow_3');
+                yourItems.fixedToCamera = true;
+                var yourItemsText = this.game.add.bitmapText(730, 310, 'gotic', 'III - Drag your item from\n you inventory to here to equip', 16);
+                yourItemsText.fixedToCamera = true;
+                this.groupInitialHelp.add(yourItems);
+                this.groupInitialHelp.add(yourItemsText);
 
-        this.groupInitialHelp.add(controls);
-        this.groupInitialHelp.add(yourItems);
-        this.groupInitialHelp.add(yourItemsText);
-        this.groupInitialHelp.add(yourSpells);
-        this.groupInitialHelp.add(yourSpellsText);
-        this.groupInitialHelp.add(monsterHelp);
-        this.groupInitialHelp.add(monsterHelpText);
-        this.groupInitialHelp.add(closseHelp);
+                //para sacar la ayuda inicial con X
+                var closseHelp = this.game.add.bitmapText(20, 500, 'gotic', 'Close All Helps (X)', 16);
+                closseHelp.fixedToCamera = true;
 
-        //para sacar la ayuda inicial con X
-        var closeHelp = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
-        closeHelp.onDown.add(this.closeHelp,this);
+                var closeHelpKey = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+                closeHelpKey.onDown.add(this.closeHelp,this);
+                
+                //para activar el siguiente tutorial
+                var nextTutorial = this.game.add.bitmapText(20, 460, 'gotic', 'Next Tutorial!', 16);
+                nextTutorial.fixedToCamera = true;
+                nextTutorial.inputEnabled = true;
+                nextTutorial.events.onInputUp.add(this.goNextTutorial,this);
+
+                this.groupInitialHelpBotons.add(closseHelp);
+                this.groupInitialHelpBotons.add(nextTutorial);
+
+                break;
+            case 2: //enseño a atacar a un monstruo
+
+                this.groupInitialHelp.destroy();
+                this.groupInitialHelp = new Phaser.Group(this.game);
+
+                var yourSpells = this.game.add.sprite(950, 225, 'help_arrow_2');
+                yourSpells.fixedToCamera = true;
+                var yourSpellsText = this.game.add.bitmapText(700, 250, 'gotic', 'II - After focus the monster...\n press this spell to atack him!', 16);
+                yourSpellsText.fixedToCamera = true;
+                this.groupInitialHelp.add(yourSpells);
+                this.groupInitialHelp.add(yourSpellsText);
+
+                var monsterHelp = this.game.add.sprite(50 * this.gridSize, 90.5 * this.gridSize, 'help_arrow_3');
+                var monsterHelpText = this.game.add.bitmapText(46 * this.gridSize, 90 * this.gridSize, 'gotic', 'I - Select Monster to Focus!', 16);
+                this.groupInitialHelp.add(monsterHelp);
+                this.groupInitialHelp.add(monsterHelpText);
+
+                break;
+                
+            case 3: //enseño a focalizar en el mismo
+
+                this.groupInitialHelp.destroy();
+                this.groupInitialHelp = new Phaser.Group(this.game);
+
+                var selectYou = this.game.add.sprite(43 * this.gridSize, 87 * this.gridSize, 'help_arrow_3');
+                var selectYouText = this.game.add.bitmapText(39 * this.gridSize, 86.5 * this.gridSize, 'gotic', 'I - Click your character\n to focus in you!', 16);
+                this.groupInitialHelp.add(selectYou);
+                this.groupInitialHelp.add(selectYouText);
+
+                var yourSpells = this.game.add.sprite(950, 280, 'help_arrow_2');
+                yourSpells.fixedToCamera = true;
+                var yourSpellsText = this.game.add.bitmapText(710, 280, 'gotic', 'II - After focus you click this\n spell to activate a shield!', 16);
+                yourSpellsText.fixedToCamera = true;
+                this.groupInitialHelp.add(yourSpells);
+                this.groupInitialHelp.add(yourSpellsText);
+
+
+
+                break;
+
+            case 4: //enseño a usar el focus
+                this.groupInitialHelp.destroy();
+                this.groupInitialHelp = new Phaser.Group(this.game);
+
+                var yourSpells = this.game.add.sprite(950, 150, 'help_arrow_2');
+                yourSpells.fixedToCamera = true;
+                var yourSpellsText = this.game.add.bitmapText(550, 150, 'gotic', 'This are your starts.\n Click on the potions or bars to activate focus. \n The resorse that is focus goes up much faster.', 16);
+                yourSpellsText.fixedToCamera = true;
+                this.groupInitialHelp.add(yourSpells);
+                this.groupInitialHelp.add(yourSpellsText);
+
+                break;
+
+            case 5: //FIN :)
+                this.groupInitialHelp.destroy();
+                this.groupInitialHelp = new Phaser.Group(this.game);
+
+                var finalText = this.game.add.bitmapText(260, 130, 'gotic', 'That is all! \n Explore the word to kill monsters \n and get great items!. \n Have FUN.', 16);
+                finalText.fixedToCamera = true;
+                this.groupInitialHelp.add(finalText);
+
+                break;
+
+            case 6: //Saco todos los carteles
+                this.groupInitialHelp.destroy();
+                this.groupInitialHelpBotons.destroy();
+            
+            default:
+                break;
+        }
+
+    }
+
+    private goNextTutorial() {
+        this.tutorialNumber += 1;
+        this.addTutorial(this.tutorialNumber);
     }
 
     private closeHelp() {
         this.groupInitialHelp.destroy();
+        this.groupInitialHelpBotons.destroy();
     }
 
     ObjectsConfiguration (child:Phaser.Sprite) {

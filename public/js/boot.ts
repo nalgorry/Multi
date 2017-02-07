@@ -21,7 +21,7 @@ class boot extends Phaser.State {
             this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.game.scale.windowConstraints.right = 'layout';
             this.game.scale.windowConstraints.bottom = 'layout';
-            this.game.scale.forceLandscape = true;
+            //this.game.scale.forceLandscape = true;
         } else {
             this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.game.scale.minWidth = 500;

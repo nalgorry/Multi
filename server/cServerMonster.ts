@@ -19,6 +19,7 @@ export class cServerMonster {
     public specialAtackPercent:number = 0 //porcentaje de que lance el hechizo especial
     public agresiveMonster = false; //determina si el moustro ataca por defecto o solo si lo atacan 
     public arrayAgresivePlayers:boolean[];
+    public monsterRespawn:boolean;
 
     public monsterItemLevelDrop:number;
 
@@ -36,6 +37,7 @@ export class cServerMonster {
                 monsterType:enumMonsters,
                 socket:SocketIO.Server,
                 controlPlayer:cServerControlPlayers,
+                monsterRespawn:boolean,
                 tileX:number,tileY:number
                 ) {
 
@@ -45,29 +47,25 @@ export class cServerMonster {
         this.controlPlayer = controlPlayer;
         this.tileX = tileX;
         this.tileY = tileY;
+        this.monsterRespawn = monsterRespawn;
         
         //valores que dependen del tipo de monstruo
         this.monsterType = monsterType;
 
         cServerDefinitionMonsters.defineMonsters(this,monsterType)
 
-        this.emitNewMonster()
+        this.emitNewMonster(socket);
     
          var timerAtack = setTimeout(() => this.monsterAtack(), 1200);
          var timerMove = setTimeout(() => this.monsterMove(), 800);
 
     }
 
-    private emitNewMonster(socket:SocketIO.Server = null) {
+    private emitNewMonster(socket:SocketIO.Server) {
         //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
         var monsterdata =  {id:this.monsterId,tileX:this.tileX, tileY:this.tileY,monsterType:this.monsterType};
 
-        if (socket == null) {
-            this.socket.emit('new Monster',monsterdata);
-        }
-        else {
-            socket.emit('new Monster', monsterdata);
-        }
+        socket.emit('new Monster', monsterdata);
 
     }
 

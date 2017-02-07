@@ -13,12 +13,12 @@ export class cServerControlMonster {
         
         //creo los primeros monters :)
 
-       for (var i=1; i<=25;i++) {
-           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),this.randomIntFromInterval(1,4));
+       for (var i=1; i<=30;i++) {
+           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),this.randomIntFromInterval(1,4), true);
        }
 
        //creo el mounstro COSMICO
-       this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),5);
+       this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),5,true);
 
 
     }
@@ -34,22 +34,20 @@ export class cServerControlMonster {
             this.arrayMonster[monster].sendMonsterToNewPlayer(socket);    
         }
 
-        //le mando el moustro para el tutorial.
-        //var tutorialMonster:cServerMonster = new cServerMonster(this.controlItems);
-        //tutorialMonster.tileX = 52;
-        //tutorialMonster.tileY = 93;
-        //tutorialMonster.monsterType = enumMonsters.FirstMonster;
-        //tutorialMonster.sendMonsterToNewPlayer(socket);
-        //this.arrayMonster.push(tutorialMonster);
 
+        //le mando el moustro para el tutorial solo a este jugador.
+        var newMonster = new cServerMonster(this.controlItems);
+        newMonster.startMonster("m" + this.nextIdMonster, enumMonsters.FirstMonster, socket, this.controlPlayer, false , 52, 93);
+        this.arrayMonster["m" + this.nextIdMonster] = newMonster;
+        this.nextIdMonster += 1;
 
     }
 
-    private createNewMonster(tileX:number,tileY:number,monsterType:enumMonsters) {
+    private createNewMonster(tileX:number,tileY:number,monsterType:enumMonsters,monsterRespawn:boolean) {
         
         var newMonster = new cServerMonster(this.controlItems);
 
-        newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, tileX, tileY);
+        newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, monsterRespawn, tileX, tileY);
         
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
 
@@ -69,11 +67,13 @@ export class cServerControlMonster {
             if (monster.monsterDie == true) { 
                 delete this.arrayMonster[data.idMonster];
 
-                //creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo 
-                if (monster.monsterType != enumMonsters.Cosmic) {
-                    this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),this.randomIntFromInterval(1,4))
-                } else {
-                    this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),enumMonsters.Cosmic);
+                //creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo
+                if (monster.monsterRespawn == true) { 
+                    if (monster.monsterType != enumMonsters.Cosmic) {
+                        this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),this.randomIntFromInterval(1,4),true)
+                    } else {
+                        this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),enumMonsters.Cosmic,true);
+                    }
                 }
             }   
         } else {
