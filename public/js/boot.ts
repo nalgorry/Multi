@@ -3,7 +3,6 @@ class boot extends Phaser.State {
     preload() {
     
                 this.load.image('preloadBar', 'assets/preloader.png');
-                console.log("llega");
     
             }
     

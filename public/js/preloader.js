@@ -38,6 +38,9 @@ var preloader = (function (_super) {
         this.game.load.image('help_arrow_2', 'assets/help_arrow_2.png');
         this.game.load.image('help_arrow_3', 'assets/help_arrow_3.png');
         this.game.load.bitmapFont('gotic', 'assets/font.png', 'assets/font.fnt');
+        this.game.load.audio('run', 'assets/sounds/run.ogg');
+        this.game.load.audio('basic_hit', 'assets/sounds/basic_hit.ogg');
+        this.game.load.audio('heal_spell', 'assets/sounds/heal_spell.ogg');
     };
     preloader.prototype.create = function () {
         var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);

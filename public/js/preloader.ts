@@ -45,6 +45,10 @@ class preloader extends Phaser.State {
         this.game.load.image('help_arrow_3', 'assets/help_arrow_3.png');
 
         this.game.load.bitmapFont('gotic', 'assets/font.png', 'assets/font.fnt');
+        
+        this.game.load.audio('run', 'assets/sounds/run.ogg');
+        this.game.load.audio('basic_hit', 'assets/sounds/basic_hit.ogg');
+        this.game.load.audio('heal_spell', 'assets/sounds/heal_spell.ogg');
          
 
     }

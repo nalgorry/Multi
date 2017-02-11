@@ -35,7 +35,7 @@ class mainMenu extends Phaser.State {
         this.controlOtherPlayers,this.controlChat);
         this.controlGame.controlServer = this.controlServer;
         this.controlChat.controlServer = this.controlServer;
-        
+
     }
 
     update() {

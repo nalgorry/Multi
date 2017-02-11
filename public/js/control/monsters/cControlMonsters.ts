@@ -118,7 +118,8 @@ class cControlMonsters {
     public youHitMonster(data) {
 
         if (data.damage != 0 ) {
-            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste al monstruo por " + data.damage)
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste al monstruo por " + data.damage);
+            this.controlGame.controlSounds.startSoundHit(null);
             
             //pongo una animación sobre el pj 
             var monster = this.arrayMonster[data.idMonster];

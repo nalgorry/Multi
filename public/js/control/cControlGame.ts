@@ -16,6 +16,7 @@ class cControlGame {
     public controlPlayer:cControlPlayer;
     public controlConsole:cControlConsole;
     public controlMonsters:cControlMonsters;
+    public controlSounds:cControlSounds;
 
     private groupInitialHelp:Phaser.Group;
     private groupInitialHelpBotons:Phaser.Group;
@@ -85,6 +86,9 @@ class cControlGame {
 
         //inicio la consola
         this.controlConsole = new cControlConsole(this);
+
+        //inicio los sonidos 
+        this.controlSounds = new cControlSounds(this);
 
         //inicio las ayudas 
         this.addTutorial(this.tutorialNumber);
@@ -165,8 +169,10 @@ class cControlGame {
                 this.groupInitialHelp.destroy();
                 this.groupInitialHelp = new Phaser.Group(this.game);
 
-                var selectYou = this.game.add.sprite(43 * this.gridSize, 87 * this.gridSize, 'help_arrow_3');
-                var selectYouText = this.game.add.bitmapText(39 * this.gridSize, 86.5 * this.gridSize, 'gotic', 'I - Click your character\n to focus in you!', 16);
+                var selectYou = this.game.add.sprite(408, 250, 'help_arrow_3');
+                selectYou.fixedToCamera = true;
+                var selectYouText = this.game.add.bitmapText(250, 230, 'gotic', 'I - Click your character\n to focus in you!', 16);
+                selectYouText.fixedToCamera = true;
                 this.groupInitialHelp.add(selectYou);
                 this.groupInitialHelp.add(selectYouText);
 

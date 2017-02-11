@@ -153,8 +153,12 @@ var cControlPlayer = (function (_super) {
         if (this.controlFocus.UpdateLife(-data.damage)) {
             this.youDie(data);
         }
-        if (data.damage != 0) {
+        if (data.damage > 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit, "Te golpearon por " + data.damage);
+        }
+        else if (data.damage < 0) {
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Te curaron por " + -data.damage);
+            this.controlGame.controlSounds.startSoundHealSpell(null);
         }
         this.controlGame.controlPlayer.controlSpells.onHit(data, this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
     };
@@ -165,8 +169,13 @@ var cControlPlayer = (function (_super) {
         }
     };
     cControlPlayer.prototype.youHit = function (data) {
-        if (data.damage != 0) {
+        if (data.damage > 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Golpeaste por " + data.damage);
+            this.controlGame.controlSounds.startSoundHit(null);
+        }
+        else if (data.damage < 0) {
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Curaste por " + -data.damage);
+            this.controlGame.controlSounds.startSoundHealSpell(null);
         }
     };
     cControlPlayer.prototype.youDie = function (data) {
@@ -203,6 +212,16 @@ var cControlPlayer = (function (_super) {
                 this.playerSprite.body.velocity.x = this.speedplayer * this.lastMoveX;
                 this.playerSprite.body.velocity.y = this.speedplayer * this.lastMoveY;
             }
+        }
+        //me fijo si esta efectivamente moviendose para activar los sonidos 
+        if (this.seMueveX == true && this.playerSprite.body.blocked.left == false && this.playerSprite.body.blocked.right == false) {
+            this.controlGame.controlSounds.startRun();
+        }
+        else if (this.seMueveY == true && this.playerSprite.body.blocked.up == false && this.playerSprite.body.blocked.down == false) {
+            this.controlGame.controlSounds.startRun();
+        }
+        else {
+            this.controlGame.controlSounds.stopRun();
         }
         //para mandar el movimiento solo si paso el centro del jugador 
         var xOffset = this.playerSprite.x;

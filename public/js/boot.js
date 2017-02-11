@@ -10,7 +10,6 @@ var boot = (function (_super) {
     }
     boot.prototype.preload = function () {
         this.load.image('preloadBar', 'assets/preloader.png');
-        console.log("llega");
     };
     boot.prototype.create = function () {
         //  Unless you specifically need to support multitouch I would recommend setting this to 1
