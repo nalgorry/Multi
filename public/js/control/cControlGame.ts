@@ -20,7 +20,7 @@ class cControlGame {
 
     private groupInitialHelp:Phaser.Group;
     private groupInitialHelpBotons:Phaser.Group;
-    private tutorialNumber:number = 1;
+    private tutorialNumber:number = 0;
 
     interfazWidth:number;
     marker; //to get the mouse
@@ -99,15 +99,43 @@ class cControlGame {
     private addTutorial(tutorialNumber:number) {
         
         switch (tutorialNumber) {
-            case 1: //enseño a levantar Items
-
+            case 0: //enseño a moverse
                 //grupo de todos los elementos de ayuda
                 this.groupInitialHelp = new Phaser.Group(this.game);
                 this.groupInitialHelpBotons = new Phaser.Group(this.game);
-
-                //enseñamos a levantar items
+            
                 var controls = this.game.add.sprite(40 * this.gridSize, 90 * this.gridSize,'controls');
-                this.groupInitialHelp.add(controls)
+                this.groupInitialHelp.add(controls);
+
+                var moveText = this.game.add.bitmapText(44* this.gridSize, 91 * this.gridSize, 'gotic', 'Use AWSD to move!', 16);
+                this.groupInitialHelp.add(moveText);
+
+                //para sacar la ayuda inicial con X
+                var closseHelp = this.game.add.bitmapText(300, 460 + 30, 'gotic', 'Close All Helps (X)', 16);
+                closseHelp.fixedToCamera = true;
+                closseHelp.inputEnabled = true 
+                closseHelp.events.onInputDown.add(this.closeHelp,this);
+
+                var closeHelpKey = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+                closeHelpKey.onDown.add(this.closeHelp,this);
+                
+                //para activar el siguiente tutorial
+                var nextTutorial = this.game.add.bitmapText(300, 460, 'gotic', 'Next Tutorial (N)', 16);
+                nextTutorial.fixedToCamera = true;
+                nextTutorial.inputEnabled = true;
+                nextTutorial.events.onInputUp.add(this.goNextTutorial,this);
+
+                var nextTutorialKey = this.game.input.keyboard.addKey(Phaser.Keyboard.N);
+                nextTutorialKey.onDown.add(this.goNextTutorial,this);
+
+                this.groupInitialHelpBotons.add(closseHelp);
+                this.groupInitialHelpBotons.add(nextTutorial);
+
+                break;
+            case 1: //enseño a levantar Items
+
+                this.groupInitialHelp.destroy();
+                this.groupInitialHelp = new Phaser.Group(this.game);
                 
                 var yourItems = this.game.add.sprite(45 * this.gridSize, 95 * this.gridSize,'help_arrow');
                 var yourItemsText = this.game.add.bitmapText(46.5 * this.gridSize, 95.5 * this.gridSize, 'gotic', 'I - Items!\nGet Close And Click!', 16);
@@ -121,31 +149,30 @@ class cControlGame {
                 this.groupInitialHelp.add(yourItems);
                 this.groupInitialHelp.add(yourItemsText);
 
-                var yourItems = this.game.add.sprite(970, 350, 'help_arrow_3');
+
+                break;
+
+            case 2:
+
+                this.groupInitialHelp.destroy();
+                this.groupInitialHelp = new Phaser.Group(this.game);
+
+                var yourItems = this.game.add.sprite(950, 500, 'help_arrow_3');
                 yourItems.fixedToCamera = true;
-                var yourItemsText = this.game.add.bitmapText(730, 310, 'gotic', 'III - Drag your item from\n you inventory to here to equip', 16);
+                var yourItemsText = this.game.add.bitmapText(840, 480, 'gotic', 'I - Drag From Here!', 16);
                 yourItemsText.fixedToCamera = true;
                 this.groupInitialHelp.add(yourItems);
                 this.groupInitialHelp.add(yourItemsText);
 
-                //para sacar la ayuda inicial con X
-                var closseHelp = this.game.add.bitmapText(20, 500, 'gotic', 'Close All Helps (X)', 16);
-                closseHelp.fixedToCamera = true;
-
-                var closeHelpKey = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
-                closeHelpKey.onDown.add(this.closeHelp,this);
-                
-                //para activar el siguiente tutorial
-                var nextTutorial = this.game.add.bitmapText(20, 460, 'gotic', 'Next Tutorial!', 16);
-                nextTutorial.fixedToCamera = true;
-                nextTutorial.inputEnabled = true;
-                nextTutorial.events.onInputUp.add(this.goNextTutorial,this);
-
-                this.groupInitialHelpBotons.add(closseHelp);
-                this.groupInitialHelpBotons.add(nextTutorial);
+                var yourItems = this.game.add.sprite(970, 350, 'help_arrow_3');
+                yourItems.fixedToCamera = true;
+                var yourItemsText = this.game.add.bitmapText(780, 325, 'gotic', 'II - Drag To Here to Equip', 16);
+                yourItemsText.fixedToCamera = true;
+                this.groupInitialHelp.add(yourItems);
+                this.groupInitialHelp.add(yourItemsText);
 
                 break;
-            case 2: //enseño a atacar a un monstruo
+            case 3: //enseño a atacar a un monstruo
 
                 this.groupInitialHelp.destroy();
                 this.groupInitialHelp = new Phaser.Group(this.game);
@@ -164,14 +191,14 @@ class cControlGame {
 
                 break;
                 
-            case 3: //enseño a focalizar en el mismo
+            case 4: //enseño a focalizar en el mismo
 
                 this.groupInitialHelp.destroy();
                 this.groupInitialHelp = new Phaser.Group(this.game);
 
                 var selectYou = this.game.add.sprite(408, 250, 'help_arrow_3');
                 selectYou.fixedToCamera = true;
-                var selectYouText = this.game.add.bitmapText(250, 230, 'gotic', 'I - Click your character\n to focus in you!', 16);
+                var selectYouText = this.game.add.bitmapText(250, 230, 'gotic', 'I - Click your character\n to focus you!', 16);
                 selectYouText.fixedToCamera = true;
                 this.groupInitialHelp.add(selectYou);
                 this.groupInitialHelp.add(selectYouText);
@@ -182,12 +209,9 @@ class cControlGame {
                 yourSpellsText.fixedToCamera = true;
                 this.groupInitialHelp.add(yourSpells);
                 this.groupInitialHelp.add(yourSpellsText);
-
-
-
                 break;
 
-            case 4: //enseño a usar el focus
+            case 5: //enseño a usar el focus
                 this.groupInitialHelp.destroy();
                 this.groupInitialHelp = new Phaser.Group(this.game);
 
@@ -200,7 +224,7 @@ class cControlGame {
 
                 break;
 
-            case 5: //FIN :)
+            case 6: //FIN :)
                 this.groupInitialHelp.destroy();
                 this.groupInitialHelp = new Phaser.Group(this.game);
 
@@ -210,7 +234,7 @@ class cControlGame {
 
                 break;
 
-            case 6: //Saco todos los carteles
+            case 7: //Saco todos los carteles
                 this.groupInitialHelp.destroy();
                 this.groupInitialHelpBotons.destroy();
             

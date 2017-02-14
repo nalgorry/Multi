@@ -66,6 +66,8 @@ var cControlItems = (function () {
         else {
             this.controlGame.controlConsole.newMessage(enumMessage.information, "Your inventory is full");
         }
+        //hago el sonido 
+        this.controlGame.controlSounds.startSoundItemGet();
     };
     //cuando el player decide tirar un item 
     cControlItems.prototype.itemDropToFlor = function (item) {
@@ -81,6 +83,8 @@ var cControlItems = (function () {
         this.controlGame.controlServer.socket.emit('you drop item', { itemId: item.itemID, tileX: player.tileX, tileY: player.tileY });
         item.deleteItem();
         delete this.arrayItems[item.itemID];
+        //hago el sonido 
+        this.controlGame.controlSounds.startSoundItemDrop();
     };
     cControlItems.prototype.itemEquiped = function (item) {
         //me fijo si hay un item ya equipado

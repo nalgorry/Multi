@@ -101,7 +101,11 @@ class cControlItems {
             this.arrayInventoryItems.push(item);
         } else {
             this.controlGame.controlConsole.newMessage(enumMessage.information,"Your inventory is full");
-        }            
+        }
+
+        //hago el sonido 
+        this.controlGame.controlSounds.startSoundItemGet();            
+
 
     }
 
@@ -121,6 +125,10 @@ class cControlItems {
         this.controlGame.controlServer.socket.emit('you drop item', { itemId: item.itemID, tileX: player.tileX, tileY: player.tileY});
         item.deleteItem()
         delete this.arrayItems[item.itemID];
+
+        //hago el sonido 
+        this.controlGame.controlSounds.startSoundItemDrop();     
+        
 
     }
 

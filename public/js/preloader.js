@@ -41,6 +41,10 @@ var preloader = (function (_super) {
         this.game.load.audio('run', 'assets/sounds/run.ogg');
         this.game.load.audio('basic_hit', 'assets/sounds/basic_hit.ogg');
         this.game.load.audio('heal_spell', 'assets/sounds/heal_spell.ogg');
+        this.game.load.audio('lighting_spell', 'assets/sounds/lighting_hit.ogg');
+        this.game.load.audio('shield_spell', 'assets/sounds/shield_spell.ogg');
+        this.game.load.audio('item_get', 'assets/sounds/item_get.ogg');
+        this.game.load.audio('item_drop', 'assets/sounds/item_drop.ogg');
     };
     preloader.prototype.create = function () {
         var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);

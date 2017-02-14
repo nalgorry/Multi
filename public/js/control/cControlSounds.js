@@ -7,20 +7,45 @@ var cControlSounds = (function () {
         this.run = this.game.add.audio('run');
         this.basicHit = this.game.add.audio('basic_hit');
         this.healSpell = this.game.add.audio('heal_spell');
+        this.ligthingSpell = this.game.add.audio('lighting_spell');
+        this.shieldSpell = this.game.add.audio('shield_spell');
+        this.itemGet = this.game.add.audio('item_get');
+        this.itemDrop = this.game.add.audio('item_drop');
         this.game.sound.setDecodedCallback([this.run], this.startSound, this);
     }
     cControlSounds.prototype.startSound = function () {
         this.soundReady = true;
     };
-    cControlSounds.prototype.startSoundHealSpell = function (spellType) {
-        this.healSpell.play(undefined, undefined, 0.4);
+    cControlSounds.prototype.startSoundItemDrop = function () {
+        this.itemDrop.play(undefined, undefined, 0.5);
+    };
+    cControlSounds.prototype.startSoundItemGet = function () {
+        this.itemGet.play(undefined, undefined, 0.3);
     };
     cControlSounds.prototype.startSoundHit = function (spellType) {
-        this.basicHit.play(undefined, undefined, 0.4);
+        switch (spellType) {
+            case 1 /* BasicAtack */:
+                this.basicHit.play(undefined, undefined, 0.5);
+                break;
+            case 2 /* CriticalBall */:
+                this.basicHit.play(undefined, undefined, 0.5);
+                break;
+            case 6 /* LightingStorm */:
+                this.ligthingSpell.play(undefined, undefined, 1);
+                break;
+            case 5 /* HealHand */:
+                this.healSpell.play(undefined, undefined, 0.8);
+                break;
+            case 4 /* ProtectField */:
+                this.shieldSpell.play(undefined, undefined, 0.6);
+                break;
+            default:
+                break;
+        }
     };
     cControlSounds.prototype.startRun = function () {
         if (this.run.isPlaying == false) {
-            this.run.loopFull();
+            this.run.loopFull(0.5);
         }
     };
     cControlSounds.prototype.stopRun = function () {

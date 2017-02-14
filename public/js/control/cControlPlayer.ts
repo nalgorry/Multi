@@ -201,8 +201,9 @@ class cControlPlayer extends cBasicActor {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit,"Te golpearon por " + data.damage)
         }  else if (data.damage < 0) { //te curaste
             this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Te curaron por " + -data.damage)
-            this.controlGame.controlSounds.startSoundHealSpell(null);
         }
+
+        this.controlGame.controlSounds.startSoundHit(data.idSpell);
         
         this.controlGame.controlPlayer.controlSpells.onHit(data,this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
 
@@ -218,10 +219,10 @@ class cControlPlayer extends cBasicActor {
     public youHit(data) {
         if (data.damage > 0 ) { //golpeaste a algeuin
             this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste por " + data.damage)
-            this.controlGame.controlSounds.startSoundHit(null);
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
         } else if (data.damage < 0) { //curaste a alguien 
             this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Curaste por " + -data.damage)
-            this.controlGame.controlSounds.startSoundHealSpell(null);
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
     }
 

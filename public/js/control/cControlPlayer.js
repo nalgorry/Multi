@@ -158,8 +158,8 @@ var cControlPlayer = (function (_super) {
         }
         else if (data.damage < 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Te curaron por " + -data.damage);
-            this.controlGame.controlSounds.startSoundHealSpell(null);
         }
+        this.controlGame.controlSounds.startSoundHit(data.idSpell);
         this.controlGame.controlPlayer.controlSpells.onHit(data, this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
     };
     cControlPlayer.prototype.youKillMonster = function (data) {
@@ -171,11 +171,11 @@ var cControlPlayer = (function (_super) {
     cControlPlayer.prototype.youHit = function (data) {
         if (data.damage > 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Golpeaste por " + data.damage);
-            this.controlGame.controlSounds.startSoundHit(null);
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
         else if (data.damage < 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Curaste por " + -data.damage);
-            this.controlGame.controlSounds.startSoundHealSpell(null);
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
     };
     cControlPlayer.prototype.youDie = function (data) {
