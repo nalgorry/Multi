@@ -112,7 +112,6 @@ class cSpell {
     spriteFocusFixCool:Phaser.Graphics;
 
     spellColdDown() {
-
         this.isSpellOnCoolDown = true;
         
         this.spriteFocusCool.visible = true;
@@ -123,7 +122,6 @@ class cSpell {
              { x: 0, y:0 }, this.coolDownTimeSec * 1000, Phaser.Easing.Linear.None, true);
 
         this.controlGame.game.time.events.add(Phaser.Timer.SECOND * this.coolDownTimeSec, this.coolDownFinish, this);
-
     }
 
     coolDownFinish() {

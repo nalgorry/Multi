@@ -5,8 +5,10 @@ class cControlSounds {
     private healSpell:Phaser.Sound;
     private ligthingSpell:Phaser.Sound;
     private shieldSpell:Phaser.Sound;
+    private selfExplosionSpell:Phaser.Sound;
     private itemGet:Phaser.Sound;
     private itemDrop:Phaser.Sound;
+    private itemEquip:Phaser.Sound;
 
     private game:Phaser.Game
     private soundReady:boolean = false;
@@ -22,10 +24,12 @@ class cControlSounds {
         this.healSpell = this.game.add.audio('heal_spell');
         this.ligthingSpell = this.game.add.audio('lighting_spell');
         this.shieldSpell = this.game.add.audio('shield_spell');
+        this.selfExplosionSpell = this.game.add.audio('self_explosion');
+        
         this.itemGet = this.game.add.audio('item_get');
         this.itemDrop = this.game.add.audio('item_drop');
-
-    
+        this.itemEquip = this.game.add.audio('item_equip');
+   
         this.game.sound.setDecodedCallback([this.run], this.startSound, this);
 
     }
@@ -34,8 +38,12 @@ class cControlSounds {
         this.soundReady = true;
     }
 
-        public startSoundItemDrop() {
-        this.itemDrop.play(undefined, undefined, 0.5);
+    public startItemEquip() {
+         this.itemDrop.play(undefined, undefined, 0.5);
+    }
+
+    public startSoundItemDrop() {
+        this.itemEquip.play(undefined, undefined, 0.5);
     }
 
 
@@ -61,6 +69,9 @@ class cControlSounds {
                 break;
             case enumSpells.ProtectField:
                 this.shieldSpell.play(undefined, undefined, 0.6);
+                break;
+            case enumSpells.SelfExplosion:
+                this.selfExplosionSpell.play(undefined, undefined, 0.6);
                 break;
             default:
                 break;

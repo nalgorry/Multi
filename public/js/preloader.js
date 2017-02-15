@@ -18,7 +18,8 @@ var preloader = (function (_super) {
         this.game.load.image('tiles', 'assets/tiles.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png', 50, 50);
         this.game.load.spritesheet('boom2', 'assets/explosion2.png', 96, 96);
-        this.game.load.spritesheet('boom3', 'assets/blueexplosion.png', 66.66, 66.66);
+        this.game.load.spritesheet('boom3', 'assets/explosion3.png', 192, 173);
+        this.game.load.spritesheet('boom4', 'assets/blueexplosion.png', 66.66, 66.66);
         this.game.load.spritesheet('aura', 'assets/aura_escudo.png', 128, 128);
         this.game.load.spritesheet('player', 'assets/char_test40.png', 40, 70);
         this.game.load.atlas('objects', 'assets/objects.png', 'assets/objects.json');
@@ -45,6 +46,8 @@ var preloader = (function (_super) {
         this.game.load.audio('shield_spell', 'assets/sounds/shield_spell.ogg');
         this.game.load.audio('item_get', 'assets/sounds/item_get.ogg');
         this.game.load.audio('item_drop', 'assets/sounds/item_drop.ogg');
+        this.game.load.audio('item_equip', 'assets/sounds/item_equip.ogg');
+        this.game.load.audio('self_explosion', 'assets/sounds/self_explosion.ogg');
     };
     preloader.prototype.create = function () {
         var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);

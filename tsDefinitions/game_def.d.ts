@@ -18,6 +18,7 @@
         ProtectField = 4,
         HealHand = 5,
         LightingStorm = 6,
+        SelfExplosion = 7,
 
     }
 

@@ -9,15 +9,20 @@ var cControlSounds = (function () {
         this.healSpell = this.game.add.audio('heal_spell');
         this.ligthingSpell = this.game.add.audio('lighting_spell');
         this.shieldSpell = this.game.add.audio('shield_spell');
+        this.selfExplosionSpell = this.game.add.audio('self_explosion');
         this.itemGet = this.game.add.audio('item_get');
         this.itemDrop = this.game.add.audio('item_drop');
+        this.itemEquip = this.game.add.audio('item_equip');
         this.game.sound.setDecodedCallback([this.run], this.startSound, this);
     }
     cControlSounds.prototype.startSound = function () {
         this.soundReady = true;
     };
-    cControlSounds.prototype.startSoundItemDrop = function () {
+    cControlSounds.prototype.startItemEquip = function () {
         this.itemDrop.play(undefined, undefined, 0.5);
+    };
+    cControlSounds.prototype.startSoundItemDrop = function () {
+        this.itemEquip.play(undefined, undefined, 0.5);
     };
     cControlSounds.prototype.startSoundItemGet = function () {
         this.itemGet.play(undefined, undefined, 0.3);
@@ -38,6 +43,9 @@ var cControlSounds = (function () {
                 break;
             case 4 /* ProtectField */:
                 this.shieldSpell.play(undefined, undefined, 0.6);
+                break;
+            case 7 /* SelfExplosion */:
+                this.selfExplosionSpell.play(undefined, undefined, 0.6);
                 break;
             default:
                 break;

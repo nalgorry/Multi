@@ -119,7 +119,7 @@ var cControlSpells = (function () {
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);
         //hechizo 6
-        var newSpell = this.allSpells.arraySpells[3 /* WeakBall */];
+        var newSpell = this.allSpells.arraySpells[7 /* SelfExplosion */];
         newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 2, 265), 2);
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);

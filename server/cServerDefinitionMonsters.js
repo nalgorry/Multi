@@ -41,7 +41,7 @@ var cServerDefinitionMonsters = (function () {
                 monster.randomPower = 50;
                 monster.fixPower = 50;
                 monster.monsterLife = 1000;
-                monster.monsterItemLevelDrop = 50;
+                monster.monsterItemLevelDrop = 800;
                 monster.specialAtackPercent = 0.2;
                 monster.agresiveMonster = false;
                 break;

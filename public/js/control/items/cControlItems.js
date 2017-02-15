@@ -100,6 +100,8 @@ var cControlItems = (function () {
         }
         this.arrayEquipedItems[item.itemEquipType] = item;
         this.calculateItemsEfects();
+        //hago el sonido 
+        this.controlGame.controlSounds.startItemEquip();
     };
     cControlItems.prototype.calculateItemsEfects = function () {
         var _this = this;

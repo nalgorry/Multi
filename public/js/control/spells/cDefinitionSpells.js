@@ -16,9 +16,9 @@ var cDefinitionSpells = (function () {
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 0;
         newSpell.coolDownTimeSec = 0.8;
-        newSpell.explotionSprite = 'boom3';
+        newSpell.explotionSprite = 'boom4';
         newSpell.tint = 0xFC0000;
-        newSpell.explotionFrameRate = 150;
+        newSpell.explotionFrameRate = 100;
         //CriticalBall
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[2 /* CriticalBall */] = newSpell;
@@ -29,7 +29,7 @@ var cDefinitionSpells = (function () {
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 1;
         newSpell.coolDownTimeSec = 2;
-        newSpell.explotionSprite = 'boom3';
+        newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
         //WeakBall
         var newSpell = new cSpell(this.controlGame);
@@ -78,7 +78,7 @@ var cDefinitionSpells = (function () {
         newSpell.enabledTrowThisPlayer = true;
         newSpell.enabledTrowOnMonster = false;
         newSpell.posInSpritesheet = 4;
-        newSpell.explotionSprite = 'boom3';
+        newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
         //LightingStorm
         var newSpell = new cSpell(this.controlGame);
@@ -95,6 +95,22 @@ var cDefinitionSpells = (function () {
         newSpell.posInSpritesheet = 5;
         newSpell.explotionSprite = 'boom3';
         newSpell.explotionFrameRate = 100;
+        //Explosion
+        var newSpell = new cSpell(this.controlGame);
+        newSpell.idSpell = 7 /* SelfExplosion */;
+        newSpell.spellName = "Self Explosion";
+        newSpell.manaCost = 50;
+        newSpell.energyCost = 50;
+        newSpell.lifeCost = 30;
+        newSpell.coolDownTimeSec = 4;
+        newSpell.enabledTrowOtherPlayer = false;
+        newSpell.enabledTrowThisPlayer = true;
+        newSpell.enabledTrowOnMonster = false;
+        newSpell.posInSpritesheet = 2;
+        newSpell.explotionSprite = 'boom3';
+        newSpell.explotionFrameRate = 16;
+        newSpell.explotionYOffset = 70;
+        this.arraySpells[newSpell.idSpell] = newSpell;
     };
     return cDefinitionSpells;
 }());

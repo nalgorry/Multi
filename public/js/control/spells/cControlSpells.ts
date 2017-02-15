@@ -141,8 +141,7 @@ class cControlSpells {
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);
-
-              
+     
         //seleciono el hechizo uno por defecto
         this.selSpell = newSpell;
 
@@ -175,7 +174,7 @@ class cControlSpells {
         newSpell.signalSpellSel.add(this.spellClick,this);
 
         //hechizo 6
-        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.WeakBall];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.SelfExplosion];
         newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 2, 265), 2);
         
         this.arrayselSpells.push(newSpell);
@@ -304,7 +303,7 @@ class cControlSpells {
 
     }
 
-       public onHit(data,sprite:Phaser.Sprite) {
+    public onHit(data,sprite:Phaser.Sprite) {
         
         //texto con el daño
         if (data.damage != 0) {

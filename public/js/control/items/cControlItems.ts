@@ -150,6 +150,8 @@ class cControlItems {
 
         this.calculateItemsEfects();
 
+        //hago el sonido 
+        this.controlGame.controlSounds.startItemEquip();     
 
     }
 
