@@ -43,7 +43,7 @@ export class cServerControlMonster {
 
     }
 
-    private createNewMonster(tileX:number,tileY:number,monsterType:enumMonsters,monsterRespawn:boolean) {
+    public createNewMonster(tileX:number,tileY:number,monsterType:enumMonsters,monsterRespawn:boolean) {
         
         var newMonster = new cServerMonster(this.controlItems);
 
@@ -55,33 +55,23 @@ export class cServerControlMonster {
 
     }
 
-    public monsterHit(data,player) {
+    public findMonstersInArea(centerTileX:number, centerTileY:number, tilesX:number, tilesY:number) {
+        var resultado:string[] = [];
 
-        //busco el moustro y le pego
-        var monster = this.getMonsterById(data.idMonster);
+        for (var numMonster in this.arrayMonster) {
+            var monster = this.arrayMonster[numMonster];
 
-        if (monster != undefined) {
-            monster.monsterHit(data,player)
-
-            //controlo si se murio el moustro y lo saco del array de moustros
-            if (monster.monsterDie == true) { 
-                delete this.arrayMonster[data.idMonster];
-
-                //creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo
-                if (monster.monsterRespawn == true) { 
-                    if (monster.monsterType != enumMonsters.Cosmic) {
-                        this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),this.randomIntFromInterval(1,4),true)
-                    } else {
-                        this.createNewMonster(Math.round(Math.random()*76+14),Math.round(Math.random()*76+12),enumMonsters.Cosmic,true);
-                    }
+            if ( Math.abs(monster.tileX - centerTileX) <= tilesX) {
+                if ( Math.abs(monster.tileY - centerTileY) <= tilesY) {
+                    resultado.push(monster.monsterId);
                 }
-            }   
-        } else {
-            console.log("monstruo no encontrado");
+            }
+
         }
 
-        
+        console.log(resultado);
 
+        return resultado
     }
 
     private randomIntFromInterval(min,max)

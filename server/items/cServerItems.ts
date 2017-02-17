@@ -1,4 +1,5 @@
 import {cServerItemDef} from './cServerItemDef';
+import {Signal} from '../Signal';
 
 export class cServerItems {
 
@@ -11,9 +12,11 @@ export class cServerItems {
     public maxRank:enumPropRank;
     public itemLevel:number;
 
+    private itemDeleteTime:number = 20000;
+    public signalItemDelete:Signal
+    
     private arrayItemProperties:cItemProperty[];
 
-        
     private maxNumberItems:number = 21;
 
     constructor(socket:SocketIO.Server, itemID:string, itemType:enumItemType, itemLevel:number , tileX:number, tileY:number) {
@@ -25,11 +28,33 @@ export class cServerItems {
         this.socket = socket;
         this.itemLevel = itemLevel;
 
+        this.signalItemDelete = new Signal();
+
         this.arrayItemProperties = [];
 
         this.defineItemsProperties(this.itemLevel);
 
         this.emitNewItem(this.socket);
+
+        var itemTime = setTimeout(() => this.deleteItem(), this.itemDeleteTime);
+
+    }
+
+    //si pasa un tiempo sin que nadie levante el item lo borro
+    private deleteItem() {
+
+        if (this.onFloor == true) {
+
+            this.socket.emit('delete item', {itemID:this.itemID});
+            this.onFloor = false;
+
+            this.signalItemDelete.dispatch(this.itemID);
+
+        } else {
+            var itemTime = setTimeout(() => this.deleteItem(), this.itemDeleteTime);
+        }
+
+        
 
     }
 

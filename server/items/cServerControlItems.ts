@@ -1,5 +1,6 @@
 import {cServerItems} from './cServerItems';
 import {cServerItemDef} from './cServerItemDef';
+import {Signal} from '../Signal';
 
 
 export class cServerControlItems {
@@ -18,9 +19,8 @@ export class cServerControlItems {
 
             var itemId = "i" + this.nextIdItems;
 
-            var newItem = new cServerItems(socket, itemId, i, 10 , 40 + i, 95);
-            this.arrayItems[itemId] = newItem; 
-            this.nextIdItems += 1;
+            this.createNewItem(i, 10, 40 + i, 95);
+
         }
 
     }
@@ -60,6 +60,15 @@ export class cServerControlItems {
         var newItem = new cServerItems(this.socket, itemId, itemType, itemLevel, tileX, tileY);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
+
+        //agrego una señal para definir cuando el item se borra del juego
+        newItem.signalItemDelete.add(this.itemDeleted,this);
+    }
+
+    private itemDeleted(itemID:string) {
+
+        delete this.arrayItems[itemID];
+
     }
 
     public onNewPlayerConected(socket:SocketIO.Server) {

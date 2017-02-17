@@ -10,9 +10,7 @@ var cServerControlItems = (function () {
         cServerItemDef_1.cServerItemDef.defineItems();
         for (var i = 0; i < 5; i++) {
             var itemId = "i" + this.nextIdItems;
-            var newItem = new cServerItems_1.cServerItems(socket, itemId, i, 10, 40 + i, 95);
-            this.arrayItems[itemId] = newItem;
-            this.nextIdItems += 1;
+            this.createNewItem(i, 10, 40 + i, 95);
         }
     }
     cServerControlItems.prototype.dropItemToFloor = function (data) {
@@ -41,6 +39,11 @@ var cServerControlItems = (function () {
         var newItem = new cServerItems_1.cServerItems(this.socket, itemId, itemType, itemLevel, tileX, tileY);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
+        //agrego una señal para definir cuando el item se borra del juego
+        newItem.signalItemDelete.add(this.itemDeleted, this);
+    };
+    cServerControlItems.prototype.itemDeleted = function (itemID) {
+        delete this.arrayItems[itemID];
     };
     cServerControlItems.prototype.onNewPlayerConected = function (socket) {
         //le mando al nuevo cliente todos los moustros del mapa

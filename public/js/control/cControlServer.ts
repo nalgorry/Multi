@@ -44,12 +44,17 @@ class cControlServer {
         this.socket.on('new item', cControlServer.prototype.onNewItem.bind(this));
         this.socket.on('you get item', cControlServer.prototype.onYouGetItem.bind(this));
         this.socket.on('item get', cControlServer.prototype.onItemGet.bind(this));
+        this.socket.on('delete item', cControlServer.prototype.onItemDelete.bind(this));
       
 
         //control de portalese 
         this.socket.on('you enter portal', cControlServer.prototype.youEnterPortal.bind(this));
         
         }
+
+    public onItemDelete(data) {
+        this.controlPlayer.controlItems.itemGet(data);
+    }
     
     public onItemGet(data) {
         this.controlPlayer.controlItems.itemGet(data);

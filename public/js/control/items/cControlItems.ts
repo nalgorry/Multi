@@ -43,10 +43,16 @@ class cControlItems {
 
         item.signalItemOnFloorClick.add(this.itemOnFloorClick,this); //agrego una señal para despues poder hacer click en el item
 
+        var a = new Event('hola');
+        
+
     }
     
-    //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
+    //esto pasa cuando alguien cualquiera levanta un item, o el server lo borra
     public itemGet(data) {
+
+        console.log(data);
+
         var item = this.arrayItems[data.itemID];
         
         if (item != undefined) {
@@ -74,7 +80,6 @@ class cControlItems {
         for(var i = 1; i <= 12 ; i++ ) {
             this.arrayfreeInventoryItems.push(i);
         }
-
 
     }
 

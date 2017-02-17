@@ -34,28 +34,18 @@ var cServerControlMonster = (function () {
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };
-    cServerControlMonster.prototype.monsterHit = function (data, player) {
-        //busco el moustro y le pego
-        var monster = this.getMonsterById(data.idMonster);
-        if (monster != undefined) {
-            monster.monsterHit(data, player);
-            //controlo si se murio el moustro y lo saco del array de moustros
-            if (monster.monsterDie == true) {
-                delete this.arrayMonster[data.idMonster];
-                //creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo
-                if (monster.monsterRespawn == true) {
-                    if (monster.monsterType != 5 /* Cosmic */) {
-                        this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 12), this.randomIntFromInterval(1, 4), true);
-                    }
-                    else {
-                        this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 76 + 12), 5 /* Cosmic */, true);
-                    }
+    cServerControlMonster.prototype.findMonstersInArea = function (centerTileX, centerTileY, tilesX, tilesY) {
+        var resultado = [];
+        for (var numMonster in this.arrayMonster) {
+            var monster = this.arrayMonster[numMonster];
+            if (Math.abs(monster.tileX - centerTileX) <= tilesX) {
+                if (Math.abs(monster.tileY - centerTileY) <= tilesY) {
+                    resultado.push(monster.monsterId);
                 }
             }
         }
-        else {
-            console.log("monstruo no encontrado");
-        }
+        console.log(resultado);
+        return resultado;
     };
     cServerControlMonster.prototype.randomIntFromInterval = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);

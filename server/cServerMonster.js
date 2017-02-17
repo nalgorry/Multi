@@ -81,15 +81,11 @@ var cServerMonster = (function () {
             var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
         }
     };
-    cServerMonster.prototype.monsterHit = function (data, player) {
-        var damage = player.spellActivated(data);
-        player.socket.emit('you hit monster', { idMonster: this.monsterId, damage: damage, idSpell: data.idSpell });
+    cServerMonster.prototype.monsterHit = function (data, damage, idPlayer) {
         this.monsterLife -= damage;
-        this.arrayAgresivePlayers[player.playerId] = true;
-        console.log(this.arrayAgresivePlayers);
+        this.arrayAgresivePlayers[idPlayer] = true;
         //controlo si se murio el moustro 
         if (this.monsterLife <= 0) {
-            this.socket.emit('monster die', { idMonster: this.monsterId, idPlayer: player.playerId });
             this.monsterDie = true;
             //creo un item para que tire el monstruo
             this.controlItems.createNewRandomItem(this.monsterItemLevelDrop, this.tileX, this.tileY);

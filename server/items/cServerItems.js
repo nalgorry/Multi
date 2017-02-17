@@ -1,8 +1,11 @@
 "use strict";
 var cServerItemDef_1 = require('./cServerItemDef');
+var Signal_1 = require('../Signal');
 var cServerItems = (function () {
     function cServerItems(socket, itemID, itemType, itemLevel, tileX, tileY) {
+        var _this = this;
         this.onFloor = true;
+        this.itemDeleteTime = 20000;
         this.maxNumberItems = 21;
         this.itemID = itemID;
         this.itemType = itemType;
@@ -10,10 +13,24 @@ var cServerItems = (function () {
         this.tileY = tileY;
         this.socket = socket;
         this.itemLevel = itemLevel;
+        this.signalItemDelete = new Signal_1.Signal();
         this.arrayItemProperties = [];
         this.defineItemsProperties(this.itemLevel);
         this.emitNewItem(this.socket);
+        var itemTime = setTimeout(function () { return _this.deleteItem(); }, this.itemDeleteTime);
     }
+    //si pasa un tiempo sin que nadie levante el item lo borro
+    cServerItems.prototype.deleteItem = function () {
+        var _this = this;
+        if (this.onFloor == true) {
+            this.socket.emit('delete item', { itemID: this.itemID });
+            this.onFloor = false;
+            this.signalItemDelete.dispatch(this.itemID);
+        }
+        else {
+            var itemTime = setTimeout(function () { return _this.deleteItem(); }, this.itemDeleteTime);
+        }
+    };
     cServerItems.prototype.emitNewItem = function (socket) {
         //emito el item si esta en el piso 
         if (this.onFloor == true) {

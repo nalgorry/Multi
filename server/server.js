@@ -28,6 +28,7 @@ function init() {
     controlPlayers = new cControlServerPlayers_1.cServerControlPlayers(socket);
     controlItems = new cServerControlItems_1.cServerControlItems(socket);
     controlMonster = new cServerControlMonster_1.cServerControlMonster(socket, controlPlayers, controlItems);
+    controlPlayers.controlMonster = controlMonster;
 }
 // New socket connection
 function onSocketConnection(client) {
@@ -67,13 +68,8 @@ function onYouEnterPortal(data) {
     this.emit('you enter portal', { idPortal: data.idPortal });
 }
 function onYouClickMonster(data) {
-    var player = controlPlayers.getPlayerById(this.id);
-    if (player != null) {
-        controlMonster.monsterHit(data, player);
-    }
-    else {
-        console.log("error al procesar golpe a mounstro");
-    }
+    data.idPlayer = this.id;
+    controlPlayers.spellCast(data);
 }
 function onYouChange(data) {
     if (data.name != null) {
@@ -103,17 +99,8 @@ function onChatSend(data) {
     this.broadcast.emit('Chat Receive', { id: this.id, text: data.text });
 }
 function onPlayerClick(data) {
-    var player = controlPlayers.getPlayerById(this.id);
-    var playerHit = controlPlayers.getPlayerById(data.idPlayerHit);
-    if (playerHit != null) {
-        //recorrro los hechizos para actual segun lo que hizo cada uno
-        var damage = player.spellActivated(data); //saco del player por cuanto golpeo
-        damage = playerHit.calculateDamage(damage); //calculo el daño restando la defensa y demas 
-        // mando el golpe a los jugadores
-        this.broadcast.emit('player hit', { id: playerHit.playerId, playerThatHit: this.id, x: player.x, y: player.y, damage: damage, idSpell: data.idSpell });
-        this.emit('you hit', { id: playerHit.playerId, damage: damage, idSpell: data.idSpell });
-    }
-    socket.emit('power throw', { x: player.x, y: player.y }); //esto manda a todos, incluso al jugador actual
+    data.idPlayer = this.id;
+    controlPlayers.spellCast(data);
 }
 // Socket client has disconnected
 function onClientDisconnect() {
@@ -124,7 +111,7 @@ function onClientDisconnect() {
 // New player has joined
 function onNewPlayer(data) {
     // Create a new player
-    var newPlayer = new cPlayer_1.cPlayer(this, this.id, data.name, data.x, data.y);
+    var newPlayer = new cPlayer_1.cPlayer(this, this.id, data.name, data.x, data.y, controlMonster);
     controlPlayers.onNewPlayerConected(this, this.id, data);
     controlMonster.onNewPlayerConected(this);
     controlItems.onNewPlayerConected(this);

@@ -1,4 +1,4 @@
-class cItems {
+class cItems  {
 
     public itemID:number;
     public itemType:number; //tiene que coincidir con el id del item en el sprite de items

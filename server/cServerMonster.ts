@@ -130,19 +130,13 @@ export class cServerMonster {
 
     }
 
-    public monsterHit(data,player:cPlayer) {
-
-        var damage = player.spellActivated(data);
-        player.socket.emit('you hit monster', {idMonster:this.monsterId, damage: damage,idSpell:data.idSpell})
+    public monsterHit(data, damage, idPlayer:string) {
 
         this.monsterLife -= damage;
-        this.arrayAgresivePlayers[player.playerId] = true;
-
-        console.log(this.arrayAgresivePlayers);
+        this.arrayAgresivePlayers[idPlayer] = true;        
 
         //controlo si se murio el moustro 
         if (this.monsterLife <= 0) {
-            this.socket.emit('monster die', {idMonster: this.monsterId, idPlayer:player.playerId});
             this.monsterDie = true;
 
             //creo un item para que tire el monstruo
@@ -211,6 +205,7 @@ export class cServerMonster {
     public sendMonsterToNewPlayer(socket:SocketIO.Server) {
         this.emitNewMonster(socket);
     }
+
 
     private randomIntFromInterval(min,max)
     {

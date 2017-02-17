@@ -22,9 +22,11 @@ var cControlItems = (function () {
         item.putItemInTile(data.tileX, data.tileY);
         this.arrayItems[data.itemID] = item;
         item.signalItemOnFloorClick.add(this.itemOnFloorClick, this); //agrego una señal para despues poder hacer click en el item
+        var a = new Event('hola');
     };
-    //esto pasa cuando alguien cualquiera levanta un item, puede no ser el pj en juego
+    //esto pasa cuando alguien cualquiera levanta un item, o el server lo borra
     cControlItems.prototype.itemGet = function (data) {
+        console.log(data);
         var item = this.arrayItems[data.itemID];
         if (item != undefined) {
             item.deleteItem();

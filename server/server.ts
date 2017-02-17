@@ -38,6 +38,9 @@ function init () {
   controlPlayers = new cServerControlPlayers(socket);
   controlItems = new cServerControlItems(socket);
   controlMonster = new cServerControlMonster(socket,controlPlayers,controlItems);
+  controlPlayers.controlMonster = controlMonster;
+
+
 }
 
 // New socket connection
@@ -103,13 +106,9 @@ function onYouEnterPortal(data) {
 
 function onYouClickMonster(data) {
 
-    var player = controlPlayers.getPlayerById(this.id);
+    data.idPlayer = this.id;
 
-    if (player != null) {
-      controlMonster.monsterHit(data,player)
-    } else {
-      console.log("error al procesar golpe a mounstro")
-    }
+    controlPlayers.spellCast(data);
 
 }
 
@@ -156,22 +155,9 @@ function onChatSend(data) {
 
 function onPlayerClick(data) {
 
-   var player =  controlPlayers.getPlayerById(this.id);
-   var playerHit:cPlayer = controlPlayers.getPlayerById(data.idPlayerHit);
-  
-   if (playerHit != null) {
+    data.idPlayer = this.id;
 
-      //recorrro los hechizos para actual segun lo que hizo cada uno
-      var damage = player.spellActivated(data); //saco del player por cuanto golpeo
-      damage = playerHit.calculateDamage(damage); //calculo el daño restando la defensa y demas 
-      
-      // mando el golpe a los jugadores
-      this.broadcast.emit('player hit', {id: playerHit.playerId, playerThatHit:this.id, x: player.x, y: player.y,damage:damage, idSpell: data.idSpell});
-      this.emit('you hit', {id: playerHit.playerId,damage: damage,idSpell: data.idSpell});
-
-  }
-
-  socket.emit('power throw', {x:player.x, y:player.y}); //esto manda a todos, incluso al jugador actual
+    controlPlayers.spellCast(data);
 
 }
 
@@ -188,7 +174,7 @@ function onClientDisconnect () {
 function onNewPlayer (data) {
   
   // Create a new player
-  var newPlayer:cPlayer = new cPlayer(this,this.id,data.name,data.x, data.y)
+  var newPlayer:cPlayer = new cPlayer(this,this.id,data.name,data.x, data.y,controlMonster);
 
   controlPlayers.onNewPlayerConected(this,this.id,data)
   controlMonster.onNewPlayerConected(this);
