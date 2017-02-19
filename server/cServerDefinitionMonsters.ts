@@ -24,7 +24,7 @@ export class cServerDefinitionMonsters {
                 monster.specialAtackPercent = 0.2;
                 monster.agresiveMonster = true;
                 monster.experience = 10;
-                monster.lvlPlayerNeed = 4;
+                monster.lvlPlayerNeed = 5;
                 break;
             case enumMonsters.Wolf:
                 monster.randomPower = 15;
@@ -44,7 +44,7 @@ export class cServerDefinitionMonsters {
                 monster.specialAtackPercent = 0.5;
                 monster.agresiveMonster = true;
                 monster.experience = 5;
-                monster.lvlPlayerNeed = 5;
+                monster.lvlPlayerNeed = 4;
                 break;
             case enumMonsters.Cosmic:
                 monster.randomPower = 50;
