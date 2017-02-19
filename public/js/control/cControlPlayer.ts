@@ -19,6 +19,7 @@ class cControlPlayer extends cBasicActor {
     public controlSpells:cControlSpells;
     public controlPortals:cControlPortal;
     public controlItems:cControlItems;
+    public controlLevel:cControlLevel;
 
     private speedplayer: number = 150;
     
@@ -58,6 +59,9 @@ class cControlPlayer extends cBasicActor {
 
         //inicio el sistema para controlar los items
         this.controlItems = new cControlItems(this.controlGame);
+
+        //inicio el sistema para controlar el nivel del jugador
+        this.controlLevel = new cControlLevel(this.controlGame);
 
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         
@@ -199,11 +203,12 @@ class cControlPlayer extends cBasicActor {
 
         if (data.damage > 0 ) {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit,"Te golpearon por " + data.damage)
+            this.controlGame.controlSounds.startPlayerHit();
         }  else if (data.damage < 0) { //te curaste
             this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Te curaron por " + -data.damage)
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
 
-        this.controlGame.controlSounds.startSoundHit(data.idSpell);
         
         this.controlGame.controlPlayer.controlSpells.onHit(data,this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
 
@@ -213,6 +218,7 @@ class cControlPlayer extends cBasicActor {
         if (data.damage != 0 ) {
             this.monstersKills++;
             this.controlGame.controlConsole.newMessage(enumMessage.youKill,"Mataste al monstruo ("+ this.monstersKills +")")
+            this.controlLevel.addExperience(data.experience);
         }
     }
 
@@ -233,6 +239,8 @@ class cControlPlayer extends cBasicActor {
         this.controlGame.controlServer.socket.emit('you die', {idPlayerKill:data.playerThatHit });
 
         this.controlItems.clearItems();
+
+        this.controlGame.controlSounds.startPlayerDie();
 
     }
 

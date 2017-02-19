@@ -58,8 +58,6 @@ class cControlSpells {
 
     public spellAnimation(sprite:Phaser.Sprite,data) {
         
-        console.log(data);
-
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
     }
 

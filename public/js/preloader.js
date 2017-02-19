@@ -48,6 +48,9 @@ var preloader = (function (_super) {
         this.game.load.audio('item_drop', 'assets/sounds/item_drop.ogg');
         this.game.load.audio('item_equip', 'assets/sounds/item_equip.ogg');
         this.game.load.audio('self_explosion', 'assets/sounds/self_explosion.ogg');
+        this.game.load.audio('hit1', 'assets/sounds/hit1.ogg');
+        this.game.load.audio('hit2', 'assets/sounds/hit2.ogg');
+        this.game.load.audio('die', 'assets/sounds/die1.ogg');
     };
     preloader.prototype.create = function () {
         var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);

@@ -11,6 +11,7 @@ var cPlayer = (function () {
         this.gridSize = 40;
         this.atack = 2;
         this.defense = 2;
+        this.playerLevel = 1;
         this.protectedField = false;
         this.weakEfect = false;
     }
@@ -72,7 +73,7 @@ var cPlayer = (function () {
                 resultado.playerDamage = damage;
                 break;
             case 4 /* ProtectField */:
-                damage = 0;
+                resultado.playerDamage = 0;
                 this.protectedField = true;
                 var timer = setTimeout(function () { return _this.protectedField = false; }, 4500);
                 break;
@@ -112,6 +113,9 @@ var cPlayer = (function () {
         if (data.itemsEfects[10 /* defense */] != undefined) {
             this.defense = data.itemsEfects[10 /* defense */].value;
         }
+    };
+    cPlayer.prototype.levelUp = function (data) {
+        this.playerLevel = data.playerLevel;
     };
     return cPlayer;
 }());

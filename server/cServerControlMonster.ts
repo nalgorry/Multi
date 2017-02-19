@@ -13,7 +13,7 @@ export class cServerControlMonster {
         
         //creo los primeros monters :)
 
-       for (var i=1; i<=30;i++) {
+       for (var i=1; i<=40;i++) {
            this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),this.randomIntFromInterval(1,4), true);
        }
 

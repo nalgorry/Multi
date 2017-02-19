@@ -38,6 +38,8 @@ var cControlPlayer = (function (_super) {
         this.controlPortals = new cControlPortal(this.controlGame);
         //inicio el sistema para controlar los items
         this.controlItems = new cControlItems(this.controlGame);
+        //inicio el sistema para controlar el nivel del jugador
+        this.controlLevel = new cControlLevel(this.controlGame);
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         this.playerSprite.body.collideWorldBounds = true;
         this.playerSprite.body.width = this.controlGame.gridSize;
@@ -155,17 +157,19 @@ var cControlPlayer = (function (_super) {
         }
         if (data.damage > 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit, "Te golpearon por " + data.damage);
+            this.controlGame.controlSounds.startPlayerHit();
         }
         else if (data.damage < 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Te curaron por " + -data.damage);
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
-        this.controlGame.controlSounds.startSoundHit(data.idSpell);
         this.controlGame.controlPlayer.controlSpells.onHit(data, this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
     };
     cControlPlayer.prototype.youKillMonster = function (data) {
         if (data.damage != 0) {
             this.monstersKills++;
             this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste al monstruo (" + this.monstersKills + ")");
+            this.controlLevel.addExperience(data.experience);
         }
     };
     cControlPlayer.prototype.youHit = function (data) {
@@ -184,6 +188,7 @@ var cControlPlayer = (function (_super) {
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
         this.controlGame.controlServer.socket.emit('you die', { idPlayerKill: data.playerThatHit });
         this.controlItems.clearItems();
+        this.controlGame.controlSounds.startPlayerDie();
     };
     cControlPlayer.prototype.youKill = function (data) {
         this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste a " + data.name);

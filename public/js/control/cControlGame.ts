@@ -110,23 +110,23 @@ class cControlGame {
                 var moveText = this.game.add.bitmapText(44* this.gridSize, 91 * this.gridSize, 'gotic', 'Use AWSD to move!', 16);
                 this.groupInitialHelp.add(moveText);
 
-                //para sacar la ayuda inicial con X
-                var closseHelp = this.game.add.bitmapText(300, 460 + 30, 'gotic', 'Close All Helps (X)', 16);
-                closseHelp.fixedToCamera = true;
-                closseHelp.inputEnabled = true 
-                closseHelp.events.onInputDown.add(this.closeHelp,this);
-
-                var closeHelpKey = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
-                closeHelpKey.onDown.add(this.closeHelp,this);
-                
                 //para activar el siguiente tutorial
-                var nextTutorial = this.game.add.bitmapText(300, 460, 'gotic', 'Next Tutorial (N)', 16);
+                var nextTutorial = this.game.add.bitmapText(410, 70, 'gotic', 'Next Tutorial (N)', 16);
                 nextTutorial.fixedToCamera = true;
                 nextTutorial.inputEnabled = true;
                 nextTutorial.events.onInputUp.add(this.goNextTutorial,this);
 
                 var nextTutorialKey = this.game.input.keyboard.addKey(Phaser.Keyboard.N);
                 nextTutorialKey.onDown.add(this.goNextTutorial,this);
+
+                //para sacar la ayuda inicial con X
+                var closseHelp = this.game.add.bitmapText(410, 70 + 30, 'gotic', 'Close All Helps (X)', 16);
+                closseHelp.fixedToCamera = true;
+                closseHelp.inputEnabled = true 
+                closseHelp.events.onInputDown.add(this.closeHelp,this);
+
+                var closeHelpKey = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+                closeHelpKey.onDown.add(this.closeHelp,this);
 
                 this.groupInitialHelpBotons.add(closseHelp);
                 this.groupInitialHelpBotons.add(nextTutorial);

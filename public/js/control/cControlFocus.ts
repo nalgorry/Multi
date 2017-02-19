@@ -112,8 +112,6 @@ class cControlFocus {
 
     private showPlayerStats() {
 
-        console.log("hola");
-
         this.groupPlayerStats = new Phaser.Group(this.controlGame.game);
 
         //genero el fondo de las estadisticas
@@ -511,18 +509,6 @@ class cControlFocus {
         this.rectangleFocus.cameraOffset.y = 125;
         
         this.rectangleFocus.visible = false;
-
-
-        //exp
-        //var bitmapExp = this.controlGame.game.add.bitmapData(25, 130);
-        //bitmapExp.ctx.beginPath();
-        //bitmapExp.ctx.rect(0, 0, 24, 130);
-        //bitmapExp.ctx.fillStyle = '#cc33cc';
-        //bitmapExp.ctx.fill();
-        //this.expBar = this.controlGame.game.add.sprite(994 + bitmapExp.width,125 + bitmapExp.height,bitmapExp);
-        //this.expBar.anchor.setTo(1);
-        //this.expBar.fixedToCamera = true;
-
 
     }
 

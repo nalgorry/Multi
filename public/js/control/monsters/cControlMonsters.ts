@@ -131,4 +131,20 @@ class cControlMonsters {
     }
 
 
+    public checkMonsterVisibility(playerLevel:number) {
+        //me fijo si el player tiene el nivel suficiente para verlo
+
+        for (let numMonster in this.arrayMonster) {
+
+            var monster = this.arrayMonster[numMonster];
+
+            if (playerLevel >= monster.lvlPlayerNeed) {
+                monster.monsterSprite.visible = true;
+            } 
+
+        }
+
+    }
+
+
 }

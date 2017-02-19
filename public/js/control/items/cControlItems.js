@@ -26,7 +26,6 @@ var cControlItems = (function () {
     };
     //esto pasa cuando alguien cualquiera levanta un item, o el server lo borra
     cControlItems.prototype.itemGet = function (data) {
-        console.log(data);
         var item = this.arrayItems[data.itemID];
         if (item != undefined) {
             item.deleteItem();

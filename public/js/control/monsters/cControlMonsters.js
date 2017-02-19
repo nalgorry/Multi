@@ -86,5 +86,14 @@ var cControlMonsters = (function () {
             }
         }
     };
+    cControlMonsters.prototype.checkMonsterVisibility = function (playerLevel) {
+        //me fijo si el player tiene el nivel suficiente para verlo
+        for (var numMonster in this.arrayMonster) {
+            var monster = this.arrayMonster[numMonster];
+            if (playerLevel >= monster.lvlPlayerNeed) {
+                monster.monsterSprite.visible = true;
+            }
+        }
+    };
     return cControlMonsters;
 }());

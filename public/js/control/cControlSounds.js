@@ -1,6 +1,7 @@
 var cControlSounds = (function () {
     function cControlSounds(cControlGame) {
         this.cControlGame = cControlGame;
+        this.numberPlayerHit = 1;
         this.soundReady = false;
         this.game = cControlGame.game;
         //cargo los sonidos
@@ -10,6 +11,9 @@ var cControlSounds = (function () {
         this.ligthingSpell = this.game.add.audio('lighting_spell');
         this.shieldSpell = this.game.add.audio('shield_spell');
         this.selfExplosionSpell = this.game.add.audio('self_explosion');
+        this.playerHit1 = this.game.add.audio('hit1');
+        this.playerHit2 = this.game.add.audio('hit2');
+        this.playerDie1 = this.game.add.audio('die');
         this.itemGet = this.game.add.audio('item_get');
         this.itemDrop = this.game.add.audio('item_drop');
         this.itemEquip = this.game.add.audio('item_equip');
@@ -17,6 +21,19 @@ var cControlSounds = (function () {
     }
     cControlSounds.prototype.startSound = function () {
         this.soundReady = true;
+    };
+    cControlSounds.prototype.startPlayerHit = function () {
+        if (this.numberPlayerHit == 1) {
+            this.playerHit1.play(undefined, undefined, 0.5);
+            this.numberPlayerHit = 2;
+        }
+        else {
+            this.playerHit2.play(undefined, undefined, 0.5);
+            this.numberPlayerHit = 1;
+        }
+    };
+    cControlSounds.prototype.startPlayerDie = function () {
+        this.playerDie1.play(undefined, undefined, 0.5);
     };
     cControlSounds.prototype.startItemEquip = function () {
         this.itemDrop.play(undefined, undefined, 0.5);
@@ -36,7 +53,7 @@ var cControlSounds = (function () {
                 this.basicHit.play(undefined, undefined, 0.5);
                 break;
             case 6 /* LightingStorm */:
-                this.ligthingSpell.play(undefined, undefined, 1);
+                this.ligthingSpell.play(undefined, undefined, 0.8);
                 break;
             case 5 /* HealHand */:
                 this.healSpell.play(undefined, undefined, 0.8);

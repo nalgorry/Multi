@@ -51,8 +51,6 @@ class cControlItems {
     //esto pasa cuando alguien cualquiera levanta un item, o el server lo borra
     public itemGet(data) {
 
-        console.log(data);
-
         var item = this.arrayItems[data.itemID];
         
         if (item != undefined) {

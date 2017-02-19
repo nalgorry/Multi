@@ -5,6 +5,16 @@ var cServerControlPlayers = (function () {
         this.socket = socket;
         this.arrayPlayers = [];
     }
+    cServerControlPlayers.prototype.levelUp = function (socket, data) {
+        // Find player in array
+        var player = this.getPlayerById(socket.id);
+        // Player not found
+        if (player == undefined) {
+            console.log('Player not found: ' + socket.id);
+            return;
+        }
+        player.levelUp(data);
+    };
     cServerControlPlayers.prototype.getPlayerById = function (id) {
         return this.arrayPlayers[id];
     };
@@ -44,10 +54,13 @@ var cServerControlPlayers = (function () {
                     monster.monsterHit(data, spellResult.monsterDamage, player.playerId);
                     player.socket.emit('you hit monster', { idMonster: monster.monsterId,
                         damage: spellResult.monsterDamage,
-                        idSpell: spellResult.spellAnimationMonster });
+                        idSpell: spellResult.spellAnimationMonster
+                    });
                     //controlo si se murio el moustro y lo saco del array de moustros
                     if (monster.monsterDie == true) {
-                        _this.socket.emit('monster die', { idMonster: monster.monsterId, idPlayer: player.playerId });
+                        _this.socket.emit('monster die', { idMonster: monster.monsterId,
+                            idPlayer: player.playerId,
+                            experience: monster.experience });
                         delete _this.controlMonster.arrayMonster[monster.monsterId];
                         //TODO sacar esto de aca... creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo
                         if (monster.monsterRespawn == true) {

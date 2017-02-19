@@ -76,8 +76,14 @@ function onSocketConnection (client) {
 
   client.on('you equip item',onYouEquipItem);
 
-  client.on('you drop item',onYouDropItem)
+  client.on('you drop item',onYouDropItem);
 
+  client.on('level up',onLevelUp);
+
+}
+
+function onLevelUp(data) {
+    controlPlayers.levelUp(this, data);
 }
 
 function onYouDropItem(data) {

@@ -10,6 +10,7 @@ export class cPlayer {
     
     public atack:number = 2;
     public defense:number = 2;
+    public playerLevel:number =1;
 
     public protectedField:boolean = false;
     public weakEfect:boolean = false;
@@ -101,7 +102,7 @@ export class cPlayer {
 
                 break;
             case enumSpells.ProtectField:
-                damage = 0;
+                resultado.playerDamage = 0;
                 this.protectedField = true;
                 var timer = setTimeout(() => this.protectedField = false, 4500);
                 break;
@@ -150,6 +151,10 @@ export class cPlayer {
             this.defense = data.itemsEfects[enumItemEfects.defense].value;
         }
 
+    }
+
+    public levelUp(data) {
+        this.playerLevel = data.playerLevel;   
     }
 
 }

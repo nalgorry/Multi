@@ -128,7 +128,7 @@ class cDefinitionSpells {
         newSpell.enabledTrowOtherPlayer = false;
         newSpell.enabledTrowThisPlayer = true;
         newSpell.enabledTrowOnMonster = false;
-        newSpell.posInSpritesheet = 2;
+        newSpell.posInSpritesheet = 6;
         newSpell.explotionSprite = 'boom3';
         newSpell.explotionFrameRate = 16;
         newSpell.explotionYOffset = 70;

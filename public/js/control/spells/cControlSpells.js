@@ -36,7 +36,6 @@ var cControlSpells = (function () {
         }
     };
     cControlSpells.prototype.spellAnimation = function (sprite, data) {
-        console.log(data);
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
     };
     cControlSpells.prototype.monsterClick = function (monster) {
