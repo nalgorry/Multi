@@ -9,7 +9,7 @@ var cServerControlMonster = (function () {
         this.arrayMonster = [];
         //creo los primeros monters :)
         for (var i = 1; i <= 40; i++) {
-            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), this.randomIntFromInterval(1, 4), true);
+            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), this.randomIntFromInterval(1, 1), true);
         }
         //creo el mounstro COSMICO
         this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), 5, true);
@@ -44,7 +44,6 @@ var cServerControlMonster = (function () {
                 }
             }
         }
-        console.log(resultado);
         return resultado;
     };
     cServerControlMonster.prototype.randomIntFromInterval = function (min, max) {

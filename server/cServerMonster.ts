@@ -77,11 +77,11 @@ export class cServerMonster {
     }
 
     public monsterMove() {
-
+        
         var playerNear:cPlayer = undefined;
 
         //controlo si hay algun jugador cerca del monstruo
-        for (var idPlayer in this.controlPlayer.arrayPlayers) {
+        for (let idPlayer in this.controlPlayer.arrayPlayers) {
 
             var player = this.controlPlayer.arrayPlayers[idPlayer]
 
@@ -91,13 +91,14 @@ export class cServerMonster {
             
             //me fijo si el player tiene el nivel necesario para ver el monstruo
             if (this.lvlPlayerNeed > player.playerLevel) {
-                break;
+               continue;
             }
 
             //me fijo si el moustro es pacifico, y si no ya salgo de esta funcion
             if (this.arrayAgresivePlayers[idPlayer] == undefined && this.agresiveMonster == false) {
-                break;
+                continue;
             }
+
             //me fijo si el jugador esta cerca del monstruo
             if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
                 Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
@@ -145,7 +146,7 @@ export class cServerMonster {
     public monsterHit(data, damage, idPlayer:string) {
 
         this.monsterLife -= damage;
-        this.arrayAgresivePlayers[idPlayer] = true;        
+        this.arrayAgresivePlayers[idPlayer] = true;
 
         //controlo si se murio el moustro 
         if (this.monsterLife <= 0) {
@@ -165,7 +166,7 @@ export class cServerMonster {
             var playerNear:cPlayer;
 
             //controlo que jugador esta demasiado cerca de un moustro
-            for (var idPlayer in this.controlPlayer.arrayPlayers) {
+            for (let idPlayer in this.controlPlayer.arrayPlayers) {
 
                 var player = this.controlPlayer.arrayPlayers[idPlayer]
 
@@ -175,54 +176,51 @@ export class cServerMonster {
 
                     //me fijo si el player tiene el nivel necesario para ver el monstruo
                     if (this.lvlPlayerNeed > player.playerLevel) {
-                        break;
+                        continue;
                     }
 
                     //me fijo si el moustro es pacifico, y si no ya salgo de esta funcion
                     if (this.arrayAgresivePlayers[idPlayer] == undefined && this.agresiveMonster == false) {
-                        break;
+                        continue;
                     }
+                    
                     //me fijo si el jugador esta cerca del monstruo
                     if (Math.abs(playerTileX - this.tileX) < this.monsterAtackTilesX &&
                         Math.abs(playerTileY - this.tileY) < this.monsterAtackTilesY) {
                     
                             playerNear = player;
-                            break;
+                            var randomAtack = Math.random();
+
+                            if (randomAtack >= this.specialAtackPercent) {
+                                //normal atack 
+                                data = {
+                                        idMonster:this.monsterId,
+                                        idPlayer: player.playerId,
+                                        monsterAtackType: 0,
+                                        damage: player.calculateDamage(Math.round(Math.random()*this.randomPower+1) + this.fixPower),
+                                        idSpell: enumSpells.BasicAtack,
+                                    }
+                            } else {
+                                //especial mega atack!!
+                                data = {
+                                        idMonster: this.monsterId,
+                                        idPlayer: player.playerId,
+                                        monsterAtackType: 1,
+                                        damage: player.calculateDamage(50),
+                                        tileX: playerTileX,
+                                        tileY: playerTileY,
+                                        spellSize: 150,
+                                        coolDownTimeSec: 1,
+                                        idSpell: enumSpells.BasicAtack,
+                                    }
+                            }
+
+                            this.socket.emit('monster hit', data );         
+                            
                     }
 
                 }
 
-            if (playerNear != undefined) {
-                        
-                        var randomAtack = Math.random();
-
-                        if (randomAtack >= this.specialAtackPercent) {
-                            //normal atack 
-                            data = {
-                                    idMonster:this.monsterId,
-                                    idPlayer: player.playerId,
-                                    monsterAtackType: 0,
-                                    damage: player.calculateDamage(Math.round(Math.random()*this.randomPower+1) + this.fixPower),
-                                    idSpell: enumSpells.BasicAtack,
-                                }
-                        } else {
-                            //especial mega atack!!
-                            data = {
-                                    idMonster: this.monsterId,
-                                    idPlayer: player.playerId,
-                                    monsterAtackType: 1,
-                                    damage: player.calculateDamage(50),
-                                    tileX: playerTileX,
-                                    tileY: playerTileY,
-                                    spellSize: 150,
-                                    coolDownTimeSec: 1,
-                                    idSpell: enumSpells.BasicAtack,
-                                }
-                        }
-
-                            this.socket.emit('monster hit', data );         
-
-                        }
        
         
             var timerAtack = setTimeout(() => this.monsterAtack(), 1200);
