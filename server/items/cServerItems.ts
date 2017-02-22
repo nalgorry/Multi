@@ -12,7 +12,7 @@ export class cServerItems {
     public maxRank:enumPropRank;
     public itemLevel:number;
 
-    private itemDeleteTime:number = 20000;
+    private itemDeleteTime:number = 200000;
     public signalItemDelete:Signal
     
     private arrayItemProperties:cItemProperty[];

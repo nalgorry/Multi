@@ -40,6 +40,11 @@ export class cServerItemDef {
         }
 
         //agrego las propiedades adicionales aleatorias
+        var aditionalProperties:number = 3 
+        //si no tiene propiedad fija agrego una mas
+        if (arrayPropTypes.length == 0) {
+            aditionalProperties += 1;
+        } 
         var numberEfects = this.randomIntFromInterval(1, 3);
 
         for (var i = 0; i < numberEfects; i++) {

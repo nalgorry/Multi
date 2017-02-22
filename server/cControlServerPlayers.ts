@@ -109,7 +109,7 @@ export class cServerControlPlayers {
                         }
                     }   
                 } else {
-                    console.log("monstruo no encontrado");
+                    console.log("monstruo no encontrado: " + idMonster);
                 }
 
             })

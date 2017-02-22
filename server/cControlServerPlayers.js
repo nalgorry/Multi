@@ -74,7 +74,7 @@ var cServerControlPlayers = (function () {
                     }
                 }
                 else {
-                    console.log("monstruo no encontrado");
+                    console.log("monstruo no encontrado: " + idMonster);
                 }
             });
             //analizo todos los otros jugadores afectados 

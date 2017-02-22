@@ -9,6 +9,8 @@ var cControlSpells = (function () {
     function cControlSpells(controlGame) {
         this.controlGame = controlGame;
         this.hitTextPosition = 0;
+        this.maxRangeX = 14;
+        this.maxRangeY = 8;
         this.allSpells = new cDefinitionSpells(this.controlGame);
         this.createnumSpells();
         this.iniciatenumSpellsystem();
@@ -42,24 +44,16 @@ var cControlSpells = (function () {
         this.selActorType = enumSelectedActor.monster;
         this.selActor = monster;
         this.drawFocusCircle(monster.monsterSprite);
-        this.checkAtackMode();
     };
     cControlSpells.prototype.otherPlayerClick = function (player) {
         this.selActorType = enumSelectedActor.otherPlayer;
         this.selActor = player;
         this.drawFocusCircle(player.playerSprite);
-        this.checkAtackMode();
     };
     cControlSpells.prototype.thisPlayerClick = function (player) {
         this.selActorType = enumSelectedActor.thisPlayer;
         this.selActor = player;
         this.drawFocusCircle(player.playerSprite, true);
-        this.checkAtackMode();
-    };
-    cControlSpells.prototype.checkAtackMode = function () {
-        if (this.controlGame.atackMode == true) {
-            this.spellClick(this.selSpell);
-        }
     };
     cControlSpells.prototype.drawFocusCircle = function (sprite, colorGreen) {
         if (colorGreen === void 0) { colorGreen = false; }
@@ -123,6 +117,42 @@ var cControlSpells = (function () {
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);
     };
+    cControlSpells.prototype.autoFocusSystem = function (spell) {
+        //me fijo algunas caracteristicas especiales de algunos hechizos
+        if (this.selSpell.idSpell == 7 /* SelfExplosion */) {
+            this.thisPlayerClick(this.controlGame.controlPlayer);
+        }
+        //me fijo si selecciono algun pj por defecto 
+        var spellAllowed = false;
+        if (this.selActorType == enumSelectedActor.monster && spell.enabledTrowOnMonster == true) {
+            spellAllowed = true;
+        }
+        else if (this.selActorType == enumSelectedActor.otherPlayer && spell.enabledTrowOtherPlayer == true) {
+            spellAllowed = true;
+        }
+        else if (this.selActorType == enumSelectedActor.thisPlayer && spell.enabledTrowThisPlayer == true) {
+            spellAllowed = true;
+        }
+        //si no selecciono a nadie, intento hacer el auto focus
+        //si permite seleccionar monstruos, busco el moustro mas cercano
+        if (spellAllowed == false && spell.enabledTrowOnMonster == true) {
+            var closestMonster = this.controlGame.controlMonsters.getClosestMonsterInRange(this.maxRangeX, this.maxRangeY);
+            if (closestMonster != undefined) {
+                this.selActorType = enumSelectedActor.monster;
+                this.selActor = closestMonster;
+                this.drawFocusCircle(closestMonster.monsterSprite);
+                spellAllowed = true;
+            }
+        }
+        //si es un hechizo que pueda tirarse sobre mi, me selecciono 
+        if (spellAllowed == false && spell.enabledTrowThisPlayer == true) {
+            this.selActorType = enumSelectedActor.thisPlayer;
+            this.selActor = this.controlGame.controlPlayer;
+            this.drawFocusCircle(this.controlGame.controlPlayer.playerSprite);
+            spellAllowed = true;
+        }
+        return spellAllowed;
+    };
     cControlSpells.prototype.spellClick = function (sender) {
         this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width / 2;
         this.borderSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height / 2;
@@ -130,16 +160,7 @@ var cControlSpells = (function () {
         //me fijo si es posible utilizar el hechizo seleccionado, segun las caracteristicas del mismo y el personaje enfocado
         if (this.selSpell.isSpellOnCoolDown == false) {
             //me fijo si es posible tirar el hechizo en el pj selecionado
-            var spellAllowed = false;
-            if (this.selActorType == enumSelectedActor.monster && sender.enabledTrowOnMonster == true) {
-                spellAllowed = true;
-            }
-            else if (this.selActorType == enumSelectedActor.otherPlayer && sender.enabledTrowOtherPlayer == true) {
-                spellAllowed = true;
-            }
-            else if (this.selActorType == enumSelectedActor.thisPlayer && sender.enabledTrowThisPlayer == true) {
-                spellAllowed = true;
-            }
+            var spellAllowed = this.autoFocusSystem(sender);
             if (spellAllowed == true) {
                 if (this.checkSpellDistance() == true) {
                     if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
@@ -169,9 +190,6 @@ var cControlSpells = (function () {
                     }
                 }
             }
-            else {
-                this.controlGame.activateAtackMode();
-            }
         }
     };
     cControlSpells.prototype.checkSpellDistance = function () {
@@ -193,8 +211,8 @@ var cControlSpells = (function () {
             actorTileX = thisPlayer.tileX;
             actorTileY = thisPlayer.tileY;
         }
-        if (Math.abs(actorTileX - this.controlGame.controlPlayer.tileX) <= 10 &&
-            Math.abs(actorTileY - this.controlGame.controlPlayer.tileY) <= 10) {
+        if (Math.abs(actorTileX - this.controlGame.controlPlayer.tileX) <= this.maxRangeX &&
+            Math.abs(actorTileY - this.controlGame.controlPlayer.tileY) <= this.maxRangeY) {
             isAllowed = true;
         }
         else {

@@ -10,7 +10,6 @@ class cControlGame {
     
     public depthGroup:Phaser.Group;
     public interfaz:Phaser.Sprite;
-    public atackMode:boolean;
 
     public controlServer: cControlServer;
     public controlPlayer:cControlPlayer;
@@ -79,10 +78,6 @@ class cControlGame {
         this.game.input.onUp.add(this.mouseUp,this);
         this.game.input.onDown.add(this.mouseDown,this);
         this.game.input.addMoveCallback(this.mouseMove,this);
-
-        //to control the keyboard 
-        var atackKeyOne = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        atackKeyOne.onDown.add(this.activateAtackMode,this);
 
         //inicio la consola
         this.controlConsole = new cControlConsole(this);
@@ -258,11 +253,6 @@ class cControlGame {
         child.anchor.set(0,1);
     }
 
-    activateAtackMode() {
-        this.game.canvas.style.cursor = 'crosshair';
-        this.atackMode = true;
-    }
-
 
     public updateZDepth() {
         this.depthGroup.sort('y', Phaser.Group.SORT_ASCENDING);
@@ -275,11 +265,6 @@ class cControlGame {
 
     mouseUp(event:MouseEvent) {
     
-    //controlo si hizo click en el juego y si es asi desactivo el sistema de ataque
-    if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {
-        this.atackMode = false;
-        this.game.canvas.style.cursor = 'default';
-    }
     }
 
     mouseMove(pointer:Phaser.Pointer, x:number, y:number ,a:boolean) {

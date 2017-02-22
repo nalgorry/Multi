@@ -42,9 +42,6 @@ var cControlGame = (function () {
         this.game.input.onUp.add(this.mouseUp, this);
         this.game.input.onDown.add(this.mouseDown, this);
         this.game.input.addMoveCallback(this.mouseMove, this);
-        //to control the keyboard 
-        var atackKeyOne = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        atackKeyOne.onDown.add(this.activateAtackMode, this);
         //inicio la consola
         this.controlConsole = new cControlConsole(this);
         //inicio los sonidos 
@@ -174,21 +171,12 @@ var cControlGame = (function () {
     cControlGame.prototype.ObjectsConfiguration = function (child) {
         child.anchor.set(0, 1);
     };
-    cControlGame.prototype.activateAtackMode = function () {
-        this.game.canvas.style.cursor = 'crosshair';
-        this.atackMode = true;
-    };
     cControlGame.prototype.updateZDepth = function () {
         this.depthGroup.sort('y', Phaser.Group.SORT_ASCENDING);
     };
     cControlGame.prototype.mouseDown = function (event) {
     };
     cControlGame.prototype.mouseUp = function (event) {
-        //controlo si hizo click en el juego y si es asi desactivo el sistema de ataque
-        if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {
-            this.atackMode = false;
-            this.game.canvas.style.cursor = 'default';
-        }
     };
     cControlGame.prototype.mouseMove = function (pointer, x, y, a) {
         // if (this.game.input.activePointer.position.x < this.game.width - this.interfazWidth) {

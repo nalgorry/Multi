@@ -163,6 +163,9 @@ var cControlPlayer = (function (_super) {
             this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Te curaron por " + -data.damage);
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
+        else {
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
+        }
         this.controlGame.controlPlayer.controlSpells.onHit(data, this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
     };
     cControlPlayer.prototype.youKillMonster = function (data) {
@@ -188,6 +191,9 @@ var cControlPlayer = (function (_super) {
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
         this.controlGame.controlServer.socket.emit('you die', { idPlayerKill: data.playerThatHit });
         this.controlItems.clearItems();
+        //saco el focus del ultimo jugador o moustro que hizo foco
+        this.controlSpells.selActor = null;
+        this.controlSpells.selActorType = enumSelectedActor.nothing;
         this.controlGame.controlSounds.startPlayerDie();
     };
     cControlPlayer.prototype.youKill = function (data) {

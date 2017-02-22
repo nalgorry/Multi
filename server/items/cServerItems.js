@@ -5,7 +5,7 @@ var cServerItems = (function () {
     function cServerItems(socket, itemID, itemType, itemLevel, tileX, tileY) {
         var _this = this;
         this.onFloor = true;
-        this.itemDeleteTime = 20000;
+        this.itemDeleteTime = 200000;
         this.maxNumberItems = 21;
         this.itemID = itemID;
         this.itemType = itemType;

@@ -5,6 +5,7 @@ var cMonster = (function () {
         this.tileX = data.tileX;
         this.tileY = data.tileY;
         this.lvlPlayerNeed = data.lvlPlayerNeed;
+        this.monsterType = data.monsterType;
         this.startMonster(data);
     }
     cMonster.prototype.startMonster = function (data) {

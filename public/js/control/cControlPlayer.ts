@@ -207,6 +207,8 @@ class cControlPlayer extends cBasicActor {
         }  else if (data.damage < 0) { //te curaste
             this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Te curaron por " + -data.damage)
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
+        } else {
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
 
         
@@ -239,6 +241,10 @@ class cControlPlayer extends cBasicActor {
         this.controlGame.controlServer.socket.emit('you die', {idPlayerKill:data.playerThatHit });
 
         this.controlItems.clearItems();
+
+        //saco el focus del ultimo jugador o moustro que hizo foco
+        this.controlSpells.selActor = null;
+        this.controlSpells.selActorType = enumSelectedActor.nothing;
 
         this.controlGame.controlSounds.startPlayerDie();
 

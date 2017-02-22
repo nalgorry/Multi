@@ -53,7 +53,7 @@ var cControlSounds = (function () {
                 this.basicHit.play(undefined, undefined, 0.5);
                 break;
             case 6 /* LightingStorm */:
-                this.ligthingSpell.play(undefined, undefined, 0.8);
+                this.ligthingSpell.play(undefined, undefined, 0.4);
                 break;
             case 5 /* HealHand */:
                 this.healSpell.play(undefined, undefined, 0.8);

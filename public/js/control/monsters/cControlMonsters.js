@@ -25,6 +25,7 @@ var cControlMonsters = (function () {
         }
         //borro el focus
         this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idMonster);
+        delete this.arrayMonster[data.idMonster];
     };
     //esto es cuando el moustro le pega a alguien
     cControlMonsters.prototype.monsterHit = function (data) {
@@ -94,6 +95,34 @@ var cControlMonsters = (function () {
                 monster.monsterSprite.visible = true;
             }
         }
+    };
+    cControlMonsters.prototype.getClosestMonsterInRange = function (maxRangeX, maxRangeY) {
+        var closestMonster;
+        var distance = 1000000;
+        for (var numMonster in this.arrayMonster) {
+            var monster = this.arrayMonster[numMonster];
+            var actorTileX = monster.tileX;
+            var actorTileY = monster.tileY;
+            //en los monstruos cosmicos no hago auto focus, es peligroso (DANGER :)
+            if (monster.monsterType == 5 /* Cosmic */) {
+                continue;
+            }
+            //si el monstruo esta invisible no lo considero
+            if (monster.monsterSprite.visible == false) {
+                continue;
+            }
+            if (Math.abs(actorTileX - this.controlGame.controlPlayer.tileX) <= maxRangeX &&
+                Math.abs(actorTileY - this.controlGame.controlPlayer.tileY) <= maxRangeY) {
+                //seteo para buscar solo monstruos mas cercas de la ultima vez que encontre
+                var monsterDistance = Math.pow((actorTileX - this.controlGame.controlPlayer.tileX) * this.controlGame.gridSize, 2) +
+                    Math.pow((actorTileY - this.controlGame.controlPlayer.tileY) * this.controlGame.gridSize, 2);
+                if (monsterDistance < distance) {
+                    closestMonster = monster;
+                    distance = monsterDistance;
+                }
+            }
+        }
+        return closestMonster;
     };
     return cControlMonsters;
 }());

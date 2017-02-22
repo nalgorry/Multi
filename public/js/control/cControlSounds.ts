@@ -88,7 +88,7 @@ class cControlSounds {
                 this.basicHit.play(undefined, undefined, 0.5);
                 break;
             case enumSpells.LightingStorm:
-                this.ligthingSpell.play(undefined, undefined, 0.8);
+                this.ligthingSpell.play(undefined, undefined, 0.4);
                 break;
             case enumSpells.HealHand:
                 this.healSpell.play(undefined, undefined, 0.8);

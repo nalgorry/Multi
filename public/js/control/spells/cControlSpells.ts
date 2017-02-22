@@ -20,6 +20,9 @@ class cControlSpells {
     private styleHit;
     private hitTextPosition:number = 0;
 
+    public maxRangeX = 14;
+    public maxRangeY = 8;
+
     constructor(public controlGame:cControlGame) {
 
             this.allSpells = new cDefinitionSpells(this.controlGame); 
@@ -37,8 +40,8 @@ class cControlSpells {
              var monster = this.selActor as cMonster
              id = monster.idMonster;
          } else if (this.selActorType == enumSelectedActor.otherPlayer){
-                var otherPlayer = this.selActor as cOtherPlayer
-                id = otherPlayer.idServer;
+            var otherPlayer = this.selActor as cOtherPlayer
+            id = otherPlayer.idServer;
          } else if (this.selActorType == enumSelectedActor.thisPlayer){
              var thisPlayer = this.selActor as cControlPlayer
              id = thisPlayer.idServer;
@@ -67,7 +70,6 @@ class cControlSpells {
         this.selActor = monster;
 
         this.drawFocusCircle(monster.monsterSprite)
-        this.checkAtackMode()
 
     }
 
@@ -77,7 +79,6 @@ class cControlSpells {
         this.selActor = player; 
 
         this.drawFocusCircle(player.playerSprite);
-        this.checkAtackMode()
     }
 
     public thisPlayerClick(player:cControlPlayer) {
@@ -86,13 +87,6 @@ class cControlSpells {
         this.selActor = player;
 
         this.drawFocusCircle(player.playerSprite,true)
-        this.checkAtackMode()
-    }
-
-    private checkAtackMode() {
-        if (this.controlGame.atackMode == true) {
-            this.spellClick(this.selSpell)
-        }
     }
 
     private drawFocusCircle(sprite:Phaser.Sprite,colorGreen:boolean = false) {
@@ -182,6 +176,54 @@ class cControlSpells {
 
     }
 
+    public autoFocusSystem(spell:cSpell):boolean {
+
+        //me fijo algunas caracteristicas especiales de algunos hechizos
+        if (this.selSpell.idSpell == enumSpells.SelfExplosion) { //la explosion es sobre el mismo pj, lo enfoco antes de castearlo
+            this.thisPlayerClick(this.controlGame.controlPlayer);
+        }
+
+        //me fijo si selecciono algun pj por defecto 
+        var spellAllowed:boolean = false;
+
+        if (this.selActorType == enumSelectedActor.monster && spell.enabledTrowOnMonster == true) {
+            spellAllowed = true;
+        } else if (this.selActorType == enumSelectedActor.otherPlayer && spell.enabledTrowOtherPlayer == true) {
+            spellAllowed = true;
+        } else if (this.selActorType == enumSelectedActor.thisPlayer && spell.enabledTrowThisPlayer == true) {
+            spellAllowed = true;
+        }   
+
+        //si no selecciono a nadie, intento hacer el auto focus
+        //si permite seleccionar monstruos, busco el moustro mas cercano
+        if (spellAllowed == false && spell.enabledTrowOnMonster == true) {
+            
+            var closestMonster:cMonster = this.controlGame.controlMonsters.getClosestMonsterInRange(this.maxRangeX, this.maxRangeY);
+
+            if (closestMonster != undefined) {
+
+                this.selActorType = enumSelectedActor.monster;
+                this.selActor = closestMonster;
+                this.drawFocusCircle(closestMonster.monsterSprite);
+                
+                spellAllowed = true;
+            }
+            
+        }
+
+        //si es un hechizo que pueda tirarse sobre mi, me selecciono 
+        if (spellAllowed == false && spell.enabledTrowThisPlayer == true) {
+                
+                this.selActorType = enumSelectedActor.thisPlayer;
+                this.selActor = this.controlGame.controlPlayer;
+                this.drawFocusCircle(this.controlGame.controlPlayer.playerSprite);
+
+                 spellAllowed = true;
+        }
+
+        return spellAllowed
+    }
+
     public spellClick(sender:cSpell) {
 
             this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width/2;
@@ -191,16 +233,9 @@ class cControlSpells {
             //me fijo si es posible utilizar el hechizo seleccionado, segun las caracteristicas del mismo y el personaje enfocado
 
             if (this.selSpell.isSpellOnCoolDown == false) {
-                
+               
                 //me fijo si es posible tirar el hechizo en el pj selecionado
-                var spellAllowed:boolean = false;
-                if (this.selActorType == enumSelectedActor.monster && sender.enabledTrowOnMonster == true) {
-                    spellAllowed = true;
-                } else if (this.selActorType == enumSelectedActor.otherPlayer && sender.enabledTrowOtherPlayer == true) {
-                    spellAllowed = true;
-                } else if (this.selActorType == enumSelectedActor.thisPlayer && sender.enabledTrowThisPlayer == true) {
-                    spellAllowed = true;
-                }   
+                var spellAllowed:boolean = this.autoFocusSystem(sender);
 
                 if (spellAllowed == true) {
                     if (this.checkSpellDistance() == true) {                 
@@ -234,9 +269,7 @@ class cControlSpells {
                             this.selSpell.spellColdDown();
                         }
                     }
-                } else {
-                    this.controlGame.activateAtackMode();
-                }
+                } 
 
             }
 
@@ -268,8 +301,8 @@ class cControlSpells {
         
          }
 
-        if (Math.abs(actorTileX - this.controlGame.controlPlayer.tileX) <= 10 && 
-            Math.abs(actorTileY - this.controlGame.controlPlayer.tileY) <= 10 ) {
+        if (Math.abs(actorTileX - this.controlGame.controlPlayer.tileX) <= this.maxRangeX && 
+            Math.abs(actorTileY - this.controlGame.controlPlayer.tileY) <= this.maxRangeY ) {
             
                 isAllowed = true;
 

@@ -13,13 +13,19 @@ export class cServerControlMonster {
         
         //creo los primeros monters :)
 
-       for (var i=1; i<=40;i++) {
-           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),this.randomIntFromInterval(1,1), true);
+       for (var i=1; i<=35;i++) {
+           var randmType = this.randomIntFromInterval(1,2)
+            var monsterType = enumMonsters.FirstMonster
+           if(randmType == 2) {
+               var monsterType = enumMonsters.Wolf
+           }
+            
+           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),this.randomIntFromInterval(1,4), true);
        }
 
        //creo el mounstro COSMICO
-       this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),5,true);
-
+       this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),enumMonsters.Cosmic,true);
+       this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),enumMonsters.Cosmic,true);
 
     }
 

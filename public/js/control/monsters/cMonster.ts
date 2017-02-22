@@ -6,6 +6,7 @@ class cMonster  {
     public monsterSprite:Phaser.Sprite;
     public monsterInternalSprite:Phaser.Sprite;
     public lvlPlayerNeed:number;
+    public monsterType:enumMonsters;
 
 
     private moveTween:Phaser.Tween;
@@ -16,9 +17,9 @@ class cMonster  {
         this.tileX = data.tileX;
         this.tileY = data.tileY;
         this.lvlPlayerNeed = data.lvlPlayerNeed;
+        this.monsterType = data.monsterType;
 
         this.startMonster(data);
-
         
     }
 

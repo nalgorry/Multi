@@ -28,6 +28,11 @@ var cServerItemDef = (function () {
             arrayPropTypes.push(itemDef.itemFixEfect); //la agrego al array de prop
         }
         //agrego las propiedades adicionales aleatorias
+        var aditionalProperties = 3;
+        //si no tiene propiedad fija agrego una mas
+        if (arrayPropTypes.length == 0) {
+            aditionalProperties += 1;
+        }
         var numberEfects = this.randomIntFromInterval(1, 3);
         for (var i = 0; i < numberEfects; i++) {
             var itemEfectType = this.randomIntFromInterval(0, this.maxNumberEfects);
