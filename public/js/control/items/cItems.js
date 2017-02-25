@@ -35,13 +35,13 @@ var cItems = (function () {
         this.sprite.addChild(itemSprite);
     };
     cItems.prototype.putItemInTile = function (tileX, tileY) {
-        this.tileX = tileX;
+        this.tileX = tileX; //para arreglar tema del offset dele objeto
         this.tileY = tileY;
         this.createItemSprite();
         this.controlGame.depthGroup.add(this.sprite);
         var gridSize = this.controlGame.gridSize;
-        this.sprite.x = tileX * gridSize;
-        this.sprite.y = tileY * gridSize;
+        this.sprite.x = (this.tileX) * gridSize;
+        this.sprite.y = (this.tileY - 1) * gridSize;
     };
     cItems.prototype.floorItemClick = function () {
         this.signalItemOnFloorClick.dispatch(this);

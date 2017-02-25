@@ -84,6 +84,11 @@ class cMonster  {
     }
 
     public killMonster() {
+        var deadAnimation = this.controlGame.game.add.tween(this.monsterSprite).to( { alpha: 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+        deadAnimation.onComplete.add(this.destroySprite,this);
+    }
+
+    destroySprite() {
         this.monsterSprite.destroy();
     }
 

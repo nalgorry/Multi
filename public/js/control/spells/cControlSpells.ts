@@ -20,8 +20,8 @@ class cControlSpells {
     private styleHit;
     private hitTextPosition:number = 0;
 
-    public maxRangeX = 14;
-    public maxRangeY = 8;
+    public maxRangeX = 12;
+    public maxRangeY = 7;
 
     constructor(public controlGame:cControlGame) {
 
@@ -61,7 +61,31 @@ class cControlSpells {
 
     public spellAnimation(sprite:Phaser.Sprite,data) {
         
+        //animacion de un sprite 
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
+
+        //creo una linea de test
+        var thisPlayerSprite = this.controlGame.controlPlayer.playerSprite;
+        var graphics = this.controlGame.game.add.graphics(0, 0);
+
+        graphics.lineStyle(2, 0x5e0818, 1);
+        graphics.moveTo(thisPlayerSprite.x , thisPlayerSprite.y - 40);
+
+        var yTo = Math.floor(Math.random() * (50 - 20 + 1) + 20 )
+
+        graphics.lineTo(sprite.x  , sprite.y - yTo);
+
+        //var xDistance:number = sprite.x - thisPlayerSprite.x;
+        //var yDistance:number = sprite.y - thisPlayerSprite.y;
+
+        //var buletAnimation = this.controlGame.game.add.tween(graphics).to( { x: xDistance, y: yDistance}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+        var buletAnimation = this.controlGame.game.add.tween(graphics).to( { alpha: 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+        buletAnimation.onComplete.add(this.destroyBulet,this,null,graphics);
+       
+    }
+
+    public destroyBulet(bulet:Phaser.Graphics, tween:Phaser.Tween) {
+        bulet.destroy();
     }
 
     public monsterClick(monster:cMonster) {
@@ -70,7 +94,6 @@ class cControlSpells {
         this.selActor = monster;
 
         this.drawFocusCircle(monster.monsterSprite)
-
     }
 
     public otherPlayerClick(player:cOtherPlayer) {

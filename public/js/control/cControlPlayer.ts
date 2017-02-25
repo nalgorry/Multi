@@ -356,7 +356,7 @@ class cControlPlayer extends cBasicActor {
 
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
         this.tileX = this.controlGame.layer.getTileX(xOffset);
-        this.tileY = this.controlGame.layer.getTileY(yOffset);
+        this.tileY = this.controlGame.layer.getTileY(yOffset) + 1;
 
         if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY) {
 

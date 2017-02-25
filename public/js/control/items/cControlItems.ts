@@ -42,9 +42,7 @@ class cControlItems {
         this.arrayItems[data.itemID] = item;
 
         item.signalItemOnFloorClick.add(this.itemOnFloorClick,this); //agrego una señal para despues poder hacer click en el item
-
-        var a = new Event('hola');
-        
+      
 
     }
     

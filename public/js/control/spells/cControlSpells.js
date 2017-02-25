@@ -9,8 +9,8 @@ var cControlSpells = (function () {
     function cControlSpells(controlGame) {
         this.controlGame = controlGame;
         this.hitTextPosition = 0;
-        this.maxRangeX = 14;
-        this.maxRangeY = 8;
+        this.maxRangeX = 12;
+        this.maxRangeY = 7;
         this.allSpells = new cDefinitionSpells(this.controlGame);
         this.createnumSpells();
         this.iniciatenumSpellsystem();
@@ -38,7 +38,23 @@ var cControlSpells = (function () {
         }
     };
     cControlSpells.prototype.spellAnimation = function (sprite, data) {
+        //animacion de un sprite 
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
+        //creo una linea de test
+        var thisPlayerSprite = this.controlGame.controlPlayer.playerSprite;
+        var graphics = this.controlGame.game.add.graphics(0, 0);
+        graphics.lineStyle(2, 0x5e0818, 1);
+        graphics.moveTo(thisPlayerSprite.x, thisPlayerSprite.y - 40);
+        var yTo = Math.floor(Math.random() * (50 - 20 + 1) + 20);
+        graphics.lineTo(sprite.x, sprite.y - yTo);
+        //var xDistance:number = sprite.x - thisPlayerSprite.x;
+        //var yDistance:number = sprite.y - thisPlayerSprite.y;
+        //var buletAnimation = this.controlGame.game.add.tween(graphics).to( { x: xDistance, y: yDistance}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+        var buletAnimation = this.controlGame.game.add.tween(graphics).to({ alpha: 0 }, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+        buletAnimation.onComplete.add(this.destroyBulet, this, null, graphics);
+    };
+    cControlSpells.prototype.destroyBulet = function (bulet, tween) {
+        bulet.destroy();
     };
     cControlSpells.prototype.monsterClick = function (monster) {
         this.selActorType = enumSelectedActor.monster;

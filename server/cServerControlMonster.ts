@@ -13,14 +13,14 @@ export class cServerControlMonster {
         
         //creo los primeros monters :)
 
-       for (var i=1; i<=35;i++) {
-           var randmType = this.randomIntFromInterval(1,2)
+       for (var i=1; i<=35; i++) {
+           var randmType = this.randomIntFromInterval(1, 2)
             var monsterType = enumMonsters.FirstMonster
            if(randmType == 2) {
                var monsterType = enumMonsters.Wolf
            }
             
-           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),this.randomIntFromInterval(1,4), true);
+           this.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 60 + 14),this.randomIntFromInterval(1, 1), true);
        }
 
        //creo el mounstro COSMICO

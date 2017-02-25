@@ -53,6 +53,10 @@ var cMonster = (function () {
         this.controlGame.controlPlayer.controlSpells.monsterClick(this);
     };
     cMonster.prototype.killMonster = function () {
+        var deadAnimation = this.controlGame.game.add.tween(this.monsterSprite).to({ alpha: 0 }, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+        deadAnimation.onComplete.add(this.destroySprite, this);
+    };
+    cMonster.prototype.destroySprite = function () {
         this.monsterSprite.destroy();
     };
     return cMonster;

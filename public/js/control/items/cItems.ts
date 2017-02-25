@@ -76,7 +76,7 @@ class cItems  {
 
     putItemInTile(tileX:number,tileY:number) {
 
-        this.tileX = tileX;
+        this.tileX = tileX; //para arreglar tema del offset dele objeto
         this.tileY = tileY;
 
         this.createItemSprite();
@@ -85,8 +85,8 @@ class cItems  {
 
         var gridSize = this.controlGame.gridSize;
 
-        this.sprite.x = tileX * gridSize;
-        this.sprite.y = tileY * gridSize;
+        this.sprite.x = (this.tileX) * gridSize;
+        this.sprite.y = (this.tileY - 1) * gridSize;
 
     }
 

@@ -14,7 +14,7 @@ var cServerControlMonster = (function () {
             if (randmType == 2) {
                 var monsterType = 3 /* Wolf */;
             }
-            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), this.randomIntFromInterval(1, 4), true);
+            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), this.randomIntFromInterval(1, 1), true);
         }
         //creo el mounstro COSMICO
         this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), 5 /* Cosmic */, true);

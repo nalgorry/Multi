@@ -8,9 +8,9 @@ var cServerControlItems = (function () {
         this.arrayItems = [];
         //defino todos los objetos
         cServerItemDef_1.cServerItemDef.defineItems();
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 1; i++) {
             var itemId = "i" + this.nextIdItems;
-            this.createNewItem(i, 10, 40 + i, 95);
+            this.createNewItem(i, 10, 44 + i, 90);
         }
     }
     cServerControlItems.prototype.dropItemToFloor = function (data) {
