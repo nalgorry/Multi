@@ -51,10 +51,10 @@ class cControlSounds {
     public startPlayerHit() {
 
         if (this.numberPlayerHit == 1) {
-            this.playerHit1.play(undefined, undefined, 0.5);
+            //this.playerHit1.play(undefined, undefined, 0.5);
             this.numberPlayerHit = 2;
         } else {
-            this.playerHit2.play(undefined, undefined, 0.5);
+            //this.playerHit2.play(undefined, undefined, 0.5);
             this.numberPlayerHit = 1;
         }
 

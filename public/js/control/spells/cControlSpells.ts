@@ -64,24 +64,55 @@ class cControlSpells {
         //animacion de un sprite 
         this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
 
-        //creo una linea de test
+        //creo una mega rayo super mortal 
+        this.makeRay(sprite);
+
+
+    }
+
+    public makeRay(spriteTo:Phaser.Sprite) {
+
         var thisPlayerSprite = this.controlGame.controlPlayer.playerSprite;
+
+        var from:Phaser.Point;
+        var to:Phaser.Point;
+
+        from = new Phaser.Point(thisPlayerSprite.x, thisPlayerSprite.y - 40);
+        to = new Phaser.Point(spriteTo.x, spriteTo.y - 40);
+
         var graphics = this.controlGame.game.add.graphics(0, 0);
-
         graphics.lineStyle(2, 0x5e0818, 1);
-        graphics.moveTo(thisPlayerSprite.x , thisPlayerSprite.y - 40);
 
-        var yTo = Math.floor(Math.random() * (50 - 20 + 1) + 20 )
+        graphics.moveTo(from.x , from.y);
+        //graphics.lineTo(to.x  , to.y);
 
-        graphics.lineTo(sprite.x  , sprite.y - yTo);
+        var maxLenght:number = 5;
 
-        //var xDistance:number = sprite.x - thisPlayerSprite.x;
-        //var yDistance:number = sprite.y - thisPlayerSprite.y;
+        var distance = from.distance(to);
 
-        //var buletAnimation = this.controlGame.game.add.tween(graphics).to( { x: xDistance, y: yDistance}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+        var numberOfLines:number = Math.floor(distance/maxLenght);
+
+        var lastX = from.x;
+        var lastY = from.y;
+        var randomFactor = 3;
+        var fixX = (to.x - from.x) / numberOfLines ;
+        var fixY = (to.y - from.y) / numberOfLines;
+
+
+        for(var i = 0; i < numberOfLines ; i++) {
+            var randX = this.controlGame.game.rnd.integerInRange(-randomFactor, randomFactor);
+            var randY = this.controlGame.game.rnd.integerInRange(-randomFactor, randomFactor);
+
+            lastX += fixX + randX;
+            lastY += fixY + randY; 
+
+            graphics.lineTo(lastX, lastY);
+        }
+
         var buletAnimation = this.controlGame.game.add.tween(graphics).to( { alpha: 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
         buletAnimation.onComplete.add(this.destroyBulet,this,null,graphics);
-       
+
+
     }
 
     public destroyBulet(bulet:Phaser.Graphics, tween:Phaser.Tween) {
