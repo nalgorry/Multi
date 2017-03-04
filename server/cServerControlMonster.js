@@ -6,6 +6,8 @@ var cServerControlMonster = (function () {
         this.controlPlayer = controlPlayer;
         this.controlItems = controlItems;
         this.nextIdMonster = 0;
+        this.monsterMaxX = 65;
+        this.monsterMaxY = 50;
         this.arrayMonster = [];
         //creo los primeros monters :)
         for (var i = 1; i <= 35; i++) {
@@ -14,29 +16,33 @@ var cServerControlMonster = (function () {
             if (randmType == 2) {
                 var monsterType = 3 /* Wolf */;
             }
-            this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), this.randomIntFromInterval(1, 1), true);
+            this.createNewMonster(Math.round(Math.random() * this.monsterMaxX), Math.round(Math.random() * this.monsterMaxY), monsterType, true);
         }
         //creo el mounstro COSMICO
-        this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), 5 /* Cosmic */, true);
-        this.createNewMonster(Math.round(Math.random() * 76 + 14), Math.round(Math.random() * 60 + 14), 5 /* Cosmic */, true);
+        this.createNewMonster(Math.round(Math.random() * this.monsterMaxX), Math.round(Math.random() * this.monsterMaxY), 5 /* Cosmic */, true);
+        this.createNewMonster(Math.round(Math.random() * this.monsterMaxX), Math.round(Math.random() * this.monsterMaxY), 5 /* Cosmic */, true);
     }
     cServerControlMonster.prototype.getMonsterById = function (id) {
         return this.arrayMonster[id];
     };
     cServerControlMonster.prototype.onNewPlayerConected = function (socket) {
         //le mando al nuevo cliente todos los moustros del mapa
-        for (var monster in this.arrayMonster) {
-            this.arrayMonster[monster].sendMonsterToNewPlayer(socket);
+        for (var numMonster in this.arrayMonster) {
+            var monster = this.arrayMonster[numMonster];
+            //me fijo si el monstruo es publico antes de mandarlo 
+            if (monster.isPublic == true) {
+                monster.sendMonsterToNewPlayer(socket);
+            }
         }
         //le mando el moustro para el tutorial solo a este jugador.
         var newMonster = new cServerMonster_1.cServerMonster(this.controlItems);
-        newMonster.startMonster("m" + this.nextIdMonster, 1 /* FirstMonster */, socket, this.controlPlayer, false, 52, 93);
+        newMonster.startMonster("m" + this.nextIdMonster, 1 /* FirstMonster */, socket, this.controlPlayer, false, false, 55, 60);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };
     cServerControlMonster.prototype.createNewMonster = function (tileX, tileY, monsterType, monsterRespawn) {
         var newMonster = new cServerMonster_1.cServerMonster(this.controlItems);
-        newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, monsterRespawn, tileX, tileY);
+        newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, monsterRespawn, true, tileX, tileY);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };

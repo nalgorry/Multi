@@ -15,19 +15,25 @@ export class cServerControlItems {
         //defino todos los objetos
         cServerItemDef.defineItems();
 
-        for (var i = 0; i<1;i++) {
+    }
+
+    //crea los items iniciales para cada jugador
+    public createInitialItems(socket:SocketIO.Server)   {
+
+        for (var i = 0; i<3; i++) {
 
             var itemId = "i" + this.nextIdItems;
 
-            this.createNewItem(i, 10, 44 + i, 90);
+            this.createNewItem(i, 10, 47 + i, 60, false, socket);
 
         }
+
 
     }
 
 
 
-    public dropItemToFloor(data) {
+    public dropItemToFloor(socket:any, data) {
 
         var itemDrop = this.arrayItems[data.itemId];
 
@@ -35,7 +41,15 @@ export class cServerControlItems {
             itemDrop.tileX = data.tileX;
             itemDrop.tileY = data.tileY;
             itemDrop.onFloor = true;
-            itemDrop.emitNewItem(this.socket)
+
+            //si el item es publico todos lo ven el piso, sino solo el jugador que lo tiro
+            if (itemDrop.isPublic == true) {
+                itemDrop.emitNewItem(this.socket)
+            } else {
+                itemDrop.emitNewItem(socket)
+            }
+
+            
         } else {
             console.log("itemNoEncontrado");
         }
@@ -47,17 +61,17 @@ export class cServerControlItems {
         var itemType = cServerItemDef.getRandomItemDef();
 
         if (itemType != undefined) {
-            this.createNewItem(itemType, itemLevel, tileX, tileY);
+            this.createNewItem(itemType, itemLevel, tileX, tileY,true);
         } else {
             console.log("item no definido correctamente");
         }
 
     }
 
-    public createNewItem(itemType:number, itemLevel, tileX:number, tileY:number) {
+    public createNewItem(itemType:number, itemLevel, tileX:number, tileY:number,itemPublic:boolean, socket:SocketIO.Server = this.socket) {
 
         var itemId = "i" + this.nextIdItems;
-        var newItem = new cServerItems(this.socket, itemId, itemType, itemLevel, tileX, tileY);
+        var newItem = new cServerItems(socket, itemId, itemType, itemLevel, tileX, tileY,itemPublic);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
 
@@ -74,9 +88,18 @@ export class cServerControlItems {
     public onNewPlayerConected(socket:SocketIO.Server) {
 
         //le mando al nuevo cliente todos los moustros del mapa
-        for (var item in this.arrayItems) {
-            this.arrayItems[item].emitNewItem(socket);    
+        for (var numItem in this.arrayItems) {
+            
+            var item:cServerItems = this.arrayItems[numItem];
+
+            //controlo que el item sea para todos los jugadores.
+            if (item.isPublic == true) {
+                item.emitNewItem(socket);   
+            } 
+
         }
+
+        this.createInitialItems(socket);
 
     }
 

@@ -90,7 +90,7 @@ function onYouDropItem(data) {
 
     console.log(data);
 
-    controlItems.dropItemToFloor(data);
+    controlItems.dropItemToFloor(this, data);
 
 }
 

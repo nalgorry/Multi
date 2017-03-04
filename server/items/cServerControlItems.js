@@ -8,18 +8,27 @@ var cServerControlItems = (function () {
         this.arrayItems = [];
         //defino todos los objetos
         cServerItemDef_1.cServerItemDef.defineItems();
-        for (var i = 0; i < 1; i++) {
-            var itemId = "i" + this.nextIdItems;
-            this.createNewItem(i, 10, 44 + i, 90);
-        }
     }
-    cServerControlItems.prototype.dropItemToFloor = function (data) {
+    //crea los items iniciales para cada jugador
+    cServerControlItems.prototype.createInitialItems = function (socket) {
+        for (var i = 0; i < 3; i++) {
+            var itemId = "i" + this.nextIdItems;
+            this.createNewItem(i, 10, 47 + i, 60, false, socket);
+        }
+    };
+    cServerControlItems.prototype.dropItemToFloor = function (socket, data) {
         var itemDrop = this.arrayItems[data.itemId];
         if (itemDrop != undefined) {
             itemDrop.tileX = data.tileX;
             itemDrop.tileY = data.tileY;
             itemDrop.onFloor = true;
-            itemDrop.emitNewItem(this.socket);
+            //si el item es publico todos lo ven el piso, sino solo el jugador que lo tiro
+            if (itemDrop.isPublic == true) {
+                itemDrop.emitNewItem(this.socket);
+            }
+            else {
+                itemDrop.emitNewItem(socket);
+            }
         }
         else {
             console.log("itemNoEncontrado");
@@ -28,15 +37,16 @@ var cServerControlItems = (function () {
     cServerControlItems.prototype.createNewRandomItem = function (itemLevel, tileX, tileY) {
         var itemType = cServerItemDef_1.cServerItemDef.getRandomItemDef();
         if (itemType != undefined) {
-            this.createNewItem(itemType, itemLevel, tileX, tileY);
+            this.createNewItem(itemType, itemLevel, tileX, tileY, true);
         }
         else {
             console.log("item no definido correctamente");
         }
     };
-    cServerControlItems.prototype.createNewItem = function (itemType, itemLevel, tileX, tileY) {
+    cServerControlItems.prototype.createNewItem = function (itemType, itemLevel, tileX, tileY, itemPublic, socket) {
+        if (socket === void 0) { socket = this.socket; }
         var itemId = "i" + this.nextIdItems;
-        var newItem = new cServerItems_1.cServerItems(this.socket, itemId, itemType, itemLevel, tileX, tileY);
+        var newItem = new cServerItems_1.cServerItems(socket, itemId, itemType, itemLevel, tileX, tileY, itemPublic);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
         //agrego una señal para definir cuando el item se borra del juego
@@ -47,9 +57,14 @@ var cServerControlItems = (function () {
     };
     cServerControlItems.prototype.onNewPlayerConected = function (socket) {
         //le mando al nuevo cliente todos los moustros del mapa
-        for (var item in this.arrayItems) {
-            this.arrayItems[item].emitNewItem(socket);
+        for (var numItem in this.arrayItems) {
+            var item = this.arrayItems[numItem];
+            //controlo que el item sea para todos los jugadores.
+            if (item.isPublic == true) {
+                item.emitNewItem(socket);
+            }
         }
+        this.createInitialItems(socket);
     };
     cServerControlItems.prototype.getItemById = function (id) {
         return this.arrayItems[id];

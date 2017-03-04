@@ -11,6 +11,7 @@ export class cServerItems {
     public onFloor:boolean = true;
     public maxRank:enumPropRank;
     public itemLevel:number;
+    public isPublic:boolean = true;
 
     private itemDeleteTime:number = 200000;
     public signalItemDelete:Signal
@@ -19,7 +20,8 @@ export class cServerItems {
 
     private maxNumberItems:number = 21;
 
-    constructor(socket:SocketIO.Server, itemID:string, itemType:enumItemType, itemLevel:number , tileX:number, tileY:number) {
+    constructor(socket:SocketIO.Server, itemID:string, itemType:enumItemType, itemLevel:number , tileX:number, tileY:number,
+                isPublic:boolean) {
 
         this.itemID = itemID;
         this.itemType = itemType;
@@ -27,6 +29,7 @@ export class cServerItems {
         this.tileY = tileY;
         this.socket = socket;
         this.itemLevel = itemLevel;
+        this.isPublic = isPublic;
 
         this.signalItemDelete = new Signal();
 
@@ -61,7 +64,6 @@ export class cServerItems {
 
     public emitNewItem(socket:SocketIO.Server) {
 
-
         //emito el item si esta en el piso 
         if (this.onFloor == true) {
 
@@ -87,20 +89,22 @@ export class cServerItems {
 
     public youGetItem(socket:SocketIO.Server,data) {
 
-        var itemData = {
-            itemID: this.itemID, 
-            itemType:this.itemType,
-            itemEfects: this.arrayItemProperties,
-            maxRank: this.maxRank
-            }
+        if (this.onFloor == true) {
+            var itemData = {
+                itemID: this.itemID, 
+                itemType:this.itemType,
+                itemEfects: this.arrayItemProperties,
+                maxRank: this.maxRank
+                }
 
-        //le mando al que agarro su item
-        socket.emit('you get item', itemData );
+            //le mando al que agarro su item
+            socket.emit('you get item', itemData );
 
-        //le mando a todos que el item se agarro
-        this.socket.emit('item get', {itemID: this.itemID})
+            //le mando a todos que el item se agarro
+            this.socket.emit('item get', {itemID: this.itemID})
 
-        this.onFloor = false;
+            this.onFloor = false;
+        }
  
     }
 

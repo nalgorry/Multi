@@ -14,7 +14,7 @@ var cServerMonster = (function () {
         this.monsterAtackTilesY = 9;
         this.arrayAgresivePlayers = [];
     }
-    cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, monsterRespawn, tileX, tileY) {
+    cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, monsterRespawn, isPublic, tileX, tileY) {
         var _this = this;
         this.monsterId = monsterId;
         this.socket = socket;
@@ -22,6 +22,7 @@ var cServerMonster = (function () {
         this.tileX = tileX;
         this.tileY = tileY;
         this.monsterRespawn = monsterRespawn;
+        this.isPublic = isPublic;
         //valores que dependen del tipo de monstruo
         this.monsterType = monsterType;
         cServerDefinitionMonsters_1.cServerDefinitionMonsters.defineMonsters(this, monsterType);

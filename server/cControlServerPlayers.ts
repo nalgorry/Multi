@@ -32,7 +32,6 @@ export class cServerControlPlayers {
 
     public onNewPlayerConected(socket, idPlayer:string, data) {
 
-
         socket.broadcast.emit('new player', 
             {id: idPlayer, x: data.x, y: data.y, name:data.name})
 
@@ -102,9 +101,15 @@ export class cServerControlPlayers {
                         //TODO sacar esto de aca... creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo
                         if (monster.monsterRespawn == true) { 
                             if (monster.monsterType != enumMonsters.Cosmic) {
-                                this.controlMonster.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 76 + 12),this.randomIntFromInterval(1, 4),true)
+                                this.controlMonster.createNewMonster(
+                                    Math.round(Math.random() * this.controlMonster.monsterMaxX), 
+                                    Math.round(Math.random() * this.controlMonster.monsterMaxY),
+                                    this.randomIntFromInterval(1, 4),true)
                             } else {
-                                this.controlMonster.createNewMonster(Math.round(Math.random() * 76 + 14),Math.round(Math.random() * 76 + 12),enumMonsters.Cosmic,true);
+                                this.controlMonster.createNewMonster(
+                                    Math.round(Math.random() * this.controlMonster.monsterMaxX), 
+                                    Math.round(Math.random() * this.controlMonster.monsterMaxY),
+                                    enumMonsters.Cosmic,true);
                             }
                         }
                     }   

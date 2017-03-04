@@ -2,9 +2,10 @@
 var cServerItemDef_1 = require('./cServerItemDef');
 var Signal_1 = require('../Signal');
 var cServerItems = (function () {
-    function cServerItems(socket, itemID, itemType, itemLevel, tileX, tileY) {
+    function cServerItems(socket, itemID, itemType, itemLevel, tileX, tileY, isPublic) {
         var _this = this;
         this.onFloor = true;
+        this.isPublic = true;
         this.itemDeleteTime = 200000;
         this.maxNumberItems = 21;
         this.itemID = itemID;
@@ -13,6 +14,7 @@ var cServerItems = (function () {
         this.tileY = tileY;
         this.socket = socket;
         this.itemLevel = itemLevel;
+        this.isPublic = isPublic;
         this.signalItemDelete = new Signal_1.Signal();
         this.arrayItemProperties = [];
         this.defineItemsProperties(this.itemLevel);
@@ -48,17 +50,19 @@ var cServerItems = (function () {
         this.maxRank = cServerItemDef_1.cServerItemDef.getItemMaxRank(this.arrayItemProperties);
     };
     cServerItems.prototype.youGetItem = function (socket, data) {
-        var itemData = {
-            itemID: this.itemID,
-            itemType: this.itemType,
-            itemEfects: this.arrayItemProperties,
-            maxRank: this.maxRank
-        };
-        //le mando al que agarro su item
-        socket.emit('you get item', itemData);
-        //le mando a todos que el item se agarro
-        this.socket.emit('item get', { itemID: this.itemID });
-        this.onFloor = false;
+        if (this.onFloor == true) {
+            var itemData = {
+                itemID: this.itemID,
+                itemType: this.itemType,
+                itemEfects: this.arrayItemProperties,
+                maxRank: this.maxRank
+            };
+            //le mando al que agarro su item
+            socket.emit('you get item', itemData);
+            //le mando a todos que el item se agarro
+            this.socket.emit('item get', { itemID: this.itemID });
+            this.onFloor = false;
+        }
     };
     cServerItems.prototype.randomIntFromInterval = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);

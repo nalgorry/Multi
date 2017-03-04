@@ -47,26 +47,27 @@ class cBasicActor {
 
     public startActor() {       
 
-        var test:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj');
-        test.anchor.set(0.5,0);
-        var a = Phaser.Animation.generateFrameNames('Golpe_',0,5,'.png');
-        test.animations.add('test',a,20,true);
-        test.animations.play('test',10,true);
+        //TEST PARA USAR EL DRAGON BONES, aun en desarrollo
+        //var test:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj');
+        //test.anchor.set(0.5,0);
+        //var a = Phaser.Animation.generateFrameNames('Golpe_',0,5,'.png');
+        //test.animations.add('test',a,20,true);
+        //test.animations.play('test',10,true);
 
-        var weapon:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj' );
-        weapon.anchor.set(0.5,0);
-        var a = Phaser.Animation.generateFrameNames('sword_',0,5,'.png');
-        weapon.animations.add('test',a,20,true);
-        weapon.animations.play('test',10,true);
+        //var weapon:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj' );
+        //weapon.anchor.set(0.5,0);
+        //var a = Phaser.Animation.generateFrameNames('sword_',0,5,'.png');
+        //weapon.animations.add('test',a,20,true);
+        //weapon.animations.play('test',10,true);
 
-        var pjFull:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 800, 'pj');
-        pjFull.anchor.set(0.5,0);
-        var a = Phaser.Animation.generateFrameNames('Idle_right_',0,5,'.png');
-        pjFull.animations.add('test',a,20,true);
-        pjFull.animations.play('test',10,true);
+        //var pjFull:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 800, 'pj');
+        //pjFull.anchor.set(0.5,0);
+        //var a = Phaser.Animation.generateFrameNames('Idle_right_',0,5,'.png');
+        //pjFull.animations.add('test',a,20,true);
+        //pjFull.animations.play('test',10,true);
 
         //sprite del jugador, aca se  cargan todas las partes del jugador
-        this.playerSprite = this.controlGame.game.add.sprite(41 * this.controlGame.gridSize, 62 * this.controlGame.gridSize);
+        this.playerSprite = this.controlGame.game.add.sprite(41 * this.controlGame.gridSize, 64 * this.controlGame.gridSize);
         this.playerSprite.anchor.set(0.5,1);
         this.playerSprite.x += this.playerSprite.width/2;
 

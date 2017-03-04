@@ -20,6 +20,7 @@ export class cServerMonster {
     public agresiveMonster = false; //determina si el moustro ataca por defecto o solo si lo atacan 
     public arrayAgresivePlayers:boolean[];
     public monsterRespawn:boolean;
+    public isPublic:boolean;
     
     public experience:number = 0;
     public lvlPlayerNeed:number = 0;
@@ -41,6 +42,7 @@ export class cServerMonster {
                 socket:SocketIO.Server,
                 controlPlayer:cServerControlPlayers,
                 monsterRespawn:boolean,
+                isPublic:boolean,
                 tileX:number,tileY:number
                 ) {
 
@@ -51,6 +53,7 @@ export class cServerMonster {
         this.tileX = tileX;
         this.tileY = tileY;
         this.monsterRespawn = monsterRespawn;
+        this.isPublic = isPublic;
         
         //valores que dependen del tipo de monstruo
         this.monsterType = monsterType;
