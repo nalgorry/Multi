@@ -31,7 +31,7 @@ class cControlGame {
         //inicio parametros del juego
         this.gridSize = 40;
         this.interfazWidth = 200;
-        var tamanoMapa = 100;
+        var tamanoMapa = 70;
 
         // Configuro el mundo para que sea centrado en el personaje
         this.game.world.setBounds(0, 0, tamanoMapa*this.gridSize, tamanoMapa*this.gridSize);
