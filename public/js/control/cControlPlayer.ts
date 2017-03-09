@@ -216,6 +216,7 @@ class cControlPlayer extends cBasicActor {
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         } else {
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
+            this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x000000);
         }
 
 

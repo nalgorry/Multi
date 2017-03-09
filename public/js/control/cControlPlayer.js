@@ -170,6 +170,7 @@ var cControlPlayer = (function (_super) {
         }
         else {
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
+            this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x000000);
         }
     };
     cControlPlayer.prototype.youKillMonster = function (data) {
