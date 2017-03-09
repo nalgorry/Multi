@@ -59,32 +59,26 @@ class cControlSpells {
 
     }
 
-    public spellAnimation(sprite:Phaser.Sprite,data) {
+    public spellAnimation(sprite:Phaser.Sprite, data) {
         
-        //animacion de un sprite 
-        this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
 
-        //creo una mega rayo super mortal 
-        this.makeRay(sprite);
 
 
     }
 
-    public makeRay(spriteTo:Phaser.Sprite) {
+    public makeRay(spriteFrom:Phaser.Sprite, spriteTo:Phaser.Sprite, color:number) {
 
-        var thisPlayerSprite = this.controlGame.controlPlayer.playerSprite;
 
         var from:Phaser.Point;
         var to:Phaser.Point;
 
-        from = new Phaser.Point(thisPlayerSprite.x, thisPlayerSprite.y - 40);
+        from = new Phaser.Point(spriteFrom.x, spriteFrom.y - 40);
         to = new Phaser.Point(spriteTo.x, spriteTo.y - 40);
 
         var graphics = this.controlGame.game.add.graphics(0, 0);
-        graphics.lineStyle(2, 0x5e0818, 1);
+        graphics.lineStyle(2, color, 1);
 
         graphics.moveTo(from.x , from.y);
-        //graphics.lineTo(to.x  , to.y);
 
         var maxLenght:number = 5;
 
@@ -388,8 +382,8 @@ class cControlSpells {
 
     }
 
-    public onHit(data,sprite:Phaser.Sprite) {
-        
+    public onHit(data, fromSprite:Phaser.Sprite, toSprite:Phaser.Sprite, rayColor:number) {
+       
         //texto con el daño
         if (data.damage != 0) {
 
@@ -425,13 +419,19 @@ class cControlSpells {
             completeText.addChild(textBack);
             completeText.addChild(hitText);
             
-            sprite.addChild(completeText);
+            toSprite.addChild(completeText);
 
             var tweenText = this.controlGame.game.add.tween(completeText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
             tweenText.onComplete.add(this.removeTweenText,completeText);
         }
 
-        this.spellAnimation(sprite,data);
+        //animacion de un sprite 
+        this.allSpells.arraySpells[data.idSpell].spellAnimation(toSprite);
+
+        //creo una mega rayo super mortal 
+        if (fromSprite != null) {
+            this.makeRay(fromSprite, toSprite, rayColor);
+        }
 
     }
 

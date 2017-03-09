@@ -38,6 +38,7 @@ var preloader = (function (_super) {
         this.game.load.image('help_arrow', 'assets/help_arrow.png');
         this.game.load.image('help_arrow_2', 'assets/help_arrow_2.png');
         this.game.load.image('help_arrow_3', 'assets/help_arrow_3.png');
+        this.game.load.image('parlante', 'assets/parlante.png');
         this.game.load.bitmapFont('gotic', 'assets/font.png', 'assets/font.fnt');
         this.game.load.audio('run', 'assets/sounds/run.ogg');
         this.game.load.audio('basic_hit', 'assets/sounds/basic_hit.ogg');

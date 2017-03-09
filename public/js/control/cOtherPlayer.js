@@ -10,7 +10,7 @@ var cOtherPlayer = (function (_super) {
         this.idServer = data.id;
         this.tileX = this.controlGame.layer.getTileX(data.x);
         this.tileY = this.controlGame.layer.getTileY(data.y);
-        this.startActor(); //esto inicia todo el jugador con sus elementos
+        this.startActor(this.tileX, this.tileY); //esto inicia todo el jugador con sus elementos
         this.startPlayer(data);
     }
     cOtherPlayer.prototype.startPlayer = function (data) {

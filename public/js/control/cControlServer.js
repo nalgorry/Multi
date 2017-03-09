@@ -17,7 +17,7 @@ var cControlServer = (function () {
         // Player removed message received
         this.socket.on('remove player', cControlServer.prototype.onRemovePlayer.bind(this));
         this.socket.on('player hit', cControlServer.prototype.onPlayerHit.bind(this));
-        this.socket.on('you hit', cControlServer.prototype.onYouHit.bind(this));
+        this.socket.on('you hit player', cControlServer.prototype.onYouHit.bind(this));
         this.socket.on('you die', cControlServer.prototype.onPlayerDie.bind(this));
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
@@ -100,7 +100,6 @@ var cControlServer = (function () {
     };
     cControlServer.prototype.onYouHit = function (data) {
         if (data.id === this.controlPlayer.idServer) {
-            this.controlPlayer.playerHit(data);
         }
         else {
             this.controlPlayer.youHit(data);
@@ -113,8 +112,17 @@ var cControlServer = (function () {
     };
     // Player git by other player
     cControlServer.prototype.onPlayerHit = function (data) {
+        console.log(data);
         if (data.id === this.controlPlayer.idServer) {
-            this.controlPlayer.playerHit(data);
+            var playerThatHitSprite = null;
+            if (data.id != data.playerThatHit) {
+                var playerThatHit = this.controlOtherPlayers.playerById(data.playerThatHit);
+                playerThatHitSprite = playerThatHit.playerSprite;
+            }
+            else {
+            }
+            var thisPlayerSprite = this.controlGame.controlPlayer.playerSprite;
+            this.controlPlayer.playerHit(data, playerThatHitSprite, thisPlayerSprite);
         }
         else {
             this.controlOtherPlayers.playerHit(data);

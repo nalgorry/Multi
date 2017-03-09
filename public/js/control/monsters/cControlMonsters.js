@@ -33,7 +33,7 @@ var cControlMonsters = (function () {
         //controlo si golpearon al jugador activo
         if (data.monsterAtackType == 0) {
             if (data.idPlayer == this.controlGame.controlPlayer.idServer) {
-                this.controlGame.controlPlayer.playerHit(data);
+                this.controlGame.controlPlayer.playerHit(data, monster.monsterSprite, this.controlGame.controlPlayer.playerSprite);
             }
         }
         else if (data.monsterAtackType == 1) {
@@ -72,7 +72,7 @@ var cControlMonsters = (function () {
         var playertileY = this.controlGame.controlPlayer.tileY;
         //si el player queda adentro del circulo cuando se dispara le saco vida
         if (this.controlGame.game.physics.arcade.overlap(this.controlGame.controlPlayer.playerSprite, sprite)) {
-            this.controlGame.controlPlayer.playerHit(data);
+            this.controlGame.controlPlayer.playerHit(data, null, this.controlGame.controlPlayer.playerSprite);
         }
         sprite.destroy();
     };
@@ -83,7 +83,7 @@ var cControlMonsters = (function () {
             //pongo una animación sobre el pj 
             var monster = this.arrayMonster[data.idMonster];
             if (monster != null) {
-                this.controlGame.controlPlayer.controlSpells.onHit(data, monster.monsterSprite);
+                this.controlGame.controlPlayer.controlSpells.onHit(data, this.controlGame.controlPlayer.playerSprite, monster.monsterSprite, 0x081d5e);
             }
         }
     };

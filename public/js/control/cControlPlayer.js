@@ -23,10 +23,12 @@ var cControlPlayer = (function (_super) {
         this.seMueveY = false;
         this.playerIdle = false;
         this.lastAnimation = move.idleRight;
+        this.startTileX = 41;
+        this.startTileY = 64;
         this.dirMovimiento = move.right;
         this.monstersKills = 0;
         this.gridSize = controlGame.gridSize;
-        this.startActor();
+        this.startActor(this.startTileX, this.startTileY);
         this.startPlayer();
     }
     cControlPlayer.prototype.startPlayer = function () {
@@ -150,7 +152,7 @@ var cControlPlayer = (function (_super) {
         this.controlGame.controlPlayer.controlSpells.thisPlayerClick(this);
     };
     //esto se activa cuando golpean al jugador
-    cControlPlayer.prototype.playerHit = function (data) {
+    cControlPlayer.prototype.playerHit = function (data, fromSprite, toSprite) {
         //resto la vida y controlo si murio 
         if (this.controlFocus.UpdateLife(-data.damage)) {
             this.youDie(data);
@@ -158,15 +160,17 @@ var cControlPlayer = (function (_super) {
         if (data.damage > 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit, "Te golpearon por " + data.damage);
             this.controlGame.controlSounds.startPlayerHit();
+            //hago aparecer la animación del golpe
+            this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x5e0818);
         }
         else if (data.damage < 0) {
             this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Te curaron por " + -data.damage);
+            this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x105e08);
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
         else {
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
-        this.controlGame.controlPlayer.controlSpells.onHit(data, this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
     };
     cControlPlayer.prototype.youKillMonster = function (data) {
         if (data.damage != 0) {
@@ -186,8 +190,8 @@ var cControlPlayer = (function (_super) {
         }
     };
     cControlPlayer.prototype.youDie = function (data) {
-        this.playerSprite.x = 44 * this.controlGame.gridSize;
-        this.playerSprite.y = 95 * this.controlGame.gridSize;
+        this.playerSprite.x = this.startTileX * this.controlGame.gridSize;
+        this.playerSprite.y = this.startTileY * this.controlGame.gridSize;
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
         this.controlGame.controlServer.socket.emit('you die', { idPlayerKill: data.playerThatHit });
         this.controlItems.clearItems();

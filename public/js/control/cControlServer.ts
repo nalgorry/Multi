@@ -24,7 +24,7 @@ class cControlServer {
         this.socket.on('remove player', cControlServer.prototype.onRemovePlayer.bind(this));
 
         this.socket.on('player hit', cControlServer.prototype.onPlayerHit.bind(this));
-        this.socket.on('you hit', cControlServer.prototype.onYouHit.bind(this));
+        this.socket.on('you hit player', cControlServer.prototype.onYouHit.bind(this));
 
         this.socket.on('you die', cControlServer.prototype.onPlayerDie.bind(this));
         this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
@@ -145,7 +145,7 @@ class cControlServer {
     onYouHit (data) {
 
         if (data.id === this.controlPlayer.idServer) {
-            this.controlPlayer.playerHit(data);
+            //this.controlPlayer.playerHit(data);
         } else {
             this.controlPlayer.youHit(data)
             this.controlOtherPlayers.playerHit(data);
@@ -163,9 +163,24 @@ class cControlServer {
      // Player git by other player
     onPlayerHit (data) {
 
-        if (data.id === this.controlPlayer.idServer) {
-            this.controlPlayer.playerHit(data);
-        } else {
+        console.log(data);
+
+        if (data.id === this.controlPlayer.idServer) { //golpearon al jugador
+
+            var playerThatHitSprite = null
+            if (data.id != data.playerThatHit ) {
+
+                var playerThatHit = this.controlOtherPlayers.playerById(data.playerThatHit);
+                playerThatHitSprite = playerThatHit.playerSprite;
+
+            } else { //esto se da cuando un jugador tira un hechizo sobre si mismo 
+                   
+            }
+
+            var thisPlayerSprite = this.controlGame.controlPlayer.playerSprite;
+
+            this.controlPlayer.playerHit(data, playerThatHitSprite, thisPlayerSprite);
+        } else { //alguien golpió a otro jugador 
             this.controlOtherPlayers.playerHit(data);
         }
 

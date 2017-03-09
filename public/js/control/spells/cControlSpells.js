@@ -38,21 +38,15 @@ var cControlSpells = (function () {
         }
     };
     cControlSpells.prototype.spellAnimation = function (sprite, data) {
-        //animacion de un sprite 
-        this.allSpells.arraySpells[data.idSpell].spellAnimation(sprite);
-        //creo una mega rayo super mortal 
-        this.makeRay(sprite);
     };
-    cControlSpells.prototype.makeRay = function (spriteTo) {
-        var thisPlayerSprite = this.controlGame.controlPlayer.playerSprite;
+    cControlSpells.prototype.makeRay = function (spriteFrom, spriteTo, color) {
         var from;
         var to;
-        from = new Phaser.Point(thisPlayerSprite.x, thisPlayerSprite.y - 40);
+        from = new Phaser.Point(spriteFrom.x, spriteFrom.y - 40);
         to = new Phaser.Point(spriteTo.x, spriteTo.y - 40);
         var graphics = this.controlGame.game.add.graphics(0, 0);
-        graphics.lineStyle(2, 0x5e0818, 1);
+        graphics.lineStyle(2, color, 1);
         graphics.moveTo(from.x, from.y);
-        //graphics.lineTo(to.x  , to.y);
         var maxLenght = 5;
         var distance = from.distance(to);
         var numberOfLines = Math.floor(distance / maxLenght);
@@ -272,7 +266,7 @@ var cControlSpells = (function () {
         this.selSpell = spell;
         spell.spellSelected();
     };
-    cControlSpells.prototype.onHit = function (data, sprite) {
+    cControlSpells.prototype.onHit = function (data, fromSprite, toSprite, rayColor) {
         //texto con el daño
         if (data.damage != 0) {
             if (data.damage > 0) {
@@ -303,11 +297,16 @@ var cControlSpells = (function () {
             textBack.alpha = 0.6;
             completeText.addChild(textBack);
             completeText.addChild(hitText);
-            sprite.addChild(completeText);
+            toSprite.addChild(completeText);
             var tweenText = this.controlGame.game.add.tween(completeText).to({ y: '-40' }, 1000, Phaser.Easing.Cubic.Out, true);
             tweenText.onComplete.add(this.removeTweenText, completeText);
         }
-        this.spellAnimation(sprite, data);
+        //animacion de un sprite 
+        this.allSpells.arraySpells[data.idSpell].spellAnimation(toSprite);
+        //creo una mega rayo super mortal 
+        if (fromSprite != null) {
+            this.makeRay(fromSprite, toSprite, rayColor);
+        }
     };
     cControlSpells.prototype.removeTweenText = function (sprite) {
         sprite.destroy();

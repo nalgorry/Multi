@@ -56,8 +56,17 @@ class cControlOtherPlayers {
 
     public playerHit(data) {
 
-        var player = this.playerById(data.id);
-        this.controlGame.controlPlayer.controlSpells.onHit(data,player.playerSprite);
+        var playerHit = this.playerById(data.id);
+
+        //me fijo si el jugador que golpeo es el jugador actual u otro
+        if (data.playerThatHit == this.controlGame.controlPlayer.idServer) {
+            var playerThatHitSprite = this.controlGame.controlPlayer.playerSprite;
+        } else {
+            var playerThatHitSprite = this.playerById(data.playerThatHit).playerSprite;
+        }
+        
+
+        this.controlGame.controlPlayer.controlSpells.onHit(data, playerThatHitSprite, playerHit.playerSprite,0x5e0818);
 
     }
 

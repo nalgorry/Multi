@@ -10,8 +10,8 @@ class cControlPortal {
 
         this.arrayPortals = new Array<cPortal>();
 
-        var portal = new cPortal(this.controlGame,1,50,4);
-        this.arrayPortals['p'+1] = portal
+        //var portal = new cPortal(this.controlGame,1,50,4);
+        //this.arrayPortals['p'+1] = portal
 
     }
 

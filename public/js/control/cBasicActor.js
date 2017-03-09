@@ -20,7 +20,7 @@ var cBasicActor = (function () {
         this.textName.text = texto;
         this.textName.x = -this.textName.width / 2;
     };
-    cBasicActor.prototype.startActor = function () {
+    cBasicActor.prototype.startActor = function (startTileX, startTileY) {
         //TEST PARA USAR EL DRAGON BONES, aun en desarrollo
         //var test:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj');
         //test.anchor.set(0.5,0);
@@ -38,7 +38,7 @@ var cBasicActor = (function () {
         //pjFull.animations.add('test',a,20,true);
         //pjFull.animations.play('test',10,true);
         //sprite del jugador, aca se  cargan todas las partes del jugador
-        this.playerSprite = this.controlGame.game.add.sprite(41 * this.controlGame.gridSize, 64 * this.controlGame.gridSize);
+        this.playerSprite = this.controlGame.game.add.sprite(startTileX * this.controlGame.gridSize, startTileY * this.controlGame.gridSize);
         this.playerSprite.anchor.set(0.5, 1);
         this.playerSprite.x += this.playerSprite.width / 2;
         //creo el cuerpo con su armadura

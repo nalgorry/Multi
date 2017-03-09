@@ -61,21 +61,24 @@ class cControlItems {
     //borra todos los items levantados y equipados
     public clearItems(){
 
+        var arrayIDEquipedItems = [];
+
         this.arrayEquipedItems.forEach(item => {
-            item.deleteItem();
+            arrayIDEquipedItems.push(item.itemEquipType);
         })
 
-        this.arrayInventoryItems.forEach(item => {
-            item.deleteItem();
-        })
+        //borro un equipado aleatorio, si existe alguno :P 
+        if (arrayIDEquipedItems.length == 0) return;
 
-        this.arrayEquipedItems = [];
-        this.arrayInventoryItems = [];
+        var possItemToDelete = this.controlGame.game.rnd.between(0, arrayIDEquipedItems.length - 1);
+        console.log(this.arrayEquipedItems)
+        console.log(arrayIDEquipedItems[possItemToDelete]);
+        var IDitemToDelete = arrayIDEquipedItems[possItemToDelete];
         
-        //defino los lugares del inventario disponibles
-        for(var i = 1; i <= 12 ; i++ ) {
-            this.arrayfreeInventoryItems.push(i);
-        }
+        var itemToDrop:cItems = this.arrayEquipedItems[IDitemToDelete];
+
+        this.itemDropToFlor(itemToDrop);
+
 
     }
 

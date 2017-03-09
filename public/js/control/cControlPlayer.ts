@@ -30,6 +30,9 @@ class cControlPlayer extends cBasicActor {
     private playerIdle:boolean = false;
     private lastAnimation:move = move.idleRight;
 
+    public startTileX:number = 41;
+    public startTileY:number = 64;
+
     private dirMovimiento:move =move.right;
     private lastdirMov:move; //para guardar el ultimo moviemiento enviado
     
@@ -41,7 +44,7 @@ class cControlPlayer extends cBasicActor {
         super(controlGame);
 
         this.gridSize = controlGame.gridSize;
-        this.startActor();
+        this.startActor(this.startTileX, this.startTileY);
         this.startPlayer();
         
     }
@@ -194,7 +197,7 @@ class cControlPlayer extends cBasicActor {
     }
 
     //esto se activa cuando golpean al jugador
-    public playerHit(data) {
+    public playerHit(data, fromSprite:Phaser.Sprite, toSprite:Phaser.Sprite) {
 
         //resto la vida y controlo si murio 
         if (this.controlFocus.UpdateLife(-data.damage)) {
@@ -204,15 +207,17 @@ class cControlPlayer extends cBasicActor {
         if (data.damage > 0 ) {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit,"Te golpearon por " + data.damage)
             this.controlGame.controlSounds.startPlayerHit();
+            //hago aparecer la animación del golpe
+            this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x5e0818); 
+
         }  else if (data.damage < 0) { //te curaste
             this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Te curaron por " + -data.damage)
+            this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x105e08); 
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         } else {
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
 
-        
-        this.controlGame.controlPlayer.controlSpells.onHit(data,this.playerSprite); //esto hace aparecer el cartelito con la vida que te queda y la animación
 
     }
 
@@ -235,8 +240,8 @@ class cControlPlayer extends cBasicActor {
     }
 
     public youDie(data) {
-        this.playerSprite.x = 44 * this.controlGame.gridSize;
-        this.playerSprite.y = 95 * this.controlGame.gridSize;
+        this.playerSprite.x = this.startTileX * this.controlGame.gridSize;
+        this.playerSprite.y = this.startTileY * this.controlGame.gridSize;
         this.controlFocus.UpdateLife(this.controlFocus.maxLife);
         this.controlGame.controlServer.socket.emit('you die', {idPlayerKill:data.playerThatHit });
 

@@ -5,8 +5,8 @@ var cControlPortal = (function () {
     }
     cControlPortal.prototype.createPortals = function () {
         this.arrayPortals = new Array();
-        var portal = new cPortal(this.controlGame, 1, 50, 4);
-        this.arrayPortals['p' + 1] = portal;
+        //var portal = new cPortal(this.controlGame,1,50,4);
+        //this.arrayPortals['p'+1] = portal
     };
     //el servidor emite esto cuando entras al portal 
     cControlPortal.prototype.youEnterPortal = function (data) {
