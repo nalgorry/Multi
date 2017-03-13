@@ -70,4 +70,16 @@ class cControlOtherPlayers {
 
     }
 
+    public playerDie(data) {
+
+         var player = this.playerById(data.id);
+
+        //me fijo si el jugador que golpeo es el jugador actual u otro
+        if (player != null) {
+            player.playerDie(data);
+        }
+
+
+    }
+
 }

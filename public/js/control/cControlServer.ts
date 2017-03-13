@@ -26,8 +26,7 @@ class cControlServer {
         this.socket.on('player hit', cControlServer.prototype.onPlayerHit.bind(this));
         this.socket.on('you hit player', cControlServer.prototype.onYouHit.bind(this));
 
-        this.socket.on('you die', cControlServer.prototype.onPlayerDie.bind(this));
-        this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
+        this.socket.on('player die', cControlServer.prototype.onPlayerDie.bind(this));
 
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
         this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
@@ -188,17 +187,29 @@ class cControlServer {
 
     }
 
-    // Te hicieron pure, veamos quien fue
+    // se murio alguien, que pena 
     onPlayerDie (data) {
-        this.controlGame.controlConsole.newMessage(
-            enumMessage.youDie,"Has Muerto. Te Mató " + data.name)
-        
-        //borro el focus si el player murio (esto probablemente sea necesario moverlo de aca...)
-        this.controlGame.controlPlayer.controlSpells.releaseFocus(this.controlGame.controlPlayer.controlSpells.getSelActorID());
-    }
 
-    onYouKill (data) {
-        this.controlPlayer.youKill(data);
+        console.log(data);
+
+        //te hicieron pure
+        if (data.id == this.controlGame.controlPlayer.idServer) {
+
+            this.controlGame.controlPlayer.youDieServer(data);
+
+        } else { //alguien se murio, lo hago desaparecer y aparecer en donde corresponda.
+            this.controlOtherPlayers.playerDie(data);
+        } 
+        
+        
+        if (data.idPlayerThatKill == this.controlGame.controlPlayer.idServer) { //mataste a alguien wiiii
+            this.controlPlayer.youKill(data);
+        } 
+
+
+
+        
+           
     }
 
     // Remove player, cuando un jugador se desconecta

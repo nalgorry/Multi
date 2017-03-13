@@ -8,9 +8,7 @@ var cOtherPlayer = (function (_super) {
     function cOtherPlayer(controlGame, data) {
         _super.call(this, controlGame);
         this.idServer = data.id;
-        this.tileX = this.controlGame.layer.getTileX(data.x);
-        this.tileY = this.controlGame.layer.getTileY(data.y);
-        this.startActor(this.tileX, this.tileY); //esto inicia todo el jugador con sus elementos
+        this.startActor(data.startTileX, data.startTileY); //esto inicia todo el jugador con sus elementos
         this.startPlayer(data);
     }
     cOtherPlayer.prototype.startPlayer = function (data) {
@@ -57,6 +55,15 @@ var cOtherPlayer = (function (_super) {
         //borro el focus
         this.controlGame.controlPlayer.controlSpells.releaseFocus(this.idServer);
         this.playerSprite.kill();
+    };
+    cOtherPlayer.prototype.playerDie = function (data) {
+        var deadAnimation = this.controlGame.game.add.tween(this.playerSprite).to({ alpha: 0 }, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+        deadAnimation.onComplete.add(this.destroySprite, this);
+    };
+    cOtherPlayer.prototype.destroySprite = function () {
+        this.playerSprite.x = this.startTileX * this.controlGame.gridSize;
+        this.playerSprite.y = this.startTileY * this.controlGame.gridSize;
+        var reviveAnimation = this.controlGame.game.add.tween(this.playerSprite).to({ alpha: 1 }, 300, Phaser.Easing.Linear.None, true, 0, 0, false);
     };
     return cOtherPlayer;
 }(cBasicActor));

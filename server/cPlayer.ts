@@ -153,6 +153,7 @@ export class cPlayer {
 
     }
 
+
     public levelUp(data) {
         this.playerLevel = data.playerLevel;   
     }

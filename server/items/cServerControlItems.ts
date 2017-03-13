@@ -31,8 +31,6 @@ export class cServerControlItems {
 
     }
 
-
-
     public dropItemToFloor(socket:any, data) {
 
         var itemDrop = this.arrayItems[data.itemId];

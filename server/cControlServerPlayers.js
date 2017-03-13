@@ -3,6 +3,8 @@ var cPlayer_1 = require('./cPlayer');
 var cServerControlPlayers = (function () {
     function cServerControlPlayers(socket) {
         this.socket = socket;
+        this.startTileX = 41;
+        this.startTileY = 64;
         this.arrayPlayers = [];
     }
     cServerControlPlayers.prototype.levelUp = function (socket, data) {
@@ -19,7 +21,7 @@ var cServerControlPlayers = (function () {
         return this.arrayPlayers[id];
     };
     cServerControlPlayers.prototype.onNewPlayerConected = function (socket, idPlayer, data) {
-        socket.broadcast.emit('new player', { id: idPlayer, x: data.x, y: data.y, name: data.name });
+        socket.broadcast.emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY });
         //le mando al nuevo jugador todos los jugadores existentes
         for (var id in this.arrayPlayers) {
             this.arrayPlayers[id].sendPlayerToNewPlayer(socket);
@@ -98,6 +100,19 @@ var cServerControlPlayers = (function () {
     };
     cServerControlPlayers.prototype.randomIntFromInterval = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+    cServerControlPlayers.prototype.playerDie = function (socket, data) {
+        var player = this.getPlayerById(socket.id);
+        //primero envio al que mato su kill
+        if (player != null) {
+            var playerKill = this.getPlayerById(data.idPlayerKill);
+            if (playerKill != null) {
+                this.socket.emit('player die', { id: socket.id, idPlayerThatKill: playerKill.playerId, name: player.playerName });
+            }
+            else {
+                this.socket.emit('player die', { id: socket.id, name: 'Monster' });
+            }
+        }
     };
     return cServerControlPlayers;
 }());

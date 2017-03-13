@@ -18,8 +18,7 @@ var cControlServer = (function () {
         this.socket.on('remove player', cControlServer.prototype.onRemovePlayer.bind(this));
         this.socket.on('player hit', cControlServer.prototype.onPlayerHit.bind(this));
         this.socket.on('you hit player', cControlServer.prototype.onYouHit.bind(this));
-        this.socket.on('you die', cControlServer.prototype.onPlayerDie.bind(this));
-        this.socket.on('you kill', cControlServer.prototype.onYouKill.bind(this));
+        this.socket.on('player die', cControlServer.prototype.onPlayerDie.bind(this));
         this.socket.on('Chat Receive', cControlServer.prototype.onYouReceiveChat.bind(this));
         this.socket.on('power throw', cControlServer.prototype.onPowerThrow.bind(this));
         this.socket.on('player change', cControlServer.prototype.onPlayerChange.bind(this));
@@ -128,14 +127,19 @@ var cControlServer = (function () {
             this.controlOtherPlayers.playerHit(data);
         }
     };
-    // Te hicieron pure, veamos quien fue
+    // se murio alguien, que pena 
     cControlServer.prototype.onPlayerDie = function (data) {
-        this.controlGame.controlConsole.newMessage(enumMessage.youDie, "Has Muerto. Te Mató " + data.name);
-        //borro el focus si el player murio (esto probablemente sea necesario moverlo de aca...)
-        this.controlGame.controlPlayer.controlSpells.releaseFocus(this.controlGame.controlPlayer.controlSpells.getSelActorID());
-    };
-    cControlServer.prototype.onYouKill = function (data) {
-        this.controlPlayer.youKill(data);
+        console.log(data);
+        //te hicieron pure
+        if (data.id == this.controlGame.controlPlayer.idServer) {
+            this.controlGame.controlPlayer.youDieServer(data);
+        }
+        else {
+            this.controlOtherPlayers.playerDie(data);
+        }
+        if (data.idPlayerThatKill == this.controlGame.controlPlayer.idServer) {
+            this.controlPlayer.youKill(data);
+        }
     };
     // Remove player, cuando un jugador se desconecta
     cControlServer.prototype.onRemovePlayer = function (data) {

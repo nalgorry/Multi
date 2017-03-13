@@ -256,8 +256,17 @@ class cControlPlayer extends cBasicActor {
 
     }
 
+    public youDieServer(data) {
+        this.controlGame.controlConsole.newMessage(
+            enumMessage.youDie,"You die by the hand of " + data.name)
+
+        //borro el focus si el player murio 
+        this.controlSpells.releaseFocus(this.controlGame.controlPlayer.controlSpells.getSelActorID());
+    }
+
     public youKill(data) {
         this.controlGame.controlConsole.newMessage(enumMessage.youKill,"Mataste a " + data.name);
+
     }
 
     public teleport(tileX,tileY) {

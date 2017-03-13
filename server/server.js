@@ -85,18 +85,7 @@ function onYouChange(data) {
     }
 }
 function onYouDie(data) {
-    var player = controlPlayers.getPlayerById(this.id);
-    //primero envio al que mato su kill
-    if (player != null) {
-        var playerKill = controlPlayers.getPlayerById(data.idPlayerKill);
-        if (playerKill != null) {
-            socket.sockets.connected[data.idPlayerKill].emit('you kill', { name: player.playerName });
-            this.emit('you die', { name: playerKill.playerName });
-        }
-        else {
-            this.emit('you die', { name: 'un Monstruo' });
-        }
-    }
+    controlPlayers.playerDie(this, data);
 }
 function onChatSend(data) {
     util.log('Player has chat: ' + data.text);

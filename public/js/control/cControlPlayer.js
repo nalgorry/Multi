@@ -201,6 +201,11 @@ var cControlPlayer = (function (_super) {
         this.controlSpells.selActorType = enumSelectedActor.nothing;
         this.controlGame.controlSounds.startPlayerDie();
     };
+    cControlPlayer.prototype.youDieServer = function (data) {
+        this.controlGame.controlConsole.newMessage(enumMessage.youDie, "You die by the hand of " + data.name);
+        //borro el focus si el player murio 
+        this.controlSpells.releaseFocus(this.controlGame.controlPlayer.controlSpells.getSelActorID());
+    };
     cControlPlayer.prototype.youKill = function (data) {
         this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste a " + data.name);
     };

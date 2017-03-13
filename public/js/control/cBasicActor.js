@@ -21,6 +21,9 @@ var cBasicActor = (function () {
         this.textName.x = -this.textName.width / 2;
     };
     cBasicActor.prototype.startActor = function (startTileX, startTileY) {
+        this.startTileX = startTileX;
+        this.startTileY = startTileY;
+        console.log(startTileX);
         //TEST PARA USAR EL DRAGON BONES, aun en desarrollo
         //var test:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj');
         //test.anchor.set(0.5,0);

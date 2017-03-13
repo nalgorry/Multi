@@ -134,22 +134,7 @@ function onYouChange(data) {
 
 function onYouDie(data) {
 
-  var player:cPlayer = controlPlayers.getPlayerById(this.id);
-
-  //primero envio al que mato su kill
-  if (player != null) {
-    
-    var playerKill:cPlayer = controlPlayers.getPlayerById(data.idPlayerKill);
-    if (playerKill != null) {     //envio al que murio quien lo mato
-      socket.sockets.connected[data.idPlayerKill].emit('you kill',{name: player.playerName});
-      this.emit('you die', {name: playerKill.playerName});
-    } else { //lo mato un monster, que cagada...
-      this.emit('you die', {name: 'un Monstruo'});
-    }
-
-
-    
-  }
+  controlPlayers.playerDie(this, data)
 
 }
 

@@ -7,6 +7,9 @@ export class cServerControlPlayers {
     public arrayPlayers:cPlayer[];
     public controlMonster:cServerControlMonster;
 
+    public startTileX:number = 41;
+    public startTileY:number = 64;
+
     constructor(public socket:SocketIO.Server) {
 
         this.arrayPlayers = [];
@@ -33,8 +36,7 @@ export class cServerControlPlayers {
     public onNewPlayerConected(socket, idPlayer:string, data) {
 
         socket.broadcast.emit('new player', 
-            {id: idPlayer, x: data.x, y: data.y, name:data.name})
-
+            {id: idPlayer, name:data.name, startTileX: this.startTileX, startTileY:this.startTileY})
         
         //le mando al nuevo jugador todos los jugadores existentes
         for (var id in this.arrayPlayers) {
@@ -150,5 +152,30 @@ export class cServerControlPlayers {
     private randomIntFromInterval(min,max){
         return Math.floor(Math.random()*(max-min+1)+min);
     } 
+
+
+    public playerDie(socket, data) {        
+
+        var player:cPlayer = this.getPlayerById(socket.id);
+
+        //primero envio al que mato su kill
+        if (player != null) {
+
+            var playerKill:cPlayer = this.getPlayerById(data.idPlayerKill);
+
+            if (playerKill != null) {     //envio al que murio quien lo mato
+
+                this.socket.emit('player die', {id: socket.id, idPlayerThatKill: playerKill.playerId , name: player.playerName})
+
+            } else { //lo mato un monster, que cagada...
+
+                this.socket.emit('player die', {id: socket.id, name: 'Monster'})
+
+            }
+
+        }
+        
+    }
+ 
 
 }

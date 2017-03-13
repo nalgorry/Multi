@@ -43,5 +43,12 @@ var cControlOtherPlayers = (function () {
         }
         this.controlGame.controlPlayer.controlSpells.onHit(data, playerThatHitSprite, playerHit.playerSprite, 0x5e0818);
     };
+    cControlOtherPlayers.prototype.playerDie = function (data) {
+        var player = this.playerById(data.id);
+        //me fijo si el jugador que golpeo es el jugador actual u otro
+        if (player != null) {
+            player.playerDie(data);
+        }
+    };
     return cControlOtherPlayers;
 }());

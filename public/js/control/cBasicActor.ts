@@ -2,6 +2,9 @@ class cBasicActor {
 
     public tileX: number;
     public tileY: number;
+    public startTileX:number;
+    public startTileY:number;
+
     public playerSprite: Phaser.Sprite;
     public weaponSprite: Phaser.Sprite;
     public armorSprite: Phaser.Sprite;
@@ -12,6 +15,8 @@ class cBasicActor {
 
     private styleChat;
     private styleName;
+
+
 
 
     constructor(_controlGame:cControlGame) {
@@ -46,6 +51,11 @@ class cBasicActor {
     }
 
     public startActor(startTileX, startTileY) {       
+
+        this.startTileX = startTileX;
+        this.startTileY = startTileY;
+
+        console.log(startTileX);    
 
         //TEST PARA USAR EL DRAGON BONES, aun en desarrollo
         //var test:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj');
