@@ -5,7 +5,7 @@ class SimpleGame {
 
     constructor() {
 
-        this.game = new Phaser.Game(1200, 675, Phaser.CANVAS, 'content', null);
+        this.game = new Phaser.Game(1200, 675, Phaser.WEBGL, 'content', null);
 
         this.game.state.add('boot', boot, false);
         this.game.state.add('preloader', preloader, false);
