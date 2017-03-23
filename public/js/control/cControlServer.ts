@@ -36,7 +36,7 @@ class cControlServer {
         this.socket.on('new Monster', cControlServer.prototype.onNewMonster.bind(this));
         this.socket.on('monster hit', cControlServer.prototype.onMonsterHit.bind(this));
         this.socket.on('monster die', cControlServer.prototype.onMonsterDie.bind(this));
-        this.socket.on('you hit monster', cControlServer.prototype.onMosterWereHit.bind(this));
+        this.socket.on('someone hit monster', cControlServer.prototype.onMosterWereHit.bind(this));
         this.socket.on('monster move', cControlServer.prototype.onMonsterMove.bind(this));
 
         //items controls
@@ -76,7 +76,7 @@ class cControlServer {
     }
 
     public onMosterWereHit(data) {
-        this.controlGame.controlMonsters.youHitMonster(data);
+        this.controlGame.controlMonsters.monsterWereHit(data);
     }
 
 
@@ -162,8 +162,6 @@ class cControlServer {
      // Player git by other player
     onPlayerHit (data) {
 
-        console.log(data);
-
         if (data.id === this.controlPlayer.idServer) { //golpearon al jugador
 
             var playerThatHitSprite = null
@@ -189,8 +187,6 @@ class cControlServer {
 
     // se murio alguien, que pena 
     onPlayerDie (data) {
-
-        console.log(data);
 
         //te hicieron pure
         if (data.id == this.controlGame.controlPlayer.idServer) {

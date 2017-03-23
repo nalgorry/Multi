@@ -31,18 +31,19 @@ class cControlMonsters {
 
         //hago desaparecer el moustro del juego
         if (monster != undefined) {
+            
             monster.killMonster();
+            //borro el focus
+            this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idMonster);
+
+            delete this.arrayMonster[data.idMonster];
+
+            //si fue el que lo mato, hago que aparezca un mensaje 
+            if (data.idPlayer == this.controlGame.controlPlayer.idServer) {
+                this.controlGame.controlPlayer.youKillMonster(data);
+            }
         }
 
-        //si fue el que lo mato, hago que aparezca un mensaje 
-        if (data.idPlayer == this.controlGame.controlPlayer.idServer) {
-            this.controlGame.controlPlayer.youKillMonster(data);
-        }
-
-        //borro el focus
-        this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idMonster);
-
-        delete this.arrayMonster[data.idMonster];
 
     }
 
@@ -117,19 +118,27 @@ class cControlMonsters {
 
     }
 
-    public youHitMonster(data) {
+    public monsterWereHit(data) {
 
+        var playerThatHit:cBasicActor;
 
-        if (data.damage != 0 ) {
-            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste al monstruo por " + data.damage);
-            this.controlGame.controlSounds.startSoundHit(data.idSpell);
-            
-            //pongo una animación sobre el pj 
-            var monster = this.arrayMonster[data.idMonster];
-            if (monster != null) {
-                this.controlGame.controlPlayer.controlSpells.onHit(data, this.controlGame.controlPlayer.playerSprite, monster.monsterSprite,0x081d5e);
+        if (data.idPlayer == this.controlGame.controlPlayer.idServer) { //este jugador golpea al monstruo
+            if (data.damage != 0 ) {
+                this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste al monstruo por " + data.damage);
+                this.controlGame.controlSounds.startSoundHit(data.idSpell);
+
+                playerThatHit = this.controlGame.controlPlayer;
             }
+        } else { //otro jugador golpea al mounstro 
+            playerThatHit = this.controlGame.controlOtherPlayers.playerById(data.idPlayer)
+        } 
+
+        //Hago la animación y el rayo 
+        var monster = this.arrayMonster[data.idMonster];
+        if (monster != undefined) {
+            this.controlGame.controlPlayer.controlSpells.onHit(data, playerThatHit.playerSprite, monster.monsterSprite,0x081d5e);
         }
+
     }
 
 

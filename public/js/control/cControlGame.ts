@@ -16,6 +16,7 @@ class cControlGame {
     public controlConsole:cControlConsole;
     public controlMonsters:cControlMonsters;
     public controlSounds:cControlSounds;
+    public controlOtherPlayers:cControlOtherPlayers;
 
     private groupInitialHelp:Phaser.Group;
     private groupInitialHelpBotons:Phaser.Group;
@@ -108,12 +109,12 @@ class cControlGame {
                 this.groupInitialHelp.add(yourItemsText);
 
                 var monsterHelp = this.game.add.sprite(53 * this.gridSize, 57.5 * this.gridSize, 'help_arrow_3');
-                var monsterHelpText = this.game.add.bitmapText(51 * this.gridSize, 56.5 * this.gridSize, 'gotic', 'Atack this monster with yours spells!', 16);
+                var monsterHelpText = this.game.add.bitmapText(51 * this.gridSize, 56.5 * this.gridSize, 'gotic', 'Atack with yours spells!', 16);
                 this.groupInitialHelp.add(monsterHelp);
                 this.groupInitialHelp.add(monsterHelpText);
 
                 //para activar el siguiente tutorial
-                var nextTutorial = this.game.add.bitmapText(660, 70, 'gotic', 'Next Tutorial (Less than one minute) (N)', 16);
+                var nextTutorial = this.game.add.bitmapText(100, 70, 'gotic', 'Next Tutorial (N)', 16);
                 nextTutorial.fixedToCamera = true;
                 nextTutorial.inputEnabled = true;
                 nextTutorial.events.onInputUp.add(this.goNextTutorial,this);
@@ -122,7 +123,7 @@ class cControlGame {
                 nextTutorialKey.onDown.add(this.goNextTutorial,this);
 
                 //para sacar la ayuda inicial con X
-                var closseHelp = this.game.add.bitmapText(660, 70 + 30, 'gotic', 'Close All Helps (X)', 16);
+                var closseHelp = this.game.add.bitmapText(100, 70 + 30, 'gotic', 'Close All Helps (X)', 16);
                 closseHelp.fixedToCamera = true;
                 closseHelp.inputEnabled = true 
                 closseHelp.events.onInputDown.add(this.closeHelp,this);

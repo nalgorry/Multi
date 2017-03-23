@@ -35,7 +35,9 @@ export class cServerItems {
 
         this.arrayItemProperties = [];
 
-        this.defineItemsProperties(this.itemLevel);
+        if (itemType != enumItemType.gold) {
+            this.defineItemsProperties(this.itemLevel);
+        }
 
         this.emitNewItem(this.socket);
 
@@ -90,13 +92,26 @@ export class cServerItems {
     public youGetItem(socket:SocketIO.Server,data) {
 
         if (this.onFloor == true) {
-            var itemData = {
+
+        var itemData = {};
+
+        if (this.itemType == enumItemType.gold) {
+            itemData =  {
+                itemID:this.itemID,
+                tileX:this.tileX, 
+                tileY:this.tileY,
+                itemType:this.itemType,
+                totalGold: this.itemLevel
+            };
+
+        } else {
+            itemData = {
                 itemID: this.itemID, 
                 itemType:this.itemType,
                 itemEfects: this.arrayItemProperties,
                 maxRank: this.maxRank
-                }
-
+                };
+        }
             //le mando al que agarro su item
             socket.emit('you get item', itemData );
 

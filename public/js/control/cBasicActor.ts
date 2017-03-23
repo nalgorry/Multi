@@ -16,9 +16,6 @@ class cBasicActor {
     private styleChat;
     private styleName;
 
-
-
-
     constructor(_controlGame:cControlGame) {
         
         this.controlGame = _controlGame;

@@ -26,7 +26,7 @@ var cControlServer = (function () {
         this.socket.on('new Monster', cControlServer.prototype.onNewMonster.bind(this));
         this.socket.on('monster hit', cControlServer.prototype.onMonsterHit.bind(this));
         this.socket.on('monster die', cControlServer.prototype.onMonsterDie.bind(this));
-        this.socket.on('you hit monster', cControlServer.prototype.onMosterWereHit.bind(this));
+        this.socket.on('someone hit monster', cControlServer.prototype.onMosterWereHit.bind(this));
         this.socket.on('monster move', cControlServer.prototype.onMonsterMove.bind(this));
         //items controls
         this.socket.on('new item', cControlServer.prototype.onNewItem.bind(this));
@@ -55,7 +55,7 @@ var cControlServer = (function () {
         this.controlGame.controlMonsters.monsterMove(data);
     };
     cControlServer.prototype.onMosterWereHit = function (data) {
-        this.controlGame.controlMonsters.youHitMonster(data);
+        this.controlGame.controlMonsters.monsterWereHit(data);
     };
     cControlServer.prototype.onMonsterDie = function (data) {
         this.controlGame.controlMonsters.monsterDie(data);
@@ -111,7 +111,6 @@ var cControlServer = (function () {
     };
     // Player git by other player
     cControlServer.prototype.onPlayerHit = function (data) {
-        console.log(data);
         if (data.id === this.controlPlayer.idServer) {
             var playerThatHitSprite = null;
             if (data.id != data.playerThatHit) {
@@ -129,7 +128,6 @@ var cControlServer = (function () {
     };
     // se murio alguien, que pena 
     cControlServer.prototype.onPlayerDie = function (data) {
-        console.log(data);
         //te hicieron pure
         if (data.id == this.controlGame.controlPlayer.idServer) {
             this.controlGame.controlPlayer.youDieServer(data);

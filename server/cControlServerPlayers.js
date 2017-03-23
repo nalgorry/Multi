@@ -54,7 +54,9 @@ var cServerControlPlayers = (function () {
                 var monster = _this.controlMonster.getMonsterById(idMonster);
                 if (monster != undefined) {
                     monster.monsterHit(data, spellResult.monsterDamage, player.playerId);
-                    player.socket.emit('you hit monster', { idMonster: monster.monsterId,
+                    _this.socket.emit('someone hit monster', {
+                        idMonster: monster.monsterId,
+                        idPlayer: player.playerId,
                         damage: spellResult.monsterDamage,
                         idSpell: spellResult.spellAnimationMonster
                     });
@@ -107,10 +109,10 @@ var cServerControlPlayers = (function () {
         if (player != null) {
             var playerKill = this.getPlayerById(data.idPlayerKill);
             if (playerKill != null) {
-                this.socket.emit('player die', { id: socket.id, idPlayerThatKill: playerKill.playerId, name: player.playerName });
+                this.socket.emit('player die', { id: socket.id, idPlayerThatKill: playerKill.playerId, name: player.playerName, tileX: this.startTileX, tileY: this.startTileY });
             }
             else {
-                this.socket.emit('player die', { id: socket.id, name: 'Monster' });
+                this.socket.emit('player die', { id: socket.id, name: 'Monster', tileX: this.startTileX, tileY: this.startTileY });
             }
         }
     };

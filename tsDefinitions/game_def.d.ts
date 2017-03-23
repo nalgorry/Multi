@@ -49,6 +49,7 @@
         leaderGloves = 14,
         shield = 20,
         bigShield = 21,
+        gold = 40
 
     }
 

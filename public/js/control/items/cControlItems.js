@@ -1,6 +1,7 @@
 var cControlItems = (function () {
     function cControlItems(controlGame) {
         this.controlGame = controlGame;
+        this.totalGold = 0;
         this.arrayItems = [];
         this.arrayEquipedItems = [];
         this.arrayInventoryItems = [];
@@ -16,6 +17,10 @@ var cControlItems = (function () {
         this.rectInventoryItem.fixedToCamera = true;
         this.rectInventoryItem.drawRect(0, 0, 40, 40);
         this.rectInventoryItem.visible = false;
+        //armo el texto donde va estar la cantidadd de oro
+        var styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600 };
+        this.textGold = this.controlGame.game.add.text(1170, 650, "0", styleText);
+        this.textGold.fixedToCamera = true;
     }
     cControlItems.prototype.newItem = function (data) {
         var item = new cItems(this.controlGame, data.itemID, data.itemType, data.maxRank);
@@ -41,34 +46,42 @@ var cControlItems = (function () {
         if (arrayIDEquipedItems.length == 0)
             return;
         var possItemToDelete = this.controlGame.game.rnd.between(0, arrayIDEquipedItems.length - 1);
-        console.log(this.arrayEquipedItems);
-        console.log(arrayIDEquipedItems[possItemToDelete]);
         var IDitemToDelete = arrayIDEquipedItems[possItemToDelete];
         var itemToDrop = this.arrayEquipedItems[IDitemToDelete];
         this.itemDropToFlor(itemToDrop);
     };
     //pongo el item en el inventario
     cControlItems.prototype.youGetItem = function (data) {
-        var item = new cItems(this.controlGame, data.itemID, data.itemType, data.maxRank);
-        item.signalItemInventoryClick.add(this.itemClick, this); //agrego una señal para despues poder hacer click en el item  
-        item.signalItemEquiped.add(this.itemEquiped, this); //agrego una señal para despues poder hacer click en el item
-        item.signalItemDropToFloor.add(this.itemDropToFlor, this); //para cuando tira un item al piso
-        //me fijo en que posición del inventario colocal el item 
-        var itemPoss = this.arrayfreeInventoryItems.shift();
-        if (itemPoss != undefined) {
-            item.putItemInInventory(itemPoss);
-            //saco la info del item desde el server.
-            data.itemEfects.forEach(function (property) {
-                item.arrayItemEfects.push(new cItemProperty(property.itemEfect, property.value, property.propRank));
-            });
-            // agrego el item al array del inventario
-            this.arrayInventoryItems.push(item);
+        switch (data.itemType) {
+            case 40 /* gold */:
+                this.totalGold = parseInt(this.textGold.text) + parseInt(data.totalGold);
+                this.textGold.text = this.totalGold.toString();
+                //hago el sonido 
+                this.controlGame.controlSounds.startSoundItemGet();
+                break;
+            default:
+                var item = new cItems(this.controlGame, data.itemID, data.itemType, data.maxRank);
+                item.signalItemInventoryClick.add(this.itemClick, this); //agrego una señal para despues poder hacer click en el item  
+                item.signalItemEquiped.add(this.itemEquiped, this); //agrego una señal para despues poder hacer click en el item
+                item.signalItemDropToFloor.add(this.itemDropToFlor, this); //para cuando tira un item al piso
+                //me fijo en que posición del inventario colocal el item 
+                var itemPoss = this.arrayfreeInventoryItems.shift();
+                if (itemPoss != undefined) {
+                    item.putItemInInventory(itemPoss);
+                    //saco la info del item desde el server.
+                    data.itemEfects.forEach(function (property) {
+                        item.arrayItemEfects.push(new cItemProperty(property.itemEfect, property.value, property.propRank));
+                    });
+                    // agrego el item al array del inventario
+                    this.arrayInventoryItems.push(item);
+                }
+                else {
+                    this.controlGame.controlConsole.newMessage(enumMessage.information, "Your inventory is full");
+                }
+                //hago el sonido 
+                this.controlGame.controlSounds.startSoundItemGet();
+                break;
         }
-        else {
-            this.controlGame.controlConsole.newMessage(enumMessage.information, "Your inventory is full");
-        }
-        //hago el sonido 
-        this.controlGame.controlSounds.startSoundItemGet();
     };
     //cuando el player decide tirar un item 
     cControlItems.prototype.itemDropToFlor = function (item) {

@@ -58,11 +58,11 @@ var cOtherPlayer = (function (_super) {
     };
     cOtherPlayer.prototype.playerDie = function (data) {
         var deadAnimation = this.controlGame.game.add.tween(this.playerSprite).to({ alpha: 0 }, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
-        deadAnimation.onComplete.add(this.destroySprite, this);
+        deadAnimation.onComplete.add(this.destroySprite, this, null, data);
     };
-    cOtherPlayer.prototype.destroySprite = function () {
-        this.playerSprite.x = this.startTileX * this.controlGame.gridSize;
-        this.playerSprite.y = this.startTileY * this.controlGame.gridSize;
+    cOtherPlayer.prototype.destroySprite = function (sprite, animation, data) {
+        this.playerSprite.x = data.tileX * this.controlGame.gridSize;
+        this.playerSprite.y = data.tileY * this.controlGame.gridSize;
         var reviveAnimation = this.controlGame.game.add.tween(this.playerSprite).to({ alpha: 1 }, 300, Phaser.Easing.Linear.None, true, 0, 0, false);
     };
     return cOtherPlayer;

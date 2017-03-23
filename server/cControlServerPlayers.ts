@@ -86,10 +86,12 @@ export class cServerControlPlayers {
 
                     monster.monsterHit(data, spellResult.monsterDamage, player.playerId);
 
-                    player.socket.emit('you hit monster', {idMonster: monster.monsterId, 
-                                                            damage: spellResult.monsterDamage, 
-                                                            idSpell: spellResult.spellAnimationMonster
-                                                            });
+                    this.socket.emit('someone hit monster', {
+                        idMonster: monster.monsterId, 
+                        idPlayer: player.playerId,
+                        damage: spellResult.monsterDamage, 
+                        idSpell: spellResult.spellAnimationMonster
+                    });
 
                     //controlo si se murio el moustro y lo saco del array de moustros
                     if (monster.monsterDie == true) { 
@@ -165,11 +167,11 @@ export class cServerControlPlayers {
 
             if (playerKill != null) {     //envio al que murio quien lo mato
 
-                this.socket.emit('player die', {id: socket.id, idPlayerThatKill: playerKill.playerId , name: player.playerName})
+                this.socket.emit('player die', {id: socket.id, idPlayerThatKill: playerKill.playerId , name: player.playerName, tileX:this.startTileX, tileY: this.startTileY})
 
             } else { //lo mato un monster, que cagada...
 
-                this.socket.emit('player die', {id: socket.id, name: 'Monster'})
+                this.socket.emit('player die', {id: socket.id, name: 'Monster', tileX:this.startTileX, tileY: this.startTileY})
 
             }
 

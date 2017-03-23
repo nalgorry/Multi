@@ -156,7 +156,19 @@ var cControlSpells = (function () {
             spellAllowed = true;
         }
         else if (this.selActorType == enumSelectedActor.otherPlayer && spell.enabledTrowOtherPlayer == true) {
-            spellAllowed = true;
+            //me fijo si no estoy tratando de atacar en la ciudad
+            var selPlayer = this.selActor;
+            if (selPlayer.tileX >= 27 && selPlayer.tileY >= 58) {
+                spellAllowed = false;
+                this.controlGame.controlConsole.newMessage(enumMessage.information, "You cant atack a player in the city");
+            }
+            else if (this.controlGame.controlPlayer.tileX >= 27 && this.controlGame.controlPlayer.tileY >= 58) {
+                spellAllowed = false;
+                this.controlGame.controlConsole.newMessage(enumMessage.information, "You cant atack a player if you are in the city");
+            }
+            else {
+                spellAllowed = true;
+            }
         }
         else if (this.selActorType == enumSelectedActor.thisPlayer && spell.enabledTrowThisPlayer == true) {
             spellAllowed = true;

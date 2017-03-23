@@ -35,13 +35,27 @@ var cServerControlItems = (function () {
         }
     };
     cServerControlItems.prototype.createNewRandomItem = function (itemLevel, tileX, tileY) {
-        var itemType = cServerItemDef_1.cServerItemDef.getRandomItemDef();
-        if (itemType != undefined) {
-            this.createNewItem(itemType, itemLevel, tileX, tileY, true);
+        //defino si va a tirar un item u oro
+        var random = this.randomIntFromInterval(1, 10);
+        if (random > 4) {
+            var itemType = cServerItemDef_1.cServerItemDef.getRandomItemDef();
+            if (itemType != undefined) {
+                this.createNewItem(itemType, itemLevel, tileX, tileY, true);
+            }
+            else {
+                console.log("item no definido correctamente");
+            }
         }
         else {
-            console.log("item no definido correctamente");
+            this.createGoldItem(tileX, tileY);
         }
+    };
+    cServerControlItems.prototype.createGoldItem = function (tileX, tileY) {
+        var itemId = "i" + this.nextIdItems;
+        var gold = this.randomIntFromInterval(1, 100);
+        var newItem = new cServerItems_1.cServerItems(this.socket, itemId, 40 /* gold */, gold, tileX, tileY, true);
+        this.arrayItems[itemId] = newItem;
+        this.nextIdItems += 1;
     };
     cServerControlItems.prototype.createNewItem = function (itemType, itemLevel, tileX, tileY, itemPublic, socket) {
         if (socket === void 0) { socket = this.socket; }

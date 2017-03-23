@@ -55,15 +55,33 @@ export class cServerControlItems {
     }
 
     public createNewRandomItem(itemLevel, tileX:number, tileY:number) {
-        
-        var itemType = cServerItemDef.getRandomItemDef();
 
-        if (itemType != undefined) {
-            this.createNewItem(itemType, itemLevel, tileX, tileY,true);
-        } else {
-            console.log("item no definido correctamente");
+        //defino si va a tirar un item u oro
+
+        var random = this.randomIntFromInterval(1,10);
+
+        if (random > 4) { //posiblidades de tirar un item 
+            var itemType = cServerItemDef.getRandomItemDef();
+
+            if (itemType != undefined) {
+                this.createNewItem(itemType, itemLevel, tileX, tileY,true);
+            } else {
+                console.log("item no definido correctamente");
+            }
+        } else { //tiro oro
+            this.createGoldItem(tileX, tileY);
         }
 
+    }
+
+    public createGoldItem(tileX, tileY) {
+        var itemId = "i" + this.nextIdItems;
+
+        var gold = this.randomIntFromInterval(1,100);
+
+        var newItem = new cServerItems(this.socket, itemId, enumItemType.gold, gold, tileX, tileY, true);
+        this.arrayItems[itemId] = newItem;
+        this.nextIdItems += 1;
     }
 
     public createNewItem(itemType:number, itemLevel, tileX:number, tileY:number,itemPublic:boolean, socket:SocketIO.Server = this.socket) {

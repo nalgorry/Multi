@@ -35,6 +35,7 @@ class mainMenu extends Phaser.State {
         this.controlOtherPlayers,this.controlChat);
         this.controlGame.controlServer = this.controlServer;
         this.controlChat.controlServer = this.controlServer;
+        this.controlGame.controlOtherPlayers = this.controlOtherPlayers;
 
     }
 
@@ -49,29 +50,34 @@ class mainMenu extends Phaser.State {
 
 
     render() {
-        //this.game.debug.cameraInfo(this.game.camera, 50, 500);
-        //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
-        
-        
-        var x = this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.body.x);
-        var y = this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.body.y);
-        var tile = this.controlGame.map.getTile(x,y,this.controlGame.layer);
-        
-        this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
 
-        //this.game.debug.text("vida: " + this.controlPlayer.controlFocus.life.toString(),800,120)
+        var showElements = false;
 
-        this.game.debug.text('Tile X: ' + this.controlGame.controlPlayer.tileX, 50, 48, 'rgb(0,0,0)');
-        this.game.debug.text('Tile Y: ' + this.controlGame.controlPlayer.tileY, 50, 64, 'rgb(0,0,0)');
-        
-        //this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
-        //this.game.debug.body(this.controlPlayer.playerSprite);
-        //this.game.debug.body(this.controlMonsters.spriteAreaAtack);
+        if (showElements == true) {
+            //this.game.debug.cameraInfo(this.game.camera, 50, 500);
+            //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
+            
+            
+            var x = this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.body.x);
+            var y = this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.body.y);
+            var tile = this.controlGame.map.getTile(x,y,this.controlGame.layer);
+            
+            this.game.debug.text(this.game.time.fps.toString(), 2, 14, "#00ff00");
 
-        //this.game.debug.geom(this.controlGame.point, 'rgb(0,255,0)');
+            //this.game.debug.text("vida: " + this.controlPlayer.controlFocus.life.toString(),800,120)
 
-        var pos = this.controlGame.game.input.activePointer.position;
-        this.controlGame.game.debug.text("x:" + pos.x + " y:" + pos.y, 180, 15);
+            this.game.debug.text('Tile X: ' + this.controlGame.controlPlayer.tileX, 50, 48, 'rgb(0,0,0)');
+            this.game.debug.text('Tile Y: ' + this.controlGame.controlPlayer.tileY, 50, 64, 'rgb(0,0,0)');
+            
+            //this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
+            //this.game.debug.body(this.controlPlayer.playerSprite);
+            //this.game.debug.body(this.controlMonsters.spriteAreaAtack);
+
+            //this.game.debug.geom(this.controlGame.point, 'rgb(0,255,0)');
+
+            var pos = this.controlGame.game.input.activePointer.position;
+            this.controlGame.game.debug.text("x:" + pos.x + " y:" + pos.y, 180, 15);
+        }
 
     }
  
