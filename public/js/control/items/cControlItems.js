@@ -19,7 +19,7 @@ var cControlItems = (function () {
         this.rectInventoryItem.visible = false;
         //armo el texto donde va estar la cantidadd de oro
         var styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600 };
-        this.textGold = this.controlGame.game.add.text(1170, 650, "0", styleText);
+        this.textGold = this.controlGame.game.add.text(1130, 650, "0", styleText);
         this.textGold.fixedToCamera = true;
     }
     cControlItems.prototype.newItem = function (data) {
