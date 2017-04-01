@@ -31,7 +31,7 @@ class cControlPlayer extends cBasicActor {
     private lastAnimation:move = move.idleRight;
 
     public startTileX:number = 41;
-    public startTileY:number = 64;
+    public startTileY:number = 63;
 
     private dirMovimiento:move =move.right;
     private lastdirMov:move; //para guardar el ultimo moviemiento enviado
@@ -205,13 +205,13 @@ class cControlPlayer extends cBasicActor {
         } 
 
         if (data.damage > 0 ) {
-            this.controlGame.controlConsole.newMessage(enumMessage.youWereHit,"Te golpearon por " + data.damage)
+            this.controlGame.controlConsole.newMessage(enumMessage.youWereHit,"You were hit for " + data.damage)
             this.controlGame.controlSounds.startPlayerHit();
             //hago aparecer la animación del golpe
             this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x5e0818); 
 
         }  else if (data.damage < 0) { //te curaste
-            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Te curaron por " + -data.damage)
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"You were heal " + -data.damage)
             this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x105e08); 
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         } else {
@@ -225,17 +225,17 @@ class cControlPlayer extends cBasicActor {
     public youKillMonster(data) {
         if (data.damage != 0 ) {
             this.monstersKills++;
-            this.controlGame.controlConsole.newMessage(enumMessage.youKill,"Mataste al monstruo ("+ this.monstersKills +")")
+            this.controlGame.controlConsole.newMessage(enumMessage.youKill,"You kill a monster ("+ this.monstersKills +")")
             this.controlLevel.addExperience(data.experience);
         }
     }
 
     public youHit(data) {
         if (data.damage > 0 ) { //golpeaste a algeuin
-            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste por " + data.damage)
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"You hit for" + data.damage)
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         } else if (data.damage < 0) { //curaste a alguien 
-            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Curaste por " + -data.damage)
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit,"You heal for " + -data.damage)
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
     }
@@ -265,7 +265,7 @@ class cControlPlayer extends cBasicActor {
     }
 
     public youKill(data) {
-        this.controlGame.controlConsole.newMessage(enumMessage.youKill,"Mataste a " + data.name);
+        this.controlGame.controlConsole.newMessage(enumMessage.youKill,"You kill " + data.name);
 
     }
 

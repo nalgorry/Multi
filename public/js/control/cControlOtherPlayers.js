@@ -22,7 +22,6 @@ var cControlOtherPlayers = (function () {
             playerToRemove.removePlayer();
             this.arrayPlayers.splice(this.arrayPlayers.indexOf(playerToRemove), 1);
         }
-        console.log(playerToRemove);
     };
     cControlOtherPlayers.prototype.movePlayer = function (data) {
         var movedPlayer = this.playerById(data.id);

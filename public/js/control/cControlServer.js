@@ -82,7 +82,7 @@ var cControlServer = (function () {
     };
     // Socket connected
     cControlServer.prototype.onSocketConnected = function () {
-        console.log('Connected to socket server');
+        //console.log('Connected to socket server');
         this.controlPlayer.idServer = "/#" + this.socket.id;
         this.socket.emit('new player', { x: this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.x),
             y: this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.y),
@@ -90,11 +90,11 @@ var cControlServer = (function () {
     };
     // Socket disconnected
     cControlServer.prototype.onSocketDisconnect = function () {
-        console.log('Disconnected from socket server');
+        //console.log('Disconnected from socket server');
     };
     // New player
     cControlServer.prototype.onNewPlayer = function (data) {
-        console.log('New player connected:', data.id);
+        //console.log('New player connected:', data.id);
         this.controlOtherPlayers.addPlayer(data);
     };
     cControlServer.prototype.onYouHit = function (data) {

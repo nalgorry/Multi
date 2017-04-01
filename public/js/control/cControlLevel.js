@@ -4,7 +4,7 @@ var cControlLevel = (function () {
         this.playerLevel = 1;
         this.experience = 0;
         this.styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600 };
-        this.arrayExpLevel = [1, 5, 30, 60, 110, 220, 400, 600, 950, 1500, 2000, 2500, 3200, 4500, 5000, 10000];
+        this.arrayExpLevel = [1, 15, 50, 100, 220, 400, 600, 950, 1500, 2000, 2500, 3200, 4500, 5000, 10000];
         this.createInterfaceItems();
         this.ResizeExpBar();
     }

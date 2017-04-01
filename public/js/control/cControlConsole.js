@@ -12,7 +12,7 @@ var cControlConsole = (function () {
         //inicio el array de mensajes
         this.arrayMessages = new Array();
         this.arrayPhaserTexts = new Array();
-        this.newMessage(enumMessage.information, "Bienvenido a FocusOnline v 0.1 ALPHA");
+        this.newMessage(enumMessage.information, "Welcome!! v 0.1 ALPHA");
     }
     cControlConsole.prototype.newMessage = function (type, message) {
         var newMessage = new cConsoleMessage(type, message);

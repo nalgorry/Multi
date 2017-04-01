@@ -50,12 +50,34 @@ var cControlItems = (function () {
         var itemToDrop = this.arrayEquipedItems[IDitemToDelete];
         this.itemDropToFlor(itemToDrop);
     };
+    cControlItems.prototype.createGoldText = function (text, tileX, tileY) {
+        var styleHit = { font: "18px Arial", fill: "#616300", fontWeight: 900 };
+        var completeText = this.controlGame.game.add.sprite(tileX * this.controlGame.gridSize, (tileY - 1) * this.controlGame.gridSize);
+        //texto que se muestra
+        var goldText = this.controlGame.game.add.text(0, 0, text, styleHit);
+        //hago un recuadro blanco abajo del texto
+        var rectangleBack = this.controlGame.game.add.bitmapData(goldText.width, 20);
+        rectangleBack.ctx.beginPath();
+        rectangleBack.ctx.rect(0, 0, goldText.width, 20);
+        rectangleBack.ctx.fillStyle = '#ffffff';
+        rectangleBack.ctx.fill();
+        var textBack = this.controlGame.game.add.sprite(0, 0, rectangleBack);
+        textBack.alpha = 0.6;
+        completeText.addChild(textBack);
+        completeText.addChild(goldText);
+        var tweenText = this.controlGame.game.add.tween(completeText).to({ y: '-40' }, 1000, Phaser.Easing.Cubic.Out, true);
+        tweenText.onComplete.add(this.removeTweenText, completeText);
+    };
+    cControlItems.prototype.removeTweenText = function (sprite) {
+        sprite.destroy();
+    };
     //pongo el item en el inventario
     cControlItems.prototype.youGetItem = function (data) {
         switch (data.itemType) {
             case 40 /* gold */:
                 this.totalGold = parseInt(this.textGold.text) + parseInt(data.totalGold);
                 this.textGold.text = this.totalGold.toString();
+                this.createGoldText(data.totalGold, data.tileX, data.tileY);
                 //hago el sonido 
                 this.controlGame.controlSounds.startSoundItemGet();
                 break;

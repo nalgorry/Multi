@@ -37,7 +37,6 @@ class cControlOtherPlayers {
             this.arrayPlayers .splice(this.arrayPlayers .indexOf(playerToRemove), 1)
         }
 
-        console.log(playerToRemove);
     }
 
     public movePlayer(data) {

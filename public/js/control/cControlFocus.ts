@@ -235,21 +235,69 @@ class cControlFocus {
 
     }
 
+    private onNoManaOrEnergy(message) {
+        
+        var styleHit = { font: "18px Arial", fill: "#02063a", fontWeight: 900 }
+        
+        var completeText = this.controlGame.game.add.sprite( 0, -40);
+        
+        //texto que se muestra
+        var text = this.controlGame.game.add.text(0,0, message, styleHit);            
+
+        //hago un recuadro blanco abajo del texto
+        var rectangleBack = this.controlGame.game.add.bitmapData(text.width, 20);
+        rectangleBack.ctx.beginPath();
+        rectangleBack.ctx.rect(0, 0, text.width, 20);
+        rectangleBack.ctx.fillStyle = '#ffffff';
+        rectangleBack.ctx.fill();
+
+        var textBack = this.controlGame.game.add.sprite(0, 0, rectangleBack);
+        textBack.alpha = 0.6;
+
+        completeText.addChild(textBack);
+        completeText.addChild(text);
+
+        this.controlGame.controlPlayer.playerSprite.addChild(completeText)
+
+        var tweenText = this.controlGame.game.add.tween(completeText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
+        tweenText.onComplete.add(this.removeTweenText,completeText);
+}
+
+    removeTweenText(sprite:Phaser.Sprite) {        
+        sprite.destroy();        
+    }
+
+
     public SpellPosible(spell:cSpell):boolean {
 
-        if (this.mana >= spell.manaCost && this.energy >= spell.energyCost && this.life >= spell.lifeCost) {
-            
-            this.UpdateEnergy(-spell.energyCost);
-            this.UpdateMana(-spell.manaCost);
-            this.UpdateLife(-spell.lifeCost);
-            
-            return true;
+        if (this.mana >= spell.manaCost) {
+            if (this.energy >= spell.energyCost) {
+                if (this.life >= spell.lifeCost) {
 
+                    this.UpdateEnergy(-spell.energyCost);
+                    this.UpdateMana(-spell.manaCost);
+                    this.UpdateLife(-spell.lifeCost);
+                    return true;
+                } else {
+                    this.onNoManaOrEnergy("NEED LIFE");
+                    return false;
+                }
+            } else {
+                this.onNoManaOrEnergy("NEED ENERGY");
+                return false;
+            }
         } else {
+            this.onNoManaOrEnergy("NEED MANA");
             return false;
+
         }
+         
+            
+             
     }
     
+
+
     public ResetBars() {
         this.UpdateLife(1 - this.life);
         this.UpdateMana(1 - this.mana);

@@ -60,7 +60,7 @@ var cServerItems = (function () {
                     tileX: this.tileX,
                     tileY: this.tileY,
                     itemType: this.itemType,
-                    totalGold: this.itemLevel
+                    totalGold: this.itemLevel,
                 };
             }
             else {
@@ -68,7 +68,7 @@ var cServerItems = (function () {
                     itemID: this.itemID,
                     itemType: this.itemType,
                     itemEfects: this.arrayItemProperties,
-                    maxRank: this.maxRank
+                    maxRank: this.maxRank,
                 };
             }
             //le mando al que agarro su item

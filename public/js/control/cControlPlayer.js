@@ -24,7 +24,7 @@ var cControlPlayer = (function (_super) {
         this.playerIdle = false;
         this.lastAnimation = move.idleRight;
         this.startTileX = 41;
-        this.startTileY = 64;
+        this.startTileY = 63;
         this.dirMovimiento = move.right;
         this.monstersKills = 0;
         this.gridSize = controlGame.gridSize;
@@ -158,13 +158,13 @@ var cControlPlayer = (function (_super) {
             this.youDie(data);
         }
         if (data.damage > 0) {
-            this.controlGame.controlConsole.newMessage(enumMessage.youWereHit, "Te golpearon por " + data.damage);
+            this.controlGame.controlConsole.newMessage(enumMessage.youWereHit, "You were hit for " + data.damage);
             this.controlGame.controlSounds.startPlayerHit();
             //hago aparecer la animación del golpe
             this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x5e0818);
         }
         else if (data.damage < 0) {
-            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Te curaron por " + -data.damage);
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "You were heal " + -data.damage);
             this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x105e08);
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
@@ -176,17 +176,17 @@ var cControlPlayer = (function (_super) {
     cControlPlayer.prototype.youKillMonster = function (data) {
         if (data.damage != 0) {
             this.monstersKills++;
-            this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste al monstruo (" + this.monstersKills + ")");
+            this.controlGame.controlConsole.newMessage(enumMessage.youKill, "You kill a monster (" + this.monstersKills + ")");
             this.controlLevel.addExperience(data.experience);
         }
     };
     cControlPlayer.prototype.youHit = function (data) {
         if (data.damage > 0) {
-            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Golpeaste por " + data.damage);
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "You hit for" + data.damage);
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
         else if (data.damage < 0) {
-            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "Curaste por " + -data.damage);
+            this.controlGame.controlConsole.newMessage(enumMessage.youHit, "You heal for " + -data.damage);
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
         }
     };
@@ -207,7 +207,7 @@ var cControlPlayer = (function (_super) {
         this.controlSpells.releaseFocus(this.controlGame.controlPlayer.controlSpells.getSelActorID());
     };
     cControlPlayer.prototype.youKill = function (data) {
-        this.controlGame.controlConsole.newMessage(enumMessage.youKill, "Mataste a " + data.name);
+        this.controlGame.controlConsole.newMessage(enumMessage.youKill, "You kill " + data.name);
     };
     cControlPlayer.prototype.teleport = function (tileX, tileY) {
         this.playerSprite.x = tileX * this.controlGame.gridSize;

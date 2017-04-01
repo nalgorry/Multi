@@ -101,7 +101,7 @@ export class cServerItems {
                 tileX:this.tileX, 
                 tileY:this.tileY,
                 itemType:this.itemType,
-                totalGold: this.itemLevel
+                totalGold: this.itemLevel,
             };
 
         } else {
@@ -109,7 +109,7 @@ export class cServerItems {
                 itemID: this.itemID, 
                 itemType:this.itemType,
                 itemEfects: this.arrayItemProperties,
-                maxRank: this.maxRank
+                maxRank: this.maxRank,
                 };
         }
             //le mando al que agarro su item

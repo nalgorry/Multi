@@ -119,7 +119,7 @@ class cControlServer {
     // Socket connected
     public onSocketConnected()  {
         
-        console.log('Connected to socket server');
+        //console.log('Connected to socket server');
 
         this.controlPlayer.idServer = "/#" + this.socket.id;
         this.socket.emit('new player', { x: this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.x), 
@@ -130,13 +130,13 @@ class cControlServer {
 
     // Socket disconnected
     onSocketDisconnect () {
-        console.log('Disconnected from socket server');
+        //console.log('Disconnected from socket server');
     }
 
     // New player
     onNewPlayer (data) {
         
-        console.log('New player connected:', data.id);
+        //console.log('New player connected:', data.id);
         this.controlOtherPlayers.addPlayer(data);
 
     }

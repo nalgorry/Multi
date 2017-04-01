@@ -67,9 +67,7 @@ var cControlPad = (function (_super) {
         this.isBeingDragged = false;
         /* Reset pin and dragger position */
         this.centerSprite.position.setTo(0, 0);
-        console.log(this.dragger.position);
         this.dragger.cameraOffset.copyFrom(this.cameraOffset);
-        console.log(this.dragger.position);
         if (this.disabled)
             return;
         this.onUp.dispatch(this.direction, this.distance, this.pinAngle);

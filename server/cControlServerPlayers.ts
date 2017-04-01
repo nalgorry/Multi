@@ -8,7 +8,7 @@ export class cServerControlPlayers {
     public controlMonster:cServerControlMonster;
 
     public startTileX:number = 41;
-    public startTileY:number = 64;
+    public startTileY:number = 63;
 
     constructor(public socket:SocketIO.Server) {
 

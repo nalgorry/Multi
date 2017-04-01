@@ -124,7 +124,7 @@ class cControlMonsters {
 
         if (data.idPlayer == this.controlGame.controlPlayer.idServer) { //este jugador golpea al monstruo
             if (data.damage != 0 ) {
-                this.controlGame.controlConsole.newMessage(enumMessage.youHit,"Golpeaste al monstruo por " + data.damage);
+                this.controlGame.controlConsole.newMessage(enumMessage.youHit,"You hit monster for " + data.damage);
                 this.controlGame.controlSounds.startSoundHit(data.idSpell);
 
                 playerThatHit = this.controlGame.controlPlayer;

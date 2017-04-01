@@ -36,7 +36,7 @@ var cServerControlMonster = (function () {
         }
         //le mando el moustro para el tutorial solo a este jugador.
         var newMonster = new cServerMonster_1.cServerMonster(this.controlItems);
-        newMonster.startMonster("m" + this.nextIdMonster, 1 /* FirstMonster */, socket, this.controlPlayer, false, false, 55, 60);
+        newMonster.startMonster("m" + this.nextIdMonster, 1 /* FirstMonster */, socket, this.controlPlayer, false, false, 55, 59);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };

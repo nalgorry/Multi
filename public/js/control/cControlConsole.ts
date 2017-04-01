@@ -20,7 +20,7 @@ class cControlConsole {
         this.arrayMessages = new Array<cConsoleMessage>();
         this.arrayPhaserTexts = new Array<Phaser.Text>();
 
-        this.newMessage(enumMessage.information,"Bienvenido a FocusOnline v 0.1 ALPHA")
+        this.newMessage(enumMessage.information,"Welcome!! v 0.1 ALPHA")
 
     }
 

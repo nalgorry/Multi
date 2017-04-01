@@ -58,6 +58,9 @@ class cControlGame {
 
         this.depthGroup.forEach(this.ObjectsConfiguration,this)
 
+        //inicio las ayudas 
+        this.addTutorial(this.tutorialNumber);
+
         //cargo la interfaz dele juego
         this.interfaz = this.game.add.sprite(this.game.width - this.interfazWidth , 0, 'interfaz');
         this.interfaz.inputEnabled = true;
@@ -86,9 +89,6 @@ class cControlGame {
         //inicio los sonidos 
         this.controlSounds = new cControlSounds(this);
 
-        //inicio las ayudas 
-        this.addTutorial(this.tutorialNumber);
-
 
     }
 
@@ -104,12 +104,13 @@ class cControlGame {
                 this.groupInitialHelp.add(controls);
 
                 //var yourItems = this.game.add.sprite(45 * this.gridSize, 95 * this.gridSize,'help_arrow');
-                var yourItemsText = this.game.add.bitmapText(47 * this.gridSize, 58 * this.gridSize, 'gotic', 'Items!\nGet Close And Click!', 16);
+                var yourItemsText = this.game.add.bitmapText(47 * this.gridSize, 57 * this.gridSize, 'gotic', 'Items!\nGet Close And Click!', 16);
                 //this.groupInitialHelp.add(yourItems);
                 this.groupInitialHelp.add(yourItemsText);
 
-                var monsterHelp = this.game.add.sprite(53 * this.gridSize, 57.5 * this.gridSize, 'help_arrow_3');
-                var monsterHelpText = this.game.add.bitmapText(51 * this.gridSize, 56.5 * this.gridSize, 'gotic', 'Atack with yours spells!', 16);
+                var monsterHelp = this.game.add.sprite(53 * this.gridSize, 56.5 * this.gridSize, 'help_arrow_3');
+                var monsterHelpText = this.game.add.bitmapText(51 * this.gridSize, 55.5 * this.gridSize, 'gotic', 'Atack with yours spells!', 16);
+                
                 this.groupInitialHelp.add(monsterHelp);
                 this.groupInitialHelp.add(monsterHelpText);
 

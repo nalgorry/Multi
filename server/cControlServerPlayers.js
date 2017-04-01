@@ -4,7 +4,7 @@ var cServerControlPlayers = (function () {
     function cServerControlPlayers(socket) {
         this.socket = socket;
         this.startTileX = 41;
-        this.startTileY = 64;
+        this.startTileY = 63;
         this.arrayPlayers = [];
     }
     cServerControlPlayers.prototype.levelUp = function (socket, data) {
