@@ -13,8 +13,11 @@ var cControlOtherPlayers = (function () {
         return null;
     };
     cControlOtherPlayers.prototype.addPlayer = function (data) {
+        console.log(data);
         var newPlayer = new cOtherPlayer(this.controlGame, data);
         this.arrayPlayers.push(newPlayer);
+        //actualizo el texto del player
+        this.controlGame.controlPlayer.controlFocus.textPlayersOnline.text = data.playersOnline;
     };
     cControlOtherPlayers.prototype.removePlayer = function (data) {
         var playerToRemove = this.playerById(data.id);

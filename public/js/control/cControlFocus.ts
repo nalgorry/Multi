@@ -34,6 +34,7 @@ class cControlFocus {
     textEnergy: Phaser.Text;
     textAtack: Phaser.Text;
     textDefence: Phaser.Text;
+    textPlayersOnline: Phaser.Text;
     styleText;
 
     //valores actuales utilizados por el focus sistem
@@ -480,6 +481,9 @@ class cControlFocus {
 
         this.textDefence = this.controlGame.game.add.text(1168, 73, this.maxDefence.toString() , this.styleText);
         this.textDefence.fixedToCamera = true;
+
+        this.textPlayersOnline = this.controlGame.game.add.text(1168, 95, "1" , this.styleText);
+        this.textPlayersOnline.fixedToCamera = true;
     }
 
     public updateAtackDefence() {

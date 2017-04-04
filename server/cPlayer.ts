@@ -23,9 +23,9 @@ export class cPlayer {
         public controlMonster:cServerControlMonster) {
     }
 
-    public sendPlayerToNewPlayer(socket:SocketIO.Server) {
+    public sendPlayerToNewPlayer(socket:SocketIO.Server, playersOnline) {
         socket.emit('new player', {id: this.playerId, 
-      x: this.x, y: this.y, name:this.playerName})
+      x: this.x, y: this.y, name:this.playerName, playersOnline: playersOnline})
     }
 
     public calculateDamage(damage:number):number {

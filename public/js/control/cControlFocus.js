@@ -340,6 +340,8 @@ var cControlFocus = (function () {
         this.textAtack.fixedToCamera = true;
         this.textDefence = this.controlGame.game.add.text(1168, 73, this.maxDefence.toString(), this.styleText);
         this.textDefence.fixedToCamera = true;
+        this.textPlayersOnline = this.controlGame.game.add.text(1168, 95, "1", this.styleText);
+        this.textPlayersOnline.fixedToCamera = true;
     };
     cControlFocus.prototype.updateAtackDefence = function () {
         this.textAtack.text = this.maxAtack.toString();

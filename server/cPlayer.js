@@ -15,9 +15,9 @@ var cPlayer = (function () {
         this.protectedField = false;
         this.weakEfect = false;
     }
-    cPlayer.prototype.sendPlayerToNewPlayer = function (socket) {
+    cPlayer.prototype.sendPlayerToNewPlayer = function (socket, playersOnline) {
         socket.emit('new player', { id: this.playerId,
-            x: this.x, y: this.y, name: this.playerName });
+            x: this.x, y: this.y, name: this.playerName, playersOnline: playersOnline });
     };
     cPlayer.prototype.calculateDamage = function (damage) {
         if (damage > 0) {

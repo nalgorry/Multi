@@ -10,6 +10,8 @@ export class cServerControlPlayers {
     public startTileX:number = 41;
     public startTileY:number = 63;
 
+    public playersOnline:number = 0;
+
     constructor(public socket:SocketIO.Server) {
 
         this.arrayPlayers = [];
@@ -35,12 +37,14 @@ export class cServerControlPlayers {
 
     public onNewPlayerConected(socket, idPlayer:string, data) {
 
+        this.playersOnline += 1;
+
         socket.broadcast.emit('new player', 
-            {id: idPlayer, name:data.name, startTileX: this.startTileX, startTileY:this.startTileY})
+            {id: idPlayer, name:data.name, startTileX: this.startTileX, startTileY:this.startTileY, playersOnline: this.playersOnline})
         
         //le mando al nuevo jugador todos los jugadores existentes
         for (var id in this.arrayPlayers) {
-            this.arrayPlayers[id].sendPlayerToNewPlayer(socket);    
+            this.arrayPlayers[id].sendPlayerToNewPlayer(socket,this.playersOnline);    
         }
 
         // Add new player to the players array
@@ -50,6 +54,8 @@ export class cServerControlPlayers {
 
     public onPlayerDisconected(socket){
         delete this.arrayPlayers[socket.id];       
+        
+        this.playersOnline -= 1;
     }
 
     public youEquipItem(socket:any, data) {

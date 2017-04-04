@@ -5,6 +5,7 @@ var cServerControlPlayers = (function () {
         this.socket = socket;
         this.startTileX = 41;
         this.startTileY = 63;
+        this.playersOnline = 0;
         this.arrayPlayers = [];
     }
     cServerControlPlayers.prototype.levelUp = function (socket, data) {
@@ -21,16 +22,18 @@ var cServerControlPlayers = (function () {
         return this.arrayPlayers[id];
     };
     cServerControlPlayers.prototype.onNewPlayerConected = function (socket, idPlayer, data) {
-        socket.broadcast.emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY });
+        this.playersOnline += 1;
+        socket.broadcast.emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY, playersOnline: this.playersOnline });
         //le mando al nuevo jugador todos los jugadores existentes
         for (var id in this.arrayPlayers) {
-            this.arrayPlayers[id].sendPlayerToNewPlayer(socket);
+            this.arrayPlayers[id].sendPlayerToNewPlayer(socket, this.playersOnline);
         }
         // Add new player to the players array
         this.arrayPlayers[idPlayer] = new cPlayer_1.cPlayer(socket, idPlayer, data.name, data.x, data.y, this.controlMonster);
     };
     cServerControlPlayers.prototype.onPlayerDisconected = function (socket) {
         delete this.arrayPlayers[socket.id];
+        this.playersOnline -= 1;
     };
     cServerControlPlayers.prototype.youEquipItem = function (socket, data) {
         // Find player in array
