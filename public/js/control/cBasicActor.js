@@ -51,6 +51,8 @@ var cBasicActor = (function () {
         this.weaponSprite = this.controlGame.game.add.sprite(0, 0, 'weapon1', 0);
         this.weaponSprite.anchor.set(0.5, 1);
         this.playerSprite.addChild(this.weaponSprite);
+        //la oculto por ahora, por que no da que un pj con arma no pueda usasrla
+        this.weaponSprite.visible = false;
         //defino las animaciones segun la cantidad de cuadros 
         this.armorSprite.animations.add('idle_right', [0, 1, 2, 3, 4], 4, true);
         this.armorSprite.animations.add('idle_left', [24, 25, 26, 27, 28], 4, true);
