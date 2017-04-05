@@ -11,6 +11,10 @@ var cBasicActor = (function () {
         }
         this.textChat.text = texto;
         this.textChat.x = -this.textChat.width / 2;
+        this.controlGame.game.time.events.add(Phaser.Timer.SECOND * 10, this.deleteChat, this);
+    };
+    cBasicActor.prototype.deleteChat = function () {
+        this.textChat.text = "";
     };
     cBasicActor.prototype.setNameText = function (texto) {
         if (this.textName == null) {

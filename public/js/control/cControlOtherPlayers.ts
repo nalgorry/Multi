@@ -55,6 +55,7 @@ class cControlOtherPlayers {
 
         var player = this.playerById(data.id);
         player.setChatText(data.text);
+        
 
     }
 
