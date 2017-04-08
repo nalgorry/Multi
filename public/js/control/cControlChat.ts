@@ -17,8 +17,9 @@ class cControlChat {
             padding: 8,
             borderWidth: 0,
             borderColor: '#ffffff',
-            placeHolder: 'Chat',
+            placeHolder: 'Chat: Press enter to chat',
             borderRadius: 0,
+            zoom: false,
         });
 
         this.inputTextChat.focusOutOnEnter = true;
@@ -28,11 +29,16 @@ class cControlChat {
         this.inputTextChat.cameraOffset.setTo(310, 630);
 
         Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress,this);
+        Fabrique.Plugins.InputField.onChatFocus.add(this.chatFocus,this);
 
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         enter.onUp.add(this.enterPress,this);
 
+    }
+
+    public chatFocus() {
+       this.isActive = true;
     }
 
     public enterPress() {  

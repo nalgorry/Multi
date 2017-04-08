@@ -185,6 +185,7 @@ declare module Fabrique {
             static onKeyboardOpen: Phaser.Signal;
             static onKeyboardClose: Phaser.Signal;
             static onPressEnter: Phaser.Signal;
+            static onChatFocus: Phaser.Signal;
 
            static active: boolean;
            static game: Phaser.Game;

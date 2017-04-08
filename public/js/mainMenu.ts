@@ -51,7 +51,7 @@ class mainMenu extends Phaser.State {
 
     render() {
 
-        var showElements = false;
+        var showElements = true;
 
         if (showElements == true) {
             //this.game.debug.cameraInfo(this.game.camera, 50, 500);

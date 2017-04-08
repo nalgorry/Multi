@@ -13,18 +13,23 @@ var cControlChat = (function () {
             padding: 8,
             borderWidth: 0,
             borderColor: '#ffffff',
-            placeHolder: 'Chat',
+            placeHolder: 'Chat: Press enter to chat',
             borderRadius: 0,
+            zoom: false,
         });
         this.inputTextChat.focusOutOnEnter = true;
         this.inputTextChat.blockInput = true;
         this.inputTextChat.fixedToCamera = true;
         this.inputTextChat.cameraOffset.setTo(310, 630);
         Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress, this);
+        Fabrique.Plugins.InputField.onChatFocus.add(this.chatFocus, this);
         //registro el evento del teclado
         var enter = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         enter.onUp.add(this.enterPress, this);
     }
+    cControlChat.prototype.chatFocus = function () {
+        this.isActive = true;
+    };
     cControlChat.prototype.enterPress = function () {
         if (this.isActive) {
             var text = this.inputTextChat.value;

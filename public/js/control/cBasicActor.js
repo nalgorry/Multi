@@ -4,17 +4,36 @@ var cBasicActor = (function () {
         this.styleChat = { font: "16px Arial", fill: "#000000" };
         this.styleName = { font: "16px Arial", fill: "#3e76d1" };
     }
+    cBasicActor.prototype.startChat = function () {
+        //start the message system
+        this.completeChatText = this.controlGame.game.add.sprite(0, -this.armorSprite.height - 24);
+        this.textChat = this.controlGame.game.add.text(0, 0, "", this.styleChat);
+        //white under the text 
+        var rectangleBack = this.controlGame.game.add.bitmapData(1, 24);
+        rectangleBack.ctx.beginPath();
+        rectangleBack.ctx.rect(0, 0, 1, 24);
+        rectangleBack.ctx.fillStyle = '#ffffff';
+        rectangleBack.ctx.fill();
+        this.chatBack = this.controlGame.game.add.sprite(-2, -2, rectangleBack);
+        this.chatBack.alpha = 0.8;
+        this.completeChatText.addChild(this.chatBack);
+        this.completeChatText.addChild(this.textChat);
+        this.playerSprite.addChild(this.completeChatText);
+    };
     cBasicActor.prototype.setChatText = function (texto) {
-        if (this.textChat == null) {
-            this.textChat = this.controlGame.game.add.text(0, -this.armorSprite.height - 18, "", this.styleChat);
-            this.playerSprite.addChild(this.textChat);
+        if (this.completeChatText == undefined) {
+            this.startChat();
         }
+        //lets update the message
         this.textChat.text = texto;
-        this.textChat.x = -this.textChat.width / 2;
+        this.chatBack.width = this.textChat.width + 4;
+        this.completeChatText.x = -this.textChat.width / 2;
+        //to delete the message after some time
         this.controlGame.game.time.events.add(Phaser.Timer.SECOND * 10, this.deleteChat, this);
     };
     cBasicActor.prototype.deleteChat = function () {
         this.textChat.text = "";
+        this.chatBack.width = 0;
     };
     cBasicActor.prototype.setNameText = function (texto) {
         if (this.textName == null) {

@@ -357,6 +357,7 @@ var Fabrique;
                 Fabrique.Plugins.InputField.KeyboardOpen = true;
                 Fabrique.Plugins.InputField.onKeyboardOpen.dispatch();
             }
+            Fabrique.Plugins.InputField.onChatFocus.dispatch();
         };
         InputField.prototype.keyUpProcessor = function () {
             this.domElement.addKeyUpListener(this.keyListener.bind(this));
@@ -685,6 +686,7 @@ var Fabrique;
             InputField.onKeyboardOpen = new Phaser.Signal();
             InputField.onKeyboardClose = new Phaser.Signal();
             InputField.onPressEnter = new Phaser.Signal();
+            InputField.onChatFocus = new Phaser.Signal();
             return InputField;
         })(Phaser.Plugin);
         Plugins.InputField = InputField;

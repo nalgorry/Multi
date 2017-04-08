@@ -36,7 +36,7 @@ var mainMenu = (function (_super) {
         this.controlGame.updateZDepth();
     };
     mainMenu.prototype.render = function () {
-        var showElements = false;
+        var showElements = true;
         if (showElements == true) {
             //this.game.debug.cameraInfo(this.game.camera, 50, 500);
             //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);

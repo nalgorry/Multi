@@ -7,7 +7,69 @@ var cControlLevel = (function () {
         this.arrayExpLevel = [1, 15, 50, 100, 220, 400, 600, 950, 1500, 2000, 2500, 3200, 4500, 5000, 10000];
         this.createInterfaceItems();
         this.ResizeExpBar();
+        this.groupLvlUp = new Phaser.Group(this.controlGame.game);
+        this.createLvlUpMenu();
     }
+    cControlLevel.prototype.createLvlUpMenu = function () {
+        //genero el fondo de las estadisticas
+        var height = 124;
+        var width = 684;
+        var bitmapLvlUp = this.controlGame.game.add.bitmapData(width, height);
+        bitmapLvlUp.ctx.beginPath();
+        bitmapLvlUp.ctx.rect(0, 0, width, height);
+        bitmapLvlUp.ctx.fillStyle = '#363636';
+        bitmapLvlUp.ctx.fill();
+        var backGroundDesc = this.controlGame.game.add.sprite(310, 499, bitmapLvlUp);
+        backGroundDesc.anchor.setTo(0);
+        backGroundDesc.fixedToCamera = true;
+        backGroundDesc.alpha = 0.7;
+        var textLvlUp = this.controlGame.game.add.bitmapText(510, 505, 'gotic_white', 'Level UP Chose your new SKILL', 16);
+        textLvlUp.fixedToCamera = true;
+        this.groupLvlUp.add(backGroundDesc);
+        this.groupLvlUp.add(textLvlUp);
+        this.createLvlBoton(420, 555, "Mana: 50%");
+        this.createLvlBoton(630, 555, "Life: 5%");
+        this.createLvlBoton(860, 555, "Energy: 10%");
+        var textLvlUpEnd = this.controlGame.game.add.bitmapText(450, 595, 'gotic_white', 'You need to select one to continue gaining experience', 16);
+        textLvlUpEnd.fixedToCamera = true;
+    };
+    cControlLevel.prototype.createLvlBoton = function (x, y, text) {
+        var completeText = this.controlGame.game.add.sprite(x, y);
+        completeText.fixedToCamera = true;
+        var textOption = this.controlGame.game.add.bitmapText(0, 0, 'gotic_white', text, 16);
+        textOption.anchor.set(0.5);
+        //normal state button 
+        var bitmapBoton = this.controlGame.game.add.graphics(-24, -8);
+        bitmapBoton.beginFill(0x363636);
+        bitmapBoton.lineStyle(2, 0x000000, 1);
+        bitmapBoton.drawRect(-(textOption.width) / 2, -38 / 2 / 2, textOption.width + 48, 38);
+        bitmapBoton.endFill();
+        bitmapBoton.alpha = 0.9;
+        //onmouseover state button 
+        var bitmapBotonOver = this.controlGame.game.add.graphics(-24, -8);
+        bitmapBotonOver.beginFill(0x363636);
+        bitmapBotonOver.lineStyle(2, 0xFFFFFF, 1);
+        bitmapBotonOver.drawRect(-(textOption.width) / 2, -38 / 2 / 2, textOption.width + 48, 38);
+        bitmapBotonOver.endFill();
+        bitmapBotonOver.alpha = 0.9;
+        bitmapBotonOver.visible = false;
+        //var backGround = this.controlGame.game.add.sprite(-24, -8, bitmapBoton);
+        //backGround.alpha = 0.9;
+        completeText.addChild(bitmapBoton);
+        completeText.addChild(bitmapBotonOver);
+        completeText.addChild(textOption);
+        completeText.inputEnabled = true;
+        completeText.events.onInputOver.add(this.botonLvlUpOver, this);
+        completeText.events.onInputOut.add(this.botonLvlUpOut, this);
+    };
+    cControlLevel.prototype.botonLvlUpOver = function (button) {
+        button.children[0].visible = false;
+        button.children[1].visible = true;
+    };
+    cControlLevel.prototype.botonLvlUpOut = function (button) {
+        button.children[0].visible = true;
+        button.children[1].visible = false;
+    };
     cControlLevel.prototype.updateLevel = function () {
         this.textLevel.text = this.playerLevel.toString();
     };
