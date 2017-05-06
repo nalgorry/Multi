@@ -37,37 +37,28 @@ var cItemsDefinitions = (function () {
     cItemsDefinitions.defineItemEfectsName = function (itemProperty) {
         var finalText = "";
         switch (itemProperty.itemEfect) {
-            case 6 /* life */:
+            case 3 /* life */:
                 finalText = "Life: +" + itemProperty.value;
                 break;
-            case 7 /* mana */:
+            case 4 /* mana */:
                 finalText = "Mana: +" + itemProperty.value;
                 break;
-            case 8 /* energy */:
+            case 5 /* energy */:
                 finalText = "Energy: +" + itemProperty.value;
                 break;
-            case 3 /* normalLife */:
-                finalText = "Speed Normal Life: +" + itemProperty.value + "%";
+            case 0 /* speedLife */:
+                finalText = "Speed Life: +" + itemProperty.value + "%";
                 break;
-            case 4 /* normalMana */:
-                finalText = "Speed Normal Mana: +" + itemProperty.value + "%";
+            case 1 /* speedMana */:
+                finalText = "Speed Mana: +" + itemProperty.value + "%";
                 break;
-            case 5 /* normalEnergy */:
-                finalText = "Speed Normal Energy: +" + itemProperty.value + "%";
+            case 2 /* speedEnergy */:
+                finalText = "Speed Energy: +" + itemProperty.value + "%";
                 break;
-            case 0 /* focusLife */:
-                finalText = "Speed Focus Life: +" + itemProperty.value + "%";
-                break;
-            case 1 /* focusMana */:
-                finalText = "Speed Focus Mana: +" + itemProperty.value + "%";
-                break;
-            case 2 /* focusEnergy */:
-                finalText = "Speed Focus Energy: +" + itemProperty.value + "%";
-                break;
-            case 9 /* atack */:
+            case 6 /* atack */:
                 finalText = "Atack: +" + itemProperty.value;
                 break;
-            case 10 /* defense */:
+            case 7 /* defense */:
                 finalText = "Defense: +" + itemProperty.value;
                 break;
             default:

@@ -107,11 +107,11 @@ var cPlayer = (function () {
     };
     cPlayer.prototype.equipItems = function (data) {
         //actualizo el ataque y la defensa del player
-        if (data.itemsEfects[9 /* atack */] != undefined) {
-            this.atack = data.itemsEfects[9 /* atack */].value;
+        if (data.itemsEfects[6 /* atack */] != undefined) {
+            this.atack = data.itemsEfects[6 /* atack */].value;
         }
-        if (data.itemsEfects[10 /* defense */] != undefined) {
-            this.defense = data.itemsEfects[10 /* defense */].value;
+        if (data.itemsEfects[7 /* defense */] != undefined) {
+            this.defense = data.itemsEfects[7 /* defense */].value;
         }
     };
     cPlayer.prototype.levelUp = function (data) {

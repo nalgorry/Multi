@@ -210,7 +210,7 @@ class cControlItems {
 
     }
 
-    private calculateItemsEfects() {
+    public calculateItemsEfects() {
 
         this.arrayItemEfects = []; //aca guardo todos los efectos de los items equipados, para aplicarlos al jugador
 
@@ -282,31 +282,24 @@ class cControlItems {
                 case enumItemEfects.defense:
                     this.controlGame.controlPlayer.controlFocus.maxDefence = efect.value;
                     break;
-                case enumItemEfects.normalLife:
+                case enumItemEfects.speedLife:
                     this.controlGame.controlPlayer.controlFocus.speedNormalLife = 
                     this.controlGame.controlPlayer.controlFocus.baseSpeedNormalLife * (1 + efect.value / 100);
-                    break
-                case enumItemEfects.normalMana:
-                    this.controlGame.controlPlayer.controlFocus.speedNormalMana = 
-                    this.controlGame.controlPlayer.controlFocus.baseSpeedNormalMana * (1 + efect.value / 100);
-                    break
-                case enumItemEfects.normalEnergy:
-                    this.controlGame.controlPlayer.controlFocus.speedNormalEnergy = 
-                    this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy * (1 + efect.value / 100);
-                    break
-                case enumItemEfects.focusLife:
                     this.controlGame.controlPlayer.controlFocus.speedFocusLife = 
                     this.controlGame.controlPlayer.controlFocus.baseSpeedFocusLife * (1 + efect.value / 100);
                     break
-                case enumItemEfects.focusMana:
+                case enumItemEfects.speedMana:
+                    this.controlGame.controlPlayer.controlFocus.speedNormalMana = 
+                    this.controlGame.controlPlayer.controlFocus.baseSpeedNormalMana * (1 + efect.value / 100);
                     this.controlGame.controlPlayer.controlFocus.speedFocusMana = 
                     this.controlGame.controlPlayer.controlFocus.baseSpeedFocusMana * (1 + efect.value / 100);
                     break
-                case enumItemEfects.focusEnergy:
+                case enumItemEfects.speedEnergy:
+                    this.controlGame.controlPlayer.controlFocus.speedNormalEnergy = 
+                    this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy * (1 + efect.value / 100);
                     this.controlGame.controlPlayer.controlFocus.speedFocusEnergy = 
                     this.controlGame.controlPlayer.controlFocus.baseSpeedFocusEnergy * (1 + efect.value / 100);
                     break
-            
                 default:
                     break;
             }

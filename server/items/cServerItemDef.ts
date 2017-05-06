@@ -5,7 +5,7 @@ export class cServerItemDef {
     static arrayItemsDeff:cItemDef[];
     static arrayItemByEquipType:number[][]; //array de [itemEquipType][itemType] para poder seleccionar aleatoriamente por equiptype
     
-    static maxNumberEfects:number = 10;
+    static maxNumberEfects:number = 8;
     static maxNumberOfItemEquipTypes:number = 6;
 
     //define las propiedades del items segun su nivel
@@ -22,12 +22,9 @@ export class cServerItemDef {
         valuesItemsEfect[enumItemEfects.mana] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
         valuesItemsEfect[enumItemEfects.life] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
 
-        valuesItemsEfect[enumItemEfects.focusEnergy] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
-        valuesItemsEfect[enumItemEfects.focusMana] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
-        valuesItemsEfect[enumItemEfects.focusLife] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
-        valuesItemsEfect[enumItemEfects.normalEnergy] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
-        valuesItemsEfect[enumItemEfects.normalMana] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
-        valuesItemsEfect[enumItemEfects.normalLife] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
+        valuesItemsEfect[enumItemEfects.speedEnergy] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
+        valuesItemsEfect[enumItemEfects.speedMana] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
+        valuesItemsEfect[enumItemEfects.speedLife] = new cValuesItemsEfect(enumItemEfects.atack,5, 20, 20, 30, 30, 40, 45, 50);
 
         //me fijo que tipo de item es
         var itemDef:cItemDef = this.arrayItemsDeff[itemType]
@@ -49,7 +46,7 @@ export class cServerItemDef {
 
         for (var i = 0; i < numberEfects; i++) {
 
-            var itemEfectType = this.randomIntFromInterval(0,this.maxNumberEfects);
+            var itemEfectType = this.randomIntFromInterval(0,this.maxNumberEfects - 1);
             arrayPropTypes.push(itemEfectType);
         }
 

@@ -52,23 +52,14 @@ class cItemsDefinitions {
             case enumItemEfects.energy:
                 finalText = "Energy: +" + itemProperty.value;
                 break;
-            case enumItemEfects.normalLife:
-                finalText = "Speed Normal Life: +" + itemProperty.value + "%";
+            case enumItemEfects.speedLife:
+                finalText = "Speed Life: +" + itemProperty.value + "%";
                 break;
-            case enumItemEfects.normalMana:
-                finalText = "Speed Normal Mana: +" + itemProperty.value + "%";
+            case enumItemEfects.speedMana:
+                finalText = "Speed Mana: +" + itemProperty.value + "%";
                 break;
-            case enumItemEfects.normalEnergy:
-                finalText = "Speed Normal Energy: +" + itemProperty.value + "%";
-                break;
-            case enumItemEfects.focusLife:
-                finalText = "Speed Focus Life: +" + itemProperty.value + "%";
-                break;
-            case enumItemEfects.focusMana:
-                finalText = "Speed Focus Mana: +" + itemProperty.value + "%";
-                break;
-            case enumItemEfects.focusEnergy:
-                finalText = "Speed Focus Energy: +" + itemProperty.value + "%";
+            case enumItemEfects.speedEnergy:
+                finalText = "Speed Energy: +" + itemProperty.value + "%";
                 break;
             case enumItemEfects.atack:
                 finalText = "Atack: +" + itemProperty.value;

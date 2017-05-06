@@ -55,12 +55,9 @@
 
     declare const enum enumItemEfects {
         none = -1,
-        focusLife,
-        focusMana,
-        focusEnergy,
-        normalLife,
-        normalMana,
-        normalEnergy,
+        speedLife,
+        speedMana,
+        speedEnergy,
         life,
         mana,
         energy,

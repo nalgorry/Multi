@@ -174,23 +174,13 @@ class cControlFocus {
         backGroundDesc.addChild(value);
 
 
-        var value = this.controlGame.game.add.text(textStart, heightStart + colHeight, this.getItemValue(enumItemEfects.normalLife) + "%" , styleText);
+        var value = this.controlGame.game.add.text(textStart, heightStart + colHeight, this.getItemValue(enumItemEfects.speedLife) + "%" , styleText);
         value.setTextBounds(0, 0, textWidth);
         backGroundDesc.addChild(value);
-        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart + colHeight, this.getItemValue(enumItemEfects.normalMana) + "%" , styleText);
+        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart + colHeight, this.getItemValue(enumItemEfects.speedMana) + "%" , styleText);
         value.setTextBounds(0, 0, textWidth);
         backGroundDesc.addChild(value);
-        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart + colHeight, this.getItemValue(enumItemEfects.normalEnergy) + "%" , styleText);
-        value.setTextBounds(0, 0, textWidth);
-        backGroundDesc.addChild(value);
-
-        var value = this.controlGame.game.add.text(textStart, heightStart + colHeight * 2, this.getItemValue(enumItemEfects.focusLife) + "%" , styleText);
-        value.setTextBounds(0, 0, textWidth);
-        backGroundDesc.addChild(value);
-        var value = this.controlGame.game.add.text(textStart + colWidth, heightStart + colHeight * 2, this.getItemValue(enumItemEfects.focusMana) + "%" , styleText);
-        value.setTextBounds(0, 0, textWidth);
-        backGroundDesc.addChild(value);
-        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart + colHeight * 2, this.getItemValue(enumItemEfects.focusEnergy) + "%" , styleText);
+        var value = this.controlGame.game.add.text(textStart + colWidth * 2, heightStart + colHeight, this.getItemValue(enumItemEfects.speedEnergy) + "%" , styleText);
         value.setTextBounds(0, 0, textWidth);
         backGroundDesc.addChild(value);
          

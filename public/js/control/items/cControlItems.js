@@ -166,8 +166,8 @@ var cControlItems = (function () {
         this.controlGame.controlPlayer.controlFocus.speedNormalEnergy =
             this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy;
         //el ataque y defensa la seteo para enviarlas al server
-        this.arrayItemEfects[9 /* atack */] = new cItemProperty(9 /* atack */, this.controlGame.controlPlayer.controlFocus.maxAtack, 0);
-        this.arrayItemEfects[10 /* defense */] = new cItemProperty(10 /* defense */, this.controlGame.controlPlayer.controlFocus.maxDefence, 0);
+        this.arrayItemEfects[6 /* atack */] = new cItemProperty(6 /* atack */, this.controlGame.controlPlayer.controlFocus.maxAtack, 0);
+        this.arrayItemEfects[7 /* defense */] = new cItemProperty(7 /* defense */, this.controlGame.controlPlayer.controlFocus.maxDefence, 0);
         //sumo para todos los items los efectos de cada propiedad
         this.arrayEquipedItems.forEach(function (item) {
             item.arrayItemEfects.forEach(function (ItemProperty) {
@@ -182,45 +182,39 @@ var cControlItems = (function () {
         //ya tengo las propiedades de todos los items, simplemente aplico esas propiedades al pj activo.
         this.arrayItemEfects.forEach(function (efect) {
             switch (efect.itemEfect) {
-                case 6 /* life */:
+                case 3 /* life */:
                     _this.controlGame.controlPlayer.controlFocus.maxLife =
                         _this.controlGame.controlPlayer.controlFocus.baseMaxLife + efect.value;
                     break;
-                case 7 /* mana */:
+                case 4 /* mana */:
                     _this.controlGame.controlPlayer.controlFocus.maxMana =
                         _this.controlGame.controlPlayer.controlFocus.baseMaxMana + efect.value;
                     break;
-                case 8 /* energy */:
+                case 5 /* energy */:
                     _this.controlGame.controlPlayer.controlFocus.maxEnergy =
                         _this.controlGame.controlPlayer.controlFocus.baseMaxEnergy + efect.value;
                     break;
-                case 9 /* atack */:
+                case 6 /* atack */:
                     _this.controlGame.controlPlayer.controlFocus.maxAtack = efect.value;
                     break;
-                case 10 /* defense */:
+                case 7 /* defense */:
                     _this.controlGame.controlPlayer.controlFocus.maxDefence = efect.value;
                     break;
-                case 3 /* normalLife */:
+                case 0 /* speedLife */:
                     _this.controlGame.controlPlayer.controlFocus.speedNormalLife =
                         _this.controlGame.controlPlayer.controlFocus.baseSpeedNormalLife * (1 + efect.value / 100);
-                    break;
-                case 4 /* normalMana */:
-                    _this.controlGame.controlPlayer.controlFocus.speedNormalMana =
-                        _this.controlGame.controlPlayer.controlFocus.baseSpeedNormalMana * (1 + efect.value / 100);
-                    break;
-                case 5 /* normalEnergy */:
-                    _this.controlGame.controlPlayer.controlFocus.speedNormalEnergy =
-                        _this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy * (1 + efect.value / 100);
-                    break;
-                case 0 /* focusLife */:
                     _this.controlGame.controlPlayer.controlFocus.speedFocusLife =
                         _this.controlGame.controlPlayer.controlFocus.baseSpeedFocusLife * (1 + efect.value / 100);
                     break;
-                case 1 /* focusMana */:
+                case 1 /* speedMana */:
+                    _this.controlGame.controlPlayer.controlFocus.speedNormalMana =
+                        _this.controlGame.controlPlayer.controlFocus.baseSpeedNormalMana * (1 + efect.value / 100);
                     _this.controlGame.controlPlayer.controlFocus.speedFocusMana =
                         _this.controlGame.controlPlayer.controlFocus.baseSpeedFocusMana * (1 + efect.value / 100);
                     break;
-                case 2 /* focusEnergy */:
+                case 2 /* speedEnergy */:
+                    _this.controlGame.controlPlayer.controlFocus.speedNormalEnergy =
+                        _this.controlGame.controlPlayer.controlFocus.baseSpeedNormalEnergy * (1 + efect.value / 100);
                     _this.controlGame.controlPlayer.controlFocus.speedFocusEnergy =
                         _this.controlGame.controlPlayer.controlFocus.baseSpeedFocusEnergy * (1 + efect.value / 100);
                     break;
