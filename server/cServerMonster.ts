@@ -80,6 +80,11 @@ export class cServerMonster {
 
         var arrayPoss:number = monsterY * this.mapSizeX + monsterX;
 
+        //lets check if the map has a arrayMonsterHit to test
+        if (this.arrayMonsterHit == undefined) {
+            return true;
+        }
+
         if (this.arrayMonsterHit[arrayPoss] != 0) {
             result = false;
         } else {

@@ -42,6 +42,10 @@ var cServerMonster = (function () {
     cServerMonster.prototype.checkMonsterCanMove = function (monsterX, monsterY) {
         var result;
         var arrayPoss = monsterY * this.mapSizeX + monsterX;
+        //lets check if the map has a arrayMonsterHit to test
+        if (this.arrayMonsterHit == undefined) {
+            return true;
+        }
         if (this.arrayMonsterHit[arrayPoss] != 0) {
             result = false;
         }
