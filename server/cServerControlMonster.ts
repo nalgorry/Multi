@@ -46,7 +46,7 @@ export class cServerControlMonster {
         
 
         //to make it work local and in heroku 
-        var file = "/public/assets/maps/map1.json"
+        var file = "public/assets/maps/map1.json"
         if(!fs.existsSync(file)) {
             console.log("File not found");
             file = "../public/assets/maps/map1.json"
