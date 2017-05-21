@@ -27,7 +27,13 @@ var cServerControlMonster = (function () {
     cServerControlMonster.prototype.getMapHitTest = function () {
         //lets get the file with the map to avoid monster to hit the water
         var fs = require('fs');
-        var mapData = JSON.parse(fs.readFileSync('public/assets/maps/map1.json', 'utf8'));
+        //to make it work local and in heroku 
+        var file = "/public/assets/maps/map1.json";
+        if (!fs.existsSync(file)) {
+            console.log("File not found");
+            file = "../public/assets/maps/map1.json";
+        }
+        var mapData = JSON.parse(fs.readFileSync(file, 'utf8'));
         this.arrayMonsterHit = new Array();
         this.arrayMonsterHit = mapData.layers[3].data;
     };
