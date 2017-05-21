@@ -83,6 +83,8 @@ var cControlMonsters = (function () {
                 this.controlGame.controlConsole.newMessage(enumMessage.youHit, "You hit monster for " + data.damage);
                 this.controlGame.controlSounds.startSoundHit(data.idSpell);
                 playerThatHit = this.controlGame.controlPlayer;
+                //reduce the life bar of the enemy
+                this.controlGame.controlPlayer.controlSpells.reduceLifeBar(data.lifePercRemaining);
             }
         }
         else {

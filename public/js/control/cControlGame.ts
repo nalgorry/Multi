@@ -26,6 +26,7 @@ class cControlGame {
     marker; //to get the mouse
     point;
 
+
     constructor(_game:Phaser.Game) {
         this.game = _game;
 

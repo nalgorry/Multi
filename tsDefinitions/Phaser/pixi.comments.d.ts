@@ -736,6 +736,7 @@ declare module PIXI {
         */
         alpha: number;
         buttonMode: boolean;
+        width:number;
 
         /**
         * Sets if this DisplayObject should be cached as a bitmap.

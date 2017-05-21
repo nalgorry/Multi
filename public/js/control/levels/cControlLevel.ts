@@ -139,16 +139,16 @@ class cControlLevel {
                 controlFocus.baseMaxMana += statSel.value;
             break;
             case enumItemEfects.speedLife:
-                controlFocus.baseSpeedFocusLife += statSel.value;
-                controlFocus.baseSpeedNormalLife += statSel.value;
+                controlFocus.baseSpeedFocusLife += statSel.value / 100;
+                controlFocus.baseSpeedNormalLife += statSel.value / 100;
             break;
             case enumItemEfects.speedMana:
-                controlFocus.baseSpeedFocusMana += statSel.value;
-                controlFocus.baseSpeedNormalMana += statSel.value;
+                controlFocus.baseSpeedFocusMana += statSel.value / 100;
+                controlFocus.baseSpeedNormalMana += statSel.value / 100;
             break;
             case enumItemEfects.speedEnergy:
-                controlFocus.baseSpeedFocusEnergy += statSel.value;
-                controlFocus.baseSpeedNormalEnergy += statSel.value;
+                controlFocus.baseSpeedFocusEnergy += statSel.value / 100;;
+                controlFocus.baseSpeedNormalEnergy += statSel.value / 100;;
             break;
             default:
                 console.log("no deberia entrar hasta aca nunca");

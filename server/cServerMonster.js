@@ -1,8 +1,11 @@
 "use strict";
 var cServerDefinitionMonsters_1 = require('./cServerDefinitionMonsters');
 var cServerMonster = (function () {
-    function cServerMonster(controlItems) {
+    function cServerMonster(controlItems, arrayMonsterHit, mapSizeX, mapSizeY) {
         this.controlItems = controlItems;
+        this.arrayMonsterHit = arrayMonsterHit;
+        this.mapSizeX = mapSizeX;
+        this.mapSizeY = mapSizeY;
         this.monsterDie = false; //para chekear si el moustro se murio o no
         this.specialAtackPercent = 0; //porcentaje de que lance el hechizo especial
         this.agresiveMonster = false; //determina si el moustro ataca por defecto o solo si lo atacan 
@@ -17,6 +20,12 @@ var cServerMonster = (function () {
     cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, monsterRespawn, isPublic, tileX, tileY) {
         var _this = this;
         this.monsterId = monsterId;
+        //lets check if the monster x y is allowed, if not we reset item
+        while (this.checkMonsterCanMove(tileX, tileY) == false) {
+            tileX = this.randomIntFromInterval(0, this.mapSizeX);
+            tileY = this.randomIntFromInterval(0, this.mapSizeY);
+            console.log("entra");
+        }
         this.socket = socket;
         this.controlPlayer = controlPlayer;
         this.tileX = tileX;
@@ -26,9 +35,21 @@ var cServerMonster = (function () {
         //valores que dependen del tipo de monstruo
         this.monsterType = monsterType;
         cServerDefinitionMonsters_1.cServerDefinitionMonsters.defineMonsters(this, monsterType);
+        this.monsterMaxLife = this.monsterLife;
         this.emitNewMonster(socket);
         var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
         var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
+    };
+    cServerMonster.prototype.checkMonsterCanMove = function (monsterX, monsterY) {
+        var result;
+        var arrayPoss = monsterY * this.mapSizeX + monsterX;
+        if (this.arrayMonsterHit[arrayPoss] != 0) {
+            result = false;
+        }
+        else {
+            result = true;
+        }
+        return result;
     };
     cServerMonster.prototype.emitNewMonster = function (socket) {
         //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
@@ -63,30 +84,49 @@ var cServerMonster = (function () {
                 break;
             }
         }
+        var newTileX;
+        var newTileY;
         if (playerNear != undefined) {
             //sigo al player detectado
             var playerTileX = Math.round(playerNear.x / this.gridSize);
             var playerTileY = Math.round(playerNear.y / this.gridSize);
             var monsterMove = false;
             if (this.tileX > playerTileX + 1) {
-                this.tileX -= 1;
+                newTileX = this.tileX - 1;
                 monsterMove = true;
             }
             else if (this.tileX < playerTileX - 1) {
-                this.tileX += 1;
+                newTileX = this.tileX + 1;
                 monsterMove = true;
             }
             if (this.tileY > playerTileY + 1) {
-                this.tileY -= 1;
+                newTileY = this.tileY - 1;
                 monsterMove = true;
             }
             else if (this.tileY < playerTileY - 1) {
-                this.tileY += 1;
+                newTileY = this.tileY + 1;
                 monsterMove = true;
             }
+            //monster try to follow a playerId
             if (monsterMove) {
-                this.socket.emit('monster move', { idMonster: this.monsterId, tileX: this.tileX, tileY: this.tileY });
+                var monsterCanMove = false;
+                //lets check if the monster can follow the player
+                if (this.checkMonsterCanMove(newTileX, this.tileY) == true) {
+                    this.tileX = newTileX;
+                    monsterCanMove = true;
+                }
+                if (this.checkMonsterCanMove(this.tileX, newTileY) == true) {
+                    this.tileY = newTileY;
+                    monsterCanMove = true;
+                }
+                if (monsterCanMove) {
+                    this.socket.emit('monster move', { idMonster: this.monsterId, tileX: this.tileX, tileY: this.tileY });
+                }
             }
+            console.log("X" + this.tileX);
+            console.log("Y" + this.tileY);
+            console.log("newX" + newTileX);
+            console.log("newY" + newTileY);
         }
         if (this.monsterDie == false) {
             var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
@@ -98,6 +138,7 @@ var cServerMonster = (function () {
         //controlo si se murio el moustro 
         if (this.monsterLife <= 0) {
             this.monsterDie = true;
+            this.monsterLife = 0;
             //creo un item para que tire el monstruo
             this.controlItems.createNewRandomItem(this.monsterItemLevelDrop, this.tileX, this.tileY);
         }

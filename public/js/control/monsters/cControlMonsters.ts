@@ -128,7 +128,10 @@ class cControlMonsters {
                 this.controlGame.controlSounds.startSoundHit(data.idSpell);
 
                 playerThatHit = this.controlGame.controlPlayer;
-            }
+
+                //reduce the life bar of the enemy
+                this.controlGame.controlPlayer.controlSpells.reduceLifeBar(data.lifePercRemaining);
+                            }
         } else { //otro jugador golpea al mounstro 
             playerThatHit = this.controlGame.controlOtherPlayers.playerById(data.idPlayer)
         } 
@@ -137,6 +140,7 @@ class cControlMonsters {
         var monster = this.arrayMonster[data.idMonster];
         if (monster != undefined) {
             this.controlGame.controlPlayer.controlSpells.onHit(data, playerThatHit.playerSprite, monster.monsterSprite,0x081d5e);
+
         }
 
     }

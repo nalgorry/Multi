@@ -28,13 +28,13 @@ class cMonster  {
         //creo el moustro segun el tipo de monstruo que toco 
         var monsterImage = "monster_" + data.monsterType;
 
-        this.monsterSprite = this.controlGame.game.add.sprite(this.tileX * this.controlGame.gridSize, this.tileY * this.controlGame.gridSize)
+        this.monsterSprite = this.controlGame.game.add.sprite((this.tileX + 1) * this.controlGame.gridSize, (this.tileY + 1) * this.controlGame.gridSize)
         this.monsterSprite.anchor.set(1,1)
 
         this.monsterInternalSprite = this.controlGame.game.add.sprite(0,0,
              monsterImage,0);
         this.monsterInternalSprite.anchor.set(0.5,1);
-        this.monsterInternalSprite.x += this.monsterSprite.width/2;
+        this.monsterInternalSprite.x += this.monsterSprite.width/2 - this.controlGame.gridSize/2;
 
         this.monsterSprite.addChild(this.monsterInternalSprite);
         this.monsterSprite.inputEnabled = true;
@@ -56,8 +56,8 @@ class cMonster  {
         this.tileX = data.tileX;
         this.tileY = data.tileY;
         
-        var x = data.tileX * this.controlGame.gridSize + this.monsterSprite.width/2;
-        var y = data.tileY * this.controlGame.gridSize;
+        var x = (data.tileX + 1) * this.controlGame.gridSize + this.monsterSprite.width/2;
+        var y = (data.tileY + 1) * this.controlGame.gridSize;
         var spriteRotate = this.monsterSprite.children[0];
 
         if (spriteRotate == undefined) { return }; //para evitar problemas si matan antes que termine el mov

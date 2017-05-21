@@ -71,7 +71,8 @@ class cControlPlayer extends cBasicActor {
         this.playerSprite.body.collideWorldBounds = true;
         this.playerSprite.body.width = this.controlGame.gridSize;
         this.playerSprite.body.height = this.controlGame.gridSize;
-        this.playerSprite.body.offset.y = this.playerSprite.height - this.controlGame.gridSize; 
+        this.playerSprite.body.offset.y = this.playerSprite.height - this.controlGame.gridSize;
+        this.playerSprite.body.offset.x = - this.controlGame.gridSize / 2 ;
 
         //para testear el centro de un sprite
         var marker = this.controlGame.game.add.graphics(0,0);

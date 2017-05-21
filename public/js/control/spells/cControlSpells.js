@@ -39,6 +39,10 @@ var cControlSpells = (function () {
     };
     cControlSpells.prototype.spellAnimation = function (sprite, data) {
     };
+    cControlSpells.prototype.reduceLifeBar = function (lifePercRemaining) {
+        var newWidth = this.rectFocus.width * lifePercRemaining;
+        this.controlGame.game.add.tween(this.rectFocus).to({ width: newWidth }, 250, Phaser.Easing.Linear.None, true, 0, 0);
+    };
     cControlSpells.prototype.makeRay = function (spriteFrom, spriteTo, color) {
         var from;
         var to;
@@ -71,36 +75,42 @@ var cControlSpells = (function () {
     cControlSpells.prototype.monsterClick = function (monster) {
         this.selActorType = enumSelectedActor.monster;
         this.selActor = monster;
-        this.drawFocusCircle(monster.monsterSprite);
+        this.drawFocusRect(monster.monsterSprite);
     };
     cControlSpells.prototype.otherPlayerClick = function (player) {
         this.selActorType = enumSelectedActor.otherPlayer;
         this.selActor = player;
-        this.drawFocusCircle(player.playerSprite);
+        this.drawFocusRect(player.playerSprite, true);
     };
     cControlSpells.prototype.thisPlayerClick = function (player) {
         this.selActorType = enumSelectedActor.thisPlayer;
         this.selActor = player;
-        this.drawFocusCircle(player.playerSprite, true);
+        this.drawFocusRect(player.playerSprite, true);
     };
-    cControlSpells.prototype.drawFocusCircle = function (sprite, colorGreen) {
+    cControlSpells.prototype.drawFocusRect = function (sprite, colorGreen) {
         if (colorGreen === void 0) { colorGreen = false; }
-        if (this.circleFocus != undefined) {
-            this.circleFocus.destroy();
+        if (this.rectFocus != undefined) {
+            this.rectFocus.destroy();
         }
-        this.circleFocus = this.controlGame.game.add.graphics(0, 0);
+        this.rectFocus = this.controlGame.game.add.graphics(0, 0);
         //dibujo el rectangulo
+        var barWidth;
         if (colorGreen == true) {
-            this.circleFocus.beginFill(0x18770f, 0.3); //recuadro verde
+            this.rectFocus.beginFill(0x18770f, 0.3); //recuadro verde
+            //set the player variables
+            barWidth = 40;
+            var xRectangle = -20;
         }
         else {
-            this.circleFocus.beginFill(0xb52113, 0.3); //recuadro rojo
+            this.rectFocus.beginFill(0xb52113, 0.3); //recuadro rojo
+            //set the monster variables
+            barWidth = 80;
+            var xRectangle = -Math.abs(sprite.children[0].width / 2) - this.controlGame.gridSize / 2 + (Math.abs(sprite.children[0].width) - barWidth) / 2;
         }
         //de aca saco las dimensionese de los sprites
-        var spriteObject = sprite;
-        this.circleFocus.drawRect(-14, 2, 28, 5);
-        this.circleFocus.pivot.x = 0.5;
-        sprite.addChild(this.circleFocus);
+        this.rectFocus.drawRect(xRectangle, 0, barWidth, 5);
+        this.rectFocus.pivot.x = 0.5;
+        sprite.addChild(this.rectFocus);
     };
     cControlSpells.prototype.iniciatenumSpellsystem = function () {
         //dibujo el marco para el hechizo seleccionado
@@ -180,7 +190,7 @@ var cControlSpells = (function () {
             if (closestMonster != undefined) {
                 this.selActorType = enumSelectedActor.monster;
                 this.selActor = closestMonster;
-                this.drawFocusCircle(closestMonster.monsterSprite);
+                this.drawFocusRect(closestMonster.monsterSprite);
                 spellAllowed = true;
             }
         }
@@ -188,7 +198,7 @@ var cControlSpells = (function () {
         if (spellAllowed == false && spell.enabledTrowThisPlayer == true) {
             this.selActorType = enumSelectedActor.thisPlayer;
             this.selActor = this.controlGame.controlPlayer;
-            this.drawFocusCircle(this.controlGame.controlPlayer.playerSprite);
+            this.drawFocusRect(this.controlGame.controlPlayer.playerSprite);
             spellAllowed = true;
         }
         return spellAllowed;

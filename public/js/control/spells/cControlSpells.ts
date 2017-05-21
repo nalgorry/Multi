@@ -12,7 +12,7 @@ class cControlSpells {
     private allSpells:cDefinitionSpells;
 
     public borderSpell:Phaser.Graphics;
-    public circleFocus:Phaser.Graphics
+    public rectFocus:Phaser.Graphics
 
     public selActorType:enumSelectedActor;
     public selActor:Object;
@@ -22,6 +22,7 @@ class cControlSpells {
 
     public maxRangeX = 12;
     public maxRangeY = 7;
+
 
     constructor(public controlGame:cControlGame) {
 
@@ -63,6 +64,13 @@ class cControlSpells {
         
 
 
+
+    }
+
+    public reduceLifeBar(lifePercRemaining) {
+        var newWidth = this.rectFocus.width * lifePercRemaining
+        
+        this.controlGame.game.add.tween(this.rectFocus).to({width: newWidth}, 250, Phaser.Easing.Linear.None, true, 0, 0);
 
     }
 
@@ -118,7 +126,7 @@ class cControlSpells {
         this.selActorType = enumSelectedActor.monster;
         this.selActor = monster;
 
-        this.drawFocusCircle(monster.monsterSprite)
+        this.drawFocusRect(monster.monsterSprite)
     }
 
     public otherPlayerClick(player:cOtherPlayer) {
@@ -126,7 +134,7 @@ class cControlSpells {
         this.selActorType = enumSelectedActor.otherPlayer;
         this.selActor = player; 
 
-        this.drawFocusCircle(player.playerSprite);
+        this.drawFocusRect(player.playerSprite, true);
     }
 
     public thisPlayerClick(player:cControlPlayer) {
@@ -134,29 +142,38 @@ class cControlSpells {
         this.selActorType = enumSelectedActor.thisPlayer;
         this.selActor = player;
 
-        this.drawFocusCircle(player.playerSprite,true)
+        this.drawFocusRect(player.playerSprite,true)
     }
 
-    private drawFocusCircle(sprite:Phaser.Sprite,colorGreen:boolean = false) {
+    private drawFocusRect(sprite:Phaser.Sprite,colorGreen:boolean = false) {
 
-        if (this.circleFocus != undefined) {
-            this.circleFocus.destroy();
+        if (this.rectFocus != undefined) {
+            this.rectFocus.destroy();
         }
-        this.circleFocus = this.controlGame.game.add.graphics(0,0);
+        this.rectFocus = this.controlGame.game.add.graphics(0,0);
 
         //dibujo el rectangulo
+        var barWidth;
         if (colorGreen == true) {
-            this.circleFocus .beginFill(0x18770f,0.3); //recuadro verde
+            this.rectFocus.beginFill(0x18770f,0.3); //recuadro verde
+            
+            //set the player variables
+            barWidth = 40;
+            var xRectangle = -20;
         } else {
-            this.circleFocus .beginFill(0xb52113,0.3); //recuadro rojo
+            this.rectFocus.beginFill(0xb52113,0.3); //recuadro rojo
+            
+            //set the monster variables
+            barWidth = 80;
+            var xRectangle = -Math.abs(sprite.children[0].width / 2) - this.controlGame.gridSize/2 + (Math.abs(sprite.children[0].width) - barWidth) / 2;
         }
 
         //de aca saco las dimensionese de los sprites
-        var spriteObject:Phaser.Sprite = sprite as Phaser.Sprite
-        this.circleFocus.drawRect(-14, 2, 28 , 5);
-        this.circleFocus.pivot.x = 0.5;
+        
+        this.rectFocus.drawRect(xRectangle, 0, barWidth , 5);
+        this.rectFocus.pivot.x = 0.5;
 
-        sprite.addChild(this.circleFocus);
+        sprite.addChild(this.rectFocus);
     }
 
     private iniciatenumSpellsystem() {
@@ -263,7 +280,7 @@ class cControlSpells {
 
                 this.selActorType = enumSelectedActor.monster;
                 this.selActor = closestMonster;
-                this.drawFocusCircle(closestMonster.monsterSprite);
+                this.drawFocusRect(closestMonster.monsterSprite);
                 
                 spellAllowed = true;
             }
@@ -275,7 +292,7 @@ class cControlSpells {
                 
                 this.selActorType = enumSelectedActor.thisPlayer;
                 this.selActor = this.controlGame.controlPlayer;
-                this.drawFocusCircle(this.controlGame.controlPlayer.playerSprite);
+                this.drawFocusRect(this.controlGame.controlPlayer.playerSprite);
 
                  spellAllowed = true;
         }
@@ -443,6 +460,7 @@ class cControlSpells {
         if (fromSprite != null) {
             this.makeRay(fromSprite, toSprite, rayColor);
         }
+
 
     }
 

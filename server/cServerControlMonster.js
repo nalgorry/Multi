@@ -6,9 +6,11 @@ var cServerControlMonster = (function () {
         this.controlPlayer = controlPlayer;
         this.controlItems = controlItems;
         this.nextIdMonster = 0;
-        this.monsterMaxX = 65;
-        this.monsterMaxY = 50;
+        this.mapSizeX = 70;
+        this.mapSizeY = 50; //to avoid monster in the city
         this.arrayMonster = [];
+        //get the tiles where monsters can not move
+        this.getMapHitTest();
         //creo los primeros monters :)
         for (var i = 1; i <= 35; i++) {
             var randmType = this.randomIntFromInterval(1, 2);
@@ -16,12 +18,19 @@ var cServerControlMonster = (function () {
             if (randmType == 2) {
                 var monsterType = 3 /* Wolf */;
             }
-            this.createNewMonster(Math.round(Math.random() * this.monsterMaxX), Math.round(Math.random() * this.monsterMaxY), monsterType, true);
+            this.createNewMonster(this.randomIntFromInterval(0, this.mapSizeX), this.randomIntFromInterval(0, this.mapSizeY), monsterType, true);
         }
-        //creo el mounstro COSMICO
-        this.createNewMonster(Math.round(Math.random() * this.monsterMaxX), Math.round(Math.random() * this.monsterMaxY), 5 /* Cosmic */, true);
-        this.createNewMonster(Math.round(Math.random() * this.monsterMaxX), Math.round(Math.random() * this.monsterMaxY), 5 /* Cosmic */, true);
+        //creo 2 mounstros COSMICO
+        this.createNewMonster(this.randomIntFromInterval(0, this.mapSizeX), this.randomIntFromInterval(0, this.mapSizeY), 5 /* Cosmic */, true);
+        this.createNewMonster(this.randomIntFromInterval(0, this.mapSizeX), this.randomIntFromInterval(0, this.mapSizeY), 5 /* Cosmic */, true);
     }
+    cServerControlMonster.prototype.getMapHitTest = function () {
+        //lets get the file with the map to avoid monster to hit the water
+        var fs = require('fs');
+        var mapData = JSON.parse(fs.readFileSync('../public/assets/map1.json', 'utf8'));
+        this.arrayMonsterHit = new Array();
+        this.arrayMonsterHit = mapData.layers[3].data;
+    };
     cServerControlMonster.prototype.getMonsterById = function (id) {
         return this.arrayMonster[id];
     };
@@ -35,13 +44,13 @@ var cServerControlMonster = (function () {
             }
         }
         //le mando el moustro para el tutorial solo a este jugador.
-        var newMonster = new cServerMonster_1.cServerMonster(this.controlItems);
+        var newMonster = new cServerMonster_1.cServerMonster(this.controlItems, this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
         newMonster.startMonster("m" + this.nextIdMonster, 1 /* FirstMonster */, socket, this.controlPlayer, false, false, 55, 59);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;
     };
     cServerControlMonster.prototype.createNewMonster = function (tileX, tileY, monsterType, monsterRespawn) {
-        var newMonster = new cServerMonster_1.cServerMonster(this.controlItems);
+        var newMonster = new cServerMonster_1.cServerMonster(this.controlItems, this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
         newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, monsterRespawn, true, tileX, tileY);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;

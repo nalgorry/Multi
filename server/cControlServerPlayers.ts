@@ -96,7 +96,8 @@ export class cServerControlPlayers {
                         idMonster: monster.monsterId, 
                         idPlayer: player.playerId,
                         damage: spellResult.monsterDamage, 
-                        idSpell: spellResult.spellAnimationMonster
+                        idSpell: spellResult.spellAnimationMonster,
+                        lifePercRemaining: monster.monsterLife / monster.monsterMaxLife
                     });
 
                     //controlo si se murio el moustro y lo saco del array de moustros
@@ -112,13 +113,13 @@ export class cServerControlPlayers {
                         if (monster.monsterRespawn == true) { 
                             if (monster.monsterType != enumMonsters.Cosmic) {
                                 this.controlMonster.createNewMonster(
-                                    Math.round(Math.random() * this.controlMonster.monsterMaxX), 
-                                    Math.round(Math.random() * this.controlMonster.monsterMaxY),
+                                    Math.round(Math.random() * this.controlMonster.mapSizeX), 
+                                    Math.round(Math.random() * this.controlMonster.mapSizeY),
                                     this.randomIntFromInterval(1, 4),true)
                             } else {
                                 this.controlMonster.createNewMonster(
-                                    Math.round(Math.random() * this.controlMonster.monsterMaxX), 
-                                    Math.round(Math.random() * this.controlMonster.monsterMaxY),
+                                    Math.round(Math.random() * this.controlMonster.mapSizeX), 
+                                    Math.round(Math.random() * this.controlMonster.mapSizeY),
                                     enumMonsters.Cosmic,true);
                             }
                         }

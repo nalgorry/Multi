@@ -69,8 +69,8 @@ class mainMenu extends Phaser.State {
             this.game.debug.text('Tile X: ' + this.controlGame.controlPlayer.tileX, 50, 48, 'rgb(0,0,0)');
             this.game.debug.text('Tile Y: ' + this.controlGame.controlPlayer.tileY, 50, 64, 'rgb(0,0,0)');
             
-            //this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
-            //this.game.debug.body(this.controlPlayer.playerSprite);
+           //this.game.debug.bodyInfo(this.controlPlayer.playerSprite, 50, 50);
+           //this.game.debug.body(this.controlPlayer.playerSprite);
             //this.game.debug.body(this.controlMonsters.spriteAreaAtack);
 
             //this.game.debug.geom(this.controlGame.point, 'rgb(0,255,0)');
