@@ -24,7 +24,6 @@ var cServerMonster = (function () {
         while (this.checkMonsterCanMove(tileX, tileY) == false) {
             tileX = this.randomIntFromInterval(0, this.mapSizeX);
             tileY = this.randomIntFromInterval(0, this.mapSizeY);
-            console.log("entra");
         }
         this.socket = socket;
         this.controlPlayer = controlPlayer;
@@ -123,10 +122,6 @@ var cServerMonster = (function () {
                     this.socket.emit('monster move', { idMonster: this.monsterId, tileX: this.tileX, tileY: this.tileY });
                 }
             }
-            console.log("X" + this.tileX);
-            console.log("Y" + this.tileY);
-            console.log("newX" + newTileX);
-            console.log("newY" + newTileY);
         }
         if (this.monsterDie == false) {
             var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);

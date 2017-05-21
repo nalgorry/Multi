@@ -53,8 +53,6 @@ export class cServerMonster {
          while (this.checkMonsterCanMove(tileX, tileY) == false) {
             tileX = this.randomIntFromInterval(0,this.mapSizeX); 
             tileY = this.randomIntFromInterval(0,this.mapSizeY);
-            console.log("entra")
-
          }
 
         this.socket = socket;
@@ -181,12 +179,7 @@ export class cServerMonster {
                 
                 }  
 
-                console.log("X" + this.tileX);
-                console.log("Y" + this.tileY);
-
-                console.log("newX" + newTileX);
-                console.log("newY" + newTileY);
-            
+           
             }
 
         if (this.monsterDie == false) {
