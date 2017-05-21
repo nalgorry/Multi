@@ -17,7 +17,7 @@ export class cServerControlMonster {
         this.arrayMonster = [];
 
         //get the tiles where monsters can not move
-        //this.getMapHitTest() 
+        this.getMapHitTest() 
         
         //creo los primeros monters :)
 

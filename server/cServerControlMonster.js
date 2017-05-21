@@ -10,7 +10,7 @@ var cServerControlMonster = (function () {
         this.mapSizeY = 50; //to avoid monster in the city
         this.arrayMonster = [];
         //get the tiles where monsters can not move
-        //this.getMapHitTest() 
+        this.getMapHitTest();
         //creo los primeros monters :)
         for (var i = 1; i <= 35; i++) {
             var randmType = this.randomIntFromInterval(1, 2);
