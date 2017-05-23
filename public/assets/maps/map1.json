@@ -565,19 +565,19 @@
             {
              "0":
                 {
-                 "image":"..\/..\/map_objects\/arbol003.png"
+                 "image":"map_objects\/arbol003.png"
                 },
              "1":
                 {
-                 "image":"..\/..\/map_objects\/arbol004.png"
+                 "image":"map_objects\/arbol004.png"
                 },
              "2":
                 {
-                 "image":"..\/..\/map_objects\/arbol005.png"
+                 "image":"map_objects\/arbol005.png"
                 },
              "3":
                 {
-                 "image":"..\/..\/map_objects\/arbol006.png"
+                 "image":"map_objects\/arbol006.png"
                 }
             },
          "tilewidth":80

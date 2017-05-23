@@ -12,7 +12,7 @@ class preloader extends Phaser.State {
         this.game.load.image('monster_1', 'assets/monster_1.png');
 
         this.game.load.tilemap('map', 'assets/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('tiles', 'assets/tiles.png');
+        this.game.load.image('tiles', 'assets/maps/tiles.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png',50,50);
         this.game.load.spritesheet('boom2', 'assets/explosion2.png',96,96);
         this.game.load.spritesheet('boom3', 'assets/explosion3.png',192,173);
