@@ -9,6 +9,7 @@ import {cPlayer} from './cPlayer';
 import {cServerControlMonster} from './cServerControlMonster';
 import {cServerControlPlayers} from './cControlServerPlayers';
 import {cServerControlItems} from './items/cServerControlItems';
+import {cServerControlMaps} from './maps/cServerControlMaps';
 
 var port = process.env.PORT || 8080
 
@@ -17,7 +18,8 @@ var socket:SocketIO.Server	// Socket controller
 
 var controlPlayers:cServerControlPlayers; //control los jugadores
 var controlMonster:cServerControlMonster; //control los mounstros
-var controlItems:cServerControlItems;
+var controlItems:cServerControlItems; //controlo los items
+var controlMaps:cServerControlMaps; //control the players maps
 
 // Create and start the http server
 var server = http.createServer(
@@ -40,6 +42,7 @@ function init () {
   controlMonster = new cServerControlMonster(socket,controlPlayers,controlItems);
   controlPlayers.controlMonster = controlMonster;
 
+  controlMaps = new cServerControlMaps(socket);
 
 }
 
@@ -87,11 +90,7 @@ function onLevelUp(data) {
 }
 
 function onYouDropItem(data) {
-
-    console.log(data);
-
     controlItems.dropItemToFloor(this, data);
-
 }
 
 function onYouEquipItem(data) {
@@ -139,7 +138,6 @@ function onYouDie(data) {
 }
 
 function onChatSend(data) {
-    util.log('Player has chat: ' + data.text);
 
     this.broadcast.emit('Chat Receive', {id: this.id, text: data.text});
 }

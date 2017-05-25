@@ -9,12 +9,14 @@ var cPlayer_1 = require('./cPlayer');
 var cServerControlMonster_1 = require('./cServerControlMonster');
 var cControlServerPlayers_1 = require('./cControlServerPlayers');
 var cServerControlItems_1 = require('./items/cServerControlItems');
+var cServerControlMaps_1 = require('./maps/cServerControlMaps');
 var port = process.env.PORT || 8080;
 // variables del juego
 var socket; // Socket controller
 var controlPlayers; //control los jugadores
 var controlMonster; //control los mounstros
-var controlItems;
+var controlItems; //controlo los items
+var controlMaps; //control the players maps
 // Create and start the http server
 var server = http.createServer(ecstatic({ root: path.resolve(__dirname, '../public') })).listen(port, function (err) {
     if (err) {
@@ -29,6 +31,7 @@ function init() {
     controlItems = new cServerControlItems_1.cServerControlItems(socket);
     controlMonster = new cServerControlMonster_1.cServerControlMonster(socket, controlPlayers, controlItems);
     controlPlayers.controlMonster = controlMonster;
+    controlMaps = new cServerControlMaps_1.cServerControlMaps(socket);
 }
 // New socket connection
 function onSocketConnection(client) {
@@ -58,7 +61,6 @@ function onLevelUp(data) {
     controlPlayers.levelUp(this, data);
 }
 function onYouDropItem(data) {
-    console.log(data);
     controlItems.dropItemToFloor(this, data);
 }
 function onYouEquipItem(data) {
@@ -88,7 +90,6 @@ function onYouDie(data) {
     controlPlayers.playerDie(this, data);
 }
 function onChatSend(data) {
-    util.log('Player has chat: ' + data.text);
     this.broadcast.emit('Chat Receive', { id: this.id, text: data.text });
 }
 function onPlayerClick(data) {
