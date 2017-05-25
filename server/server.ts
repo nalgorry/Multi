@@ -5,10 +5,6 @@ var ecstatic = require('ecstatic');
 var ioServer:SocketIO.Server = require('socket.io');
 
 //require('./cPlayer');
-import {cPlayer} from './cPlayer';
-import {cServerControlMonster} from './cServerControlMonster';
-import {cServerControlPlayers} from './cControlServerPlayers';
-import {cServerControlItems} from './items/cServerControlItems';
 import {cServerControlMaps} from './maps/cServerControlMaps';
 
 var port = process.env.PORT || 8080
@@ -16,9 +12,6 @@ var port = process.env.PORT || 8080
 // variables del juego
 var socket:SocketIO.Server	// Socket controller
 
-var controlPlayers:cServerControlPlayers; //control los jugadores
-var controlMonster:cServerControlMonster; //control los mounstros
-var controlItems:cServerControlItems; //controlo los items
 var controlMaps:cServerControlMaps; //control the players maps
 
 // Create and start the http server
@@ -37,11 +30,6 @@ function init () {
   socket = ioServer.listen(server)
   socket.sockets.on('connection', onSocketConnection)
 
-  controlPlayers = new cServerControlPlayers(socket);
-  controlItems = new cServerControlItems(socket);
-  controlMonster = new cServerControlMonster(socket,controlPlayers,controlItems);
-  controlPlayers.controlMonster = controlMonster;
-
   controlMaps = new cServerControlMaps(socket);
 
 }
@@ -50,11 +38,11 @@ function init () {
 function onSocketConnection (client) {
   util.log('New player has connnnected: ' + client.id)
 
+    // Listen for new player message
+  client.on('new player', onNewPlayer)
+
   // Listen for client disconnected
   client.on('disconnect', onClientDisconnect)
-
-  // Listen for new player message
-  client.on('new player', onNewPlayer)
 
   // Listen for move player message
   client.on('move player', onMovePlayer)
@@ -85,109 +73,67 @@ function onSocketConnection (client) {
 
 }
 
+// New player has joined
+function onNewPlayer (data) {
+    controlMaps.onNewPlayer(this, data); 
+}
+
+// Socket client has disconnected
+function onClientDisconnect () {
+  controlMaps.onPlayerDisconnected(this);
+}
+
+
 function onLevelUp(data) {
-    controlPlayers.levelUp(this, data);
+    controlMaps.onLevelUp(this, data);
 }
 
 function onYouDropItem(data) {
-    controlItems.dropItemToFloor(this, data);
+    
+    controlMaps.dropItemToFloor(this, data);
 }
 
 function onYouEquipItem(data) {
-    controlPlayers.youEquipItem(this, data);
+    controlMaps.youEquipItem(this, data);
 }
 
 function onYouTryGetItem(data) {
-      controlItems.youGetItem(this, data);
+      controlMaps.youGetItem(this, data);
 }
 
 function onYouEnterPortal(data) {
   
-  var player = controlPlayers.getPlayerById(this.id);
-
+  //TODO ESTE ESTA EN CONSTRUCCION
   this.emit('you enter portal', {idPortal:data.idPortal});
 
 }
 
 function onYouClickMonster(data) {
-
-    data.idPlayer = this.id;
-
-    controlPlayers.spellCast(data);
-
+    controlMaps.spellCast(this, data);
 }
 
 function onYouChange(data) {
-
-    if(data.name != null) {
-      var player:cPlayer = controlPlayers.getPlayerById(this.id);
-
-      if (player != null) {
-        player.playerName = data.name;
-        this.broadcast.emit('player change', {id: this.id, name:data.name})
-      }
-
-    }
-
+    controlMaps.youChange(this, data);
 }
 
 function onYouDie(data) {
-
-  controlPlayers.playerDie(this, data)
-
+  controlMaps.playerDie(this, data);
 }
 
 function onChatSend(data) {
-
     this.broadcast.emit('Chat Receive', {id: this.id, text: data.text});
 }
 
 function onPlayerClick(data) {
 
-    data.idPlayer = this.id;
-
-    controlPlayers.spellCast(data);
-
-}
-
-// Socket client has disconnected
-function onClientDisconnect () {
-  util.log('Player has disconnected: ' + this.id)
-
-  controlPlayers.onPlayerDisconected(this)
-
-   this.broadcast.emit('remove player', {id: this.id})
-}
-
-// New player has joined
-function onNewPlayer (data) {
-  
-  // Create a new player
-  var newPlayer:cPlayer = new cPlayer(this,this.id,data.name,data.x, data.y,controlMonster);
-
-  controlPlayers.onNewPlayerConected(this,this.id,data)
-  controlMonster.onNewPlayerConected(this);
-  controlItems.onNewPlayerConected(this);
+    //TODO VER SI ESTO AUN SE USA 
+    controlMaps.spellCast(this, data);
 
 }
 
 // Player has moved
 function onMovePlayer (data) {
-  // Find player in array
-  var movePlayer = controlPlayers.getPlayerById(this.id)
-
-  // Player not found
-  if (!movePlayer) {
-    util.log('Player not found: ' + this.id)
-    return
-  }
-
-  movePlayer.x = data.x;
-  movePlayer.y = data.y;
-  movePlayer.dirMov = data.dirMov;
-
-  this.broadcast.emit('move player', {id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y,dirMov: movePlayer.dirMov })
-
+  controlMaps.onMovePlayer(this, data); 
 }
 
 

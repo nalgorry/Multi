@@ -18,6 +18,24 @@ export class cServerControlPlayers {
 
     }
 
+    public movePlayer(socketPlayer, data) {
+         
+         // Find player in array
+        var movePlayer = this.getPlayerById(socketPlayer.id)
+
+        // Player not found
+        if (!movePlayer) {
+            console.log('Player not found: ' + socketPlayer.id)
+            return
+        }
+
+        movePlayer.x = data.x;
+        movePlayer.y = data.y;
+        movePlayer.dirMov = data.dirMov;
+
+        socketPlayer.broadcast.emit('move player', {id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y,dirMov: movePlayer.dirMov })
+    }
+
     public levelUp(socket:any, data) {
         // Find player in array
         var player = this.getPlayerById(socket.id)
@@ -35,8 +53,9 @@ export class cServerControlPlayers {
         return this.arrayPlayers[id];
     }
 
-    public onNewPlayerConected(socket, idPlayer:string, data) {
+    public onNewPlayerConected(socket, data) {
 
+        var idPlayer = socket.id;
         this.playersOnline += 1;
 
         socket.broadcast.emit('new player', 
@@ -73,7 +92,22 @@ export class cServerControlPlayers {
 
     }
 
-    public spellCast(data) {
+    public youChange(socketPlayer, data) {
+
+        //lets see if player changes its name 
+        if(data.name != null) {
+              var player:cPlayer = this.getPlayerById(socketPlayer.id);
+
+            if (player != null) {
+                player.playerName = data.name;
+                socketPlayer.broadcast.emit('player change', {id: socketPlayer.id, name:data.name})
+            }
+        }
+    }
+
+    public spellCast(socketPlayer, data) {
+        
+        data.idPlayer = socketPlayer.id;
 
         var player = this.getPlayerById(data.idPlayer);
 

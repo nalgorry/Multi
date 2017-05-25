@@ -8,6 +8,19 @@ var cServerControlPlayers = (function () {
         this.playersOnline = 0;
         this.arrayPlayers = [];
     }
+    cServerControlPlayers.prototype.movePlayer = function (socketPlayer, data) {
+        // Find player in array
+        var movePlayer = this.getPlayerById(socketPlayer.id);
+        // Player not found
+        if (!movePlayer) {
+            console.log('Player not found: ' + socketPlayer.id);
+            return;
+        }
+        movePlayer.x = data.x;
+        movePlayer.y = data.y;
+        movePlayer.dirMov = data.dirMov;
+        socketPlayer.broadcast.emit('move player', { id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
+    };
     cServerControlPlayers.prototype.levelUp = function (socket, data) {
         // Find player in array
         var player = this.getPlayerById(socket.id);
@@ -21,7 +34,8 @@ var cServerControlPlayers = (function () {
     cServerControlPlayers.prototype.getPlayerById = function (id) {
         return this.arrayPlayers[id];
     };
-    cServerControlPlayers.prototype.onNewPlayerConected = function (socket, idPlayer, data) {
+    cServerControlPlayers.prototype.onNewPlayerConected = function (socket, data) {
+        var idPlayer = socket.id;
         this.playersOnline += 1;
         socket.broadcast.emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY, playersOnline: this.playersOnline });
         //le mando al nuevo jugador todos los jugadores existentes
@@ -45,8 +59,19 @@ var cServerControlPlayers = (function () {
         }
         player.equipItems(data);
     };
-    cServerControlPlayers.prototype.spellCast = function (data) {
+    cServerControlPlayers.prototype.youChange = function (socketPlayer, data) {
+        //lets see if player changes its name 
+        if (data.name != null) {
+            var player = this.getPlayerById(socketPlayer.id);
+            if (player != null) {
+                player.playerName = data.name;
+                socketPlayer.broadcast.emit('player change', { id: socketPlayer.id, name: data.name });
+            }
+        }
+    };
+    cServerControlPlayers.prototype.spellCast = function (socketPlayer, data) {
         var _this = this;
+        data.idPlayer = socketPlayer.id;
         var player = this.getPlayerById(data.idPlayer);
         if (player != null) {
             //calculo el efecto del hechizo, esto me dice que daño hace y a quien afecta
