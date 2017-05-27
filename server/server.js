@@ -67,8 +67,7 @@ function onYouTryGetItem(data) {
     controlMaps.youGetItem(this, data);
 }
 function onYouEnterPortal(data) {
-    //TODO ESTE ESTA EN CONSTRUCCION
-    this.emit('you enter portal', { idPortal: data.idPortal });
+    controlMaps.enterPortal(this, data);
 }
 function onYouClickMonster(data) {
     controlMaps.spellCast(this, data);

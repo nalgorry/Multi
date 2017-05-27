@@ -112,7 +112,7 @@ class cControlSounds {
     }
 
     public startPlayerDie() {
-        this.playerDie1.play(undefined, undefined, 0.5 * this.masterVolume);
+        //this.playerDie1.play(undefined, undefined, 0.5 * this.masterVolume);
     }
 
     public startItemEquip() {

@@ -31,17 +31,7 @@ var cControlPlayer = (function (_super) {
         this.startActor(this.startTileX, this.startTileY);
         this.startPlayer();
     }
-    cControlPlayer.prototype.startPlayer = function () {
-        //Cargo el sistema de controlFocus
-        this.controlFocus = new cControlFocus(this.controlGame);
-        //Cargo el sistema de hechizos.
-        this.controlSpells = new cControlSpells(this.controlGame);
-        //inicio el sistema de portales que me permite moverme entre los diferentes mapas
-        this.controlPortals = new cControlPortal(this.controlGame);
-        //inicio el sistema para controlar los items
-        this.controlItems = new cControlItems(this.controlGame);
-        //inicio el sistema para controlar el nivel del jugador
-        this.controlLevel = new cControlLevel(this.controlGame);
+    cControlPlayer.prototype.startPlayerGraphics = function () {
         this.controlGame.game.physics.arcade.enable(this.playerSprite);
         this.playerSprite.body.collideWorldBounds = true;
         this.playerSprite.body.width = this.controlGame.gridSize;
@@ -54,6 +44,23 @@ var cControlPlayer = (function (_super) {
         marker.drawRect(this.playerSprite.x + this.gridSize / 2, this.playerSprite.y, 1, 1);
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2, this.controlGame.game.height / 2, 0, 0);
+        //para poder tirar poderes sobre si mismo.
+        this.armorSprite.inputEnabled = true;
+        this.armorSprite.events.onInputDown.add(this.youClickYou, this);
+    };
+    cControlPlayer.prototype.startPlayer = function () {
+        //Cargo el sistema de controlFocus
+        this.controlFocus = new cControlFocus(this.controlGame);
+        //Cargo el sistema de hechizos.
+        this.controlSpells = new cControlSpells(this.controlGame);
+        //inicio el sistema de portales que me permite moverme entre los diferentes mapas
+        this.controlPortals = new cControlPortal(this.controlGame);
+        //inicio el sistema para controlar los items
+        this.controlItems = new cControlItems(this.controlGame);
+        //inicio el sistema para controlar el nivel del jugador
+        this.controlLevel = new cControlLevel(this.controlGame);
+        //lets start the player with all the animations
+        this.startPlayerGraphics();
         //controlo el movimiento del jugador
         var W = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
         var A = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -90,9 +97,6 @@ var cControlPlayer = (function (_super) {
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars, this.controlFocus);
-        //para poder tirar poderes sobre si mismo.
-        this.armorSprite.inputEnabled = true;
-        this.armorSprite.events.onInputDown.add(this.youClickYou, this);
     };
     //todo falta setear los demas movimientos y terminar el pad
     cControlPlayer.prototype.movePad = function (dir) {

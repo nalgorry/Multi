@@ -11,9 +11,6 @@ export class cPlayer {
     public atack:number = 2;
     public defense:number = 2;
     public playerLevel:number =1;
-    
-    //this will change acording of the map of the playerDamage
-    public room:string = "principalMap";
 
     public protectedField:boolean = false;
     public weakEfect:boolean = false;

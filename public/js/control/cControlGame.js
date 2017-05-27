@@ -2,29 +2,13 @@ var cControlGame = (function () {
     function cControlGame(_game) {
         this.tutorialNumber = 0;
         this.game = _game;
+        //lets start the two important group elementos
+        this.groupMapLayers = this.game.add.group(); //to control the map layers
+        this.depthGroup = this.game.add.group(); //  To control the depth of the characters
         //inicio parametros del juego
         this.gridSize = 40;
         this.interfazWidth = 200;
-        var tamanoMapa = 70;
-        // Configuro el mundo para que sea centrado en el personaje
-        this.game.world.setBounds(0, 0, tamanoMapa * this.gridSize, tamanoMapa * this.gridSize);
-        //  Our tiled scrolling background
-        this.map = this.game.add.tilemap('map');
-        this.map.addTilesetImage('tiles', 'tiles');
-        this.hitLayer = this.map.createLayer('HitTest', this.game.width - this.interfazWidth);
-        this.layer = this.map.createLayer('FirstFloor', this.game.width - this.interfazWidth);
-        this.layer = this.map.createLayer('SecondFloor', this.game.width - this.interfazWidth);
-        this.layer = this.map.createLayer('ThirdFloor', this.game.width - this.interfazWidth);
-        this.map.setCollision(5, true, this.hitLayer);
-        this.game.stage.disableVisibilityChange = true;
-        //inicio el grupo de profundidad
-        this.depthGroup = this.game.add.group(); //  To control the depth of the characters      
-        //creo los objetos a partir de los datos del mapa
-        this.map.createFromObjects('Objects', 1, 'objects', 'arbol003.png', true, true, this.depthGroup, undefined, false);
-        this.map.createFromObjects('Objects', 2, 'objects', 'arbol004.png', true, true, this.depthGroup, undefined, false);
-        this.map.createFromObjects('Objects', 3, 'objects', 'arbol005.png', true, true, this.depthGroup, undefined, false);
-        this.map.createFromObjects('Objects', 4, 'objects', 'arbol006.png', true, true, this.depthGroup, undefined, false);
-        this.depthGroup.forEach(this.ObjectsConfiguration, this);
+        this.initMap();
         //inicio las ayudas 
         this.addTutorial(this.tutorialNumber);
         //cargo la interfaz dele juego
@@ -49,6 +33,46 @@ var cControlGame = (function () {
         //inicio los sonidos 
         this.controlSounds = new cControlSounds(this);
     }
+    cControlGame.prototype.initMap = function () {
+        var tamanoMapa = 70;
+        // Configuro el mundo para que sea centrado en el personaje
+        this.game.world.setBounds(0, 0, tamanoMapa * this.gridSize, tamanoMapa * this.gridSize);
+        //  Our tiled scrolling background
+        this.map = this.game.add.tilemap('principalMap');
+        this.map.addTilesetImage('tiles', 'tiles');
+        this.hitLayer = this.map.createLayer('HitTest', this.game.width - this.interfazWidth);
+        this.groupMapLayers.add(this.hitLayer);
+        var layer1 = this.map.createLayer('FirstFloor', this.game.width - this.interfazWidth);
+        this.groupMapLayers.add(layer1);
+        var layer2 = this.map.createLayer('SecondFloor', this.game.width - this.interfazWidth);
+        this.groupMapLayers.add(layer2);
+        this.layer = this.map.createLayer('ThirdFloor', this.game.width - this.interfazWidth);
+        this.groupMapLayers.add(this.layer);
+        this.map.setCollision(5, true, this.hitLayer);
+        this.game.stage.disableVisibilityChange = true;
+        //creo los objetos a partir de los datos del mapa
+        this.map.createFromObjects('Objects', 1, 'objects', 'arbol003.png', true, true, this.depthGroup, undefined, false);
+        this.map.createFromObjects('Objects', 2, 'objects', 'arbol004.png', true, true, this.depthGroup, undefined, false);
+        this.map.createFromObjects('Objects', 3, 'objects', 'arbol005.png', true, true, this.depthGroup, undefined, false);
+        this.map.createFromObjects('Objects', 4, 'objects', 'arbol006.png', true, true, this.depthGroup, undefined, false);
+        //here we change the anchor of the object so it work ok, and we also include it in the groupMapObjects to be able to delete all the items.
+        this.depthGroup.forEach(this.ObjectsConfiguration, this);
+    };
+    //lets prepare to reset the map
+    cControlGame.prototype.resetMap = function () {
+        //first we need to clean all the objects in the actual map
+        this.groupMapLayers.destroy();
+        this.depthGroup.destroy();
+        //lets restart the groups
+        this.groupMapLayers = this.game.add.group();
+        this.depthGroup = this.game.add.group();
+        //lets restart the player
+        this.controlPlayer.startActor(50, 50);
+        this.controlPlayer.startPlayerGraphics();
+    };
+    cControlGame.prototype.changeMap = function (data) {
+        this.initMap();
+    };
     cControlGame.prototype.addTutorial = function (tutorialNumber) {
         switch (tutorialNumber) {
             case 0:

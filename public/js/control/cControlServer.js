@@ -65,10 +65,14 @@ var cControlServer = (function () {
     };
     cControlServer.prototype.onNewMonster = function (data) {
         this.controlGame.controlMonsters.newMonster(data);
+        console.log(data);
     };
     cControlServer.prototype.onPlayerChange = function (data) {
         if (data.name != null) {
-            this.controlOtherPlayers.playerById(data.id).setNameText(data.name);
+            var player = this.controlOtherPlayers.playerById(data.id);
+            if (player != null) {
+                player.setNameText(data.name);
+            }
         }
     };
     cControlServer.prototype.onPowerThrow = function (data) {

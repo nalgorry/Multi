@@ -1,3 +1,9 @@
+    
+    declare const enum enumMapNames {
+        principalMap = 1,
+        fistMap = 2,
+    }
+    
     declare enum enumMonsterAtackType {
         normal = 0,
         area = 1,

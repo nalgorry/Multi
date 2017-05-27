@@ -28,7 +28,9 @@ var cControlOtherPlayers = (function () {
     };
     cControlOtherPlayers.prototype.movePlayer = function (data) {
         var movedPlayer = this.playerById(data.id);
-        movedPlayer.MoverJugador(data);
+        if (movedPlayer != null) {
+            movedPlayer.MoverJugador(data);
+        }
     };
     cControlOtherPlayers.prototype.showChat = function (data) {
         var player = this.playerById(data.id);

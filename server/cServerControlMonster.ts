@@ -12,7 +12,10 @@ export class cServerControlMonster {
     public arrayMonsterHit:number[];
 
 
-    constructor(public socket:SocketIO.Server,  public controlPlayer:cServerControlPlayers, public controlItems:cServerControlItems) {
+    constructor(public socket:SocketIO.Server,  
+    public controlPlayer:cServerControlPlayers, 
+    public controlItems:cServerControlItems,
+    private monsterNumber:number) {
 
         this.arrayMonster = [];
 
@@ -21,7 +24,7 @@ export class cServerControlMonster {
         
         //creo los primeros monters :)
 
-       for (var i=1; i<=35; i++) {
+       for (var i=1; i<=monsterNumber; i++) {
 
            var randmType = this.randomIntFromInterval(1, 2)
            var monsterType = enumMonsters.FirstMonster
@@ -46,10 +49,10 @@ export class cServerControlMonster {
         
 
         //to make it work local and in heroku 
-        var file = "public/assets/maps/map1.json"
+        var file = "public/assets/maps/principalMap.json"
         if(!fs.existsSync(file)) {
             console.log("File not found");
-            file = "../public/assets/maps/map1.json"
+            file = "../public/assets/maps/principalMap.json"
         }
 
         var mapData = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -75,13 +78,6 @@ export class cServerControlMonster {
                 monster.sendMonsterToNewPlayer(socket);
             }    
         }
-
-
-        //le mando el moustro para el tutorial solo a este jugador.
-        var newMonster = new cServerMonster(this.controlItems,this.arrayMonsterHit,this.mapSizeX, this.mapSizeY);
-        newMonster.startMonster("m" + this.nextIdMonster, enumMonsters.FirstMonster, socket, this.controlPlayer, false, false , 55, 59);
-        this.arrayMonster["m" + this.nextIdMonster] = newMonster;
-        this.nextIdMonster += 1;
 
     }
 

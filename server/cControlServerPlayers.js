@@ -1,8 +1,9 @@
 "use strict";
 var cPlayer_1 = require('./cPlayer');
 var cServerControlPlayers = (function () {
-    function cServerControlPlayers(socket) {
+    function cServerControlPlayers(socket, room) {
         this.socket = socket;
+        this.room = room;
         this.startTileX = 41;
         this.startTileY = 63;
         this.playersOnline = 0;
@@ -19,7 +20,7 @@ var cServerControlPlayers = (function () {
         movePlayer.x = data.x;
         movePlayer.y = data.y;
         movePlayer.dirMov = data.dirMov;
-        socketPlayer.broadcast.emit('move player', { id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
+        this.socket.in(this.room).emit('move player', { id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
     };
     cServerControlPlayers.prototype.levelUp = function (socket, data) {
         // Find player in array
@@ -34,19 +35,20 @@ var cServerControlPlayers = (function () {
     cServerControlPlayers.prototype.getPlayerById = function (id) {
         return this.arrayPlayers[id];
     };
-    cServerControlPlayers.prototype.onNewPlayerConected = function (socket, data) {
-        var idPlayer = socket.id;
+    cServerControlPlayers.prototype.onNewPlayerConected = function (socketPlayer, data) {
+        var idPlayer = socketPlayer.id;
         this.playersOnline += 1;
-        socket.broadcast.emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY, playersOnline: this.playersOnline });
+        this.socket.in(this.room).emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY, playersOnline: this.playersOnline });
         //le mando al nuevo jugador todos los jugadores existentes
         for (var id in this.arrayPlayers) {
-            this.arrayPlayers[id].sendPlayerToNewPlayer(socket, this.playersOnline);
+            this.arrayPlayers[id].sendPlayerToNewPlayer(socketPlayer, this.playersOnline);
         }
         // Add new player to the players array
-        this.arrayPlayers[idPlayer] = new cPlayer_1.cPlayer(socket, idPlayer, data.name, data.x, data.y, this.controlMonster);
+        this.arrayPlayers[idPlayer] = new cPlayer_1.cPlayer(socketPlayer, idPlayer, data.name, data.x, data.y, this.controlMonster);
     };
-    cServerControlPlayers.prototype.onPlayerDisconected = function (socket) {
-        delete this.arrayPlayers[socket.id];
+    cServerControlPlayers.prototype.onPlayerDisconected = function (socketPlayer) {
+        delete this.arrayPlayers[socketPlayer.id];
+        this.socket.in(this.room).emit('remove player', { id: socketPlayer.id });
         this.playersOnline -= 1;
     };
     cServerControlPlayers.prototype.youEquipItem = function (socket, data) {
@@ -65,7 +67,7 @@ var cServerControlPlayers = (function () {
             var player = this.getPlayerById(socketPlayer.id);
             if (player != null) {
                 player.playerName = data.name;
-                socketPlayer.broadcast.emit('player change', { id: socketPlayer.id, name: data.name });
+                this.socket.in(this.room).emit('player change', { id: socketPlayer.id, name: data.name });
             }
         }
     };
@@ -82,7 +84,7 @@ var cServerControlPlayers = (function () {
                 var monster = _this.controlMonster.getMonsterById(idMonster);
                 if (monster != undefined) {
                     monster.monsterHit(data, spellResult.monsterDamage, player.playerId);
-                    _this.socket.emit('someone hit monster', {
+                    _this.socket.in(_this.room).emit('someone hit monster', {
                         idMonster: monster.monsterId,
                         idPlayer: player.playerId,
                         damage: spellResult.monsterDamage,
@@ -91,7 +93,7 @@ var cServerControlPlayers = (function () {
                     });
                     //controlo si se murio el moustro y lo saco del array de moustros
                     if (monster.monsterDie == true) {
-                        _this.socket.emit('monster die', { idMonster: monster.monsterId,
+                        _this.socket.in(_this.room).emit('monster die', { idMonster: monster.monsterId,
                             idPlayer: player.playerId,
                             experience: monster.experience });
                         delete _this.controlMonster.arrayMonster[monster.monsterId];
@@ -116,7 +118,7 @@ var cServerControlPlayers = (function () {
                 if (playerHit != null) {
                     var damage = playerHit.calculateDamage(spellResult.playerDamage); //calculo el daño restando la defensa y demas 
                     // mando el golpe a los jugadores
-                    _this.socket.emit('player hit', { id: playerHit.playerId,
+                    _this.socket.in(_this.room).emit('player hit', { id: playerHit.playerId,
                         playerThatHit: player.playerId,
                         x: player.x,
                         y: player.y,
@@ -138,10 +140,10 @@ var cServerControlPlayers = (function () {
         if (player != null) {
             var playerKill = this.getPlayerById(data.idPlayerKill);
             if (playerKill != null) {
-                this.socket.emit('player die', { id: socket.id, idPlayerThatKill: playerKill.playerId, name: player.playerName, tileX: this.startTileX, tileY: this.startTileY });
+                this.socket.in(this.room).emit('player die', { id: socket.id, idPlayerThatKill: playerKill.playerId, name: player.playerName, tileX: this.startTileX, tileY: this.startTileY });
             }
             else {
-                this.socket.emit('player die', { id: socket.id, name: 'Monster', tileX: this.startTileX, tileY: this.startTileY });
+                this.socket.in(this.room).emit('player die', { id: socket.id, name: 'Monster', tileX: this.startTileX, tileY: this.startTileY });
             }
         }
     };

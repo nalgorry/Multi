@@ -1,10 +1,11 @@
 "use strict";
 var cServerMonster_1 = require('./cServerMonster');
 var cServerControlMonster = (function () {
-    function cServerControlMonster(socket, controlPlayer, controlItems) {
+    function cServerControlMonster(socket, controlPlayer, controlItems, monsterNumber) {
         this.socket = socket;
         this.controlPlayer = controlPlayer;
         this.controlItems = controlItems;
+        this.monsterNumber = monsterNumber;
         this.nextIdMonster = 0;
         this.mapSizeX = 70;
         this.mapSizeY = 50; //to avoid monster in the city
@@ -12,7 +13,7 @@ var cServerControlMonster = (function () {
         //get the tiles where monsters can not move
         this.getMapHitTest();
         //creo los primeros monters :)
-        for (var i = 1; i <= 35; i++) {
+        for (var i = 1; i <= monsterNumber; i++) {
             var randmType = this.randomIntFromInterval(1, 2);
             var monsterType = 1 /* FirstMonster */;
             if (randmType == 2) {
@@ -28,10 +29,10 @@ var cServerControlMonster = (function () {
         //lets get the file with the map to avoid monster to hit the water
         var fs = require('fs');
         //to make it work local and in heroku 
-        var file = "public/assets/maps/map1.json";
+        var file = "public/assets/maps/principalMap.json";
         if (!fs.existsSync(file)) {
             console.log("File not found");
-            file = "../public/assets/maps/map1.json";
+            file = "../public/assets/maps/principalMap.json";
         }
         var mapData = JSON.parse(fs.readFileSync(file, 'utf8'));
         this.arrayMonsterHit = new Array();
@@ -49,11 +50,6 @@ var cServerControlMonster = (function () {
                 monster.sendMonsterToNewPlayer(socket);
             }
         }
-        //le mando el moustro para el tutorial solo a este jugador.
-        var newMonster = new cServerMonster_1.cServerMonster(this.controlItems, this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
-        newMonster.startMonster("m" + this.nextIdMonster, 1 /* FirstMonster */, socket, this.controlPlayer, false, false, 55, 59);
-        this.arrayMonster["m" + this.nextIdMonster] = newMonster;
-        this.nextIdMonster += 1;
     };
     cServerControlMonster.prototype.createNewMonster = function (tileX, tileY, monsterType, monsterRespawn) {
         var newMonster = new cServerMonster_1.cServerMonster(this.controlItems, this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);

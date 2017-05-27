@@ -14,7 +14,9 @@ var preloader = (function (_super) {
         this.load.setPreloadSprite(this.preloadBar);
         //  Load our actual games assets
         this.game.load.image('monster_1', 'assets/monster_1.png');
-        this.game.load.tilemap('map', 'assets/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
+        //all the maps of the game 
+        this.game.load.tilemap('principalMap', 'assets/maps/principalMap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('fistMap', 'assets/maps/firstMap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('tiles', 'assets/maps/tiles.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png', 50, 50);
         this.game.load.spritesheet('boom2', 'assets/explosion2.png', 96, 96);

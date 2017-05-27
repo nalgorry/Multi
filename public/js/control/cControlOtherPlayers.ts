@@ -47,8 +47,10 @@ class cControlOtherPlayers {
     public movePlayer(data) {
 
         var movedPlayer =  this.playerById(data.id);
-        movedPlayer.MoverJugador(data)
 
+        if (movedPlayer != null) { 
+            movedPlayer.MoverJugador(data)
+        }
     }
 
     public showChat(data) {

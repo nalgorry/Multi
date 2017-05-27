@@ -12,8 +12,6 @@ var cPlayer = (function () {
         this.atack = 2;
         this.defense = 2;
         this.playerLevel = 1;
-        //this will change acording of the map of the playerDamage
-        this.room = "principalMap";
         this.protectedField = false;
         this.weakEfect = false;
     }

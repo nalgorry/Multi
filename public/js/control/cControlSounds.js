@@ -70,7 +70,7 @@ var cControlSounds = (function () {
         }
     };
     cControlSounds.prototype.startPlayerDie = function () {
-        this.playerDie1.play(undefined, undefined, 0.5 * this.masterVolume);
+        //this.playerDie1.play(undefined, undefined, 0.5 * this.masterVolume);
     };
     cControlSounds.prototype.startItemEquip = function () {
         this.itemDrop.play(undefined, undefined, 0.5 * this.masterVolume);

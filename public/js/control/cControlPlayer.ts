@@ -49,6 +49,32 @@ class cControlPlayer extends cBasicActor {
         
     }
 
+    public startPlayerGraphics() {
+
+        this.controlGame.game.physics.arcade.enable(this.playerSprite);
+
+        this.playerSprite.body.collideWorldBounds = true;
+        this.playerSprite.body.width = this.controlGame.gridSize;
+        this.playerSprite.body.height = this.controlGame.gridSize;
+        this.playerSprite.body.offset.y = this.playerSprite.height - this.controlGame.gridSize;
+        this.playerSprite.body.offset.x = - this.controlGame.gridSize / 2 ;
+
+        //para testear el centro de un sprite
+        var marker = this.controlGame.game.add.graphics(0,0);
+        marker.lineStyle(2, 0xffffff, 1);
+        marker.drawRect(this.playerSprite.x + this.gridSize/2, this.playerSprite.y, 1, 1);
+
+        this.controlGame.game.camera.follow(this.playerSprite);
+        this.controlGame.game.camera.deadzone = new Phaser.Rectangle(
+            this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2,
+            this.controlGame.game.height / 2 ,0,0);
+
+        //para poder tirar poderes sobre si mismo.
+        this.armorSprite.inputEnabled = true;
+        this.armorSprite.events.onInputDown.add(this.youClickYou, this);
+
+    }
+
     public startPlayer() {
 
         //Cargo el sistema de controlFocus
@@ -65,24 +91,9 @@ class cControlPlayer extends cBasicActor {
 
         //inicio el sistema para controlar el nivel del jugador
         this.controlLevel = new cControlLevel(this.controlGame);
-
-        this.controlGame.game.physics.arcade.enable(this.playerSprite);
         
-        this.playerSprite.body.collideWorldBounds = true;
-        this.playerSprite.body.width = this.controlGame.gridSize;
-        this.playerSprite.body.height = this.controlGame.gridSize;
-        this.playerSprite.body.offset.y = this.playerSprite.height - this.controlGame.gridSize;
-        this.playerSprite.body.offset.x = - this.controlGame.gridSize / 2 ;
-
-        //para testear el centro de un sprite
-        var marker = this.controlGame.game.add.graphics(0,0);
-        marker.lineStyle(2, 0xffffff, 1);
-        marker.drawRect(this.playerSprite.x + this.gridSize/2, this.playerSprite.y, 1, 1);
-
-        this.controlGame.game.camera.follow(this.playerSprite);
-        this.controlGame.game.camera.deadzone = new Phaser.Rectangle(
-            this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2,
-            this.controlGame.game.height / 2 ,0,0);
+        //lets start the player with all the animations
+        this.startPlayerGraphics();
 
         //controlo el movimiento del jugador
         var W = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
@@ -126,10 +137,6 @@ class cControlPlayer extends cBasicActor {
         //controles adicionales para test
         var H = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.H);
         H.onDown.add(this.controlFocus.ResetBars,this.controlFocus);
-
-        //para poder tirar poderes sobre si mismo.
-        this.armorSprite.inputEnabled = true;
-        this.armorSprite.events.onInputDown.add(this.youClickYou, this);
 
     }
 

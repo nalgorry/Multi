@@ -90,12 +90,18 @@ class cControlServer {
 
     public onNewMonster(data) {
         this.controlGame.controlMonsters.newMonster(data)
+        console.log(data);
     }
 
     public onPlayerChange(data) {
         
         if (data.name != null) {
-            this.controlOtherPlayers.playerById(data.id).setNameText(data.name);
+            var player = this.controlOtherPlayers.playerById(data.id)
+
+            if (player != null) {
+                player.setNameText(data.name);
+            }
+
         }
     }
 
