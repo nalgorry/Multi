@@ -42,9 +42,9 @@ export class cServerControlItems {
 
             //si el item es publico todos lo ven el piso, sino solo el jugador que lo tiro
             if (itemDrop.isPublic == true) {
-                itemDrop.emitNewItem(this.socket)
+                this.emitNewItem(itemDrop)
             } else {
-                itemDrop.emitNewItem(socket)
+                this.emitNewItemtoPlayer(itemDrop, socket)
             }
 
             
@@ -79,7 +79,9 @@ export class cServerControlItems {
 
         var gold = this.randomIntFromInterval(1,100);
 
-        var newItem = new cServerItems(this.socket, itemId, enumItemType.gold, gold, tileX, tileY, true);
+        var newItem = new cServerItems(itemId, enumItemType.gold, gold, tileX, tileY, true);
+
+        this.emitNewItem(newItem);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
     }
@@ -87,7 +89,9 @@ export class cServerControlItems {
     public createNewItem(itemType:number, itemLevel, tileX:number, tileY:number,itemPublic:boolean, socket:SocketIO.Server = this.socket) {
 
         var itemId = "i" + this.nextIdItems;
-        var newItem = new cServerItems(socket, itemId, itemType, itemLevel, tileX, tileY,itemPublic);
+        var newItem = new cServerItems(itemId, itemType, itemLevel, tileX, tileY,itemPublic);
+
+        this.emitNewItem(newItem);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
 
@@ -95,8 +99,40 @@ export class cServerControlItems {
         newItem.signalItemDelete.add(this.itemDeleted,this);
     }
 
+        //this emit the item to all the players
+        public emitNewItem(item:cServerItems) {
+
+        if (item.onFloor == true) {
+            var itemData =  {
+                itemID:item.itemID,
+                tileX:item.tileX, 
+                tileY:item.tileY,
+                itemType:item.itemType,
+                maxRank: item.maxRank};
+            this.socket.in(this.room).emit('new item', itemData);
+        }
+
+    }
+    
+    //this emit the item only to a player
+    public emitNewItemtoPlayer (item:cServerItems, socket:SocketIO.Server) {
+ 
+        if (item.onFloor == true) {
+            var itemData =  {
+                itemID:item.itemID,
+                tileX:item.tileX, 
+                tileY:item.tileY,
+                itemType:item.itemType,
+                maxRank: item.maxRank};
+
+            socket.emit('new item', itemData);
+        }
+
+    }
+
     private itemDeleted(itemID:string) {
 
+        this.socket.emit('delete item', {itemID:itemID});
         delete this.arrayItems[itemID];
 
     }
@@ -110,7 +146,7 @@ export class cServerControlItems {
 
             //controlo que el item sea para todos los jugadores.
             if (item.isPublic == true) {
-                item.emitNewItem(socket);   
+                this.emitNewItem(item);   
             } 
 
         }
@@ -123,19 +159,47 @@ export class cServerControlItems {
         return this.arrayItems[id];
     }
 
-    public youGetItem(socket:SocketIO.Server, data) {
+    public youGetItem(socketPlayer:SocketIO.Server, data) {
     
       var item = this.getItemById(data.itemID)
 
       if (item != undefined) {
-        
-        item.youGetItem(socket, data);
+        if (item.onFloor == true) {
+
+        var itemData = {};
+
+        if (item.itemType == enumItemType.gold) {
+            itemData =  {
+                itemID:item.itemID,
+                tileX:item.tileX, 
+                tileY:item.tileY,
+                itemType:item.itemType,
+                totalGold: item.itemLevel,
+            };
+
+        } else {
+            itemData = {
+                itemID: item.itemID, 
+                itemType:item.itemType,
+                itemEfects: item.arrayItemProperties,
+                maxRank: item.maxRank,
+                };
+        }
+            //le mando al que agarro su item
+            socketPlayer.emit('you get item', itemData );
+
+            //le mando a todos que el item se agarro
+            this.socket.in(this.room).emit('item get', {itemID: item.itemID})
+
+            item.onFloor = false;
+        }
 
       } else {
           console.log("el item ya fue agarrado");
       }
-
     }
+
+
 
     private randomIntFromInterval(min,max)
     {

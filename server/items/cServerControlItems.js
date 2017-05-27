@@ -25,10 +25,10 @@ var cServerControlItems = (function () {
             itemDrop.onFloor = true;
             //si el item es publico todos lo ven el piso, sino solo el jugador que lo tiro
             if (itemDrop.isPublic == true) {
-                itemDrop.emitNewItem(this.socket);
+                this.emitNewItem(itemDrop);
             }
             else {
-                itemDrop.emitNewItem(socket);
+                this.emitNewItemtoPlayer(itemDrop, socket);
             }
         }
         else {
@@ -54,20 +54,47 @@ var cServerControlItems = (function () {
     cServerControlItems.prototype.createGoldItem = function (tileX, tileY) {
         var itemId = "i" + this.nextIdItems;
         var gold = this.randomIntFromInterval(1, 100);
-        var newItem = new cServerItems_1.cServerItems(this.socket, itemId, 40 /* gold */, gold, tileX, tileY, true);
+        var newItem = new cServerItems_1.cServerItems(itemId, 40 /* gold */, gold, tileX, tileY, true);
+        this.emitNewItem(newItem);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
     };
     cServerControlItems.prototype.createNewItem = function (itemType, itemLevel, tileX, tileY, itemPublic, socket) {
         if (socket === void 0) { socket = this.socket; }
         var itemId = "i" + this.nextIdItems;
-        var newItem = new cServerItems_1.cServerItems(socket, itemId, itemType, itemLevel, tileX, tileY, itemPublic);
+        var newItem = new cServerItems_1.cServerItems(itemId, itemType, itemLevel, tileX, tileY, itemPublic);
+        this.emitNewItem(newItem);
         this.arrayItems[itemId] = newItem;
         this.nextIdItems += 1;
         //agrego una señal para definir cuando el item se borra del juego
         newItem.signalItemDelete.add(this.itemDeleted, this);
     };
+    //this emit the item to all the players
+    cServerControlItems.prototype.emitNewItem = function (item) {
+        if (item.onFloor == true) {
+            var itemData = {
+                itemID: item.itemID,
+                tileX: item.tileX,
+                tileY: item.tileY,
+                itemType: item.itemType,
+                maxRank: item.maxRank };
+            this.socket.in(this.room).emit('new item', itemData);
+        }
+    };
+    //this emit the item only to a player
+    cServerControlItems.prototype.emitNewItemtoPlayer = function (item, socket) {
+        if (item.onFloor == true) {
+            var itemData = {
+                itemID: item.itemID,
+                tileX: item.tileX,
+                tileY: item.tileY,
+                itemType: item.itemType,
+                maxRank: item.maxRank };
+            socket.emit('new item', itemData);
+        }
+    };
     cServerControlItems.prototype.itemDeleted = function (itemID) {
+        this.socket.emit('delete item', { itemID: itemID });
         delete this.arrayItems[itemID];
     };
     cServerControlItems.prototype.onNewPlayerConected = function (socket) {
@@ -76,7 +103,7 @@ var cServerControlItems = (function () {
             var item = this.arrayItems[numItem];
             //controlo que el item sea para todos los jugadores.
             if (item.isPublic == true) {
-                item.emitNewItem(socket);
+                this.emitNewItem(item);
             }
         }
         this.createInitialItems(socket);
@@ -84,10 +111,34 @@ var cServerControlItems = (function () {
     cServerControlItems.prototype.getItemById = function (id) {
         return this.arrayItems[id];
     };
-    cServerControlItems.prototype.youGetItem = function (socket, data) {
+    cServerControlItems.prototype.youGetItem = function (socketPlayer, data) {
         var item = this.getItemById(data.itemID);
         if (item != undefined) {
-            item.youGetItem(socket, data);
+            if (item.onFloor == true) {
+                var itemData = {};
+                if (item.itemType == 40 /* gold */) {
+                    itemData = {
+                        itemID: item.itemID,
+                        tileX: item.tileX,
+                        tileY: item.tileY,
+                        itemType: item.itemType,
+                        totalGold: item.itemLevel,
+                    };
+                }
+                else {
+                    itemData = {
+                        itemID: item.itemID,
+                        itemType: item.itemType,
+                        itemEfects: item.arrayItemProperties,
+                        maxRank: item.maxRank,
+                    };
+                }
+                //le mando al que agarro su item
+                socketPlayer.emit('you get item', itemData);
+                //le mando a todos que el item se agarro
+                this.socket.in(this.room).emit('item get', { itemID: item.itemID });
+                item.onFloor = false;
+            }
         }
         else {
             console.log("el item ya fue agarrado");
