@@ -10,7 +10,6 @@ var cServerMonster = (function () {
         this.specialAtackPercent = 0; //porcentaje de que lance el hechizo especial
         this.agresiveMonster = false; //determina si el moustro ataca por defecto o solo si lo atacan 
         this.experience = 0;
-        this.lvlPlayerNeed = 0;
         //variables para definir el ataque
         this.gridSize = 40;
         this.monsterAtackTilesX = 13;
@@ -20,7 +19,7 @@ var cServerMonster = (function () {
     cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, monsterRespawn, isPublic, tileX, tileY) {
         var _this = this;
         this.monsterId = monsterId;
-        //lets check if the monster x y is allowed, if not we reset item
+        //lets check if the monster x y is allowed, if not we reset it
         while (this.checkMonsterCanMove(tileX, tileY) == false) {
             tileX = this.randomIntFromInterval(0, this.mapSizeX);
             tileY = this.randomIntFromInterval(0, this.mapSizeY);
@@ -59,8 +58,7 @@ var cServerMonster = (function () {
         var monsterdata = { id: this.monsterId,
             tileX: this.tileX,
             tileY: this.tileY,
-            monsterType: this.monsterType,
-            lvlPlayerNeed: this.lvlPlayerNeed };
+            monsterType: this.monsterType };
         socket.emit('new Monster', monsterdata);
     };
     cServerMonster.prototype.monsterMove = function () {
@@ -72,10 +70,6 @@ var cServerMonster = (function () {
             var playerTileX = Math.round(player.x / this.gridSize);
             var playerTileY = Math.round(player.y / this.gridSize);
             var data;
-            //me fijo si el player tiene el nivel necesario para ver el monstruo
-            if (this.lvlPlayerNeed > player.playerLevel) {
-                continue;
-            }
             //me fijo si el moustro es pacifico, y si no ya salgo de esta funcion
             if (this.arrayAgresivePlayers[idPlayer] == undefined && this.agresiveMonster == false) {
                 continue;
@@ -152,10 +146,6 @@ var cServerMonster = (function () {
                 var playerTileX = Math.round(player.x / this.gridSize);
                 var playerTileY = Math.round(player.y / this.gridSize);
                 var data;
-                //me fijo si el player tiene el nivel necesario para ver el monstruo
-                if (this.lvlPlayerNeed > player.playerLevel) {
-                    continue;
-                }
                 //me fijo si el moustro es pacifico, y si no ya salgo de esta funcion
                 if (this.arrayAgresivePlayers[idPlayer] == undefined && this.agresiveMonster == false) {
                     continue;

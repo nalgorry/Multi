@@ -24,7 +24,6 @@ export class cServerMonster {
     public isPublic:boolean;
     
     public experience:number = 0;
-    public lvlPlayerNeed:number = 0;
 
     public monsterItemLevelDrop:number;
 
@@ -49,7 +48,7 @@ export class cServerMonster {
 
         this.monsterId = monsterId;
 
-         //lets check if the monster x y is allowed, if not we reset item
+         //lets check if the monster x y is allowed, if not we reset it
          while (this.checkMonsterCanMove(tileX, tileY) == false) {
             tileX = this.randomIntFromInterval(0,this.mapSizeX); 
             tileY = this.randomIntFromInterval(0,this.mapSizeY);
@@ -101,8 +100,7 @@ export class cServerMonster {
         var monsterdata =  {id:this.monsterId,
                             tileX:this.tileX, 
                             tileY:this.tileY,
-                            monsterType:this.monsterType,
-                            lvlPlayerNeed: this.lvlPlayerNeed};
+                            monsterType:this.monsterType};
 
         socket.emit('new Monster', monsterdata);
 
@@ -121,11 +119,6 @@ export class cServerMonster {
             var playerTileY = Math.round(player.y / this.gridSize);
             var data;
             
-            //me fijo si el player tiene el nivel necesario para ver el monstruo
-            if (this.lvlPlayerNeed > player.playerLevel) {
-               continue;
-            }
-
             //me fijo si el moustro es pacifico, y si no ya salgo de esta funcion
             if (this.arrayAgresivePlayers[idPlayer] == undefined && this.agresiveMonster == false) {
                 continue;
@@ -224,11 +217,6 @@ export class cServerMonster {
                 var playerTileX = Math.round(player.x / this.gridSize);
                 var playerTileY = Math.round(player.y / this.gridSize);
                 var data;
-
-                    //me fijo si el player tiene el nivel necesario para ver el monstruo
-                    if (this.lvlPlayerNeed > player.playerLevel) {
-                        continue;
-                    }
 
                     //me fijo si el moustro es pacifico, y si no ya salgo de esta funcion
                     if (this.arrayAgresivePlayers[idPlayer] == undefined && this.agresiveMonster == false) {

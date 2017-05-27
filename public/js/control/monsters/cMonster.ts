@@ -5,7 +5,6 @@ class cMonster  {
     public tileY:number;
     public monsterSprite:Phaser.Sprite;
     public monsterInternalSprite:Phaser.Sprite;
-    public lvlPlayerNeed:number;
     public monsterType:enumMonsters;
 
 
@@ -16,7 +15,6 @@ class cMonster  {
         this.idMonster = data.id;
         this.tileX = data.tileX;
         this.tileY = data.tileY;
-        this.lvlPlayerNeed = data.lvlPlayerNeed;
         this.monsterType = data.monsterType;
 
         this.startMonster(data);
@@ -41,13 +39,6 @@ class cMonster  {
         this.monsterSprite.events.onInputDown.add(this.youHitMonster, this);
 
         this.controlGame.depthGroup.add(this.monsterSprite);
-
-        //me fijo si el player tiene el nivel suficiente para verlo
-        if (this.controlGame.controlPlayer.controlLevel.playerLevel >= this.lvlPlayerNeed) {
-            this.monsterSprite.visible = true;
-        } else {
-            this.monsterSprite.visible = false;
-        }
 
     }
 

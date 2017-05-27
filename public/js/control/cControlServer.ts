@@ -90,7 +90,6 @@ class cControlServer {
 
     public onNewMonster(data) {
         this.controlGame.controlMonsters.newMonster(data)
-        console.log(data);
     }
 
     public onPlayerChange(data) {

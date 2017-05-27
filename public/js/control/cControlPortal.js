@@ -5,7 +5,7 @@ var cControlPortal = (function () {
     }
     cControlPortal.prototype.createPortals = function () {
         this.arrayPortals = new Array();
-        var portal = new cPortal(this.controlGame, 2 /* fistMap */, 45, 62);
+        var portal = new cPortal(this.controlGame, 2 /* fistMap */, 40, 30);
         this.arrayPortals['p' + 1] = portal;
     };
     //el servidor emite esto cuando entras al portal 

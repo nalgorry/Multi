@@ -219,9 +219,6 @@ class cControlLevel {
                 this.createLvlUpMenu();
                 this.updateLevel();
 
-                //hago visible los monstruos segun el n ivel del jugador
-                this.controlGame.controlMonsters.checkMonsterVisibility(this.playerLevel);
-
                 //mando el nuevo nivel al server 
                 this.controlGame.controlServer.socket.emit('level up', 
                                     { 

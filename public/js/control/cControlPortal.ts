@@ -10,13 +10,15 @@ class cControlPortal {
 
         this.arrayPortals = new Array<cPortal>();
 
-        var portal = new cPortal(this.controlGame, enumMapNames.fistMap, 45, 62);
-        this.arrayPortals['p'+1] = portal
+        var portal = new cPortal(this.controlGame, enumMapNames.fistMap, 40, 30);
+        this.arrayPortals['p'+1] = portal;
 
     }
 
     //el servidor emite esto cuando entras al portal 
     public youEnterPortal(data) {
+
+        
 
         this.controlGame.changeMap(data);
 

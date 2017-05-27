@@ -4,7 +4,6 @@ var cMonster = (function () {
         this.idMonster = data.id;
         this.tileX = data.tileX;
         this.tileY = data.tileY;
-        this.lvlPlayerNeed = data.lvlPlayerNeed;
         this.monsterType = data.monsterType;
         this.startMonster(data);
     }
@@ -20,13 +19,6 @@ var cMonster = (function () {
         this.monsterSprite.inputEnabled = true;
         this.monsterSprite.events.onInputDown.add(this.youHitMonster, this);
         this.controlGame.depthGroup.add(this.monsterSprite);
-        //me fijo si el player tiene el nivel suficiente para verlo
-        if (this.controlGame.controlPlayer.controlLevel.playerLevel >= this.lvlPlayerNeed) {
-            this.monsterSprite.visible = true;
-        }
-        else {
-            this.monsterSprite.visible = false;
-        }
     };
     cMonster.prototype.monsterMove = function (data) {
         this.tileX = data.tileX;

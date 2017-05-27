@@ -96,15 +96,6 @@ var cControlMonsters = (function () {
             this.controlGame.controlPlayer.controlSpells.onHit(data, playerThatHit.playerSprite, monster.monsterSprite, 0x081d5e);
         }
     };
-    cControlMonsters.prototype.checkMonsterVisibility = function (playerLevel) {
-        //me fijo si el player tiene el nivel suficiente para verlo
-        for (var numMonster in this.arrayMonster) {
-            var monster = this.arrayMonster[numMonster];
-            if (playerLevel >= monster.lvlPlayerNeed) {
-                monster.monsterSprite.visible = true;
-            }
-        }
-    };
     cControlMonsters.prototype.getClosestMonsterInRange = function (maxRangeX, maxRangeY) {
         var closestMonster;
         var distance = 1000000;

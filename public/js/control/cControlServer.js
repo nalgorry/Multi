@@ -65,7 +65,6 @@ var cControlServer = (function () {
     };
     cControlServer.prototype.onNewMonster = function (data) {
         this.controlGame.controlMonsters.newMonster(data);
-        console.log(data);
     };
     cControlServer.prototype.onPlayerChange = function (data) {
         if (data.name != null) {

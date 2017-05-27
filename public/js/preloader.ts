@@ -13,7 +13,7 @@ class preloader extends Phaser.State {
 
         //all the maps of the game 
         this.game.load.tilemap('principalMap', 'assets/maps/principalMap.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.tilemap('fistMap', 'assets/maps/firstMap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('firstMap', 'assets/maps/firstMap.json', null, Phaser.Tilemap.TILED_JSON);
 
         this.game.load.image('tiles', 'assets/maps/tiles.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png',50,50);

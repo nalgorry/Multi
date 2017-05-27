@@ -146,21 +146,6 @@ class cControlMonsters {
     }
 
 
-    public checkMonsterVisibility(playerLevel:number) {
-        //me fijo si el player tiene el nivel suficiente para verlo
-
-        for (let numMonster in this.arrayMonster) {
-
-            var monster = this.arrayMonster[numMonster];
-
-            if (playerLevel >= monster.lvlPlayerNeed) {
-                monster.monsterSprite.visible = true;
-            } 
-
-        }
-
-    }
-
     public getClosestMonsterInRange(maxRangeX:number, maxRangeY:number):cMonster {
         var closestMonster:cMonster;
         var distance:Number = 1000000; 

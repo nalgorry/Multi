@@ -2,12 +2,14 @@
 var cServerControlMonster_1 = require('./../cServerControlMonster');
 var cControlServerPlayers_1 = require('./../cControlServerPlayers');
 var cServerControlItems_1 = require('./../items/cServerControlItems');
+var cServerMap_1 = require('./cServerMap');
 var cServerControlMaps = (function () {
     function cServerControlMaps(socket) {
         var _this = this;
         this.socket = socket;
         //to control the map of each player 
         this.arrayPlayersMap = [];
+        this.arrayMapData = []; //we will store all the data of each map here to use it later
         //lets create a control to every object, in every map
         this.arrayControlPlayers = [];
         this.arrayControlMonsters = [];
@@ -27,11 +29,12 @@ var cServerControlMaps = (function () {
         var controlItems = new cServerControlItems_1.cServerControlItems(this.socket);
         var controlMonsters = new cServerControlMonster_1.cServerControlMonster(this.socket, controlPlayers, controlItems, mapData.monsterNumber);
         controlPlayers.controlMonster = controlMonsters;
-        console.log(this.mapsData['map' + mapData.id]);
         //stored them in the array
         this.arrayControlPlayers[mapData.id] = controlPlayers;
         this.arrayControlMonsters[mapData.id] = controlMonsters;
         this.arrayControlItems[mapData.id] = controlItems;
+        //store the map data so we can use it later
+        this.arrayMapData[mapData.id] = new cServerMap_1.cServerMap(mapData);
     };
     cServerControlMaps.prototype.readMapData = function () {
         var fs = require('fs');
@@ -56,7 +59,6 @@ var cServerControlMaps = (function () {
     //check in wich portal the player enter and act if necessary
     cServerControlMaps.prototype.enterPortal = function (socketPlayer, data) {
         this.playerChangeMap(socketPlayer, data);
-        socketPlayer.emit('you enter portal', { idPortal: data.idPortal, x: data.x, y: data.y });
     };
     cServerControlMaps.prototype.playerChangeMap = function (socketPlayer, data) {
         //lets get the actual player room and check if it really change 
@@ -71,7 +73,9 @@ var cServerControlMaps = (function () {
             //lets update the array of where is every player
             this.arrayPlayersMap[socketPlayer.id] = data.idPortal;
         }
-        controlPlayers.getPlayerById(socketPlayer.id);
+        //lets get the map data to send the info needed to the client
+        var mapData = this.arrayMapData[data.idPortal];
+        socketPlayer.emit('you enter portal', { idPortal: data.idPortal, x: data.x, y: data.y, mapName: mapData.name });
     };
     cServerControlMaps.prototype.playerEnterMap = function (socketNewPlayer, data, mapNumber) {
         //new player conected, it start in the principal room

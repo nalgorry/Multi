@@ -81,7 +81,7 @@ export class cServerControlMonster {
 
     }
 
-    public createNewMonster(tileX:number,tileY:number,monsterType:enumMonsters,monsterRespawn:boolean) {
+    public createNewMonster(tileX:number, tileY:number, monsterType:enumMonsters, monsterRespawn:boolean) {
         
         var newMonster = new cServerMonster(this.controlItems, this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
 

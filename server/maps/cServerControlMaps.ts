@@ -2,11 +2,13 @@
 import {cServerControlMonster} from './../cServerControlMonster';
 import {cServerControlPlayers} from './../cControlServerPlayers';
 import {cServerControlItems} from './../items/cServerControlItems';
+import {cServerMap} from './cServerMap';
 
 export class cServerControlMaps {
 
     //to control the map of each player 
     private arrayPlayersMap:number[] = [];
+    private arrayMapData:cServerMap[] = []; //we will store all the data of each map here to use it later
 
     //the data of each map read from the JSON
     private mapsData;
@@ -39,12 +41,13 @@ export class cServerControlMaps {
        var controlMonsters = new cServerControlMonster(this.socket,controlPlayers,controlItems, mapData.monsterNumber);
        controlPlayers.controlMonster = controlMonsters;
 
-       console.log(this.mapsData['map' + mapData.id]);
-
        //stored them in the array
         this.arrayControlPlayers[mapData.id] = controlPlayers;
         this.arrayControlMonsters[mapData.id] = controlMonsters;
         this.arrayControlItems[mapData.id] = controlItems;
+
+        //store the map data so we can use it later
+        this.arrayMapData[mapData.id] = new cServerMap(mapData);
 
     }
 
@@ -78,8 +81,6 @@ export class cServerControlMaps {
 
         this.playerChangeMap(socketPlayer, data);
 
-        socketPlayer.emit('you enter portal', {idPortal:data.idPortal, x:data.x, y:data.y });
-
     }
 
     public playerChangeMap(socketPlayer, data) {
@@ -102,8 +103,11 @@ export class cServerControlMaps {
             this.arrayPlayersMap[socketPlayer.id] = data.idPortal;
 
         }
+
+        //lets get the map data to send the info needed to the client
+        var mapData = this.arrayMapData[data.idPortal];
         
-        controlPlayers.getPlayerById(socketPlayer.id);
+        socketPlayer.emit('you enter portal', {idPortal:data.idPortal, x:data.x, y:data.y, mapName:mapData.name });
 
     }
 

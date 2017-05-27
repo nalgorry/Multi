@@ -40,10 +40,10 @@ class cControlGame {
         //inicio parametros del juego
         this.gridSize = 40;
         this.interfazWidth = 200;
-        this.initMap();
+        this.initMap('principalMap');
 
         //inicio las ayudas 
-        this.addTutorial(this.tutorialNumber);
+        //this.addTutorial(this.tutorialNumber);
 
         //cargo la interfaz dele juego
         this.interfaz = this.game.add.sprite(this.game.width - this.interfazWidth , 0, 'interfaz');
@@ -76,14 +76,14 @@ class cControlGame {
 
     }
 
-    private initMap() {
+    private initMap(mapName:string) {
         var tamanoMapa = 70;
 
         // Configuro el mundo para que sea centrado en el personaje
         this.game.world.setBounds(0, 0, tamanoMapa*this.gridSize, tamanoMapa*this.gridSize);
         
          //  Our tiled scrolling background
-        this.map = this.game.add.tilemap('principalMap');
+        this.map = this.game.add.tilemap(mapName);
         this.map.addTilesetImage('tiles', 'tiles');
 
         this.hitLayer = this.map.createLayer('HitTest',this.game.width - this.interfazWidth);
@@ -127,7 +127,7 @@ class cControlGame {
     }
 
     public changeMap(data) {
-        this.initMap();
+        this.initMap(data.mapName);
     }
 
     private addTutorial(tutorialNumber:number) {

@@ -1,5 +1,10 @@
 {   "mapData": [
-    {"id": 1, "name": "principalMap", "file": "principalMap.json", "monsterNumber": 0},
+    {"id": 1, "name": "principalMap", "file": "principalMap.json", "monsterNumber": 0,
+      "portals" : [
+          {"idPortal": 1, "x": 40, "y": 40 },
+          {"idPortal": 1, "x": 80, "y": 80 }
+
+      ]  },
     {"id": 2, "name": "firstMap", "file": "firstMap.json", "monsterNumber": 50}
 ]
 }
