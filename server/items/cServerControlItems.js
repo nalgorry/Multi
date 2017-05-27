@@ -2,8 +2,9 @@
 var cServerItems_1 = require('./cServerItems');
 var cServerItemDef_1 = require('./cServerItemDef');
 var cServerControlItems = (function () {
-    function cServerControlItems(socket) {
+    function cServerControlItems(socket, room) {
         this.socket = socket;
+        this.room = room;
         this.nextIdItems = 0;
         this.arrayItems = [];
         //defino todos los objetos
@@ -13,7 +14,7 @@ var cServerControlItems = (function () {
     cServerControlItems.prototype.createInitialItems = function (socket) {
         for (var i = 0; i < 3; i++) {
             var itemId = "i" + this.nextIdItems;
-            this.createNewItem(i, 10, 47 + i, 59, false, socket);
+            this.createNewItem(i, 10, 30 + i, 30, false, socket);
         }
     };
     cServerControlItems.prototype.dropItemToFloor = function (socket, data) {

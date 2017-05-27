@@ -1,11 +1,10 @@
 export class cServerPortals {
 
-
-
-    constructor () {
+    constructor (
+        public idPortal,
+        public x,
+        public y) {
 
     }
-
-
 
 }

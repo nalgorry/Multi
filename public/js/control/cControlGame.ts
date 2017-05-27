@@ -120,6 +120,9 @@ class cControlGame {
         this.groupMapLayers = this.game.add.group();
         this.depthGroup = this.game.add.group();
 
+        //lets restart all the portals
+        this.controlPlayer.controlPortals.resetPortals();
+
         //lets restart the player
         this.controlPlayer.startActor(50,50);
         this.controlPlayer.startPlayerGraphics();

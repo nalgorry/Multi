@@ -34,8 +34,12 @@ var cControlServer = (function () {
         this.socket.on('item get', cControlServer.prototype.onItemGet.bind(this));
         this.socket.on('delete item', cControlServer.prototype.onItemDelete.bind(this));
         //control de portalese 
+        this.socket.on('new portals', cControlServer.prototype.createPortals.bind(this));
         this.socket.on('you enter portal', cControlServer.prototype.youEnterPortal.bind(this));
     }
+    cControlServer.prototype.createPortals = function (data) {
+        this.controlGame.controlPlayer.controlPortals.newPortals(data);
+    };
     cControlServer.prototype.onItemDelete = function (data) {
         this.controlPlayer.controlItems.itemGet(data);
     };

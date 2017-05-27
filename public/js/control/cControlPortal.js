@@ -1,31 +1,37 @@
 var cControlPortal = (function () {
     function cControlPortal(controlGame) {
         this.controlGame = controlGame;
-        this.createPortals();
+        this.arrayPortals = [];
     }
-    cControlPortal.prototype.createPortals = function () {
+    cControlPortal.prototype.resetPortals = function () {
         this.arrayPortals = new Array();
-        var portal = new cPortal(this.controlGame, 2 /* fistMap */, 40, 30);
-        this.arrayPortals['p' + 1] = portal;
     };
-    //el servidor emite esto cuando entras al portal 
+    //this is get from the server
     cControlPortal.prototype.youEnterPortal = function (data) {
         this.controlGame.changeMap(data);
     };
+    //this is get from the server 
+    cControlPortal.prototype.newPortals = function (data) {
+        var _this = this;
+        data.forEach(function (portalData) {
+            var portal = new cPortal(_this.controlGame, portalData.idPortal, portalData.x, portalData.y);
+            _this.arrayPortals.push(portal);
+        });
+    };
     cControlPortal.prototype.checkPortals = function (tileX, tileY) {
-        for (var idPortal in this.arrayPortals) {
-            var portal = this.arrayPortals[idPortal];
+        var _this = this;
+        this.arrayPortals.forEach(function (portal) {
             if ((tileX == portal.tileX || tileX == portal.tileX) && tileY == portal.tileY) {
                 console.log("entro a un portal");
-                this.controlGame.controlServer.socket.emit('enter portal', {
+                _this.controlGame.controlServer.socket.emit('enter portal', {
                     idPortal: portal.portalID,
                     name: 'Nuevo nombre',
                     x: 50,
                     y: 50
                 });
-                this.controlGame.resetMap();
+                _this.controlGame.resetMap();
             }
-        }
+        });
     };
     return cControlPortal;
 }());

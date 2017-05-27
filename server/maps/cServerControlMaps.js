@@ -18,23 +18,23 @@ var cServerControlMaps = (function () {
         //lets get the data of all the mapsData
         this.readMapData();
         //lets start all the maps in the server from the data of the JSON 
-        this.mapsData.mapData.forEach(function (mapData) {
-            _this.initMap(mapData);
+        this.mapsData.mapData.forEach(function (JSONmapData) {
+            _this.initMap(JSONmapData);
         });
     }
-    cServerControlMaps.prototype.initMap = function (mapData) {
-        console.log(mapData);
+    cServerControlMaps.prototype.initMap = function (JSONmapData) {
+        //store the map data so we can use it later
+        var mapData = new cServerMap_1.cServerMap(JSONmapData);
+        this.arrayMapData[mapData.id] = mapData;
         //lets create the control componentes of the map
         var controlPlayers = new cControlServerPlayers_1.cServerControlPlayers(this.socket, 'room' + mapData.id);
-        var controlItems = new cServerControlItems_1.cServerControlItems(this.socket);
+        var controlItems = new cServerControlItems_1.cServerControlItems(this.socket, 'room' + mapData.id);
         var controlMonsters = new cServerControlMonster_1.cServerControlMonster(this.socket, controlPlayers, controlItems, mapData.monsterNumber);
         controlPlayers.controlMonster = controlMonsters;
         //stored them in the array
         this.arrayControlPlayers[mapData.id] = controlPlayers;
         this.arrayControlMonsters[mapData.id] = controlMonsters;
         this.arrayControlItems[mapData.id] = controlItems;
-        //store the map data so we can use it later
-        this.arrayMapData[mapData.id] = new cServerMap_1.cServerMap(mapData);
     };
     cServerControlMaps.prototype.readMapData = function () {
         var fs = require('fs');
@@ -51,7 +51,7 @@ var cServerControlMaps = (function () {
         var mapName = this.arrayPlayersMap[idPlayer];
         return this.arrayControlPlayers[mapName];
     };
-    //this function get the actual map of a player, and get the controler of the items
+    //this function get the actual controler of the items
     cServerControlMaps.prototype.getControlItems = function (idPlayer) {
         var mapName = this.arrayPlayersMap[idPlayer];
         return this.arrayControlItems[mapName];
@@ -78,18 +78,30 @@ var cServerControlMaps = (function () {
         socketPlayer.emit('you enter portal', { idPortal: data.idPortal, x: data.x, y: data.y, mapName: mapData.name });
     };
     cServerControlMaps.prototype.playerEnterMap = function (socketNewPlayer, data, mapNumber) {
-        //new player conected, it start in the principal room
+        //this make the socket join the principal map 
+        socketNewPlayer.join('room' + mapNumber);
+        //lets get the components of the actual map
         var controlPlayers = this.arrayControlPlayers[mapNumber];
         var controlMonsters = this.arrayControlMonsters[mapNumber];
         var controlItems = this.arrayControlItems[mapNumber];
+        //we send all the data to the player
         controlPlayers.onNewPlayerConected(socketNewPlayer, data);
         controlMonsters.onNewPlayerConected(socketNewPlayer);
         controlItems.onNewPlayerConected(socketNewPlayer);
+        //we send all extra the information about the map (portals, etc.)
+        this.sendMapObjects(socketNewPlayer, mapNumber);
+        //we redefine where the player is in this class
         this.arrayPlayersMap[socketNewPlayer.id] = mapNumber;
-        //this make the socket join the principal map 
-        socketNewPlayer.join('room' + mapNumber);
+    };
+    cServerControlMaps.prototype.sendMapObjects = function (socketNewPlayer, mapNumber) {
+        //lets get the map data to send the info needed to the client
+        var mapData = this.arrayMapData[mapNumber];
+        var portals = mapData.arrayPortals;
+        console.log(portals);
+        socketNewPlayer.emit('new portals', portals);
     };
     cServerControlMaps.prototype.onNewPlayer = function (socketNewPlayer, data) {
+        //new player conected, it start in the principal room
         this.playerEnterMap(socketNewPlayer, data, this.initialMapName);
     };
     cServerControlMaps.prototype.onPlayerDisconnected = function (socketPlayer) {

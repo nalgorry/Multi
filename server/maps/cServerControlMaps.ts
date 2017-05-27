@@ -25,19 +25,21 @@ export class cServerControlMaps {
             this.readMapData();
 
             //lets start all the maps in the server from the data of the JSON 
-            this.mapsData.mapData.forEach(mapData => {
-                this.initMap(mapData);
+            this.mapsData.mapData.forEach(JSONmapData => {
+                this.initMap(JSONmapData);
             });
 
         }   
 
-    private initMap(mapData) {
+    private initMap(JSONmapData) {
 
-        console.log(mapData);
+        //store the map data so we can use it later
+        var mapData = new cServerMap(JSONmapData);
+        this.arrayMapData[mapData.id] = mapData;
 
-        //lets create the control componentes of the map
+       //lets create the control componentes of the map
        var controlPlayers = new cServerControlPlayers(this.socket, 'room' + mapData.id );
-       var controlItems = new cServerControlItems(this.socket);
+       var controlItems = new cServerControlItems(this.socket,'room' + mapData.id);
        var controlMonsters = new cServerControlMonster(this.socket,controlPlayers,controlItems, mapData.monsterNumber);
        controlPlayers.controlMonster = controlMonsters;
 
@@ -45,9 +47,6 @@ export class cServerControlMaps {
         this.arrayControlPlayers[mapData.id] = controlPlayers;
         this.arrayControlMonsters[mapData.id] = controlMonsters;
         this.arrayControlItems[mapData.id] = controlItems;
-
-        //store the map data so we can use it later
-        this.arrayMapData[mapData.id] = new cServerMap(mapData);
 
     }
 
@@ -70,7 +69,7 @@ export class cServerControlMaps {
         return this.arrayControlPlayers[mapName];
     }
 
-    //this function get the actual map of a player, and get the controler of the items
+    //this function get the actual controler of the items
     private getControlItems(idPlayer):cServerControlItems {
         var mapName = this.arrayPlayersMap[idPlayer];
         return this.arrayControlItems[mapName];
@@ -113,24 +112,42 @@ export class cServerControlMaps {
 
     private playerEnterMap(socketNewPlayer, data, mapNumber:enumMapNames) {
 
-        //new player conected, it start in the principal room
+        //this make the socket join the principal map 
+        socketNewPlayer.join('room' + mapNumber);
+        
+        //lets get the components of the actual map
         var controlPlayers:cServerControlPlayers = this.arrayControlPlayers[mapNumber];
         var controlMonsters:cServerControlMonster = this.arrayControlMonsters[mapNumber];
         var controlItems:cServerControlItems = this.arrayControlItems[mapNumber];
 
+        //we send all the data to the player
         controlPlayers.onNewPlayerConected(socketNewPlayer, data)    
         controlMonsters.onNewPlayerConected(socketNewPlayer);
         controlItems.onNewPlayerConected(socketNewPlayer);
 
-        this.arrayPlayersMap[socketNewPlayer.id] = mapNumber;
+        //we send all extra the information about the map (portals, etc.)
+        this.sendMapObjects(socketNewPlayer, mapNumber )
 
-        //this make the socket join the principal map 
-        socketNewPlayer.join('room' + mapNumber);
+        //we redefine where the player is in this class
+        this.arrayPlayersMap[socketNewPlayer.id] = mapNumber;
 
     }
 
+    public sendMapObjects(socketNewPlayer: SocketIO.Server, mapNumber:enumMapNames) {
+
+        //lets get the map data to send the info needed to the client
+        var mapData = this.arrayMapData[mapNumber];
+
+        var portals = mapData.arrayPortals;
+
+        console.log(portals);
+        socketNewPlayer.emit('new portals', portals);
+
+    } 
+
     public onNewPlayer(socketNewPlayer, data) {
 
+        //new player conected, it start in the principal room
         this.playerEnterMap(socketNewPlayer, data, this.initialMapName);
 
     }

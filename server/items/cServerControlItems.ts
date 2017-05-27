@@ -8,7 +8,7 @@ export class cServerControlItems {
     public arrayItems:cServerItems[];
     private nextIdItems:number = 0;
 
-    constructor(public socket:SocketIO.Server){
+    constructor(public socket:SocketIO.Server, public room){
 
         this.arrayItems = [];
 
@@ -24,7 +24,7 @@ export class cServerControlItems {
 
             var itemId = "i" + this.nextIdItems;
 
-            this.createNewItem(i, 10, 47 + i, 59, false, socket);
+            this.createNewItem(i, 10, 30 + i, 30, false, socket);
 
         }
 

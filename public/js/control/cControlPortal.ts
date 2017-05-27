@@ -1,34 +1,31 @@
 class cControlPortal {
 
-    private arrayPortals:Array<cPortal>;
+    private arrayPortals:Array<cPortal> = [];
 
     constructor(public controlGame:cControlGame) {
-        this.createPortals();
     }
 
-    private createPortals() {
-
-        this.arrayPortals = new Array<cPortal>();
-
-        var portal = new cPortal(this.controlGame, enumMapNames.fistMap, 40, 30);
-        this.arrayPortals['p'+1] = portal;
-
+    public resetPortals() {
+        this.arrayPortals = new Array();
     }
 
-    //el servidor emite esto cuando entras al portal 
+    //this is get from the server
     public youEnterPortal(data) {
-
-        
-
         this.controlGame.changeMap(data);
+    }
 
+    //this is get from the server 
+    public newPortals(data) {
+        
+        data.forEach(portalData => {
+            var portal = new cPortal(this.controlGame, portalData.idPortal, portalData.x, portalData.y);
+            this.arrayPortals.push(portal);
+        })
     }
 
     public checkPortals(tileX,tileY) {
 
-       for (var idPortal in this.arrayPortals) {
-
-           var portal:cPortal = this.arrayPortals[idPortal]; 
+        this.arrayPortals.forEach(portal =>{
 
             if( (tileX == portal.tileX || tileX == portal.tileX ) && tileY  == portal.tileY ) {
 
@@ -41,9 +38,8 @@ class cControlPortal {
                         y: 50
                     });
                 this.controlGame.resetMap();
-                
             }
-        }   
+        });
 
     }
 
@@ -51,7 +47,6 @@ class cControlPortal {
 }
 
 class cPortal {
-
 
     constructor(public controlGame:cControlGame,public portalID:number, public tileX:number, public tileY:number) {
 
