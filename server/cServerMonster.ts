@@ -19,7 +19,7 @@ export class cServerMonster {
     public monsterType: enumMonsters; 
     public specialAtackPercent:number = 0 //porcentaje de que lance el hechizo especial
     public agresiveMonster = false; //determina si el moustro ataca por defecto o solo si lo atacan 
-    public arrayAgresivePlayers:boolean[];
+    public arrayAgresivePlayers:boolean[] = [];
     public monsterRespawn:boolean;
     public isPublic:boolean;
     
@@ -32,8 +32,7 @@ export class cServerMonster {
     public monsterAtackTilesX:number = 13;
     public monsterAtackTilesY:number = 9;
     
-    constructor(public controlItems:cServerControlItems, public arrayMonsterHit:number[],public mapSizeX:number, public mapSizeY:number) {
-        this.arrayAgresivePlayers = [];
+    constructor(public controlItems:cServerControlItems,public room:string, public arrayMonsterHit:number[],public mapSizeX:number, public mapSizeY:number) {
     }
 
     public startMonster(
@@ -67,7 +66,7 @@ export class cServerMonster {
         cServerDefinitionMonsters.defineMonsters(this,monsterType);
         this.monsterMaxLife = this.monsterLife;
 
-        this.emitNewMonster(socket);
+        this.emitNewMonster();
     
          var timerAtack = setTimeout(() => this.monsterAtack(), 1200);
          var timerMove = setTimeout(() => this.monsterMove(), 800);
@@ -95,14 +94,29 @@ export class cServerMonster {
 
     
 
-    private emitNewMonster(socket:SocketIO.Server) {
+    private emitNewMonster() {
         //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
         var monsterdata =  {id:this.monsterId,
                             tileX:this.tileX, 
                             tileY:this.tileY,
                             monsterType:this.monsterType};
 
-        socket.emit('new Monster', monsterdata);
+        console.log(this.room);
+
+        this.socket.in(this.room).emit('new Monster', monsterdata);
+
+    }
+
+    private emitMonsterToNewPlayer(socketPlayer:SocketIO.Server) {
+        //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
+        var monsterdata =  {id:this.monsterId,
+                            tileX:this.tileX, 
+                            tileY:this.tileY,
+                            monsterType:this.monsterType};
+
+        console.log(this.room);
+
+        socketPlayer.emit('new Monster', monsterdata);
 
     }
 
@@ -172,7 +186,7 @@ export class cServerMonster {
                 }
                 
                 if (monsterCanMove) {
-                    this.socket.emit('monster move', {idMonster:this.monsterId, tileX: this.tileX, tileY: this.tileY })
+                    this.socket.in(this.room).emit('monster move', {idMonster:this.monsterId, tileX: this.tileX, tileY: this.tileY })
                 }
                 
                 }  
@@ -254,7 +268,7 @@ export class cServerMonster {
                                     }
                             }
 
-                            this.socket.emit('monster hit', data );         
+                            this.socket.in(this.room).emit('monster hit', data );         
                             
                     }
 
@@ -266,8 +280,8 @@ export class cServerMonster {
         }
     }
 
-    public sendMonsterToNewPlayer(socket:SocketIO.Server) {
-        this.emitNewMonster(socket);
+    public sendMonsterToNewPlayer(socketPlayer:SocketIO.Server) {
+        this.emitMonsterToNewPlayer(socketPlayer);
     }
 
 

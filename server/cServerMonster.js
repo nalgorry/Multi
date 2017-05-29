@@ -1,20 +1,21 @@
 "use strict";
 var cServerDefinitionMonsters_1 = require('./cServerDefinitionMonsters');
 var cServerMonster = (function () {
-    function cServerMonster(controlItems, arrayMonsterHit, mapSizeX, mapSizeY) {
+    function cServerMonster(controlItems, room, arrayMonsterHit, mapSizeX, mapSizeY) {
         this.controlItems = controlItems;
+        this.room = room;
         this.arrayMonsterHit = arrayMonsterHit;
         this.mapSizeX = mapSizeX;
         this.mapSizeY = mapSizeY;
         this.monsterDie = false; //para chekear si el moustro se murio o no
         this.specialAtackPercent = 0; //porcentaje de que lance el hechizo especial
         this.agresiveMonster = false; //determina si el moustro ataca por defecto o solo si lo atacan 
+        this.arrayAgresivePlayers = [];
         this.experience = 0;
         //variables para definir el ataque
         this.gridSize = 40;
         this.monsterAtackTilesX = 13;
         this.monsterAtackTilesY = 9;
-        this.arrayAgresivePlayers = [];
     }
     cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, monsterRespawn, isPublic, tileX, tileY) {
         var _this = this;
@@ -34,7 +35,7 @@ var cServerMonster = (function () {
         this.monsterType = monsterType;
         cServerDefinitionMonsters_1.cServerDefinitionMonsters.defineMonsters(this, monsterType);
         this.monsterMaxLife = this.monsterLife;
-        this.emitNewMonster(socket);
+        this.emitNewMonster();
         var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
         var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
     };
@@ -53,13 +54,23 @@ var cServerMonster = (function () {
         }
         return result;
     };
-    cServerMonster.prototype.emitNewMonster = function (socket) {
+    cServerMonster.prototype.emitNewMonster = function () {
         //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
         var monsterdata = { id: this.monsterId,
             tileX: this.tileX,
             tileY: this.tileY,
             monsterType: this.monsterType };
-        socket.emit('new Monster', monsterdata);
+        console.log(this.room);
+        this.socket.in(this.room).emit('new Monster', monsterdata);
+    };
+    cServerMonster.prototype.emitMonsterToNewPlayer = function (socketPlayer) {
+        //emito el monstruo, si viene un socket es porque es un jugador nuevo y le mando solo a el los monstruos que ya existen
+        var monsterdata = { id: this.monsterId,
+            tileX: this.tileX,
+            tileY: this.tileY,
+            monsterType: this.monsterType };
+        console.log(this.room);
+        socketPlayer.emit('new Monster', monsterdata);
     };
     cServerMonster.prototype.monsterMove = function () {
         var _this = this;
@@ -117,7 +128,7 @@ var cServerMonster = (function () {
                     monsterCanMove = true;
                 }
                 if (monsterCanMove) {
-                    this.socket.emit('monster move', { idMonster: this.monsterId, tileX: this.tileX, tileY: this.tileY });
+                    this.socket.in(this.room).emit('monster move', { idMonster: this.monsterId, tileX: this.tileX, tileY: this.tileY });
                 }
             }
         }
@@ -179,14 +190,14 @@ var cServerMonster = (function () {
                             idSpell: 1 /* BasicAtack */,
                         };
                     }
-                    this.socket.emit('monster hit', data);
+                    this.socket.in(this.room).emit('monster hit', data);
                 }
             }
             var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
         }
     };
-    cServerMonster.prototype.sendMonsterToNewPlayer = function (socket) {
-        this.emitNewMonster(socket);
+    cServerMonster.prototype.sendMonsterToNewPlayer = function (socketPlayer) {
+        this.emitMonsterToNewPlayer(socketPlayer);
     };
     cServerMonster.prototype.randomIntFromInterval = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);

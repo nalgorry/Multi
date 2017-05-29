@@ -66,7 +66,7 @@ class cControlPlayer extends cBasicActor {
 
         this.controlGame.game.camera.follow(this.playerSprite);
         this.controlGame.game.camera.deadzone = new Phaser.Rectangle(
-            this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2,
+            this.controlGame.game.width / 2 - this.controlGame.interfazWidth / 2,
             this.controlGame.game.height / 2 ,0,0);
 
         //para poder tirar poderes sobre si mismo.

@@ -1,8 +1,9 @@
 "use strict";
 var cServerMonster_1 = require('./cServerMonster');
 var cServerControlMonster = (function () {
-    function cServerControlMonster(socket, controlPlayer, controlItems, monsterNumber) {
+    function cServerControlMonster(socket, room, controlPlayer, controlItems, monsterNumber) {
         this.socket = socket;
+        this.room = room;
         this.controlPlayer = controlPlayer;
         this.controlItems = controlItems;
         this.monsterNumber = monsterNumber;
@@ -52,7 +53,7 @@ var cServerControlMonster = (function () {
         }
     };
     cServerControlMonster.prototype.createNewMonster = function (tileX, tileY, monsterType, monsterRespawn) {
-        var newMonster = new cServerMonster_1.cServerMonster(this.controlItems, this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
+        var newMonster = new cServerMonster_1.cServerMonster(this.controlItems, this.room, this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
         newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, monsterRespawn, true, tileX, tileY);
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
         this.nextIdMonster += 1;

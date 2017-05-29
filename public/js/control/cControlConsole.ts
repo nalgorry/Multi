@@ -16,6 +16,9 @@ class cControlConsole {
         this.consoleGraph.alpha = 0.55;
         this.consoleGraph.drawRect(0, 0, consoleWidth,consoleHeight);
 
+        //we add the element to the interface group to be able to manipulate it later
+        this.controlGame.groupInterface.add(this.consoleGraph);
+
         //inicio el array de mensajes
         this.arrayMessages = new Array<cConsoleMessage>();
         this.arrayPhaserTexts = new Array<Phaser.Text>();
@@ -23,6 +26,7 @@ class cControlConsole {
         this.newMessage(enumMessage.information,"Welcome!! v 0.1 ALPHA")
 
     }
+
 
     newMessage(type:enumMessage,message:string) {
 

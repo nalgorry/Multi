@@ -12,7 +12,8 @@ export class cServerControlMonster {
     public arrayMonsterHit:number[];
 
 
-    constructor(public socket:SocketIO.Server,  
+    constructor(public socket:SocketIO.Server,
+    public room: string,
     public controlPlayer:cServerControlPlayers, 
     public controlItems:cServerControlItems,
     private monsterNumber:number) {
@@ -83,7 +84,7 @@ export class cServerControlMonster {
 
     public createNewMonster(tileX:number, tileY:number, monsterType:enumMonsters, monsterRespawn:boolean) {
         
-        var newMonster = new cServerMonster(this.controlItems, this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
+        var newMonster = new cServerMonster(this.controlItems, this.room , this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
 
         newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, monsterRespawn, true, tileX, tileY);
         

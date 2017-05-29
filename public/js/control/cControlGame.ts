@@ -9,7 +9,7 @@ class cControlGame {
     public cursors: Phaser.CursorKeys;
     
     public depthGroup:Phaser.Group;
-    public interfaz:Phaser.Sprite;
+    public groupInterface:Phaser.Group;
 
     private groupMapLayers:Phaser.Group;
     private groupMapObjects:Phaser.Group;
@@ -20,15 +20,16 @@ class cControlGame {
     public controlMonsters:cControlMonsters;
     public controlSounds:cControlSounds;
     public controlOtherPlayers:cControlOtherPlayers;
+    public spriteInterfaz:Phaser.Sprite;
 
     private groupInitialHelp:Phaser.Group;
     private groupInitialHelpBotons:Phaser.Group;
     private tutorialNumber:number = 0;
 
-    interfazWidth:number;
+    public interfazWidth:number = 200;
+
     marker; //to get the mouse
     point;
-
 
     constructor(_game:Phaser.Game) {
         this.game = _game;
@@ -36,21 +37,20 @@ class cControlGame {
         //lets start the two important group elementos
         this.groupMapLayers = this.game.add.group(); //to control the map layers
         this.depthGroup = this.game.add.group(); //  To control the depth of the characters
+        this.groupInterface = this.game.add.group(); //To control all the interface related components
 
         //inicio parametros del juego
         this.gridSize = 40;
-        this.interfazWidth = 200;
         this.initMap('principalMap');
 
         //inicio las ayudas 
         //this.addTutorial(this.tutorialNumber);
 
         //cargo la interfaz dele juego
-        this.interfaz = this.game.add.sprite(this.game.width - this.interfazWidth , 0, 'interfaz');
-        this.interfaz.inputEnabled = true;
-        this.interfaz.fixedToCamera = true;
-        //boton.cameraOffset.setTo(100, 560);
-
+        this.spriteInterfaz = this.game.add.sprite(this.game.width - this.interfazWidth , 0, 'interfaz');
+        this.spriteInterfaz.inputEnabled = true;
+        this.spriteInterfaz.fixedToCamera = true;
+       
         var graphics = this.game.add.graphics(100, 100);
         graphics.drawRect(50, 250, 100, 100);
 
@@ -95,10 +95,11 @@ class cControlGame {
         this.layer = this.map.createLayer('ThirdFloor',this.game.width - this.interfazWidth);
         this.groupMapLayers.add(this.layer);
 
+        this.game.world.sendToBack(this.map);
+
         this.map.setCollision(5, true, this.hitLayer );
         this.game.stage.disableVisibilityChange = true;
 
-        
          //creo los objetos a partir de los datos del mapa
         this.map.createFromObjects('Objects', 1, 'objects', 'arbol003.png', true, true, this.depthGroup,undefined,false);
         this.map.createFromObjects('Objects', 2, 'objects', 'arbol004.png', true, true, this.depthGroup,undefined,false);
@@ -130,7 +131,16 @@ class cControlGame {
     }
 
     public changeMap(data) {
+        //restart the map with the new data
         this.initMap(data.mapName);
+
+        //lets put all the elements of the map to the top again
+        this.game.world.bringToTop(this.groupInterface);
+
+        //lets put all the item elements to the top again
+        this.game.world.bringToTop(this.controlPlayer.controlItems.itemsGroup);
+
+
     }
 
     private addTutorial(tutorialNumber:number) {

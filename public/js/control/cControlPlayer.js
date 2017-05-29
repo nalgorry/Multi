@@ -43,7 +43,7 @@ var cControlPlayer = (function (_super) {
         marker.lineStyle(2, 0xffffff, 1);
         marker.drawRect(this.playerSprite.x + this.gridSize / 2, this.playerSprite.y, 1, 1);
         this.controlGame.game.camera.follow(this.playerSprite);
-        this.controlGame.game.camera.deadzone = new Phaser.Rectangle(this.controlGame.game.width / 2 - this.controlGame.interfaz.width / 2, this.controlGame.game.height / 2, 0, 0);
+        this.controlGame.game.camera.deadzone = new Phaser.Rectangle(this.controlGame.game.width / 2 - this.controlGame.interfazWidth / 2, this.controlGame.game.height / 2, 0, 0);
         //para poder tirar poderes sobre si mismo.
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youClickYou, this);

@@ -67,8 +67,10 @@ class cSpell {
 
     public iniciateSpell(spellPos:Phaser.Point,spellNumber:number) {
 
+        console.log(this.controlGame);
+
         this.spellSprite = this.controlGame.game.add.sprite(spellPos.x, spellPos.y, 'spells',this.posInSpritesheet);
-        this.spellSprite.fixedToCamera = true;
+        this.controlGame.spriteInterfaz.addChild(this.spellSprite);
         this.spellSprite.inputEnabled = true;
         
         this.spellNumber = spellNumber
@@ -79,23 +81,23 @@ class cSpell {
 
         //creo el recuadro para el coolDownTimeSec
         //circulo interior
-        this.spriteFocusCool = this.controlGame.game.add.graphics(this.spellSprite.cameraOffset.x + this.spellSprite.width/2,
-        this.spellSprite.cameraOffset.y + this.spellSprite.height/2);
+        this.spriteFocusCool = this.controlGame.game.add.graphics(this.spellSprite.x + this.spellSprite.width/2,
+        this.spellSprite.y + this.spellSprite.height/2);
         this.spriteFocusCool.lineStyle(2, 0x141417, 1);
         this.spriteFocusCool.pivot.x = 0.5;
         this.spriteFocusCool.pivot.y = 0.5;
         this.spriteFocusCool.beginFill(0x141417);
-        this.spriteFocusCool.fixedToCamera = true;
+        this.controlGame.spriteInterfaz.addChild(this.spriteFocusCool);
         this.spriteFocusCool.alpha = 0.5;
         this.spriteFocusCool.drawCircle(0, 0, 40);
         this.spriteFocusCool.visible = false;
 
         //circulo fijo
-        this.spriteFocusFixCool = this.controlGame.game.add.graphics(this.spellSprite.cameraOffset.x + this.spellSprite.width/2,
-            this.spellSprite.cameraOffset.y + this.spellSprite.height/2);
+        this.spriteFocusFixCool = this.controlGame.game.add.graphics(this.spellSprite.x + this.spellSprite.width/2,
+        this.spellSprite.y + this.spellSprite.height/2);
         this.spriteFocusFixCool.lineStyle(2, 0x141417, 1);
         this.spriteFocusFixCool.beginFill(0x141417);
-        this.spriteFocusFixCool.fixedToCamera = true;
+        this.controlGame.spriteInterfaz.addChild(this.spriteFocusFixCool);
         this.spriteFocusFixCool.alpha = 0.25;
         this.spriteFocusFixCool.drawCircle(0, 0, 40);
         this.spriteFocusFixCool.visible = false;

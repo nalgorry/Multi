@@ -30,6 +30,8 @@ var cControlFocus = (function () {
         this.actualFocusEnergy = this.speedNormalEnergy;
         var gameWidth = this.controlGame.game.width;
         var gameHeight = this.controlGame.game.height;
+        //we add the element to the interface group to be able to manipulate it later
+        this.controlGame.groupInterface.add(this.controlGame.spriteInterfaz);
         this.LoadBars();
         this.createBars(gameWidth, gameHeight);
         this.createPotions();
@@ -129,16 +131,16 @@ var cControlFocus = (function () {
         this.groupPlayerStats.destroy();
     };
     cControlFocus.prototype.createPotions = function () {
-        var spriteHeal = this.controlGame.game.add.sprite(1000, 114, 'items', 35);
-        spriteHeal.fixedToCamera = true;
+        var spriteHeal = this.controlGame.game.add.sprite(0, 114, 'items', 35);
+        this.controlGame.spriteInterfaz.addChild(spriteHeal);
         spriteHeal.inputEnabled = true;
         spriteHeal.events.onInputDown.add(this.SelectLifeFocus, this);
-        var spriteMana = this.controlGame.game.add.sprite(1000, 114 + 25, 'items', 33);
-        spriteMana.fixedToCamera = true;
+        var spriteMana = this.controlGame.game.add.sprite(0, 114 + 25, 'items', 33);
+        this.controlGame.spriteInterfaz.addChild(spriteMana);
         spriteMana.inputEnabled = true;
         spriteMana.events.onInputDown.add(this.SelectManaFocus, this);
-        var spriteEnergy = this.controlGame.game.add.sprite(1000, 114 + 25 * 2, 'items', 31);
-        spriteEnergy.fixedToCamera = true;
+        var spriteEnergy = this.controlGame.game.add.sprite(0, 114 + 25 * 2, 'items', 31);
+        this.controlGame.spriteInterfaz.addChild(spriteEnergy);
         spriteEnergy.inputEnabled = true;
         spriteEnergy.events.onInputDown.add(this.SelectEnergyFocus, this);
     };
@@ -285,22 +287,22 @@ var cControlFocus = (function () {
         switch (wichFocus) {
             case FocusSystem.life:
                 this.actualFocusLife = this.speedFocusLife;
-                this.rectangleFocus.cameraOffset.x = this.lifeBar.cameraOffset.x;
-                this.rectangleFocus.cameraOffset.y = this.lifeBar.cameraOffset.y;
+                this.rectangleFocus.x = this.lifeBar.x;
+                this.rectangleFocus.y = this.lifeBar.y;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.life;
                 break;
             case FocusSystem.mana:
                 this.actualFocusMana = this.speedFocusMana;
-                this.rectangleFocus.cameraOffset.x = this.manaBar.cameraOffset.x;
-                this.rectangleFocus.cameraOffset.y = this.manaBar.cameraOffset.y;
+                this.rectangleFocus.x = this.manaBar.x;
+                this.rectangleFocus.y = this.manaBar.y;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.mana;
                 break;
             case FocusSystem.energy:
                 this.actualFocusEnergy = this.speedFocusEnergy;
-                this.rectangleFocus.cameraOffset.x = this.energyBar.cameraOffset.x;
-                this.rectangleFocus.cameraOffset.y = this.energyBar.cameraOffset.y;
+                this.rectangleFocus.x = this.energyBar.x;
+                this.rectangleFocus.y = this.energyBar.y;
                 this.rectangleFocus.visible = true;
                 this.actualFocusSystem = FocusSystem.energy;
                 break;
@@ -327,12 +329,12 @@ var cControlFocus = (function () {
         this.maxDefence = 2;
     };
     cControlFocus.prototype.createAtackDefence = function () {
-        this.textAtack = this.controlGame.game.add.text(1168, 50, this.maxAtack.toString(), this.styleText);
-        this.textAtack.fixedToCamera = true;
-        this.textDefence = this.controlGame.game.add.text(1168, 73, this.maxDefence.toString(), this.styleText);
-        this.textDefence.fixedToCamera = true;
-        this.textPlayersOnline = this.controlGame.game.add.text(1168, 95, "1", this.styleText);
-        this.textPlayersOnline.fixedToCamera = true;
+        this.textAtack = this.controlGame.game.add.text(160, 50, this.maxAtack.toString(), this.styleText);
+        this.controlGame.spriteInterfaz.addChild(this.textAtack);
+        this.textDefence = this.controlGame.game.add.text(160, 73, this.maxDefence.toString(), this.styleText);
+        this.controlGame.spriteInterfaz.addChild(this.textDefence);
+        this.textPlayersOnline = this.controlGame.game.add.text(160, 95, "1", this.styleText);
+        this.controlGame.spriteInterfaz.addChild(this.textPlayersOnline);
     };
     cControlFocus.prototype.updateAtackDefence = function () {
         this.textAtack.text = this.maxAtack.toString();
@@ -348,9 +350,9 @@ var cControlFocus = (function () {
         bitmapVida.ctx.rect(0, 0, barWidth, barHeight);
         bitmapVida.ctx.fillStyle = '#e33133';
         bitmapVida.ctx.fill();
-        this.lifeBar = this.controlGame.game.add.sprite(gameWidth - 167, 125 + bitmapVida.height, bitmapVida);
+        this.lifeBar = this.controlGame.game.add.sprite(33, 125 + bitmapVida.height, bitmapVida);
         this.lifeBar.anchor.setTo(1);
-        this.lifeBar.fixedToCamera = true;
+        this.controlGame.spriteInterfaz.addChild(this.lifeBar);
         this.lifeBar.inputEnabled = true;
         this.lifeBar.events.onInputDown.add(this.SelectLifeFocus, this);
         //mana
@@ -359,9 +361,9 @@ var cControlFocus = (function () {
         bitmapMana.ctx.rect(0, 0, barWidth, barHeight);
         bitmapMana.ctx.fillStyle = '#0099ff';
         bitmapMana.ctx.fill();
-        this.manaBar = this.controlGame.game.add.sprite(gameWidth - 167, 125 + 25 + bitmapMana.height, bitmapMana);
+        this.manaBar = this.controlGame.game.add.sprite(33, 125 + 25 + bitmapMana.height, bitmapMana);
         this.manaBar.anchor.setTo(1);
-        this.manaBar.fixedToCamera = true;
+        this.controlGame.spriteInterfaz.addChild(this.manaBar);
         this.manaBar.inputEnabled = true;
         this.manaBar.events.onInputDown.add(this.SelectManaFocus, this);
         //energia
@@ -370,9 +372,9 @@ var cControlFocus = (function () {
         bitmapEnergia.ctx.rect(0, 0, barWidth, barHeight);
         bitmapEnergia.ctx.fillStyle = '#33cc66';
         bitmapEnergia.ctx.fill();
-        this.energyBar = this.controlGame.game.add.sprite(gameWidth - 167, 125 + 25 * 2 + bitmapEnergia.height, bitmapEnergia);
+        this.energyBar = this.controlGame.game.add.sprite(33, 125 + 25 * 2 + bitmapEnergia.height, bitmapEnergia);
         this.energyBar.anchor.setTo(1);
-        this.energyBar.fixedToCamera = true;
+        this.controlGame.spriteInterfaz.addChild(this.energyBar);
         this.energyBar.inputEnabled = true;
         this.energyBar.events.onInputDown.add(this.SelectEnergyFocus, this);
         //hago las barras del tamaño segun los valores actuales
@@ -381,20 +383,17 @@ var cControlFocus = (function () {
         this.ResizeBar(this.energyBar, this.energy, this.maxEnergy);
         //para los textos de las barras
         this.styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600 };
-        this.textLife = this.controlGame.game.add.text(gameWidth - 165, 125, "200", this.styleText);
-        this.textLife.fixedToCamera = true;
-        this.textMana = this.controlGame.game.add.text(gameWidth - 165, 125 + 25, "200", this.styleText);
-        this.textMana.fixedToCamera = true;
-        this.textEnergy = this.controlGame.game.add.text(gameWidth - 165, 125 + 25 * 2, "200", this.styleText);
-        this.textEnergy.fixedToCamera = true;
+        this.textLife = this.controlGame.game.add.text(35, 125, "200", this.styleText);
+        this.controlGame.spriteInterfaz.addChild(this.textLife);
+        this.textMana = this.controlGame.game.add.text(35, 125 + 25, "200", this.styleText);
+        this.controlGame.spriteInterfaz.addChild(this.textMana);
+        this.textEnergy = this.controlGame.game.add.text(35, 125 + 25 * 2, "200", this.styleText);
+        this.controlGame.spriteInterfaz.addChild(this.textEnergy);
         //  Para hacer un recuadro sobre la barra selecionada
         this.rectangleFocus = this.controlGame.game.add.graphics(0, 0);
         this.rectangleFocus.lineStyle(2, 0xffffff, 1);
-        this.rectangleFocus.fixedToCamera = true;
+        this.controlGame.spriteInterfaz.addChild(this.rectangleFocus);
         this.rectangleFocus.drawRect(0, -barHeight, barWidth, barHeight);
-        this.rectangleFocus.cameraOffset.x = this.lifeBar.x - this.lifeBar.width;
-        this.rectangleFocus.cameraOffset.y = 125;
-        this.rectangleFocus.visible = false;
     };
     return cControlFocus;
 }());

@@ -1,21 +1,21 @@
 var cControlGame = (function () {
     function cControlGame(_game) {
         this.tutorialNumber = 0;
+        this.interfazWidth = 200;
         this.game = _game;
         //lets start the two important group elementos
         this.groupMapLayers = this.game.add.group(); //to control the map layers
         this.depthGroup = this.game.add.group(); //  To control the depth of the characters
+        this.groupInterface = this.game.add.group(); //To control all the interface related components
         //inicio parametros del juego
         this.gridSize = 40;
-        this.interfazWidth = 200;
         this.initMap('principalMap');
         //inicio las ayudas 
         //this.addTutorial(this.tutorialNumber);
         //cargo la interfaz dele juego
-        this.interfaz = this.game.add.sprite(this.game.width - this.interfazWidth, 0, 'interfaz');
-        this.interfaz.inputEnabled = true;
-        this.interfaz.fixedToCamera = true;
-        //boton.cameraOffset.setTo(100, 560);
+        this.spriteInterfaz = this.game.add.sprite(this.game.width - this.interfazWidth, 0, 'interfaz');
+        this.spriteInterfaz.inputEnabled = true;
+        this.spriteInterfaz.fixedToCamera = true;
         var graphics = this.game.add.graphics(100, 100);
         graphics.drawRect(50, 250, 100, 100);
         //para testear el centro de un sprite
@@ -48,6 +48,7 @@ var cControlGame = (function () {
         this.groupMapLayers.add(layer2);
         this.layer = this.map.createLayer('ThirdFloor', this.game.width - this.interfazWidth);
         this.groupMapLayers.add(this.layer);
+        this.game.world.sendToBack(this.map);
         this.map.setCollision(5, true, this.hitLayer);
         this.game.stage.disableVisibilityChange = true;
         //creo los objetos a partir de los datos del mapa
@@ -73,7 +74,12 @@ var cControlGame = (function () {
         this.controlPlayer.startPlayerGraphics();
     };
     cControlGame.prototype.changeMap = function (data) {
+        //restart the map with the new data
         this.initMap(data.mapName);
+        //lets put all the elements of the map to the top again
+        this.game.world.bringToTop(this.groupInterface);
+        //lets put all the item elements to the top again
+        this.game.world.bringToTop(this.controlPlayer.controlItems.itemsGroup);
     };
     cControlGame.prototype.addTutorial = function (tutorialNumber) {
         switch (tutorialNumber) {

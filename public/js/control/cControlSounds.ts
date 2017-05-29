@@ -85,6 +85,11 @@ class cControlSounds {
         this.volumePiker.fixedToCamera = true;
         this.volumePiker.inputEnabled = true;
 
+        //we add the element to the interface group to be able to manipulate it later
+        this.controlGame.groupInterface.add(parlante);
+        this.controlGame.groupInterface.add(this.volumeBar);
+        this.controlGame.groupInterface.add(this.volumePiker);
+
     }
 
     changeVolume() {

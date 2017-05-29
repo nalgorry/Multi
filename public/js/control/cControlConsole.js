@@ -9,6 +9,8 @@ var cControlConsole = (function () {
         this.consoleGraph.fixedToCamera = true;
         this.consoleGraph.alpha = 0.55;
         this.consoleGraph.drawRect(0, 0, consoleWidth, consoleHeight);
+        //we add the element to the interface group to be able to manipulate it later
+        this.controlGame.groupInterface.add(this.consoleGraph);
         //inicio el array de mensajes
         this.arrayMessages = new Array();
         this.arrayPhaserTexts = new Array();

@@ -116,7 +116,7 @@ var cControlSpells = (function () {
         //dibujo el marco para el hechizo seleccionado
         this.borderSpell = this.controlGame.game.add.graphics(0, 0);
         this.borderSpell.lineStyle(2, 0xffffff, 1);
-        this.borderSpell.fixedToCamera = true;
+        this.controlGame.spriteInterfaz.addChild(this.borderSpell);
         this.borderSpell.drawCircle(0, 0, 50);
     };
     cControlSpells.prototype.createnumSpells = function () {
@@ -124,34 +124,34 @@ var cControlSpells = (function () {
         this.arrayselSpells = new Array();
         //hechizo 1
         var newSpell = this.allSpells.arraySpells[1 /* BasicAtack */];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 0, 205), 2);
+        newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 0, 205), 2);
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);
         //seleciono el hechizo uno por defecto
         this.selSpell = newSpell;
         //hechizo 2
         var newSpell = this.allSpells.arraySpells[2 /* CriticalBall */];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 1, 205), 2);
+        newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 1, 205), 2);
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);
         //hechizo 3
         var newSpell = this.allSpells.arraySpells[6 /* LightingStorm */];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 2, 205), 2);
+        newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 2, 205), 2);
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);
         //hechizo 4
         var newSpell = this.allSpells.arraySpells[4 /* ProtectField */];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 0, 265), 2);
+        newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 0, 265), 2);
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);
         //hechizo 5
         var newSpell = this.allSpells.arraySpells[5 /* HealHand */];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 1, 265), 2);
+        newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 1, 265), 2);
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);
         //hechizo 6
         var newSpell = this.allSpells.arraySpells[7 /* SelfExplosion */];
-        newSpell.iniciateSpell(new Phaser.Point(gameWidth - 185 + 57 * 2, 265), 2);
+        newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 2, 265), 2);
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick, this);
     };
@@ -204,8 +204,8 @@ var cControlSpells = (function () {
         return spellAllowed;
     };
     cControlSpells.prototype.spellClick = function (sender) {
-        this.borderSpell.cameraOffset.x = sender.spellSprite.cameraOffset.x + sender.spellSprite.width / 2;
-        this.borderSpell.cameraOffset.y = sender.spellSprite.cameraOffset.y + sender.spellSprite.height / 2;
+        this.borderSpell.x = sender.spellSprite.x + sender.spellSprite.width / 2;
+        this.borderSpell.y = sender.spellSprite.y + sender.spellSprite.height / 2;
         this.selSpell = sender;
         //me fijo si es posible utilizar el hechizo seleccionado, segun las caracteristicas del mismo y el personaje enfocado
         if (this.selSpell.isSpellOnCoolDown == false) {

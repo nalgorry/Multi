@@ -1,16 +1,18 @@
 var cControlItems = (function () {
     function cControlItems(controlGame) {
         this.controlGame = controlGame;
-        this.totalGold = 0;
         this.arrayItems = [];
-        this.arrayEquipedItems = [];
         this.arrayInventoryItems = [];
+        this.arrayEquipedItems = [];
         this.arrayfreeInventoryItems = [];
         this.arrayItemEfects = [];
+        this.totalGold = 0;
         //defino los lugares del inventario disponibles
         for (var i = 1; i <= 12; i++) {
             this.arrayfreeInventoryItems.push(i);
         }
+        //lets create a group to control all the items and items elements.
+        this.itemsGroup = this.controlGame.game.add.group();
         //armo el cuadrado para el item seleccionado en el inventario
         this.rectInventoryItem = this.controlGame.game.add.graphics(0, 0);
         this.rectInventoryItem.lineStyle(2, 0x000000, 1);
@@ -19,8 +21,8 @@ var cControlItems = (function () {
         this.rectInventoryItem.visible = false;
         //armo el texto donde va estar la cantidadd de oro
         var styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600 };
-        this.textGold = this.controlGame.game.add.text(1130, 650, "0", styleText);
-        this.textGold.fixedToCamera = true;
+        this.textGold = this.controlGame.game.add.text(135, 650, "0", styleText);
+        this.controlGame.spriteInterfaz.addChild(this.textGold);
     }
     cControlItems.prototype.newItem = function (data) {
         var item = new cItems(this.controlGame, data.itemID, data.itemType, data.maxRank);
@@ -90,6 +92,7 @@ var cControlItems = (function () {
                 var itemPoss = this.arrayfreeInventoryItems.shift();
                 if (itemPoss != undefined) {
                     item.putItemInInventory(itemPoss);
+                    this.itemsGroup.add(item.sprite);
                     //saco la info del item desde el server.
                     data.itemEfects.forEach(function (property) {
                         item.arrayItemEfects.push(new cItemProperty(property.itemEfect, property.value, property.propRank));
@@ -117,6 +120,7 @@ var cControlItems = (function () {
         }
         var player = this.controlGame.controlPlayer;
         this.controlGame.controlServer.socket.emit('you drop item', { itemId: item.itemID, tileX: player.tileX, tileY: player.tileY });
+        this.itemsGroup.remove(item.sprite);
         item.deleteItem();
         delete this.arrayItems[item.itemID];
         //hago el sonido 
