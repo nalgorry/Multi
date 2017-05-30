@@ -20,7 +20,7 @@ var cServerControlPlayers = (function () {
         movePlayer.x = data.x;
         movePlayer.y = data.y;
         movePlayer.dirMov = data.dirMov;
-        this.socket.in(this.room).emit('move player', { id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
+        socketPlayer.broadcast.in(this.room).emit('move player', { id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
     };
     cServerControlPlayers.prototype.levelUp = function (socket, data) {
         // Find player in array
@@ -35,28 +35,37 @@ var cServerControlPlayers = (function () {
     cServerControlPlayers.prototype.getPlayerById = function (id) {
         return this.arrayPlayers[id];
     };
-    cServerControlPlayers.prototype.onNewPlayerConected = function (socketPlayer, data) {
+    cServerControlPlayers.prototype.onNewPlayerConected = function (socketPlayer, data, playerData) {
+        if (playerData === void 0) { playerData = null; }
         var idPlayer = socketPlayer.id;
         this.playersOnline += 1;
-        this.socket.in(this.room).emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY, playersOnline: this.playersOnline });
+        socketPlayer.broadcast.in(this.room).emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY, playersOnline: this.playersOnline });
         //le mando al nuevo jugador todos los jugadores existentes
         for (var id in this.arrayPlayers) {
             this.arrayPlayers[id].sendPlayerToNewPlayer(socketPlayer, this.playersOnline);
         }
         // Add new player to the players array
-        this.arrayPlayers[idPlayer] = new cPlayer_1.cPlayer(socketPlayer, idPlayer, data.name, data.x, data.y, this.controlMonster);
+        if (playerData == null) {
+            this.arrayPlayers[idPlayer] = new cPlayer_1.cPlayer(socketPlayer, idPlayer, 'Guest', data.x, data.y, this.controlMonster);
+        }
+        else {
+            this.arrayPlayers[idPlayer] = playerData;
+        }
     };
     cServerControlPlayers.prototype.onPlayerDisconected = function (socketPlayer) {
+        var playerData = this.getPlayerById(socketPlayer.id);
         delete this.arrayPlayers[socketPlayer.id];
         this.socket.in(this.room).emit('remove player', { id: socketPlayer.id });
         this.playersOnline -= 1;
+        return playerData;
     };
-    cServerControlPlayers.prototype.youEquipItem = function (socket, data) {
+    cServerControlPlayers.prototype.youEquipItem = function (socketPlayer, data) {
+        console.log(socketPlayer.id);
         // Find player in array
-        var player = this.getPlayerById(socket.id);
+        var player = this.getPlayerById(socketPlayer.id);
         // Player not found
         if (player == undefined) {
-            console.log('Player not found: ' + socket.id);
+            console.log('Player not found: ' + socketPlayer.id);
             return;
         }
         player.equipItems(data);
@@ -134,16 +143,16 @@ var cServerControlPlayers = (function () {
     cServerControlPlayers.prototype.randomIntFromInterval = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     };
-    cServerControlPlayers.prototype.playerDie = function (socket, data) {
-        var player = this.getPlayerById(socket.id);
+    cServerControlPlayers.prototype.playerDie = function (socketPlayer, data) {
+        var player = this.getPlayerById(socketPlayer.id);
         //primero envio al que mato su kill
         if (player != null) {
             var playerKill = this.getPlayerById(data.idPlayerKill);
             if (playerKill != null) {
-                this.socket.in(this.room).emit('player die', { id: socket.id, idPlayerThatKill: playerKill.playerId, name: player.playerName, tileX: this.startTileX, tileY: this.startTileY });
+                this.socket.in(this.room).emit('player die', { id: socketPlayer.id, idPlayerThatKill: playerKill.playerId, name: player.playerName, tileX: this.startTileX, tileY: this.startTileY });
             }
             else {
-                this.socket.in(this.room).emit('player die', { id: socket.id, name: 'Monster', tileX: this.startTileX, tileY: this.startTileY });
+                this.socket.in(this.room).emit('player die', { id: socketPlayer.id, name: 'Monster', tileX: this.startTileX, tileY: this.startTileY });
             }
         }
     };

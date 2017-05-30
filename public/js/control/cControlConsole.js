@@ -30,8 +30,8 @@ var cControlConsole = (function () {
         var messagesToShow = Math.min(maxMessages, this.arrayMessages.length);
         for (var i = 0; i < messagesToShow; i++) {
             var newMessage = this.arrayMessages[i];
-            var newText = this.controlGame.game.add.text(10, this.controlGame.game.height - 25 - i * messageHeight, newMessage.message, newMessage.getStyle());
-            newText.fixedToCamera = true;
+            var newText = this.controlGame.game.add.text(-985, this.controlGame.game.height - 25 - i * messageHeight, newMessage.message, newMessage.getStyle());
+            this.controlGame.spriteInterfaz.addChild(newText);
             this.arrayPhaserTexts.push(newText);
         }
     };

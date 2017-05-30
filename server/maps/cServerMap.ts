@@ -18,7 +18,12 @@ export class cServerMap {
         //lets add the portals to the map
         if (JSONMapData.portals != undefined) {
             JSONMapData.portals.forEach (portal => {
-                this.arrayPortals.push(new cServerPortals(portal.idPortal, portal.x, portal.y))
+                this.arrayPortals.push(new cServerPortals(
+                    portal.idPortal, 
+                    portal.x, 
+                    portal.y,
+                    portal.newMapTileX,
+                    portal.newMapTileY))
             });
         }
 

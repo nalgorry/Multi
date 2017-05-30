@@ -40,7 +40,7 @@ export class cServerControlMaps {
        //lets create the control componentes of the map
        var controlPlayers = new cServerControlPlayers(this.socket, 'room' + mapData.id );
        var controlItems = new cServerControlItems(this.socket,'room' + mapData.id);
-       var controlMonsters = new cServerControlMonster(this.socket,'room' + mapData.id, controlPlayers,controlItems, mapData.monsterNumber);
+       var controlMonsters = new cServerControlMonster(this.socket,'room' + mapData.id, controlPlayers,controlItems, mapData.monsterNumber, JSONmapData.file);
        controlPlayers.controlMonster = controlMonsters;
 
        //stored them in the array
@@ -92,11 +92,11 @@ export class cServerControlMaps {
         if (newRoom != controlPlayers.room) {
             
             //remove the player for the current room
-            controlPlayers.onPlayerDisconected(socketPlayer);
+            var dataPlayer = controlPlayers.onPlayerDisconected(socketPlayer); //this give you the data of the player
             socketPlayer.leave(controlPlayers.room);
 
             //lets get the controler of the new room  and conect the player
-            this.playerEnterMap(socketPlayer, data, data.idPortal);
+            this.playerEnterMap(socketPlayer, data, data.idPortal, dataPlayer);
 
             //lets update the array of where is every player
             this.arrayPlayersMap[socketPlayer.id] = data.idPortal;
@@ -110,7 +110,7 @@ export class cServerControlMaps {
 
     }
 
-    private playerEnterMap(socketNewPlayer, data, mapNumber:enumMapNames) {
+    private playerEnterMap(socketNewPlayer, data, mapNumber:enumMapNames, playerData = null) {
 
         //this make the socket join the principal map 
         socketNewPlayer.join('room' + mapNumber);
@@ -121,7 +121,8 @@ export class cServerControlMaps {
         var controlItems:cServerControlItems = this.arrayControlItems[mapNumber];
 
         //we send all the data to the player
-        controlPlayers.onNewPlayerConected(socketNewPlayer, data)    
+        controlPlayers.onNewPlayerConected(socketNewPlayer, data, playerData)
+
         controlMonsters.onNewPlayerConected(socketNewPlayer);
         controlItems.onNewPlayerConected(socketNewPlayer);
 
@@ -140,7 +141,6 @@ export class cServerControlMaps {
 
         var portals = mapData.arrayPortals;
 
-        console.log(portals);
         socketNewPlayer.emit('new portals', portals);
 
     } 
@@ -152,12 +152,12 @@ export class cServerControlMaps {
 
     }
 
-    public onPlayerDisconnected(socketPlayer) {
+    public onPlayerDisconnected(socketPlayer: SocketIO.Socket) {
 
         console.log('Player has disconnected: ' + socketPlayer.id)
 
         var controlPlayers:cServerControlPlayers = this.getControlPlayer(socketPlayer.id);
-        controlPlayers.onPlayerDisconected(this);
+        controlPlayers.onPlayerDisconected(socketPlayer);
 
         //delete the player for the array of conected players
         delete this.arrayPlayersMap[socketPlayer.id];

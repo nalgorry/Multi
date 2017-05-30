@@ -1,13 +1,13 @@
 {   "mapData": [
     {"id": 1, "name": "principalMap", "file": "principalMap.json", "monsterNumber": 0,
       "portals" : [
-          {"idPortal": 2, "x": 40, "y": 40 },
-          {"idPortal": 2, "x": 20, "y": 20 }
+          {"idPortal": 2, "x": 30, "y": 30, "newMapTileX":41, "newMapTileY":63 },
+          {"idPortal": 2, "x": 20, "y": 20, "newMapTileX":25, "newMapTileY":25 }
 
       ]  },
-    {"id": 2, "name": "firstMap", "file": "firstMap.json", "monsterNumber": 50,
+    {"id": 2, "name": "firstMap", "file": "firstMap.json", "monsterNumber": 10,
     "portals" : [
-          {"idPortal": 1, "x": 55, "y": 50 }
+          {"idPortal": 1, "x": 50, "y": 63, "newMapTileX":35, "newMapTileY":35 }
       ]}
 ]
 }

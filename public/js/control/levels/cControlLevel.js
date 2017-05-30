@@ -130,10 +130,10 @@ var cControlLevel = (function () {
     };
     cControlLevel.prototype.createInterfaceItems = function () {
         //creo el texto 
-        this.textLevel = this.controlGame.game.add.text(1162, 23, this.playerLevel.toString(), this.styleText);
-        this.textLevel.fixedToCamera = true;
+        this.textLevel = this.controlGame.game.add.text(158, 23, this.playerLevel.toString(), this.styleText);
+        this.controlGame.spriteInterfaz.addChild(this.textLevel);
         //creo la barra de progreso de la exp
-        var barWidth = 11;
+        var barWidth = 9;
         var barHeight = 31;
         var gameWidth = this.controlGame.game.width;
         var bitmapEnergia = this.controlGame.game.add.bitmapData(barWidth, barHeight);
@@ -141,9 +141,9 @@ var cControlLevel = (function () {
         bitmapEnergia.ctx.rect(0, 0, barWidth, barHeight);
         bitmapEnergia.ctx.fillStyle = '#cc33cc';
         bitmapEnergia.ctx.fill();
-        this.expBar = this.controlGame.game.add.sprite(gameWidth - 8, 46, bitmapEnergia);
-        this.expBar.anchor.setTo(1);
-        this.expBar.fixedToCamera = true;
+        this.expBar = this.controlGame.game.add.sprite(182, 46, bitmapEnergia);
+        this.expBar.anchor.setTo(0, 1);
+        this.controlGame.spriteInterfaz.addChild(this.expBar);
     };
     cControlLevel.prototype.ResizeExpBar = function () {
         var expToNextLevel = this.arrayExpLevel[this.playerLevel - 1];

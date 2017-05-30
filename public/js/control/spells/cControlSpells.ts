@@ -28,9 +28,8 @@ class cControlSpells {
 
             this.allSpells = new cDefinitionSpells(this.controlGame); 
 
-            this.createnumSpells();
-
             this.iniciatenumSpellsystem();
+            this.createnumSpells();
 
     }
 
@@ -198,6 +197,9 @@ class cControlSpells {
      
         //seleciono el hechizo uno por defecto
         this.selSpell = newSpell;
+        console.log(newSpell);
+        this.borderSpell.x = newSpell.spellSprite.x + newSpell.spellSprite.width/2;
+        this.borderSpell.y = newSpell.spellSprite.y + newSpell.spellSprite.height/2;
 
         //hechizo 2
         var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.CriticalBall];

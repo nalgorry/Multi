@@ -19,8 +19,8 @@ var cControlChat = (function () {
         });
         this.inputTextChat.focusOutOnEnter = true;
         this.inputTextChat.blockInput = true;
-        this.inputTextChat.fixedToCamera = true;
-        this.inputTextChat.cameraOffset.setTo(310, 630);
+        this.controlGame.spriteInterfaz.addChild(this.inputTextChat);
+        this.inputTextChat.position.set(-690, 625);
         Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress, this);
         Fabrique.Plugins.InputField.onChatFocus.add(this.chatFocus, this);
         //registro el evento del teclado

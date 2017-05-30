@@ -62,7 +62,7 @@ var cBasicActor = (function () {
         //var a = Phaser.Animation.generateFrameNames('Idle_right_',0,5,'.png');
         //pjFull.animations.add('test',a,20,true);
         //pjFull.animations.play('test',10,true);
-        //sprite del jugador, aca se  cargan todas las partes del jugador
+        //sprite del jugador, aca se  cargan todas las partes del jugador        
         this.playerSprite = this.controlGame.game.add.sprite(startTileX * this.controlGame.gridSize, startTileY * this.controlGame.gridSize);
         this.playerSprite.anchor.set(0.5, 1);
         this.playerSprite.x += this.playerSprite.width / 2;

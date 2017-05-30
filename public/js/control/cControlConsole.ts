@@ -52,9 +52,9 @@ class cControlConsole {
 
             var newMessage:cConsoleMessage = this.arrayMessages[i];
 
-            var newText:Phaser.Text = this.controlGame.game.add.text(10, this.controlGame.game.height - 25 - i * messageHeight ,
+            var newText:Phaser.Text = this.controlGame.game.add.text(-985, this.controlGame.game.height - 25 - i * messageHeight ,
                 newMessage.message,newMessage.getStyle());
-            newText.fixedToCamera = true;
+            this.controlGame.spriteInterfaz.addChild(newText);
 
             this.arrayPhaserTexts.push(newText);
 

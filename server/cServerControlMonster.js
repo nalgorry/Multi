@@ -1,18 +1,19 @@
 "use strict";
 var cServerMonster_1 = require('./cServerMonster');
 var cServerControlMonster = (function () {
-    function cServerControlMonster(socket, room, controlPlayer, controlItems, monsterNumber) {
+    function cServerControlMonster(socket, room, controlPlayer, controlItems, monsterNumber, mapName) {
         this.socket = socket;
         this.room = room;
         this.controlPlayer = controlPlayer;
         this.controlItems = controlItems;
         this.monsterNumber = monsterNumber;
+        this.mapName = mapName;
         this.nextIdMonster = 0;
         this.mapSizeX = 70;
         this.mapSizeY = 50; //to avoid monster in the city
         this.arrayMonster = [];
         //get the tiles where monsters can not move
-        this.getMapHitTest();
+        this.getMapHitTest(mapName);
         //creo los primeros monters :)
         for (var i = 1; i <= monsterNumber; i++) {
             var randmType = this.randomIntFromInterval(1, 2);
@@ -26,14 +27,14 @@ var cServerControlMonster = (function () {
         this.createNewMonster(this.randomIntFromInterval(0, this.mapSizeX), this.randomIntFromInterval(0, this.mapSizeY), 5 /* Cosmic */, true);
         this.createNewMonster(this.randomIntFromInterval(0, this.mapSizeX), this.randomIntFromInterval(0, this.mapSizeY), 5 /* Cosmic */, true);
     }
-    cServerControlMonster.prototype.getMapHitTest = function () {
+    cServerControlMonster.prototype.getMapHitTest = function (mapFile) {
         //lets get the file with the map to avoid monster to hit the water
         var fs = require('fs');
         //to make it work local and in heroku 
-        var file = "public/assets/maps/principalMap.json";
+        var file = "public/assets/maps/" + mapFile;
         if (!fs.existsSync(file)) {
             console.log("File not found");
-            file = "../public/assets/maps/principalMap.json";
+            file = "../public/assets/maps/" + mapFile;
         }
         var mapData = JSON.parse(fs.readFileSync(file, 'utf8'));
         this.arrayMonsterHit = new Array();

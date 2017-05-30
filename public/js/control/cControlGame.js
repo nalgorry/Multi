@@ -60,7 +60,7 @@ var cControlGame = (function () {
         this.depthGroup.forEach(this.ObjectsConfiguration, this);
     };
     //lets prepare to reset the map
-    cControlGame.prototype.resetMap = function () {
+    cControlGame.prototype.resetMap = function (newTileX, newTileY) {
         //first we need to clean all the objects in the actual map
         this.groupMapLayers.destroy();
         this.depthGroup.destroy();
@@ -70,7 +70,7 @@ var cControlGame = (function () {
         //lets restart all the portals
         this.controlPlayer.controlPortals.resetPortals();
         //lets restart the player
-        this.controlPlayer.startActor(50, 50);
+        this.controlPlayer.startActor(newTileX, newTileY);
         this.controlPlayer.startPlayerGraphics();
     };
     cControlGame.prototype.changeMap = function (data) {

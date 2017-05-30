@@ -40,7 +40,6 @@ var cSpell = (function () {
         animation.loop = false;
     };
     cSpell.prototype.iniciateSpell = function (spellPos, spellNumber) {
-        console.log(this.controlGame);
         this.spellSprite = this.controlGame.game.add.sprite(spellPos.x, spellPos.y, 'spells', this.posInSpritesheet);
         this.controlGame.spriteInterfaz.addChild(this.spellSprite);
         this.spellSprite.inputEnabled = true;

@@ -15,7 +15,7 @@ export class cPlayer {
     public protectedField:boolean = false;
     public weakEfect:boolean = false;
 
-    constructor(public socket:SocketIO.Server ,
+    constructor(public socket:SocketIO.Socket ,
         public playerId:string,
         public playerName:string, 
         public x:number, 
@@ -23,9 +23,9 @@ export class cPlayer {
         public controlMonster:cServerControlMonster) {
     }
 
-    public sendPlayerToNewPlayer(socket:SocketIO.Server, playersOnline) {
-        socket.emit('new player', {id: this.playerId, 
-      x: this.x, y: this.y, name:this.playerName, playersOnline: playersOnline})
+    public sendPlayerToNewPlayer(socketPlayer:SocketIO.Socket, playersOnline) {
+        socketPlayer.emit('new player', {id: this.playerId, 
+      startTileX: this.x, startTileY: this.y, name:this.playerName, playersOnline: playersOnline})
     }
 
     public calculateDamage(damage:number):number {

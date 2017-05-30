@@ -16,12 +16,13 @@ export class cServerControlMonster {
     public room: string,
     public controlPlayer:cServerControlPlayers, 
     public controlItems:cServerControlItems,
-    private monsterNumber:number) {
+    private monsterNumber:number,
+    private mapName:string) {
 
         this.arrayMonster = [];
 
         //get the tiles where monsters can not move
-        this.getMapHitTest() 
+        this.getMapHitTest(mapName) 
         
         //creo los primeros monters :)
 
@@ -43,17 +44,17 @@ export class cServerControlMonster {
 
     }
 
-    public getMapHitTest() {
+    public getMapHitTest(mapFile:string) {
 
         //lets get the file with the map to avoid monster to hit the water
         var fs = require('fs');
         
 
         //to make it work local and in heroku 
-        var file = "public/assets/maps/principalMap.json"
+        var file = "public/assets/maps/" + mapFile
         if(!fs.existsSync(file)) {
             console.log("File not found");
-            file = "../public/assets/maps/principalMap.json"
+            file = "../public/assets/maps/" + mapFile
         }
 
         var mapData = JSON.parse(fs.readFileSync(file, 'utf8'));

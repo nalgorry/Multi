@@ -111,7 +111,7 @@ class cControlGame {
     }
 
     //lets prepare to reset the map
-    public resetMap() {
+    public resetMap(newTileX, newTileY) {
         
         //first we need to clean all the objects in the actual map
         this.groupMapLayers.destroy();
@@ -125,7 +125,7 @@ class cControlGame {
         this.controlPlayer.controlPortals.resetPortals();
 
         //lets restart the player
-        this.controlPlayer.startActor(50,50);
+        this.controlPlayer.startActor(newTileX, newTileY);
         this.controlPlayer.startPlayerGraphics();
 
     }

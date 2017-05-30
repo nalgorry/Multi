@@ -61,6 +61,8 @@ var cControlPlayer = (function (_super) {
         this.controlLevel = new cControlLevel(this.controlGame);
         //lets start the player with all the animations
         this.startPlayerGraphics();
+        //lets put the name 'guest' for now
+        this.setNameText("Guest");
         //controlo el movimiento del jugador
         var W = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
         var A = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.A);

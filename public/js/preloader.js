@@ -32,7 +32,7 @@ var preloader = (function (_super) {
         this.game.load.image('monster_5', 'assets/cosmic_monster.png');
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200, 675);
         this.game.load.spritesheet('weapon1', 'assets/weapon1.png', 120, 120);
-        this.game.load.spritesheet('portal', 'assets/portal.png', 70, 116);
+        this.game.load.spritesheet('portal', 'assets/portal.png', 128, 64);
         this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
         this.game.load.spritesheet('items', 'assets/items.png', 40, 40);
         this.game.load.image('atackDefense', 'assets/atack_defense.png');

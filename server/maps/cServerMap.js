@@ -11,7 +11,7 @@ var cServerMap = (function () {
         //lets add the portals to the map
         if (JSONMapData.portals != undefined) {
             JSONMapData.portals.forEach(function (portal) {
-                _this.arrayPortals.push(new cServerPortals_1.cServerPortals(portal.idPortal, portal.x, portal.y));
+                _this.arrayPortals.push(new cServerPortals_1.cServerPortals(portal.idPortal, portal.x, portal.y, portal.newMapTileX, portal.newMapTileY));
             });
         }
     }

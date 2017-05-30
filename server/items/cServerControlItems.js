@@ -14,7 +14,7 @@ var cServerControlItems = (function () {
     cServerControlItems.prototype.createInitialItems = function (socket) {
         for (var i = 0; i < 3; i++) {
             var itemId = "i" + this.nextIdItems;
-            this.createNewItem(i, 10, 30 + i, 30, false, socket);
+            this.createNewItem(i, 10, 33 + i, 31, false, socket);
         }
     };
     cServerControlItems.prototype.dropItemToFloor = function (socket, data) {

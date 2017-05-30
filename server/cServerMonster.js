@@ -60,7 +60,6 @@ var cServerMonster = (function () {
             tileX: this.tileX,
             tileY: this.tileY,
             monsterType: this.monsterType };
-        console.log(this.room);
         this.socket.in(this.room).emit('new Monster', monsterdata);
     };
     cServerMonster.prototype.emitMonsterToNewPlayer = function (socketPlayer) {
@@ -69,7 +68,6 @@ var cServerMonster = (function () {
             tileX: this.tileX,
             tileY: this.tileY,
             monsterType: this.monsterType };
-        console.log(this.room);
         socketPlayer.emit('new Monster', monsterdata);
     };
     cServerMonster.prototype.monsterMove = function () {

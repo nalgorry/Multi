@@ -67,8 +67,6 @@ class cSpell {
 
     public iniciateSpell(spellPos:Phaser.Point,spellNumber:number) {
 
-        console.log(this.controlGame);
-
         this.spellSprite = this.controlGame.game.add.sprite(spellPos.x, spellPos.y, 'spells',this.posInSpritesheet);
         this.controlGame.spriteInterfaz.addChild(this.spellSprite);
         this.spellSprite.inputEnabled = true;

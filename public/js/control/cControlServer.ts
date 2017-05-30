@@ -134,7 +134,7 @@ class cControlServer {
         this.controlPlayer.idServer = "/#" + this.socket.id;
         this.socket.emit('new player', { x: this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.x), 
             y: this.controlGame.layer.getTileY(this.controlPlayer.playerSprite.y),
-            name: 'Invitado' });
+            name: 'Guest' });
 
     }
 

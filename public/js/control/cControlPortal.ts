@@ -18,7 +18,14 @@ class cControlPortal {
     public newPortals(data) {
         
         data.forEach(portalData => {
-            var portal = new cPortal(this.controlGame, portalData.idPortal, portalData.x, portalData.y);
+            var portal = new cPortal(
+                this.controlGame, 
+                portalData.idPortal, 
+                portalData.x, 
+                portalData.y,
+                portalData.newMapTileX,
+                portalData.newMapTileY);
+
             this.arrayPortals.push(portal);
         })
     }
@@ -29,15 +36,14 @@ class cControlPortal {
 
             if( (tileX == portal.tileX || tileX == portal.tileX ) && tileY  == portal.tileY ) {
 
-                console.log("entro a un portal")
                 this.controlGame.controlServer.socket.emit('enter portal', 
                     {
                         idPortal: portal.portalID, 
-                        name: 'Nuevo nombre', 
-                        x: 50, 
-                        y: 50
+                        name: this.controlGame.controlPlayer.textName.text, 
+                        x: portal.newMapTileX, 
+                        y: portal.newMapTileY
                     });
-                this.controlGame.resetMap();
+                this.controlGame.resetMap(portal.newMapTileX, portal.newMapTileY);
             }
         });
 
@@ -48,14 +54,22 @@ class cControlPortal {
 
 class cPortal {
 
-    constructor(public controlGame:cControlGame,public portalID:number, public tileX:number, public tileY:number) {
+    constructor(public controlGame:cControlGame,public portalID:number, public tileX:number, public tileY:number,
+        public newMapTileX:number, public newMapTileY:number) {
 
         var gridSize = this.controlGame.gridSize;
-        var sprite = this.controlGame.game.add.sprite(tileX * gridSize,tileY * gridSize,'portal');
+        var sprite = this.controlGame.game.add.sprite(tileX * gridSize + gridSize/2, tileY * gridSize - gridSize/2 ,'portal');
+        sprite.anchor.set(0.5);
+        
+        console.log(tileX * gridSize + gridSize/2);
+        console.log(tileY * gridSize - gridSize/2);
 
-        sprite.anchor.y = 1;
+        sprite.animations.add('portalOn', [1,2,3,4], 8, true);
+        sprite.animations.play('portalOn');
 
-        this.controlGame.depthGroup.add(sprite);      
+        
+
+        this.controlGame.depthGroup.add(sprite);     
 
     }
 

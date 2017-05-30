@@ -12,8 +12,8 @@ var cControlSpells = (function () {
         this.maxRangeX = 12;
         this.maxRangeY = 7;
         this.allSpells = new cDefinitionSpells(this.controlGame);
-        this.createnumSpells();
         this.iniciatenumSpellsystem();
+        this.createnumSpells();
     }
     cControlSpells.prototype.getSelActorID = function () {
         var id;
@@ -129,6 +129,9 @@ var cControlSpells = (function () {
         newSpell.signalSpellSel.add(this.spellClick, this);
         //seleciono el hechizo uno por defecto
         this.selSpell = newSpell;
+        console.log(newSpell);
+        this.borderSpell.x = newSpell.spellSprite.x + newSpell.spellSprite.width / 2;
+        this.borderSpell.y = newSpell.spellSprite.y + newSpell.spellSprite.height / 2;
         //hechizo 2
         var newSpell = this.allSpells.arraySpells[2 /* CriticalBall */];
         newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 1, 205), 2);

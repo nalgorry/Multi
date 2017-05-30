@@ -18,7 +18,7 @@ export class cServerControlPlayers {
 
     }
 
-    public movePlayer(socketPlayer, data) {
+    public movePlayer(socketPlayer:SocketIO.Socket, data) {
          
          // Find player in array
         var movePlayer = this.getPlayerById(socketPlayer.id)
@@ -33,7 +33,7 @@ export class cServerControlPlayers {
         movePlayer.y = data.y;
         movePlayer.dirMov = data.dirMov;
 
-        this.socket.in(this.room).emit('move player', {id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y,dirMov: movePlayer.dirMov })
+        socketPlayer.broadcast.in(this.room).emit('move player', {id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y,dirMov: movePlayer.dirMov })
     }
 
     public levelUp(socket:any, data) {
@@ -53,12 +53,12 @@ export class cServerControlPlayers {
         return this.arrayPlayers[id];
     }
 
-    public onNewPlayerConected(socketPlayer, data) {
+    public onNewPlayerConected(socketPlayer:SocketIO.Socket, data, playerData:cPlayer = null) {
 
         var idPlayer = socketPlayer.id;
         this.playersOnline += 1;
 
-        this.socket.in(this.room).emit('new player', 
+        socketPlayer.broadcast.in(this.room).emit('new player', 
             {id: idPlayer, name:data.name, startTileX: this.startTileX, startTileY:this.startTileY, playersOnline: this.playersOnline})
         
         //le mando al nuevo jugador todos los jugadores existentes
@@ -67,26 +67,35 @@ export class cServerControlPlayers {
         }
 
         // Add new player to the players array
-        this.arrayPlayers[idPlayer] = new cPlayer(socketPlayer, idPlayer, data.name, 
-            data.x, data.y, this.controlMonster)
+        if (playerData == null) {
+            this.arrayPlayers[idPlayer] = new cPlayer(socketPlayer, idPlayer, 'Guest', 
+                data.x, data.y, this.controlMonster)
+        } else { //if the player already exist in other map, lets copy it here 
+            this.arrayPlayers[idPlayer] = playerData
+        }  
+}
 
-    }
+    public onPlayerDisconected(socketPlayer:SocketIO.Socket):cPlayer{
+        
+        var playerData = this.getPlayerById(socketPlayer.id);
 
-    public onPlayerDisconected(socketPlayer){
-        delete this.arrayPlayers[socketPlayer.id];
+        delete this.arrayPlayers[socketPlayer.id];      
         
         this.socket.in(this.room).emit('remove player', {id: socketPlayer.id})
         this.playersOnline -= 1;
+
+        return playerData;
     }
 
-    public youEquipItem(socket:any, data) {
+    public youEquipItem(socketPlayer:SocketIO.Socket, data) {
     
+        console.log(socketPlayer.id);
          // Find player in array
-        var player = this.getPlayerById(socket.id)
+        var player = this.getPlayerById(socketPlayer.id)
 
         // Player not found
         if (player == undefined) {
-            console.log('Player not found: ' + socket.id)
+            console.log('Player not found: ' + socketPlayer.id)
             return
         }
 
@@ -94,7 +103,7 @@ export class cServerControlPlayers {
 
     }
 
-    public youChange(socketPlayer, data) {
+    public youChange(socketPlayer:SocketIO.Socket, data) {
 
         //lets see if player changes its name 
         if(data.name != null) {
@@ -107,7 +116,7 @@ export class cServerControlPlayers {
         }
     }
 
-    public spellCast(socketPlayer, data) {
+    public spellCast(socketPlayer:SocketIO.Socket, data) {
         
         data.idPlayer = socketPlayer.id;
 
@@ -199,9 +208,9 @@ export class cServerControlPlayers {
     } 
 
 
-    public playerDie(socket, data) {        
+    public playerDie(socketPlayer:SocketIO.Socket, data) {        
 
-        var player:cPlayer = this.getPlayerById(socket.id);
+        var player:cPlayer = this.getPlayerById(socketPlayer.id);
 
         //primero envio al que mato su kill
         if (player != null) {
@@ -210,11 +219,11 @@ export class cServerControlPlayers {
 
             if (playerKill != null) {     //envio al que murio quien lo mato
 
-                this.socket.in(this.room).emit('player die', {id: socket.id, idPlayerThatKill: playerKill.playerId , name: player.playerName, tileX:this.startTileX, tileY: this.startTileY})
+                this.socket.in(this.room).emit('player die', {id: socketPlayer.id, idPlayerThatKill: playerKill.playerId , name: player.playerName, tileX:this.startTileX, tileY: this.startTileY})
 
             } else { //lo mato un monster, que cagada...
 
-                this.socket.in(this.room).emit('player die', {id: socket.id, name: 'Monster', tileX:this.startTileX, tileY: this.startTileY})
+                this.socket.in(this.room).emit('player die', {id: socketPlayer.id, name: 'Monster', tileX:this.startTileX, tileY: this.startTileY})
 
             }
 
