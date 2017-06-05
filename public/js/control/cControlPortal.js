@@ -8,13 +8,12 @@ var cControlPortal = (function () {
     };
     //this is get from the server
     cControlPortal.prototype.youEnterPortal = function (data) {
-        this.controlGame.changeMap(data);
     };
     //this is get from the server 
     cControlPortal.prototype.newPortals = function (data) {
         var _this = this;
         data.forEach(function (portalData) {
-            var portal = new cPortal(_this.controlGame, portalData.idPortal, portalData.x, portalData.y, portalData.newMapTileX, portalData.newMapTileY);
+            var portal = new cPortal(_this.controlGame, portalData.idPortal, portalData.x, portalData.y, portalData.newMapTileX, portalData.newMapTileY, portalData.mapName);
             _this.arrayPortals.push(portal);
         });
     };
@@ -29,19 +28,22 @@ var cControlPortal = (function () {
                     y: portal.newMapTileY
                 });
                 _this.controlGame.resetMap(portal.newMapTileX, portal.newMapTileY);
+                console.log(portal);
+                _this.controlGame.changeMap(portal.mapName);
             }
         });
     };
     return cControlPortal;
 }());
 var cPortal = (function () {
-    function cPortal(controlGame, portalID, tileX, tileY, newMapTileX, newMapTileY) {
+    function cPortal(controlGame, portalID, tileX, tileY, newMapTileX, newMapTileY, mapName) {
         this.controlGame = controlGame;
         this.portalID = portalID;
         this.tileX = tileX;
         this.tileY = tileY;
         this.newMapTileX = newMapTileX;
         this.newMapTileY = newMapTileY;
+        this.mapName = mapName;
         var gridSize = this.controlGame.gridSize;
         var sprite = this.controlGame.game.add.sprite(tileX * gridSize + gridSize / 2, tileY * gridSize - gridSize / 2, 'portal');
         sprite.anchor.set(0.5);

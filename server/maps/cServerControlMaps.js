@@ -21,6 +21,12 @@ var cServerControlMaps = (function () {
         this.mapsData.mapData.forEach(function (JSONmapData) {
             _this.initMap(JSONmapData);
         });
+        //lets set the map names to send to the players with the portals
+        this.arrayMapData.forEach(function (map) {
+            map.arrayPortals.forEach(function (portal) {
+                portal.mapName = _this.arrayMapData[portal.idPortal].mapName;
+            });
+        });
     }
     cServerControlMaps.prototype.initMap = function (JSONmapData) {
         //store the map data so we can use it later
@@ -73,9 +79,7 @@ var cServerControlMaps = (function () {
             //lets update the array of where is every player
             this.arrayPlayersMap[socketPlayer.id] = data.idPortal;
         }
-        //lets get the map data to send the info needed to the client
-        var mapData = this.arrayMapData[data.idPortal];
-        socketPlayer.emit('you enter portal', { idPortal: data.idPortal, x: data.x, y: data.y, mapName: mapData.name });
+        socketPlayer.emit('you enter portal', { idPortal: data.idPortal, x: data.x, y: data.y });
     };
     cServerControlMaps.prototype.playerEnterMap = function (socketNewPlayer, data, mapNumber, playerData) {
         if (playerData === void 0) { playerData = null; }

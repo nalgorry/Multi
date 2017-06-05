@@ -73,9 +73,9 @@ var cControlGame = (function () {
         this.controlPlayer.startActor(newTileX, newTileY);
         this.controlPlayer.startPlayerGraphics();
     };
-    cControlGame.prototype.changeMap = function (data) {
+    cControlGame.prototype.changeMap = function (mapName) {
         //restart the map with the new data
-        this.initMap(data.mapName);
+        this.initMap(mapName);
         //lets put all the elements of the map to the top again
         this.game.world.bringToTop(this.groupInterface);
         //lets put all the item elements to the top again

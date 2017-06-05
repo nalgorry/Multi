@@ -11,7 +11,7 @@ class cControlPortal {
 
     //this is get from the server
     public youEnterPortal(data) {
-        this.controlGame.changeMap(data);
+        
     }
 
     //this is get from the server 
@@ -24,7 +24,8 @@ class cControlPortal {
                 portalData.x, 
                 portalData.y,
                 portalData.newMapTileX,
-                portalData.newMapTileY);
+                portalData.newMapTileY,
+                portalData.mapName);
 
             this.arrayPortals.push(portal);
         })
@@ -44,6 +45,9 @@ class cControlPortal {
                         y: portal.newMapTileY
                     });
                 this.controlGame.resetMap(portal.newMapTileX, portal.newMapTileY);
+                console.log(portal);
+                this.controlGame.changeMap(portal.mapName);
+
             }
         });
 
@@ -55,7 +59,7 @@ class cControlPortal {
 class cPortal {
 
     constructor(public controlGame:cControlGame,public portalID:number, public tileX:number, public tileY:number,
-        public newMapTileX:number, public newMapTileY:number) {
+        public newMapTileX:number, public newMapTileY:number, public mapName) {
 
         var gridSize = this.controlGame.gridSize;
         var sprite = this.controlGame.game.add.sprite(tileX * gridSize + gridSize/2, tileY * gridSize - gridSize/2 ,'portal');
@@ -66,8 +70,6 @@ class cPortal {
 
         sprite.animations.add('portalOn', [1,2,3,4], 8, true);
         sprite.animations.play('portalOn');
-
-        
 
         this.controlGame.depthGroup.add(sprite);     
 

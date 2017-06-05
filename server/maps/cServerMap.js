@@ -5,7 +5,7 @@ var cServerMap = (function () {
         var _this = this;
         this.arrayPortals = [];
         this.id = JSONMapData.id;
-        this.name = JSONMapData.name;
+        this.mapName = JSONMapData.mapName;
         this.file = JSONMapData.file;
         this.monsterNumber = JSONMapData.monsterNumber;
         //lets add the portals to the map

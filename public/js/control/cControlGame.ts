@@ -130,9 +130,9 @@ class cControlGame {
 
     }
 
-    public changeMap(data) {
+    public changeMap(mapName) {
         //restart the map with the new data
-        this.initMap(data.mapName);
+        this.initMap(mapName);
 
         //lets put all the elements of the map to the top again
         this.game.world.bringToTop(this.groupInterface);

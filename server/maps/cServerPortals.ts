@@ -1,5 +1,7 @@
 export class cServerPortals {
 
+    public mapName:string
+
     constructor (
         public idPortal:number,
         public x:number,

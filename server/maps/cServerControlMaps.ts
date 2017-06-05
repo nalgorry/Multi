@@ -29,6 +29,13 @@ export class cServerControlMaps {
                 this.initMap(JSONmapData);
             });
 
+            //lets set the map names to send to the players with the portals
+            this.arrayMapData.forEach(map => {
+                map.arrayPortals.forEach (portal => {
+                    portal.mapName = this.arrayMapData[portal.idPortal].mapName;
+                })
+            })
+
         }   
 
     private initMap(JSONmapData) {
@@ -103,10 +110,7 @@ export class cServerControlMaps {
 
         }
 
-        //lets get the map data to send the info needed to the client
-        var mapData = this.arrayMapData[data.idPortal];
-        
-        socketPlayer.emit('you enter portal', {idPortal:data.idPortal, x:data.x, y:data.y, mapName:mapData.name });
+        socketPlayer.emit('you enter portal', {idPortal:data.idPortal, x:data.x, y:data.y});
 
     }
 
