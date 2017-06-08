@@ -1,44 +1,68 @@
-{"frames": [
+{"frames": {
 
+"arbol003.png":
 {
-	"filename": "arbol003.png",
-	"frame": {"x":0,"y":320,"w":80,"h":160},
+	"frame": {"x":1,"y":479,"w":64,"h":157},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":160},
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":2,"w":64,"h":157},
 	"sourceSize": {"w":80,"h":160}
 },
+"arbol004.png":
 {
-	"filename": "arbol004.png",
-	"frame": {"x":0,"y":160,"w":80,"h":160},
+	"frame": {"x":1,"y":157,"w":66,"h":159},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":160},
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":0,"w":66,"h":159},
 	"sourceSize": {"w":80,"h":160}
 },
+"arbol005.png":
 {
-	"filename": "arbol005.png",
-	"frame": {"x":0,"y":0,"w":80,"h":160},
+	"frame": {"x":1,"y":318,"w":65,"h":159},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":160},
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":0,"w":65,"h":159},
 	"sourceSize": {"w":80,"h":160}
 },
+"arbol006.png":
 {
-	"filename": "arbol006.png",
-	"frame": {"x":0,"y":480,"w":80,"h":120},
+	"frame": {"x":1,"y":35,"w":67,"h":120},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":120},
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":0,"w":67,"h":120},
 	"sourceSize": {"w":80,"h":120}
-}],
+},
+"arbol1.png":
+{
+	"frame": {"x":1,"y":733,"w":40,"h":144},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":16,"w":40,"h":144},
+	"sourceSize": {"w":40,"h":160}
+},
+"monumento.png":
+{
+	"frame": {"x":1,"y":638,"w":51,"h":93},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":51,"h":93},
+	"sourceSize": {"w":51,"h":93}
+},
+"roca1.png":
+{
+	"frame": {"x":1,"y":1,"w":80,"h":32},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":8,"w":80,"h":32},
+	"sourceSize": {"w":80,"h":40}
+}},
 "meta": {
-	"app": "http://www.texturepacker.com",
+	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "objects.png",
 	"format": "RGBA8888",
-	"size": {"w":80,"h":601},
+	"size": {"w":82,"h":878},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a4a7b0f740ffcb4d0630b09f3933916e$"
+	"smartupdate": "$TexturePacker:SmartUpdate:824e0498c5e119ff1c4824ba944196ce:7cfe98f211d98a31bfd4a3b8d78262ee:8d6d12ff4d5234f2a4b19e0a906dbf52$"
 }
 }

@@ -106,7 +106,7 @@ var cServerControlItems = (function () {
                 this.emitNewItem(item);
             }
         }
-        this.createInitialItems(socket);
+        //this.createInitialItems(socket);
     };
     cServerControlItems.prototype.getItemById = function (id) {
         return this.arrayItems[id];

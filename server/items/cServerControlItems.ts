@@ -151,7 +151,7 @@ export class cServerControlItems {
 
         }
 
-        this.createInitialItems(socket);
+        //this.createInitialItems(socket);
 
     }
 

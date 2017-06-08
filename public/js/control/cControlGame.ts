@@ -105,6 +105,7 @@ class cControlGame {
         this.map.createFromObjects('Objects', 2, 'objects', 'arbol004.png', true, true, this.depthGroup,undefined,false);
         this.map.createFromObjects('Objects', 3, 'objects', 'arbol005.png', true, true, this.depthGroup,undefined,false);
         this.map.createFromObjects('Objects', 4, 'objects', 'arbol006.png', true, true, this.depthGroup,undefined,false);
+        this.map.createFromObjects('Objects', 5, 'objects', 'monumento.png', true, true, this.depthGroup,undefined,false);
 
         //here we change the anchor of the object so it work ok, and we also include it in the groupMapObjects to be able to delete all the items.
         this.depthGroup.forEach(this.ObjectsConfiguration,this)
