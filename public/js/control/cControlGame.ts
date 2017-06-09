@@ -41,7 +41,7 @@ class cControlGame {
 
         //inicio parametros del juego
         this.gridSize = 40;
-        this.initMap('principalMap');
+        this.initMap('principalMap', enumMapNames.principalMap);
 
         //inicio las ayudas 
         //this.addTutorial(this.tutorialNumber);
@@ -76,7 +76,7 @@ class cControlGame {
 
     }
 
-    private initMap(mapName:string) {
+    private initMap(mapName:string, idMap:enumMapNames) {
         var tamanoMapa = 70;
 
         // Configuro el mundo para que sea centrado en el personaje
@@ -109,6 +109,56 @@ class cControlGame {
 
         //here we change the anchor of the object so it work ok, and we also include it in the groupMapObjects to be able to delete all the items.
         this.depthGroup.forEach(this.ObjectsConfiguration,this)
+
+        //create special map features (for example, texts, etc.)
+        this.createSpecialFeatures(idMap);
+    }
+
+    public createSpecialFeatures(mapId:enumMapNames) {
+
+        switch (mapId) {
+            case enumMapNames.tutorialMap:
+                
+                var text = 'It was a quiet Land...'
+                this.game.add.bitmapText(5 * this.gridSize, 65 * this.gridSize, 'gotic', text , 16);
+                var text = 'Suddenly, lots of crystals rocks appear in the Rein…'
+                this.game.add.bitmapText(5 * this.gridSize, 66 * this.gridSize, 'gotic', text, 16);
+                var text = 'Quickly we discover that we can use the crystals\nto update ours homes, clothes and weapons.'
+                this.game.add.bitmapText(18 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+
+                var text = 'But something dark were inside the crystals… \n with time each town chose a color of crystal and \n start to reject all the towns that don’t follow the same color.'
+                this.game.add.bitmapText(33 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+                
+                var text = 'War was inevitable… \n you need to be prepared.';
+                this.game.add.bitmapText(55 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+
+                var text = 'You have \n three defensive skills \n and \n three offensive skills.';
+                this.game.add.bitmapText(50 * this.gridSize, 50 * this.gridSize, 'gotic', text, 16);
+
+                var text = 'To use them\n use numbers 1 to 6, \n or click over the \n spells in the right side.';
+                this.game.add.bitmapText(50 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
+
+                var text = 'Use yours spells\nto attack!';
+                this.game.add.bitmapText(61 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
+
+                var text = 'To successs you need: \n\n Life \n\n Mana \n\n and Energy';
+                this.game.add.bitmapText(50 * this.gridSize, 40 * this.gridSize, 'gotic', text, 16);
+
+                var text = 'You can focus \n in one clicking \n them  At the left. \n The focus resource \n Recover much faster.';
+                this.game.add.bitmapText(60.2 * this.gridSize, 40 * this.gridSize, 'gotic', text, 16);
+
+                var text = 'Items are really \n important to success. \n You need to be well \n equipped to survive'
+                this.game.add.bitmapText(50 * this.gridSize, 26 * this.gridSize, 'gotic', text, 16);
+
+                var text = "Cristals not only bring new resources,\nalso bring new monsters that want to destroy everything.";
+                this.game.add.bitmapText(43 * this.gridSize, 4 * this.gridSize, 'gotic', text, 16);
+
+                break;
+        
+            default:
+                break;
+        }
+
     }
 
     //lets prepare to reset the map
@@ -131,9 +181,9 @@ class cControlGame {
 
     }
 
-    public changeMap(mapName) {
+    public changeMap(mapName, idMap:enumMapNames) {
         //restart the map with the new data
-        this.initMap(mapName);
+        this.initMap(mapName, idMap);
 
         //lets put all the elements of the map to the top again
         this.game.world.bringToTop(this.groupInterface);

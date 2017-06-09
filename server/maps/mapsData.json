@@ -8,7 +8,9 @@
           {"idPortal": 2, "x": 51, "y": 24, "newMapTileX":40, "newMapTileY":25 },
           {"idPortal": 2, "x": 51, "y": 22, "newMapTileX":40, "newMapTileY":25 },
 
-          {"idPortal": 3, "x": 33, "y": 28, "newMapTileX":4, "newMapTileY":63 }
+          {"idPortal": 3, "x": 33, "y": 28, "newMapTileX":50, "newMapTileY":50 },
+
+          {"idPortal": 3, "x": 35, "y": 22, "newMapTileX":4, "newMapTileY":63 }
 
 
       ]  },

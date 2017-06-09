@@ -29,7 +29,7 @@ var cControlPortal = (function () {
                 });
                 _this.controlGame.resetMap(portal.newMapTileX, portal.newMapTileY);
                 console.log(portal);
-                _this.controlGame.changeMap(portal.mapName);
+                _this.controlGame.changeMap(portal.mapName, portal.portalID);
             }
         });
     };

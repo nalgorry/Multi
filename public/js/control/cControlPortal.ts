@@ -46,7 +46,7 @@ class cControlPortal {
                     });
                 this.controlGame.resetMap(portal.newMapTileX, portal.newMapTileY);
                 console.log(portal);
-                this.controlGame.changeMap(portal.mapName);
+                this.controlGame.changeMap(portal.mapName, portal.portalID);
 
             }
         });
