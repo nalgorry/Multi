@@ -35,7 +35,7 @@ var cServerControlMaps = (function () {
         //lets create the control componentes of the map
         var controlPlayers = new cControlServerPlayers_1.cServerControlPlayers(this.socket, 'room' + mapData.id);
         var controlItems = new cServerControlItems_1.cServerControlItems(this.socket, 'room' + mapData.id);
-        var controlMonsters = new cServerControlMonster_1.cServerControlMonster(this.socket, 'room' + mapData.id, controlPlayers, controlItems, mapData.monsterNumber, JSONmapData.file);
+        var controlMonsters = new cServerControlMonster_1.cServerControlMonster(this.socket, 'room' + mapData.id, controlPlayers, controlItems, mapData.monsterNumber, mapData.file, mapData.arrayMonster);
         controlPlayers.controlMonster = controlMonsters;
         //stored them in the array
         this.arrayControlPlayers[mapData.id] = controlPlayers;

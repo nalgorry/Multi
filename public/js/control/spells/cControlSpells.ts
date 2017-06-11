@@ -291,7 +291,7 @@ class cControlSpells {
                 
                 this.selActorType = enumSelectedActor.thisPlayer;
                 this.selActor = this.controlGame.controlPlayer;
-                this.drawFocusRect(this.controlGame.controlPlayer.playerSprite);
+                this.drawFocusRect(this.controlGame.controlPlayer.playerSprite,true);
 
                  spellAllowed = true;
         }

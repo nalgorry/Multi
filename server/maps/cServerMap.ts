@@ -1,8 +1,10 @@
 import {cServerPortals} from './cServerPortals';
+import {cServerMonster} from './../cServerMonster';
 
 export class cServerMap {
 
     public arrayPortals:cServerPortals[] = [];
+    public arrayMonster:cServerMonster[] =[];
     public id:number;
     public mapName:string; 
     public file:string; 
@@ -27,8 +29,31 @@ export class cServerMap {
                     portal.newMapTileY
                     ))
             });
+
+        //lets get the fixed moster for the map
+        if (JSONMapData.monsters != undefined) {
+            JSONMapData.monsters.forEach (monsterData => {
+
+                var monster = new cServerMonster ();
+
+                monster.defineMonster(
+                    monsterData.monsterType,
+                    monsterData.monsterRespawn,
+                    monsterData.isPublic,
+                    monsterData.tileX,
+                    monsterData.tileY
+                );
+
+                this.arrayMonster.push(monster);
+                
+                console.log(this.arrayMonster);
+
+                
+            });
         }
 
     }
+
+}
 
 }

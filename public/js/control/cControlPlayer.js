@@ -16,15 +16,15 @@ var cControlPlayer = (function (_super) {
     __extends(cControlPlayer, _super);
     function cControlPlayer(controlGame) {
         _super.call(this, controlGame);
-        this.speedplayer = 150;
+        this.speedplayer = 180;
         this.lastMoveX = 0;
         this.lastMoveY = 0;
         this.seMueveX = false;
         this.seMueveY = false;
         this.playerIdle = false;
         this.lastAnimation = move.idleRight;
-        this.startTileX = 34;
-        this.startTileY = 27;
+        this.startTileX = 24;
+        this.startTileY = 24;
         this.dirMovimiento = move.right;
         this.monstersKills = 0;
         this.gridSize = controlGame.gridSize;

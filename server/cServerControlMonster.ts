@@ -17,14 +17,15 @@ export class cServerControlMonster {
     public controlPlayer:cServerControlPlayers, 
     public controlItems:cServerControlItems,
     private monsterNumber:number,
-    private mapName:string) {
+    private mapName:string,
+    private arrayMonsters:cServerMonster[]) {
 
         this.arrayMonster = [];
 
         //get the tiles where monsters can not move
         this.getMapHitTest(mapName) 
         
-        //creo los primeros monters :)
+        //create the random monsters.
 
        for (var i=1; i<=monsterNumber; i++) {
 
@@ -34,13 +35,12 @@ export class cServerControlMonster {
                var monsterType = enumMonsters.Wolf
            }
             
-           this.createNewMonster(this.randomIntFromInterval(0,this.mapSizeX), this.randomIntFromInterval(0,this.mapSizeY), monsterType, true);
+           this.createNewMonster(undefined, undefined, monsterType, true);
        }
 
-       //creo 2 mounstros COSMICO
-       this.createNewMonster(this.randomIntFromInterval(0,this.mapSizeX), this.randomIntFromInterval(0,this.mapSizeY), enumMonsters.Cosmic, true);
-       this.createNewMonster(this.randomIntFromInterval(0,this.mapSizeX), this.randomIntFromInterval(0,this.mapSizeY), enumMonsters.Cosmic, true);
-
+       arrayMonsters.forEach(monster => {
+           this.createNewMonster(monster.tileX, monster.tileY, monster.monsterType, monster.monsterRespawn);
+       })
 
     }
 
@@ -60,7 +60,7 @@ export class cServerControlMonster {
         var mapData = JSON.parse(fs.readFileSync(file, 'utf8'));
 
         this.arrayMonsterHit = new Array();
-        this.arrayMonsterHit = mapData.layers[3].data
+        this.arrayMonsterHit = mapData.layers[4].data
 
     }
 
@@ -85,9 +85,10 @@ export class cServerControlMonster {
 
     public createNewMonster(tileX:number, tileY:number, monsterType:enumMonsters, monsterRespawn:boolean) {
         
-        var newMonster = new cServerMonster(this.controlItems, this.room , this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
+        var newMonster = new cServerMonster();
 
-        newMonster.startMonster("m" + this.nextIdMonster, monsterType, this.socket, this.controlPlayer, monsterRespawn, true, tileX, tileY);
+        newMonster.defineMonster(monsterType,monsterRespawn, true, tileX, tileY);
+        newMonster.startMonster("m" + this.nextIdMonster, this.socket, this.controlPlayer, this.controlItems, this.room , this.arrayMonsterHit, this.mapSizeX, this.mapSizeY);
         
         this.arrayMonster["m" + this.nextIdMonster] = newMonster;
 

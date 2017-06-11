@@ -27,34 +27,28 @@ export class cServerMonster {
 
     public monsterItemLevelDrop:number;
 
+    public controlItems:cServerControlItems;
+    public room:string;
+    public arrayMonsterHit:number[];
+    public mapSizeX:number;
+    public mapSizeY:number;
+
     //variables para definir el ataque
     public gridSize:number = 40;
     public monsterAtackTilesX:number = 13;
     public monsterAtackTilesY:number = 9;
     
-    constructor(public controlItems:cServerControlItems,public room:string, public arrayMonsterHit:number[],public mapSizeX:number, public mapSizeY:number) {
+    constructor() {
     }
 
-    public startMonster(
-                monsterId:string,
+    public defineMonster(
                 monsterType:enumMonsters,
-                socket:SocketIO.Server,
-                controlPlayer:cServerControlPlayers,
                 monsterRespawn:boolean,
                 isPublic:boolean,
                 tileX:number,tileY:number
                 ) {
 
-        this.monsterId = monsterId;
-
-         //lets check if the monster x y is allowed, if not we reset it
-         while (this.checkMonsterCanMove(tileX, tileY) == false) {
-            tileX = this.randomIntFromInterval(0,this.mapSizeX); 
-            tileY = this.randomIntFromInterval(0,this.mapSizeY);
-         }
-
-        this.socket = socket;
-        this.controlPlayer = controlPlayer;
+       
         this.tileX = tileX;
         this.tileY = tileY;
         this.monsterRespawn = monsterRespawn;
@@ -66,12 +60,44 @@ export class cServerMonster {
         cServerDefinitionMonsters.defineMonsters(this,monsterType);
         this.monsterMaxLife = this.monsterLife;
 
+    }
+
+    public startMonster(monsterId:string,
+        socket:SocketIO.Server,
+        controlPlayer:cServerControlPlayers,
+        controlItems:cServerControlItems,
+        room:string, 
+        arrayMonsterHit:number[],
+        mapSizeX:number,
+        mapSizeY:number) {
+
+
+        this.monsterId = monsterId;
+        this.socket = socket;
+        this.controlPlayer = controlPlayer;
+        
+        //lets add the global vars
+        this.controlItems = controlItems;
+        this.room = room;
+        this.arrayMonsterHit = arrayMonsterHit;
+        this.mapSizeX = mapSizeX;
+        this.mapSizeY = mapSizeY;
+
+        //if the monster dont have x y defined, we defined in the alowed zone.
+        if (this.tileX == undefined) {
+            do {
+                this.tileX = this.randomIntFromInterval(0,this.mapSizeX); 
+                this.tileY = this.randomIntFromInterval(0,this.mapSizeY);
+            } while (this.checkMonsterCanMove(this.tileX, this.tileY) == false)
+        }
+        
         this.emitNewMonster();
     
          var timerAtack = setTimeout(() => this.monsterAtack(), 1200);
          var timerMove = setTimeout(() => this.monsterMove(), 800);
-
     }
+
+
 
     public checkMonsterCanMove(monsterX:number, monsterY:number):boolean {
         var result:boolean

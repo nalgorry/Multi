@@ -21,7 +21,7 @@ class cControlPlayer extends cBasicActor {
     public controlItems:cControlItems;
     public controlLevel:cControlLevel;
 
-    private speedplayer: number = 150;
+    private speedplayer: number = 180;
     
     private lastMoveX: number = 0;
     private lastMoveY: number = 0;
@@ -30,8 +30,8 @@ class cControlPlayer extends cBasicActor {
     private playerIdle:boolean = false;
     private lastAnimation:move = move.idleRight;
 
-    public startTileX:number = 34;
-    public startTileY:number = 27;
+    public startTileX:number = 24;
+    public startTileY:number = 24;
 
     private dirMovimiento:move =move.right;
     private lastdirMov:move; //para guardar el ultimo moviemiento enviado

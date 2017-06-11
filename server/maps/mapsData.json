@@ -1,27 +1,32 @@
 {   "mapData": [
     {"id": 1, "mapName": "principalMap", "file": "principalMap.json", "monsterNumber": 0,
       "portals" : [
-          {"idPortal": 2, "x": 40, "y": 26, "newMapTileX":40, "newMapTileY":25 },
-          {"idPortal": 2, "x": 40, "y": 24, "newMapTileX":40, "newMapTileY":25 },
-          {"idPortal": 2, "x": 40, "y": 22, "newMapTileX":40, "newMapTileY":25 },
-          {"idPortal": 2, "x": 51, "y": 26, "newMapTileX":40, "newMapTileY":25 },
-          {"idPortal": 2, "x": 51, "y": 24, "newMapTileX":40, "newMapTileY":25 },
-          {"idPortal": 2, "x": 51, "y": 22, "newMapTileX":40, "newMapTileY":25 },
+          {"idPortal": 2, "x": 40, "y": 26, "newMapTileX":41, "newMapTileY":63 },
+          {"idPortal": 2, "x": 40, "y": 24, "newMapTileX":41, "newMapTileY":63 },
+          {"idPortal": 2, "x": 40, "y": 22, "newMapTileX":41, "newMapTileY":63 },
+          {"idPortal": 2, "x": 51, "y": 26, "newMapTileX":41, "newMapTileY":63 },
+          {"idPortal": 2, "x": 51, "y": 24, "newMapTileX":41, "newMapTileY":63 },
+          {"idPortal": 2, "x": 51, "y": 22, "newMapTileX":41, "newMapTileY":63 },
 
-          {"idPortal": 3, "x": 33, "y": 28, "newMapTileX":50, "newMapTileY":50 },
-
-          {"idPortal": 3, "x": 35, "y": 22, "newMapTileX":4, "newMapTileY":63 }
-
+          {"idPortal": 3, "x": 20, "y": 28, "newMapTileX":4, "newMapTileY":63 }
 
       ]  },
+
     {"id": 2, "mapName": "firstMap", "file": "firstMap.json", "monsterNumber": 25,
     "portals" : [
           {"idPortal": 1, "x": 50, "y": 63, "newMapTileX":35, "newMapTileY":35 }
       ]},
 
-    {"id": 3, "mapName": "tutorialMap", "file": "tutorialMap.json", "monsterNumber": 0,
+    {"id": 3, "mapName": "tutorialMap", "file": "tutorialMap.json", "monsterNumber": 15,
     "portals" : [
-          {"idPortal": 1, "x": 50, "y": 63, "newMapTileX":35, "newMapTileY":35 }
-      ]}
+          {"idPortal": 1, "x": 12, "y": 65, "newMapTileX":24, "newMapTileY":24 },
+          {"idPortal": 1, "x": 14, "y": 11, "newMapTileX":24, "newMapTileY":24 }
+      ],
+      "monsters" : [ 
+        {"tileX": 62, "tileY" : 52, "monsterType": 1, "monsterRespawn" : false, "isPublic" : true}
+      ]
+      
+      }
+    
 ]
 }

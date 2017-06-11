@@ -83,12 +83,46 @@ var cControlGame = (function () {
                 this.game.add.bitmapText(61 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
                 var text = 'To successs you need: \n\n Life \n\n Mana \n\n and Energy';
                 this.game.add.bitmapText(50 * this.gridSize, 40 * this.gridSize, 'gotic', text, 16);
-                var text = 'You can focus \n in one clicking \n them  At the left. \n The focus resource \n Recover much faster.';
+                //lets add the potions to the map
+                var sprite = this.game.add.sprite(51 * this.gridSize, 40.5 * this.gridSize, 'items', 35);
+                var sprite = this.game.add.sprite(51.1 * this.gridSize, 41.3 * this.gridSize, 'items', 33);
+                var sprite = this.game.add.sprite(52.4 * this.gridSize, 42.1 * this.gridSize, 'items', 31);
+                var text = 'You can focus \n one clicking \n them  at the left. \n The focus resource \n Recover much faster.';
                 this.game.add.bitmapText(60.2 * this.gridSize, 40 * this.gridSize, 'gotic', text, 16);
+                var sprite = this.game.add.sprite(63 * this.gridSize, 40 * this.gridSize, 'help_arrow_2');
                 var text = 'Items are really \n important to success. \n You need to be well \n equipped to survive';
                 this.game.add.bitmapText(50 * this.gridSize, 26 * this.gridSize, 'gotic', text, 16);
-                var text = "Cristals not only bring new resources,\nalso bring new monsters that want to destroy everything.";
+                //some random items
+                var sprite = this.game.add.sprite(61.5 * this.gridSize, 24.5 * this.gridSize, 'items', 1);
+                var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, 24.5 * this.gridSize, 'items', 2);
+                var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, 24.5 * this.gridSize, 'items', 3);
+                var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 1) * this.gridSize, 'items', 4);
+                var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 1) * this.gridSize, 'items', 5);
+                var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 1) * this.gridSize, 'items', 6);
+                var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 2) * this.gridSize, 'items', 10);
+                var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 2) * this.gridSize, 'items', 12);
+                var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 2) * this.gridSize, 'items', 13);
+                var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 3) * this.gridSize, 'items', 13);
+                var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 3) * this.gridSize, 'items', 14);
+                var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 3) * this.gridSize, 'items', 20);
+                var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 4) * this.gridSize, 'items', 21);
+                var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 4) * this.gridSize, 'items', 22);
+                var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 4) * this.gridSize, 'items', 23);
+                var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 5) * this.gridSize, 'items', 24);
+                var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 5) * this.gridSize, 'items', 8);
+                var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 5) * this.gridSize, 'items', 7);
+                var text = "Crystals  not only bring new resources,\nalso bring new monsters that want to destroy everything.";
                 this.game.add.bitmapText(43 * this.gridSize, 4 * this.gridSize, 'gotic', text, 16);
+                var text = "Try to kill this monster to practice,\n don’t die!";
+                this.game.add.bitmapText(25 * this.gridSize, 14 * this.gridSize, 'gotic', text, 16);
+                var text = "Return to Town";
+                this.game.add.bitmapText(13 * this.gridSize, 8 * this.gridSize, 'gotic_white', text, 16);
+                var text = "Exit Tutorial";
+                this.game.add.bitmapText(11.2 * this.gridSize, 65.2 * this.gridSize, 'gotic_white', text, 14);
+                break;
+            case 1 /* principalMap */:
+                var text = "New to game? \n Enter Here!";
+                this.game.add.bitmapText(19 * this.gridSize, 28.2 * this.gridSize, 'gotic_white', text, 16);
                 break;
             default:
                 break;

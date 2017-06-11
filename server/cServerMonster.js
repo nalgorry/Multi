@@ -1,12 +1,7 @@
 "use strict";
 var cServerDefinitionMonsters_1 = require('./cServerDefinitionMonsters');
 var cServerMonster = (function () {
-    function cServerMonster(controlItems, room, arrayMonsterHit, mapSizeX, mapSizeY) {
-        this.controlItems = controlItems;
-        this.room = room;
-        this.arrayMonsterHit = arrayMonsterHit;
-        this.mapSizeX = mapSizeX;
-        this.mapSizeY = mapSizeY;
+    function cServerMonster() {
         this.monsterDie = false; //para chekear si el moustro se murio o no
         this.specialAtackPercent = 0; //porcentaje de que lance el hechizo especial
         this.agresiveMonster = false; //determina si el moustro ataca por defecto o solo si lo atacan 
@@ -17,16 +12,7 @@ var cServerMonster = (function () {
         this.monsterAtackTilesX = 13;
         this.monsterAtackTilesY = 9;
     }
-    cServerMonster.prototype.startMonster = function (monsterId, monsterType, socket, controlPlayer, monsterRespawn, isPublic, tileX, tileY) {
-        var _this = this;
-        this.monsterId = monsterId;
-        //lets check if the monster x y is allowed, if not we reset it
-        while (this.checkMonsterCanMove(tileX, tileY) == false) {
-            tileX = this.randomIntFromInterval(0, this.mapSizeX);
-            tileY = this.randomIntFromInterval(0, this.mapSizeY);
-        }
-        this.socket = socket;
-        this.controlPlayer = controlPlayer;
+    cServerMonster.prototype.defineMonster = function (monsterType, monsterRespawn, isPublic, tileX, tileY) {
         this.tileX = tileX;
         this.tileY = tileY;
         this.monsterRespawn = monsterRespawn;
@@ -35,6 +21,25 @@ var cServerMonster = (function () {
         this.monsterType = monsterType;
         cServerDefinitionMonsters_1.cServerDefinitionMonsters.defineMonsters(this, monsterType);
         this.monsterMaxLife = this.monsterLife;
+    };
+    cServerMonster.prototype.startMonster = function (monsterId, socket, controlPlayer, controlItems, room, arrayMonsterHit, mapSizeX, mapSizeY) {
+        var _this = this;
+        this.monsterId = monsterId;
+        this.socket = socket;
+        this.controlPlayer = controlPlayer;
+        //lets add the global vars
+        this.controlItems = controlItems;
+        this.room = room;
+        this.arrayMonsterHit = arrayMonsterHit;
+        this.mapSizeX = mapSizeX;
+        this.mapSizeY = mapSizeY;
+        //if the monster dont have x y defined, we defined in the alowed zone.
+        if (this.tileX == undefined) {
+            do {
+                this.tileX = this.randomIntFromInterval(0, this.mapSizeX);
+                this.tileY = this.randomIntFromInterval(0, this.mapSizeY);
+            } while (this.checkMonsterCanMove(this.tileX, this.tileY) == false);
+        }
         this.emitNewMonster();
         var timerAtack = setTimeout(function () { return _this.monsterAtack(); }, 1200);
         var timerMove = setTimeout(function () { return _this.monsterMove(); }, 800);
