@@ -33,6 +33,7 @@ class preloader extends Phaser.State {
         this.game.load.image('monster_3', 'assets/monster_3.png' );
         this.game.load.image('monster_4', 'assets/monster_4.png' );
         this.game.load.image('monster_5', 'assets/cosmic_monster.png' );
+        this.game.load.image('monster_6', 'assets/monster_6.png' );
         
 
         this.game.load.spritesheet('interfaz', 'assets/interfaz.png', 200,675 );

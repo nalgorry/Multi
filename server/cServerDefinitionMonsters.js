@@ -50,6 +50,15 @@ var cServerDefinitionMonsters = (function () {
                 monster.agresiveMonster = false;
                 monster.experience = 50;
                 break;
+            case 6 /* DummyTarget */:
+                monster.randomPower = 0;
+                monster.fixPower = 0;
+                monster.monsterLife = 10000000;
+                monster.monsterItemLevelDrop = 800;
+                monster.specialAtackPercent = 0;
+                monster.agresiveMonster = false;
+                monster.experience = 0;
+                break;
             default:
                 break;
         }
