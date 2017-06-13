@@ -41,6 +41,7 @@ var cControlGame = (function () {
         this.map = this.game.add.tilemap(mapName);
         this.map.addTilesetImage('tiles', 'tiles');
         this.hitLayer = this.map.createLayer('HitTest', this.game.width - this.interfazWidth);
+        console.log(this.hitLayer);
         this.groupMapLayers.add(this.hitLayer);
         var layer1 = this.map.createLayer('FirstFloor', this.game.width - this.interfazWidth);
         this.groupMapLayers.add(layer1);
@@ -49,7 +50,7 @@ var cControlGame = (function () {
         this.layer = this.map.createLayer('ThirdFloor', this.game.width - this.interfazWidth);
         this.groupMapLayers.add(this.layer);
         this.game.world.sendToBack(this.map);
-        this.map.setCollision(5, true, this.hitLayer);
+        this.map.setCollision(6, true, this.hitLayer);
         this.game.stage.disableVisibilityChange = true;
         //creo los objetos a partir de los datos del mapa
         this.map.createFromObjects('Objects', 1, 'objects', 'arbol003.png', true, true, this.depthGroup, undefined, false);
