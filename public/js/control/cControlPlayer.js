@@ -28,7 +28,7 @@ var cControlPlayer = (function (_super) {
         this.dirMovimiento = move.right;
         this.monstersKills = 0;
         this.gridSize = controlGame.gridSize;
-        this.startActor(this.startTileX, this.startTileY);
+        this.startActor(this.startTileX * this.gridSize, this.startTileY * this.gridSize);
         this.startPlayer();
     }
     cControlPlayer.prototype.startPlayerGraphics = function () {

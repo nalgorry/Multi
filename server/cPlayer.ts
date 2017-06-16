@@ -25,7 +25,7 @@ export class cPlayer {
 
     public sendPlayerToNewPlayer(socketPlayer:SocketIO.Socket, playersOnline) {
         socketPlayer.emit('new player', {id: this.playerId, 
-      startTileX: this.x, startTileY: this.y, name:this.playerName, playersOnline: playersOnline})
+      startX: this.x, startY: this.y, name:this.playerName, playersOnline: playersOnline})
     }
 
     public calculateDamage(damage:number):number {

@@ -22,8 +22,6 @@ class cControlOtherPlayers {
 
     public addPlayer(data) {
 
-        console.log(data);
-
         var newPlayer = new cOtherPlayer(this.controlGame,data);
 
         this.arrayPlayers.push(newPlayer);

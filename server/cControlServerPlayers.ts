@@ -7,9 +7,6 @@ export class cServerControlPlayers {
     public arrayPlayers:cPlayer[];
     public controlMonster:cServerControlMonster;
 
-    public startTileX:number = 41;
-    public startTileY:number = 63;
-
     public playersOnline:number = 0;
 
     constructor(public socket:SocketIO.Server, public room:string) {
@@ -36,6 +33,10 @@ export class cServerControlPlayers {
         socketPlayer.broadcast.in(this.room).emit('move player', {id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y,dirMov: movePlayer.dirMov })
     }
 
+    public chatSend(socketPlayer:SocketIO.Socket,data) {
+        socketPlayer.broadcast.in(this.room).emit('Chat Receive', {id: socketPlayer.id, text: data.text});
+    }
+
     public levelUp(socket:any, data) {
         // Find player in array
         var player = this.getPlayerById(socket.id)
@@ -59,7 +60,7 @@ export class cServerControlPlayers {
         this.playersOnline += 1;
 
         socketPlayer.broadcast.in(this.room).emit('new player', 
-            {id: idPlayer, name:data.name, startTileX: this.startTileX, startTileY:this.startTileY, playersOnline: this.playersOnline})
+            {id: idPlayer, name:data.name, startX: data.x * 40, startY:data.y * 40 , playersOnline: this.playersOnline})
         
         //le mando al nuevo jugador todos los jugadores existentes
         for (var id in this.arrayPlayers) {
@@ -158,13 +159,13 @@ export class cServerControlPlayers {
                         if (monster.monsterRespawn == true) { 
                             if (monster.monsterType != enumMonsters.Cosmic) {
                                 this.controlMonster.createNewMonster(
-                                    Math.round(Math.random() * this.controlMonster.mapSizeX), 
-                                    Math.round(Math.random() * this.controlMonster.mapSizeY),
+                                    undefined, 
+                                    undefined,
                                     this.randomIntFromInterval(1, 4),true)
                             } else {
                                 this.controlMonster.createNewMonster(
-                                    Math.round(Math.random() * this.controlMonster.mapSizeX), 
-                                    Math.round(Math.random() * this.controlMonster.mapSizeY),
+                                    undefined, 
+                                    undefined,
                                     enumMonsters.Cosmic,true);
                             }
                         }
@@ -219,11 +220,11 @@ export class cServerControlPlayers {
 
             if (playerKill != null) {     //envio al que murio quien lo mato
 
-                this.socket.in(this.room).emit('player die', {id: socketPlayer.id, idPlayerThatKill: playerKill.playerId , name: player.playerName, tileX:this.startTileX, tileY: this.startTileY})
+                this.socket.in(this.room).emit('player die', {id: socketPlayer.id, idPlayerThatKill: playerKill.playerId , name: player.playerName})
 
             } else { //lo mato un monster, que cagada...
 
-                this.socket.in(this.room).emit('player die', {id: socketPlayer.id, name: 'Monster', tileX:this.startTileX, tileY: this.startTileY})
+                this.socket.in(this.room).emit('player die', {id: socketPlayer.id, name: 'Monster'})
 
             }
 

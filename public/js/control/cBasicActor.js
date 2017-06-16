@@ -20,6 +20,12 @@ var cBasicActor = (function () {
         this.completeChatText.addChild(this.textChat);
         this.playerSprite.addChild(this.completeChatText);
     };
+    cBasicActor.prototype.resetChat = function () {
+        if (this.completeChatText != undefined) {
+            this.completeChatText.destroy();
+            this.completeChatText = undefined;
+        }
+    };
     cBasicActor.prototype.setChatText = function (texto) {
         if (this.completeChatText == undefined) {
             this.startChat();
@@ -43,9 +49,11 @@ var cBasicActor = (function () {
         this.textName.text = texto;
         this.textName.x = -this.textName.width / 2;
     };
-    cBasicActor.prototype.startActor = function (startTileX, startTileY) {
-        this.startTileX = startTileX;
-        this.startTileY = startTileY;
+    cBasicActor.prototype.startActor = function (x, y) {
+        //this.startTileX = startTileX;
+        //this.startTileY = startTileY;
+        this.x = x;
+        this.y = y;
         //TEST PARA USAR EL DRAGON BONES, aun en desarrollo
         //var test:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj');
         //test.anchor.set(0.5,0);
@@ -63,7 +71,7 @@ var cBasicActor = (function () {
         //pjFull.animations.add('test',a,20,true);
         //pjFull.animations.play('test',10,true);
         //sprite del jugador, aca se  cargan todas las partes del jugador        
-        this.playerSprite = this.controlGame.game.add.sprite(startTileX * this.controlGame.gridSize, startTileY * this.controlGame.gridSize);
+        this.playerSprite = this.controlGame.game.add.sprite(x, y);
         this.playerSprite.anchor.set(0.5, 1);
         this.playerSprite.x += this.playerSprite.width / 2;
         //creo el cuerpo con su armadura

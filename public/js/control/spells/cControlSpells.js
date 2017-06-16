@@ -129,7 +129,6 @@ var cControlSpells = (function () {
         newSpell.signalSpellSel.add(this.spellClick, this);
         //seleciono el hechizo uno por defecto
         this.selSpell = newSpell;
-        console.log(newSpell);
         this.borderSpell.x = newSpell.spellSprite.x + newSpell.spellSprite.width / 2;
         this.borderSpell.y = newSpell.spellSprite.y + newSpell.spellSprite.height / 2;
         //hechizo 2

@@ -120,7 +120,7 @@ function onYouDie(data) {
 }
 
 function onChatSend(data) {
-    this.broadcast.emit('Chat Receive', {id: this.id, text: data.text});
+    controlMaps.chatSend(this, data);
 }
 
 function onPlayerClick(data) {

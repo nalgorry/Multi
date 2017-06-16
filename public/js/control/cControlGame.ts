@@ -11,7 +11,7 @@ class cControlGame {
     public depthGroup:Phaser.Group;
     public groupInterface:Phaser.Group;
 
-    private groupMapLayers:Phaser.Group;
+    public groupMapLayers:Phaser.Group;
     private groupMapObjects:Phaser.Group;
 
     public controlServer: cControlServer;
@@ -20,6 +20,7 @@ class cControlGame {
     public controlMonsters:cControlMonsters;
     public controlSounds:cControlSounds;
     public controlOtherPlayers:cControlOtherPlayers;
+    public controlChat:cControlChat;
     public spriteInterfaz:Phaser.Sprite;
 
     private groupInitialHelp:Phaser.Group;
@@ -87,7 +88,6 @@ class cControlGame {
         this.map.addTilesetImage('tiles', 'tiles');
 
         this.hitLayer = this.map.createLayer('HitTest',this.game.width - this.interfazWidth);
-        console.log(this.hitLayer);
 
         this.groupMapLayers.add(this.hitLayer);
         var layer1 = this.map.createLayer('FirstFloor',this.game.width - this.interfazWidth);
@@ -122,85 +122,142 @@ class cControlGame {
             case enumMapNames.tutorialMap:
                 
                 var text = 'It was a quiet Land...'
-                this.game.add.bitmapText(5 * this.gridSize, 65 * this.gridSize, 'gotic', text , 16);
+                var phaserText = this.game.add.bitmapText(5 * this.gridSize, 65 * this.gridSize, 'gotic', text , 16);
+                this.groupMapLayers.add(phaserText);
                 var text = 'Suddenly, lots of crystals rocks appear in the Rein…'
-                this.game.add.bitmapText(5 * this.gridSize, 66 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(5 * this.gridSize, 66 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
                 var text = 'Quickly we discover that we can use the crystals\nto update ours homes, clothes and weapons.'
-                this.game.add.bitmapText(18 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(18 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 var text = 'But something dark were inside the crystals… \n with time each town chose a color of crystal and \n start to reject all the towns that don’t follow the same color.'
-                this.game.add.bitmapText(33 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(33 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
                 
                 var text = 'War was inevitable… \n you need to be prepared.';
-                this.game.add.bitmapText(55 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(55 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 var text = 'You have \n three defensive skills \n and \n three offensive skills.';
-                this.game.add.bitmapText(50 * this.gridSize, 50 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(50 * this.gridSize, 50 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 var text = 'To use them\n use numbers 1 to 6, \n or click over the \n spells in the right side.';
-                this.game.add.bitmapText(50 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(50 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 var text = 'Use yours spells\nto attack!';
-                this.game.add.bitmapText(61 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(61 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 var text = 'To successs you need: \n\n Life \n\n Mana \n\n and Energy';
-                this.game.add.bitmapText(50 * this.gridSize, 40 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(50 * this.gridSize, 40 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 //lets add the potions to the map
                 var sprite = this.game.add.sprite(51 * this.gridSize, 40.5 * this.gridSize, 'items', 35);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite(51.1 * this.gridSize, 41.3 * this.gridSize, 'items', 33);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite(52.4 * this.gridSize, 42.1 * this.gridSize, 'items', 31);
+                this.groupMapLayers.add(sprite);
 
                 var text = 'You can focus \n one clicking \n them  at the left. \n The focus resource \n Recover much faster.';
-                this.game.add.bitmapText(60.2 * this.gridSize, 40 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(60.2 * this.gridSize, 40 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
+
                 var sprite = this.game.add.sprite(63* this.gridSize, 40 * this.gridSize, 'help_arrow_2');
+                this.groupMapLayers.add(sprite);
 
                 var text = 'Items are really \n important to success. \n You need to be well \n equipped to survive'
-                this.game.add.bitmapText(50 * this.gridSize, 26 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(50 * this.gridSize, 26 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 //some random items
                 var sprite = this.game.add.sprite(61.5 * this.gridSize, 24.5 * this.gridSize, 'items', 1);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, 24.5 * this.gridSize, 'items', 2);
+                this.groupMapLayers.add(sprite);
+                
                 var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, 24.5 * this.gridSize, 'items', 3);
+                this.groupMapLayers.add(sprite);
 
                 var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 1) * this.gridSize, 'items', 4);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 1) * this.gridSize, 'items', 5);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 1) * this.gridSize, 'items', 6);
+                this.groupMapLayers.add(sprite);
 
                 var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 2) * this.gridSize, 'items', 10);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 2) * this.gridSize, 'items', 12);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 2) * this.gridSize, 'items', 13);
+                this.groupMapLayers.add(sprite);
 
                 var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 3) * this.gridSize, 'items', 13);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 3) * this.gridSize, 'items', 14);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 3) * this.gridSize, 'items', 20);
+                this.groupMapLayers.add(sprite);
 
                 var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 4) * this.gridSize, 'items', 21);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 4) * this.gridSize, 'items', 22);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 4) * this.gridSize, 'items', 23);
+                this.groupMapLayers.add(sprite);
+
 
                 var sprite = this.game.add.sprite(61.5 * this.gridSize, (24.5 + 5) * this.gridSize, 'items', 24);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 1) * this.gridSize, (24.5 + 5) * this.gridSize, 'items', 8);
+                this.groupMapLayers.add(sprite);
+
                 var sprite = this.game.add.sprite((61.5 + 2) * this.gridSize, (24.5 + 5) * this.gridSize, 'items', 7);
+                this.groupMapLayers.add(sprite);
 
                 var text = "Crystals  not only bring new resources,\nalso bring new monsters that want to destroy everything.";
-                this.game.add.bitmapText(43 * this.gridSize, 4 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(43 * this.gridSize, 4 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 var text = "Try to kill this monster to practice,\n don’t die!";
-                this.game.add.bitmapText(25 * this.gridSize, 14 * this.gridSize, 'gotic', text, 16);
+                var phaserText = this.game.add.bitmapText(25 * this.gridSize, 14 * this.gridSize, 'gotic', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 var text = "Return to Town";
-                this.game.add.bitmapText(13 * this.gridSize, 8 * this.gridSize, 'gotic_white', text, 16);
+                var phaserText = this.game.add.bitmapText(13 * this.gridSize, 8 * this.gridSize, 'gotic_white', text, 16);
+                this.groupMapLayers.add(phaserText);
 
                 var text = "Exit Tutorial";
-                this.game.add.bitmapText(11.2 * this.gridSize, 65.2 * this.gridSize, 'gotic_white', text, 14);
+                var phaserText = this.game.add.bitmapText(11.2 * this.gridSize, 65.2 * this.gridSize, 'gotic_white', text, 14);
+                this.groupMapLayers.add(phaserText);
 
                 break;
 
                 case enumMapNames.principalMap:
 
                 var text = "New to game? \n Enter Here!";
-                this.game.add.bitmapText(19 * this.gridSize, 28.2 * this.gridSize, 'gotic_white', text, 16);
+                var phaserText = this.game.add.bitmapText(19 * this.gridSize, 28.2 * this.gridSize, 'gotic_white', text, 16);
+                this.groupMapLayers.add(phaserText);
+
+                var sprite = this.game.add.sprite(22.5 * this.gridSize, 26 * this.gridSize,'controls');
+                this.groupMapLayers.add(sprite);
 
 
                 break;
@@ -231,8 +288,14 @@ class cControlGame {
         this.controlPlayer.controlPortals.resetPortals();
 
         //lets restart the player
-        this.controlPlayer.startActor(newTileX, newTileY);
+        this.controlPlayer.startActor(newTileX * this.gridSize, newTileY * this.gridSize);
         this.controlPlayer.startPlayerGraphics();
+
+        //lets restart the chat text
+        this.controlPlayer.resetChat();
+
+        //lets restart the other players array
+        this.controlOtherPlayers.arrayPlayers = [];
 
     }
 

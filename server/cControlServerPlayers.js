@@ -4,8 +4,6 @@ var cServerControlPlayers = (function () {
     function cServerControlPlayers(socket, room) {
         this.socket = socket;
         this.room = room;
-        this.startTileX = 41;
-        this.startTileY = 63;
         this.playersOnline = 0;
         this.arrayPlayers = [];
     }
@@ -21,6 +19,9 @@ var cServerControlPlayers = (function () {
         movePlayer.y = data.y;
         movePlayer.dirMov = data.dirMov;
         socketPlayer.broadcast.in(this.room).emit('move player', { id: movePlayer.playerId, x: movePlayer.x, y: movePlayer.y, dirMov: movePlayer.dirMov });
+    };
+    cServerControlPlayers.prototype.chatSend = function (socketPlayer, data) {
+        socketPlayer.broadcast.in(this.room).emit('Chat Receive', { id: socketPlayer.id, text: data.text });
     };
     cServerControlPlayers.prototype.levelUp = function (socket, data) {
         // Find player in array
@@ -39,7 +40,7 @@ var cServerControlPlayers = (function () {
         if (playerData === void 0) { playerData = null; }
         var idPlayer = socketPlayer.id;
         this.playersOnline += 1;
-        socketPlayer.broadcast.in(this.room).emit('new player', { id: idPlayer, name: data.name, startTileX: this.startTileX, startTileY: this.startTileY, playersOnline: this.playersOnline });
+        socketPlayer.broadcast.in(this.room).emit('new player', { id: idPlayer, name: data.name, startX: data.x * 40, startY: data.y * 40, playersOnline: this.playersOnline });
         //le mando al nuevo jugador todos los jugadores existentes
         for (var id in this.arrayPlayers) {
             this.arrayPlayers[id].sendPlayerToNewPlayer(socketPlayer, this.playersOnline);
@@ -109,10 +110,10 @@ var cServerControlPlayers = (function () {
                         //TODO sacar esto de aca... creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo
                         if (monster.monsterRespawn == true) {
                             if (monster.monsterType != 5 /* Cosmic */) {
-                                _this.controlMonster.createNewMonster(Math.round(Math.random() * _this.controlMonster.mapSizeX), Math.round(Math.random() * _this.controlMonster.mapSizeY), _this.randomIntFromInterval(1, 4), true);
+                                _this.controlMonster.createNewMonster(undefined, undefined, _this.randomIntFromInterval(1, 4), true);
                             }
                             else {
-                                _this.controlMonster.createNewMonster(Math.round(Math.random() * _this.controlMonster.mapSizeX), Math.round(Math.random() * _this.controlMonster.mapSizeY), 5 /* Cosmic */, true);
+                                _this.controlMonster.createNewMonster(undefined, undefined, 5 /* Cosmic */, true);
                             }
                         }
                     }
@@ -149,10 +150,10 @@ var cServerControlPlayers = (function () {
         if (player != null) {
             var playerKill = this.getPlayerById(data.idPlayerKill);
             if (playerKill != null) {
-                this.socket.in(this.room).emit('player die', { id: socketPlayer.id, idPlayerThatKill: playerKill.playerId, name: player.playerName, tileX: this.startTileX, tileY: this.startTileY });
+                this.socket.in(this.room).emit('player die', { id: socketPlayer.id, idPlayerThatKill: playerKill.playerId, name: player.playerName });
             }
             else {
-                this.socket.in(this.room).emit('player die', { id: socketPlayer.id, name: 'Monster', tileX: this.startTileX, tileY: this.startTileY });
+                this.socket.in(this.room).emit('player die', { id: socketPlayer.id, name: 'Monster' });
             }
         }
     };

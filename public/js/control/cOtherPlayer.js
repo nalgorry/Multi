@@ -8,7 +8,7 @@ var cOtherPlayer = (function (_super) {
     function cOtherPlayer(controlGame, data) {
         _super.call(this, controlGame);
         this.idServer = data.id;
-        this.startActor(data.startTileX, data.startTileY); //esto inicia todo el jugador con sus elementos
+        this.startActor(data.startX, data.startY); //esto inicia todo el jugador con sus elementos
         this.startPlayer(data);
     }
     cOtherPlayer.prototype.startPlayer = function (data) {

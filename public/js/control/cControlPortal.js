@@ -28,7 +28,6 @@ var cControlPortal = (function () {
                     y: portal.newMapTileY
                 });
                 _this.controlGame.resetMap(portal.newMapTileX, portal.newMapTileY);
-                console.log(portal);
                 _this.controlGame.changeMap(portal.mapName, portal.portalID);
             }
         });
@@ -47,8 +46,6 @@ var cPortal = (function () {
         var gridSize = this.controlGame.gridSize;
         var sprite = this.controlGame.game.add.sprite(tileX * gridSize + gridSize / 2, tileY * gridSize - gridSize / 2, 'portal');
         sprite.anchor.set(0.5);
-        console.log(tileX * gridSize + gridSize / 2);
-        console.log(tileY * gridSize - gridSize / 2);
         sprite.animations.add('portalOn', [1, 2, 3, 4], 8, true);
         sprite.animations.play('portalOn');
         this.controlGame.depthGroup.add(sprite);

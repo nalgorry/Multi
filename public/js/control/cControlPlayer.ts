@@ -44,7 +44,7 @@ class cControlPlayer extends cBasicActor {
         super(controlGame);
 
         this.gridSize = controlGame.gridSize;
-        this.startActor(this.startTileX, this.startTileY);
+        this.startActor(this.startTileX * this.gridSize, this.startTileY * this.gridSize);
         this.startPlayer();
         
     }

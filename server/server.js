@@ -79,7 +79,7 @@ function onYouDie(data) {
     controlMaps.playerDie(this, data);
 }
 function onChatSend(data) {
-    this.broadcast.emit('Chat Receive', { id: this.id, text: data.text });
+    controlMaps.chatSend(this, data);
 }
 function onPlayerClick(data) {
     //TODO VER SI ESTO AUN SE USA 

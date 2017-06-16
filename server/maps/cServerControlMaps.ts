@@ -95,6 +95,15 @@ export class cServerControlMaps {
 
     }
 
+    public chatSend(socket:SocketIO.Socket, data) {
+
+        //lets get the room of the player that send the chatSend
+        var controlPlayers:cServerControlPlayers = this.getControlPlayer(socket.id);
+
+        controlPlayers.chatSend(socket, data);
+
+    }
+    
     public playerChangeMap(socketPlayer, data) {
 
         //lets get the actual player room and check if it really change 

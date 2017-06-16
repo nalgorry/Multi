@@ -29,6 +29,7 @@ class mainMenu extends Phaser.State {
 
         //inicio el chat
         this.controlChat = new cControlChat(this.controlGame,this.controlPlayer,this.controlOtherPlayers);
+        this.controlGame.controlChat = this.controlChat;
 
         //inicio el servidor
         this.controlServer = new cControlServer(this.controlPlayer,this.controlGame,
@@ -51,7 +52,7 @@ class mainMenu extends Phaser.State {
 
     render() {
 
-        var showElements = true;
+        var showElements = false;
 
         if (showElements == true) {
             //this.game.debug.cameraInfo(this.game.camera, 50, 500);

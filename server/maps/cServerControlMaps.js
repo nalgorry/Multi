@@ -66,6 +66,11 @@ var cServerControlMaps = (function () {
     cServerControlMaps.prototype.enterPortal = function (socketPlayer, data) {
         this.playerChangeMap(socketPlayer, data);
     };
+    cServerControlMaps.prototype.chatSend = function (socket, data) {
+        //lets get the room of the player that send the chatSend
+        var controlPlayers = this.getControlPlayer(socket.id);
+        controlPlayers.chatSend(socket, data);
+    };
     cServerControlMaps.prototype.playerChangeMap = function (socketPlayer, data) {
         //lets get the actual player room and check if it really change 
         var controlPlayers = this.getControlPlayer(socketPlayer.id);

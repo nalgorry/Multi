@@ -24,6 +24,7 @@ var mainMenu = (function (_super) {
         this.controlGame.controlMonsters = this.controlMonsters;
         //inicio el chat
         this.controlChat = new cControlChat(this.controlGame, this.controlPlayer, this.controlOtherPlayers);
+        this.controlGame.controlChat = this.controlChat;
         //inicio el servidor
         this.controlServer = new cControlServer(this.controlPlayer, this.controlGame, this.controlOtherPlayers, this.controlChat);
         this.controlGame.controlServer = this.controlServer;
@@ -36,7 +37,7 @@ var mainMenu = (function (_super) {
         this.controlGame.updateZDepth();
     };
     mainMenu.prototype.render = function () {
-        var showElements = true;
+        var showElements = false;
         if (showElements == true) {
             //this.game.debug.cameraInfo(this.game.camera, 50, 500);
             //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);

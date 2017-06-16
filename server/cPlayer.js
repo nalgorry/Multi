@@ -17,7 +17,7 @@ var cPlayer = (function () {
     }
     cPlayer.prototype.sendPlayerToNewPlayer = function (socketPlayer, playersOnline) {
         socketPlayer.emit('new player', { id: this.playerId,
-            startTileX: this.x, startTileY: this.y, name: this.playerName, playersOnline: playersOnline });
+            startX: this.x, startY: this.y, name: this.playerName, playersOnline: playersOnline });
     };
     cPlayer.prototype.calculateDamage = function (damage) {
         if (damage > 0) {

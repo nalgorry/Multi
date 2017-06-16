@@ -13,7 +13,6 @@ var cControlOtherPlayers = (function () {
         return null;
     };
     cControlOtherPlayers.prototype.addPlayer = function (data) {
-        console.log(data);
         var newPlayer = new cOtherPlayer(this.controlGame, data);
         this.arrayPlayers.push(newPlayer);
         //actualizo el texto del player

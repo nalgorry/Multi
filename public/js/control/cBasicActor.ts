@@ -2,6 +2,8 @@ class cBasicActor {
 
     public tileX: number;
     public tileY: number;
+    public x: number;
+    public y: number;
     public startTileX:number;
     public startTileY:number;
 
@@ -48,6 +50,14 @@ class cBasicActor {
 
     }
 
+    public resetChat() {
+        if (this.completeChatText != undefined) {
+            this.completeChatText.destroy();
+            this.completeChatText = undefined;
+        }
+        
+    }
+
     public setChatText(texto:string) {
 
         if (this.completeChatText == undefined) {
@@ -58,7 +68,7 @@ class cBasicActor {
         this.textChat.text = texto;
         this.chatBack.width = this.textChat.width + 4;
         this.completeChatText.x = -this.textChat.width/2;
-
+        
         //to delete the message after some time
         this.controlGame.game.time.events.add(Phaser.Timer.SECOND * 10, this.deleteChat, this);
 
@@ -80,10 +90,13 @@ class cBasicActor {
         this.textName.x = -this.textName.width/2;
     }
 
-    public startActor(startTileX, startTileY) {       
+    public startActor(x, y) {       
 
-        this.startTileX = startTileX;
-        this.startTileY = startTileY;
+        //this.startTileX = startTileX;
+        //this.startTileY = startTileY;
+
+        this.x = x;
+        this.y = y;
 
         //TEST PARA USAR EL DRAGON BONES, aun en desarrollo
         //var test:Phaser.Sprite = this.controlGame.game.add.sprite(1000, 1000, 'pj');
@@ -105,7 +118,7 @@ class cBasicActor {
         //pjFull.animations.play('test',10,true);
 
         //sprite del jugador, aca se  cargan todas las partes del jugador        
-        this.playerSprite = this.controlGame.game.add.sprite(startTileX * this.controlGame.gridSize, startTileY * this.controlGame.gridSize);
+        this.playerSprite = this.controlGame.game.add.sprite(x, y);
         this.playerSprite.anchor.set(0.5,1);
         this.playerSprite.x += this.playerSprite.width/2;
 
@@ -134,7 +147,7 @@ class cBasicActor {
         this.weaponSprite.animations.add('left', [8,9,10,11,12,13,14,15], 10, true);
         this.weaponSprite.animations.add('right', [16,17,18,19,20,21,22,23], 10, true);
         
-
+        
         this.controlGame.depthGroup.add(this.playerSprite);
 
     }
