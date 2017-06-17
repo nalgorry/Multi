@@ -44,8 +44,9 @@ var preloader = (function (_super) {
         this.game.load.image('help_arrow_2', 'assets/help_arrow_2.png');
         this.game.load.image('help_arrow_3', 'assets/help_arrow_3.png');
         this.game.load.image('parlante', 'assets/parlante.png');
-        this.game.load.bitmapFont('gotic', 'assets/showg_black.png', 'assets/showg_black.fnt');
-        this.game.load.bitmapFont('gotic_white', 'assets/showg_white.png', 'assets/showg_white.fnt');
+        this.game.load.bitmapFont('gotic_white', 'assets/fonts/showg_white.png', 'assets/fonts/showg_white.fnt');
+        this.game.load.bitmapFont('gotic', 'assets/fonts/showg_black.png', 'assets/fonts/showg_black.fnt');
+        this.game.load.bitmapFont('arial', 'assets/fonts/arial20.png', 'assets/fonts/arial20.fnt');
         this.game.load.audio('run', 'assets/sounds/run.ogg');
         this.game.load.audio('basic_hit', 'assets/sounds/basic_hit.ogg');
         this.game.load.audio('heal_spell', 'assets/sounds/heal_spell.ogg');

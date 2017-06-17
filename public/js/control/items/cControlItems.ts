@@ -9,7 +9,7 @@ class cControlItems {
     public rectInventoryItem:Phaser.Graphics;
     public selectedItem:cItems;
     public itemsGroup:Phaser.Group; //to control the items of the player
-    private textGold:Phaser.Text;
+    private textGold:Phaser.BitmapText;
     private totalGold:number = 0;
 
     constructor(public controlGame:cControlGame) {
@@ -31,8 +31,7 @@ class cControlItems {
         this.rectInventoryItem.visible = false;
 
         //armo el texto donde va estar la cantidadd de oro
-        var styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600};
-        this.textGold = this.controlGame.game.add.text(135, 650 , "0" , styleText);
+        this.textGold = this.controlGame.game.add.bitmapText(135, 650, 'gotic_white',  "0" , 16)
         this.controlGame.spriteInterfaz.addChild(this.textGold)
 
     }

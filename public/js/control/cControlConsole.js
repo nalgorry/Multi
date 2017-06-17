@@ -1,6 +1,10 @@
 var cControlConsole = (function () {
     function cControlConsole(controlGame) {
         this.controlGame = controlGame;
+        this.activated = false; //to decide if the console will be used or not
+        if (this.activated == false) {
+            return;
+        }
         var consoleWidth = 300;
         var consoleHeight = 120;
         //creo el cuadrado donde va a ir la consola
@@ -17,6 +21,9 @@ var cControlConsole = (function () {
         this.newMessage(enumMessage.information, "Welcome!! v 0.1 ALPHA");
     }
     cControlConsole.prototype.newMessage = function (type, message) {
+        if (this.activated == false) {
+            return;
+        }
         var newMessage = new cConsoleMessage(type, message);
         this.arrayMessages.unshift(newMessage);
         this.showMessagesInConsole();

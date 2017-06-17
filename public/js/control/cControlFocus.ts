@@ -29,12 +29,12 @@ class cControlFocus {
 
     public actualFocusSystem:FocusSystem = FocusSystem.mana;
 
-    textLife: Phaser.Text;
-    textMana: Phaser.Text;
-    textEnergy: Phaser.Text;
-    textAtack: Phaser.Text;
-    textDefence: Phaser.Text;
-    textPlayersOnline: Phaser.Text;
+    textLife: Phaser.BitmapText;
+    textMana: Phaser.BitmapText;
+    textEnergy: Phaser.BitmapText;
+    textAtack: Phaser.BitmapText;
+    textDefence: Phaser.BitmapText;
+    textPlayersOnline: Phaser.BitmapText;
     styleText;
 
     //valores actuales utilizados por el focus sistem
@@ -146,8 +146,9 @@ class cControlFocus {
         var atackDefense = this.controlGame.game.add.sprite(5, 20, "atackDefense");
         backGroundDesc.addChild(atackDefense);
 
-        var value = this.controlGame.game.add.text(105, 27, this.maxAtack.toString() , styleText);
-        backGroundDesc.addChild(value);
+        var textValue = this.controlGame.game.add.bitmapText(105, 27, 'arial', this.maxAtack.toString() , 16);
+        //var value = this.controlGame.game.add.text(105, 27, this.maxAtack.toString() , styleText);
+        backGroundDesc.addChild(textValue);
         var value = this.controlGame.game.add.text(165, 27, this.maxDefence.toString() , styleText);
         backGroundDesc.addChild(value);
 
@@ -230,39 +231,6 @@ class cControlFocus {
 
     }
 
-    private onNoManaOrEnergy(message) {
-        
-        var styleHit = { font: "18px Arial", fill: "#02063a", fontWeight: 900 }
-        
-        var completeText = this.controlGame.game.add.sprite( 0, -40);
-        
-        //texto que se muestra
-        var text = this.controlGame.game.add.text(0,0, message, styleHit);            
-
-        //hago un recuadro blanco abajo del texto
-        var rectangleBack = this.controlGame.game.add.bitmapData(text.width, 20);
-        rectangleBack.ctx.beginPath();
-        rectangleBack.ctx.rect(0, 0, text.width, 20);
-        rectangleBack.ctx.fillStyle = '#ffffff';
-        rectangleBack.ctx.fill();
-
-        var textBack = this.controlGame.game.add.sprite(0, 0, rectangleBack);
-        textBack.alpha = 0.6;
-
-        completeText.addChild(textBack);
-        completeText.addChild(text);
-
-        this.controlGame.controlPlayer.playerSprite.addChild(completeText)
-
-        var tweenText = this.controlGame.game.add.tween(completeText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
-        tweenText.onComplete.add(this.removeTweenText,completeText);
-}
-
-    removeTweenText(sprite:Phaser.Sprite) {        
-        sprite.destroy();        
-    }
-
-
     public SpellPosible(spell:cSpell):boolean {
 
         if (this.mana >= spell.manaCost) {
@@ -274,15 +242,15 @@ class cControlFocus {
                     this.UpdateLife(-spell.lifeCost);
                     return true;
                 } else {
-                    this.onNoManaOrEnergy("NEED LIFE");
+                    this.controlGame.controlPlayer.showMessage("NEED LIFE");
                     return false;
                 }
             } else {
-                this.onNoManaOrEnergy("NEED ENERGY");
+                this.controlGame.controlPlayer.showMessage("NEED ENERGY");
                 return false;
             }
         } else {
-            this.onNoManaOrEnergy("NEED MANA");
+            this.controlGame.controlPlayer.showMessage("NEED MANA");
             return false;
 
         }
@@ -470,13 +438,14 @@ class cControlFocus {
     }
 
     public createAtackDefence() {
-        this.textAtack = this.controlGame.game.add.text(160, 50, this.maxAtack.toString() , this.styleText);
+        
+        this.textAtack = this.controlGame.game.add.bitmapText(160, 48, 'gotic_white', this.maxAtack.toString() , 16)
         this.controlGame.spriteInterfaz.addChild(this.textAtack);
 
-        this.textDefence = this.controlGame.game.add.text(160, 73, this.maxDefence.toString() , this.styleText);
+        this.textDefence = this.controlGame.game.add.bitmapText(160, 71, 'gotic_white', this.maxDefence.toString() , 16)
         this.controlGame.spriteInterfaz.addChild(this.textDefence);
 
-        this.textPlayersOnline = this.controlGame.game.add.text(160, 95, "1" , this.styleText);
+        this.textPlayersOnline = this.controlGame.game.add.bitmapText(160, 93, 'gotic_white', "1" , 16)
         this.controlGame.spriteInterfaz.addChild(this.textPlayersOnline);
     }
 
@@ -536,13 +505,13 @@ class cControlFocus {
 
         //para los textos de las barras
         this.styleText = { font: "14px Arial", fill: "#ffffff", textalign: "center", fontWeight: 600};
-        this.textLife = this.controlGame.game.add.text(35, 125, "200" , this.styleText);
+        this.textLife = this.controlGame.game.add.bitmapText(35, 125, 'gotic_white', "200" , 16);
         this.controlGame.spriteInterfaz.addChild(this.textLife);
 
-        this.textMana = this.controlGame.game.add.text(35, 125 + 25, "200" , this.styleText);
+        this.textMana = this.controlGame.game.add.bitmapText(35, 125 + 25, 'gotic_white', "200" , 16);
         this.controlGame.spriteInterfaz.addChild(this.textMana);
 
-        this.textEnergy = this.controlGame.game.add.text(35, 125 + 25 * 2, "200" , this.styleText);
+        this.textEnergy = this.controlGame.game.add.bitmapText(35, 125 + 25 * 2, 'gotic_white', "200" , 16);
         this.controlGame.spriteInterfaz.addChild(this.textEnergy);
 
         //  Para hacer un recuadro sobre la barra selecionada

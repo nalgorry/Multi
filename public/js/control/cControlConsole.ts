@@ -3,8 +3,11 @@ class cControlConsole {
     consoleGraph:Phaser.Graphics;
     public arrayMessages: Array<cConsoleMessage>;
     public arrayPhaserTexts: Array<Phaser.Text>;
+    public activated:boolean = false; //to decide if the console will be used or not
   
     constructor(public controlGame: cControlGame) {
+
+        if (this.activated == false) {return} 
 
         var consoleWidth:number = 300;
         var consoleHeight:number = 120;
@@ -29,6 +32,8 @@ class cControlConsole {
 
 
     newMessage(type:enumMessage,message:string) {
+
+        if (this.activated == false) {return}
 
         var newMessage = new cConsoleMessage(type,message);
 

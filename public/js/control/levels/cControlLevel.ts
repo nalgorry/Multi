@@ -8,7 +8,7 @@ class cControlLevel {
     
     //variables para el recuadro de pasar de lvl 
     private groupLvlUp: Phaser.Group;
-    private textLevel:Phaser.Text;
+    private textLevel:Phaser.BitmapText;
     private arrayLvlUpSelEfects:number[]; //array de itemEfect a variable a modificar
 
     constructor(public controlGame:cControlGame) {
@@ -171,7 +171,7 @@ class cControlLevel {
     public createInterfaceItems() {
 
         //creo el texto 
-        this.textLevel = this.controlGame.game.add.text(158, 23, this.playerLevel.toString() , this.styleText);
+        this.textLevel = this.controlGame.game.add.bitmapText(158, 20, 'gotic_white',  this.playerLevel.toString() , 16)
         this.controlGame.spriteInterfaz.addChild(this.textLevel);
 
         //creo la barra de progreso de la exp

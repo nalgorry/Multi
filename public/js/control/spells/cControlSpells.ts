@@ -13,6 +13,7 @@ class cControlSpells {
 
     public borderSpell:Phaser.Graphics;
     public rectFocus:Phaser.Graphics
+    public autoFocusUsed:boolean = false;
 
     public selActorType:enumSelectedActor;
     public selActor:Object;
@@ -121,6 +122,7 @@ class cControlSpells {
 
         this.selActorType = enumSelectedActor.monster;
         this.selActor = monster;
+        this.autoFocusUsed = false;
 
         this.drawFocusRect(monster.monsterSprite)
     }
@@ -128,7 +130,8 @@ class cControlSpells {
     public otherPlayerClick(player:cOtherPlayer) {
 
         this.selActorType = enumSelectedActor.otherPlayer;
-        this.selActor = player; 
+        this.selActor = player;
+        this.autoFocusUsed = false; 
 
         this.drawFocusRect(player.playerSprite, true);
     }
@@ -137,6 +140,7 @@ class cControlSpells {
         
         this.selActorType = enumSelectedActor.thisPlayer;
         this.selActor = player;
+        this.autoFocusUsed = false;
 
         this.drawFocusRect(player.playerSprite,true)
     }
@@ -279,8 +283,12 @@ class cControlSpells {
                 this.selActorType = enumSelectedActor.monster;
                 this.selActor = closestMonster;
                 this.drawFocusRect(closestMonster.monsterSprite);
+
+                this.autoFocusUsed = true;
                 
                 spellAllowed = true;
+            } else {
+                this.controlGame.controlPlayer.showMessage("No Monster In Range");
             }
             
         }
@@ -310,6 +318,15 @@ class cControlSpells {
                
                 //me fijo si es posible tirar el hechizo en el pj selecionado
                 var spellAllowed:boolean = this.autoFocusSystem(sender);
+                var spellInRange:boolean = this.checkSpellDistance();
+
+                //if autofocus was used, and the distance is too far, we allow the sistem to change targets
+                console.log(this.autoFocusUsed)
+                if (spellInRange == false && this.autoFocusUsed == true) {
+                    this.selActorType = enumSelectedActor.nothing;
+                    var spellAllowed:boolean = this.autoFocusSystem(sender);
+                    console.log("intenta esto")
+                }
 
                 if (spellAllowed == true) {
                     if (this.checkSpellDistance() == true) {                 

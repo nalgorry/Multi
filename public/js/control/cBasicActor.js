@@ -7,7 +7,7 @@ var cBasicActor = (function () {
     cBasicActor.prototype.startChat = function () {
         //start the message system
         this.completeChatText = this.controlGame.game.add.sprite(0, -this.armorSprite.height - 24);
-        this.textChat = this.controlGame.game.add.text(0, 0, "", this.styleChat);
+        this.textChat = this.controlGame.game.add.bitmapText(0, 0, 'gotic', "0", 14);
         //white under the text 
         var rectangleBack = this.controlGame.game.add.bitmapData(1, 24);
         rectangleBack.ctx.beginPath();
@@ -43,15 +43,17 @@ var cBasicActor = (function () {
     };
     cBasicActor.prototype.setNameText = function (texto) {
         if (this.textName == null) {
-            this.textName = this.controlGame.game.add.text(0, 0, "", this.styleName);
+            this.textName = this.controlGame.game.add.bitmapText(0, 0, 'gotic', "0", 14);
             this.playerSprite.addChild(this.textName);
         }
         this.textName.text = texto;
         this.textName.x = -this.textName.width / 2;
     };
+    cBasicActor.prototype.setInitialPosition = function (startTileX, startTileY) {
+        this.startTileX = startTileX;
+        this.startTileY = startTileY;
+    };
     cBasicActor.prototype.startActor = function (x, y) {
-        //this.startTileX = startTileX;
-        //this.startTileY = startTileY;
         this.x = x;
         this.y = y;
         //TEST PARA USAR EL DRAGON BONES, aun en desarrollo

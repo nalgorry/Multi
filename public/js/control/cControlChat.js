@@ -4,6 +4,10 @@ var cControlChat = (function () {
         this.controlPlayer = controlPlayer;
         this.controlOtherPlayers = controlOtherPlayers;
         this.isActive = false;
+        this.isEnabled = true; //to control if we want to see the chat or not
+        if (this.isEnabled == false) {
+            return;
+        }
         this.inputTextChat = this.controlGame.game.add.inputField(10, 90, {
             font: '18px Arial',
             fill: '#212121',
@@ -31,6 +35,9 @@ var cControlChat = (function () {
         this.isActive = true;
     };
     cControlChat.prototype.enterPress = function () {
+        if (this.isEnabled == false) {
+            return;
+        }
         if (this.isActive) {
             var text = this.inputTextChat.value;
             //me fijo si mando un chat comun, o si uso algun texto para setear alguna variable del juego
@@ -52,6 +59,9 @@ var cControlChat = (function () {
         }
     };
     cControlChat.prototype.chatReceive = function (data) {
+        if (this.isEnabled == false) {
+            return;
+        }
         this.controlOtherPlayers.showChat(data);
     };
     return cControlChat;

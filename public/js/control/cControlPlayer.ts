@@ -49,6 +49,36 @@ class cControlPlayer extends cBasicActor {
         
     }
 
+    public showMessage(message) {
+    
+        var completeText = this.controlGame.game.add.sprite(15, -30);
+        
+        var text:Phaser.BitmapText = this.controlGame.game.add.bitmapText(0, 0, 'gotic',  message , 14)            
+
+        //hago un recuadro blanco abajo del texto
+        var rectangleBack = this.controlGame.game.add.bitmapData(text.width + 6, 22);
+        rectangleBack.ctx.beginPath();
+        rectangleBack.ctx.rect(-3, -1, text.width + 6, 22);
+        rectangleBack.ctx.fillStyle = '#ffffff';
+        rectangleBack.ctx.fill();
+
+        var textBack = this.controlGame.game.add.sprite(0, 0, rectangleBack);
+        textBack.alpha = 0.6;
+
+        completeText.addChild(textBack);
+        completeText.addChild(text);
+
+        this.playerSprite.addChild(completeText)
+
+        var tweenText = this.controlGame.game.add.tween(completeText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
+        tweenText.onComplete.add(this.removeTweenText,completeText);
+    }
+
+    removeTweenText(sprite:Phaser.Sprite) {        
+        sprite.destroy();        
+    }
+
+
     public startPlayerGraphics() {
 
         this.controlGame.game.physics.arcade.enable(this.playerSprite);

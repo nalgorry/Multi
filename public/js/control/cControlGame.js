@@ -180,6 +180,7 @@ var cControlGame = (function () {
         this.controlPlayer.controlPortals.resetPortals();
         //lets restart the player
         this.controlPlayer.startActor(newTileX * this.gridSize, newTileY * this.gridSize);
+        this.controlPlayer.setInitialPosition(newTileX, newTileY);
         this.controlPlayer.startPlayerGraphics();
         //lets restart the chat text
         this.controlPlayer.resetChat();

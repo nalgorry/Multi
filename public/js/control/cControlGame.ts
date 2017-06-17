@@ -289,6 +289,7 @@ class cControlGame {
 
         //lets restart the player
         this.controlPlayer.startActor(newTileX * this.gridSize, newTileY * this.gridSize);
+        this.controlPlayer.setInitialPosition(newTileX, newTileY);
         this.controlPlayer.startPlayerGraphics();
 
         //lets restart the chat text

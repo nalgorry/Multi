@@ -2,11 +2,14 @@ class cControlChat {
 
     isActive:boolean = false;
     inputTextChat:Fabrique.InputField;
+    isEnabled:boolean = true; //to control if we want to see the chat or not
 
     controlServer:cControlServer;
 
     
     constructor(public controlGame:cControlGame, public controlPlayer:cControlPlayer, public controlOtherPlayers:cControlOtherPlayers) {
+
+        if (this.isEnabled == false) {return}
 
         this.inputTextChat = this.controlGame.game.add.inputField(10, 90, {
             font: '18px Arial',
@@ -43,6 +46,7 @@ class cControlChat {
     }
 
     public enterPress() {  
+        if (this.isEnabled == false) {return}
 
         if (this.isActive) {
 
@@ -68,6 +72,8 @@ class cControlChat {
     }
 
     public chatReceive(data) {
+        if (this.isEnabled == false) {return}
+
         this.controlOtherPlayers.showChat(data)
     }
 

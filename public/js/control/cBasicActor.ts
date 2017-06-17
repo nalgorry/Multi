@@ -14,8 +14,8 @@ class cBasicActor {
     
     private completeChatText:Phaser.Sprite;
     private chatBack:Phaser.Sprite;
-    private textChat: Phaser.Text;
-    public textName:Phaser.Text;
+    private textChat: Phaser.BitmapText;
+    public textName:Phaser.BitmapText;
 
     private styleChat;
     private styleName;
@@ -31,7 +31,7 @@ class cBasicActor {
             
         //start the message system
         this.completeChatText = this.controlGame.game.add.sprite(0, -this.armorSprite.height - 24)
-        this.textChat = this.controlGame.game.add.text(0,0,"" , this.styleChat);
+        this.textChat = this.controlGame.game.add.bitmapText(0, 0, 'gotic',  "0" , 14)
 
         //white under the text 
         var rectangleBack = this.controlGame.game.add.bitmapData(1, 24);
@@ -82,7 +82,7 @@ class cBasicActor {
     public setNameText(texto:string) {
 
         if (this.textName == null) {
-            this.textName = this.controlGame.game.add.text(0, 0, "" , this.styleName);
+            this.textName = this.controlGame.game.add.bitmapText(0, 0, 'gotic',  "0" , 14)
             this.playerSprite.addChild(this.textName);
         }
 
@@ -90,10 +90,12 @@ class cBasicActor {
         this.textName.x = -this.textName.width/2;
     }
 
-    public startActor(x, y) {       
+    public setInitialPosition(startTileX, startTileY) {
+        this.startTileX = startTileX;
+        this.startTileY = startTileY;
+    }
 
-        //this.startTileX = startTileX;
-        //this.startTileY = startTileY;
+    public startActor(x:number, y:number) {       
 
         this.x = x;
         this.y = y;

@@ -130,7 +130,7 @@ var cControlLevel = (function () {
     };
     cControlLevel.prototype.createInterfaceItems = function () {
         //creo el texto 
-        this.textLevel = this.controlGame.game.add.text(158, 23, this.playerLevel.toString(), this.styleText);
+        this.textLevel = this.controlGame.game.add.bitmapText(158, 20, 'gotic_white', this.playerLevel.toString(), 16);
         this.controlGame.spriteInterfaz.addChild(this.textLevel);
         //creo la barra de progreso de la exp
         var barWidth = 9;
