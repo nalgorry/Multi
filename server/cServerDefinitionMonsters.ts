@@ -7,8 +7,8 @@ export class cServerDefinitionMonsters {
 
          switch (wichMonster) {
             case enumMonsters.FirstMonster:
-                monster.randomPower = 10;
-                monster.fixPower = 10;
+                monster.randomPower = 5;
+                monster.fixPower = 0;
                 monster.monsterLife = 100;
                 monster.monsterItemLevelDrop = 0;
                 monster.specialAtackPercent = 0;
@@ -25,13 +25,13 @@ export class cServerDefinitionMonsters {
                 monster.experience = 10;
                 break;
             case enumMonsters.Wolf:
-                monster.randomPower = 15;
-                monster.fixPower = 10;
+                monster.randomPower = 5;
+                monster.fixPower = 0;
                 monster.monsterLife = 120;
                 monster.monsterItemLevelDrop = 4;
                 monster.specialAtackPercent = 0.1;
                 monster.agresiveMonster = true;
-                monster.experience = 3;
+                monster.experience = 2;
                 break;
             case enumMonsters.RedWolf:
                 monster.randomPower = 20;

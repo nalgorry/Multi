@@ -20,6 +20,8 @@ class cBasicActor {
     private styleChat;
     private styleName;
 
+    public playerName:string = "Guest";
+
     constructor(_controlGame:cControlGame) {
         
         this.controlGame = _controlGame;
@@ -81,10 +83,8 @@ class cBasicActor {
 
     public setNameText(texto:string) {
 
-        if (this.textName == null) {
-            this.textName = this.controlGame.game.add.bitmapText(0, 0, 'gotic',  "0" , 14)
-            this.playerSprite.addChild(this.textName);
-        }
+        this.textName = this.controlGame.game.add.bitmapText(0, 0, 'gotic',  "0" , 14)
+        this.playerSprite.addChild(this.textName);
 
         this.textName.text = texto;
         this.textName.x = -this.textName.width/2;

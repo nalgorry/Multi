@@ -41,8 +41,13 @@ class cControlMonsters {
             //si fue el que lo mato, hago que aparezca un mensaje 
             if (data.idPlayer == this.controlGame.controlPlayer.idServer) {
                 this.controlGame.controlPlayer.youKillMonster(data);
+                this.controlGame.controlMissions.updateKillMonster(monster);
             }
+
+            
         }
+
+        
 
 
     }
@@ -92,6 +97,8 @@ class cControlMonsters {
 
         //lo dejo justo entre las capas de tiles y los objetos
         spriteAreaAtack.sendToBack();
+        spriteAreaAtack.moveUp();
+        spriteAreaAtack.moveUp();
         spriteAreaAtack.moveUp();
         spriteAreaAtack.moveUp();
         spriteAreaAtack.moveUp();

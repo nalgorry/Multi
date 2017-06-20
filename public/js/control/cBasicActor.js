@@ -1,5 +1,6 @@
 var cBasicActor = (function () {
     function cBasicActor(_controlGame) {
+        this.playerName = "Guest";
         this.controlGame = _controlGame;
         this.styleChat = { font: "16px Arial", fill: "#000000" };
         this.styleName = { font: "16px Arial", fill: "#3e76d1" };
@@ -42,10 +43,8 @@ var cBasicActor = (function () {
         this.chatBack.width = 0;
     };
     cBasicActor.prototype.setNameText = function (texto) {
-        if (this.textName == null) {
-            this.textName = this.controlGame.game.add.bitmapText(0, 0, 'gotic', "0", 14);
-            this.playerSprite.addChild(this.textName);
-        }
+        this.textName = this.controlGame.game.add.bitmapText(0, 0, 'gotic', "0", 14);
+        this.playerSprite.addChild(this.textName);
         this.textName.text = texto;
         this.textName.x = -this.textName.width / 2;
     };

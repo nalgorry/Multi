@@ -9,6 +9,7 @@ var cControlSpells = (function () {
     function cControlSpells(controlGame) {
         this.controlGame = controlGame;
         this.autoFocusUsed = false;
+        this.selActorType = enumSelectedActor.nothing;
         this.hitTextPosition = 0;
         this.maxRangeX = 12;
         this.maxRangeY = 7;
@@ -172,18 +173,14 @@ var cControlSpells = (function () {
             spellAllowed = true;
         }
         else if (this.selActorType == enumSelectedActor.otherPlayer && spell.enabledTrowOtherPlayer == true) {
-            //me fijo si no estoy tratando de atacar en la ciudad
-            var selPlayer = this.selActor;
-            if (selPlayer.tileX >= 27 && selPlayer.tileY >= 58) {
-                spellAllowed = false;
-                this.controlGame.controlConsole.newMessage(enumMessage.information, "You cant atack a player in the city");
-            }
-            else if (this.controlGame.controlPlayer.tileX >= 27 && this.controlGame.controlPlayer.tileY >= 58) {
-                spellAllowed = false;
-                this.controlGame.controlConsole.newMessage(enumMessage.information, "You cant atack a player if you are in the city");
+            //var selPlayer = <cOtherPlayer>this.selActor;
+            //lets check if we can atack in this map
+            if (this.controlGame.pvspAllowed == true) {
+                spellAllowed = true;
             }
             else {
-                spellAllowed = true;
+                spellAllowed = false;
+                this.controlGame.controlPlayer.showMessage("Can´t atack here");
             }
         }
         else if (this.selActorType == enumSelectedActor.thisPlayer && spell.enabledTrowThisPlayer == true) {
@@ -191,7 +188,7 @@ var cControlSpells = (function () {
         }
         //si no selecciono a nadie, intento hacer el auto focus
         //si permite seleccionar monstruos, busco el moustro mas cercano
-        if (spellAllowed == false && spell.enabledTrowOnMonster == true) {
+        if (this.selActorType != enumSelectedActor.monster && spell.enabledTrowOnMonster == true) {
             var closestMonster = this.controlGame.controlMonsters.getClosestMonsterInRange(this.maxRangeX, this.maxRangeY);
             if (closestMonster != undefined) {
                 this.selActorType = enumSelectedActor.monster;

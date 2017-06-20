@@ -15,7 +15,7 @@ class cControlSpells {
     public rectFocus:Phaser.Graphics
     public autoFocusUsed:boolean = false;
 
-    public selActorType:enumSelectedActor;
+    public selActorType:enumSelectedActor = enumSelectedActor.nothing;
     public selActor:Object;
 
     private styleHit;
@@ -256,17 +256,15 @@ class cControlSpells {
         if (this.selActorType == enumSelectedActor.monster && spell.enabledTrowOnMonster == true) {
             spellAllowed = true;
         } else if (this.selActorType == enumSelectedActor.otherPlayer && spell.enabledTrowOtherPlayer == true) {
-            //me fijo si no estoy tratando de atacar en la ciudad
-            var selPlayer = <cOtherPlayer>this.selActor;
-            if (selPlayer.tileX >= 27 && selPlayer.tileY >= 58) { //entro en la ciudad
-                spellAllowed = false;
-                this.controlGame.controlConsole.newMessage(enumMessage.information,"You cant atack a player in the city")
-            } else if (this.controlGame.controlPlayer.tileX >= 27 && this.controlGame.controlPlayer.tileY >= 58) {
-                spellAllowed = false;
-                this.controlGame.controlConsole.newMessage(enumMessage.information,"You cant atack a player if you are in the city")
-            }   
-            else {
+            
+            //var selPlayer = <cOtherPlayer>this.selActor;
+
+            //lets check if we can atack in this map
+            if (this.controlGame.pvspAllowed == true) {
                 spellAllowed = true;
+            } else {
+                spellAllowed = false;
+                this.controlGame.controlPlayer.showMessage("Can´t atack here");
             }
         } else if (this.selActorType == enumSelectedActor.thisPlayer && spell.enabledTrowThisPlayer == true) {
             spellAllowed = true;
@@ -274,7 +272,7 @@ class cControlSpells {
 
         //si no selecciono a nadie, intento hacer el auto focus
         //si permite seleccionar monstruos, busco el moustro mas cercano
-        if (spellAllowed == false && spell.enabledTrowOnMonster == true) {
+        if (this.selActorType  != enumSelectedActor.monster && spell.enabledTrowOnMonster == true) {
             
             var closestMonster:cMonster = this.controlGame.controlMonsters.getClosestMonsterInRange(this.maxRangeX, this.maxRangeY);
 

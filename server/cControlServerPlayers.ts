@@ -161,7 +161,7 @@ export class cServerControlPlayers {
                                 this.controlMonster.createNewMonster(
                                     undefined, 
                                     undefined,
-                                    this.randomIntFromInterval(1, 4),true)
+                                    this.controlMonster.getRandomMonster(),true)
                             } else {
                                 this.controlMonster.createNewMonster(
                                     undefined, 

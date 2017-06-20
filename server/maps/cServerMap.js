@@ -6,14 +6,17 @@ var cServerMap = (function () {
         var _this = this;
         this.arrayPortals = [];
         this.arrayMonster = [];
+        this.arrayMonsterTypes = [];
         this.id = JSONMapData.id;
         this.mapName = JSONMapData.mapName;
         this.file = JSONMapData.file;
         this.monsterNumber = JSONMapData.monsterNumber;
+        this.arrayMonsterTypes = JSONMapData.monsterTypes;
+        this.pvspAllowed = JSONMapData.PvsPAlowed;
         //lets add the portals to the map
         if (JSONMapData.portals != undefined) {
             JSONMapData.portals.forEach(function (portal) {
-                _this.arrayPortals.push(new cServerPortals_1.cServerPortals(portal.idPortal, portal.x, portal.y, portal.newMapTileX, portal.newMapTileY));
+                _this.arrayPortals.push(new cServerPortals_1.cServerPortals(portal.idPortal, portal.x, portal.y, portal.newMapTileX, portal.newMapTileY, portal.active));
             });
             //lets get the fixed moster for the map
             if (JSONMapData.monsters != undefined) {
@@ -21,7 +24,6 @@ var cServerMap = (function () {
                     var monster = new cServerMonster_1.cServerMonster();
                     monster.defineMonster(monsterData.monsterType, monsterData.monsterRespawn, monsterData.isPublic, monsterData.tileX, monsterData.tileY);
                     _this.arrayMonster.push(monster);
-                    console.log(_this.arrayMonster);
                 });
             }
         }

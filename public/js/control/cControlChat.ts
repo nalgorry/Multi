@@ -15,7 +15,7 @@ class cControlChat {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
-            width: 984-315,
+            width: 300,
             height: 23,
             padding: 8,
             borderWidth: 0,
@@ -29,7 +29,7 @@ class cControlChat {
         this.inputTextChat.blockInput = true;
     
         this.controlGame.spriteInterfaz.addChild(this.inputTextChat);
-        this.inputTextChat.position.set(-690, 625);
+        this.inputTextChat.position.set(-322, 633);
         
 
         Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress,this);

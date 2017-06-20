@@ -11,7 +11,7 @@ class SimpleGame {
             renderer: Phaser.CANVAS,
             parent: 'content',
             state: null,
-            enableDebug: false,
+            //enableDebug: false,
         };
 
         this.game = new Phaser.Game(conf);

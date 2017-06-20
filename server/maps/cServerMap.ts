@@ -5,10 +5,12 @@ export class cServerMap {
 
     public arrayPortals:cServerPortals[] = [];
     public arrayMonster:cServerMonster[] =[];
+    public arrayMonsterTypes:number[] = [];
     public id:number;
     public mapName:string; 
     public file:string; 
     public monsterNumber:number;
+    public pvspAllowed: boolean;
 
     constructor (JSONMapData) {
 
@@ -16,6 +18,8 @@ export class cServerMap {
         this.mapName = JSONMapData.mapName; 
         this.file = JSONMapData.file;
         this.monsterNumber = JSONMapData.monsterNumber;
+        this.arrayMonsterTypes = JSONMapData.monsterTypes;
+        this.pvspAllowed = JSONMapData.PvsPAlowed;
 
         //lets add the portals to the map
         if (JSONMapData.portals != undefined) {
@@ -26,7 +30,8 @@ export class cServerMap {
                     portal.x, 
                     portal.y,
                     portal.newMapTileX,
-                    portal.newMapTileY
+                    portal.newMapTileY,
+                    portal.active
                     ))
             });
 
@@ -45,10 +50,7 @@ export class cServerMap {
                 );
 
                 this.arrayMonster.push(monster);
-                
-                console.log(this.arrayMonster);
-
-                
+                                
             });
         }
 

@@ -55,12 +55,12 @@ var cPlayer = (function () {
         //analiso que hechizo se lanzo y calculo sus efectos
         switch (data.idSpell) {
             case 1 /* BasicAtack */:
-                damage = Math.round(Math.random() * 50 + 20);
+                damage = Math.round(Math.random() * 10 + 5);
                 resultado.monsterDamage = damage;
                 resultado.playerDamage = damage;
                 break;
             case 2 /* CriticalBall */:
-                damage = Math.round(Math.random() * 30 + 15);
+                damage = Math.round(Math.random() * 60 + 15);
                 if (Math.random() < 0.15) {
                     damage = damage + 50;
                 }

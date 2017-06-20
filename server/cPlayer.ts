@@ -77,7 +77,7 @@ export class cPlayer {
         //analiso que hechizo se lanzo y calculo sus efectos
         switch (data.idSpell) {
             case enumSpells.BasicAtack :
-                damage = Math.round(Math.random() * 50 + 20);
+                damage = Math.round(Math.random() * 10 + 5);
 
                 resultado.monsterDamage = damage;
                 resultado.playerDamage = damage;
@@ -85,7 +85,7 @@ export class cPlayer {
                 break;
 
             case enumSpells.CriticalBall :
-                damage = Math.round(Math.random() * 30 + 15);
+                damage = Math.round(Math.random() * 60 + 15);
                 if (Math.random() < 0.15) { //daño critico!
                     damage = damage + 50;
                 } 

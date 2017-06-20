@@ -6,6 +6,7 @@ class mainMenu extends Phaser.State {
     controlServer: cControlServer; //clase que controla el servidor
     controlChat: cControlChat; //clase que controla el chat
     controlMonsters: cControlMonsters; //clase que controla los monstruos
+    controlMissions: cControlMissions;
  
     create() {
         
@@ -15,6 +16,10 @@ class mainMenu extends Phaser.State {
 
         //para medir los tiempos
         this.game.time.advancedTiming = true;
+
+        //start the missions
+        this.controlMissions = new cControlMissions(this.controlGame);
+        this.controlGame.controlMissions = this.controlMissions
         
         //inicio el jugador principal
         this.controlPlayer = new cControlPlayer(this.controlGame);
@@ -52,7 +57,7 @@ class mainMenu extends Phaser.State {
 
     render() {
 
-        var showElements = false;
+        var showElements = true;
 
         if (showElements == true) {
             //this.game.debug.cameraInfo(this.game.camera, 50, 500);

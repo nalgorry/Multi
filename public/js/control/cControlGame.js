@@ -1,5 +1,6 @@
 var cControlGame = (function () {
     function cControlGame(_game) {
+        this.pvspAllowed = false;
         this.tutorialNumber = 0;
         this.interfazWidth = 200;
         this.game = _game;
@@ -41,14 +42,21 @@ var cControlGame = (function () {
         this.map = this.game.add.tilemap(mapName);
         this.map.addTilesetImage('tiles', 'tiles');
         this.hitLayer = this.map.createLayer('HitTest', this.game.width - this.interfazWidth);
+        this.hitLayer.visible = false;
         this.groupMapLayers.add(this.hitLayer);
         var layer1 = this.map.createLayer('FirstFloor', this.game.width - this.interfazWidth);
+        layer1.cacheAsBitmap = true;
+        layer1.resizeWorld;
         this.groupMapLayers.add(layer1);
         var layer2 = this.map.createLayer('SecondFloor', this.game.width - this.interfazWidth);
+        layer2.cacheAsBitmap = true;
         this.groupMapLayers.add(layer2);
-        this.layer = this.map.createLayer('ThirdFloor', this.game.width - this.interfazWidth);
-        this.groupMapLayers.add(this.layer);
+        var layer3 = this.map.createLayer('ThirdFloor', this.game.width - this.interfazWidth);
+        layer3.cacheAsBitmap = true;
+        this.groupMapLayers.add(layer3);
+        this.layer = layer3;
         this.game.world.sendToBack(this.map);
+        console.log(this.map.getTile(12, 11, 'HitTest'));
         this.map.setCollision(6, true, this.hitLayer);
         this.game.stage.disableVisibilityChange = true;
         //creo los objetos a partir de los datos del mapa
@@ -187,13 +195,16 @@ var cControlGame = (function () {
         //lets restart the other players array
         this.controlOtherPlayers.arrayPlayers = [];
     };
-    cControlGame.prototype.changeMap = function (mapName, idMap) {
+    cControlGame.prototype.changeMap = function (mapName, idMap, pvspAllowed) {
         //restart the map with the new data
         this.initMap(mapName, idMap);
         //lets put all the elements of the map to the top again
         this.game.world.bringToTop(this.groupInterface);
         //lets put all the item elements to the top again
         this.game.world.bringToTop(this.controlPlayer.controlItems.itemsGroup);
+        //lets change the map settings
+        this.pvspAllowed = pvspAllowed;
+        console.log(this.pvspAllowed);
     };
     cControlGame.prototype.addTutorial = function (tutorialNumber) {
         switch (tutorialNumber) {

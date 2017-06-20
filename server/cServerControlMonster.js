@@ -1,13 +1,14 @@
 "use strict";
 var cServerMonster_1 = require('./cServerMonster');
 var cServerControlMonster = (function () {
-    function cServerControlMonster(socket, room, controlPlayer, controlItems, monsterNumber, mapName, arrayMonsters) {
+    function cServerControlMonster(socket, room, controlPlayer, controlItems, monsterNumber, arrayMonsterTypes, mapName, arrayMonsters) {
         var _this = this;
         this.socket = socket;
         this.room = room;
         this.controlPlayer = controlPlayer;
         this.controlItems = controlItems;
         this.monsterNumber = monsterNumber;
+        this.arrayMonsterTypes = arrayMonsterTypes;
         this.mapName = mapName;
         this.arrayMonsters = arrayMonsters;
         this.nextIdMonster = 0;
@@ -16,19 +17,23 @@ var cServerControlMonster = (function () {
         this.arrayMonster = [];
         //get the tiles where monsters can not move
         this.getMapHitTest(mapName);
-        //create the random monsters.
+        //create the random monsters, if they are any monster in the map
+        if (this.arrayMonsterTypes == undefined) {
+            return;
+        }
         for (var i = 1; i <= monsterNumber; i++) {
-            var randmType = this.randomIntFromInterval(1, 2);
-            var monsterType = 1 /* FirstMonster */;
-            if (randmType == 2) {
-                var monsterType = 3 /* Wolf */;
-            }
+            var monsterType = this.getRandomMonster();
             this.createNewMonster(undefined, undefined, monsterType, true);
         }
         arrayMonsters.forEach(function (monster) {
             _this.createNewMonster(monster.tileX, monster.tileY, monster.monsterType, monster.monsterRespawn);
         });
     }
+    cServerControlMonster.prototype.getRandomMonster = function () {
+        var randmType = this.randomIntFromInterval(0, this.arrayMonsterTypes.length - 1);
+        var monsterType = this.arrayMonsterTypes[randmType];
+        return monsterType;
+    };
     cServerControlMonster.prototype.getMapHitTest = function (mapFile) {
         //lets get the file with the map to avoid monster to hit the water
         var fs = require('fs');

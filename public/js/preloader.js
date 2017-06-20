@@ -17,6 +17,8 @@ var preloader = (function (_super) {
         //all the maps of the game 
         this.game.load.tilemap('principalMap', 'assets/maps/principalMap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.tilemap('firstMap', 'assets/maps/firstMap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('secondMap', 'assets/maps/secondMap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('thirdMap', 'assets/maps/thirdMap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.tilemap('tutorialMap', 'assets/maps/tutorialMap.json', null, Phaser.Tilemap.TILED_JSON);
         //all the objets
         this.game.load.image('tiles', 'assets/maps/tiles.png');

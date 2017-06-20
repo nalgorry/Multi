@@ -6,8 +6,8 @@ var cServerDefinitionMonsters = (function () {
     cServerDefinitionMonsters.defineMonsters = function (monster, wichMonster) {
         switch (wichMonster) {
             case 1 /* FirstMonster */:
-                monster.randomPower = 10;
-                monster.fixPower = 10;
+                monster.randomPower = 5;
+                monster.fixPower = 0;
                 monster.monsterLife = 100;
                 monster.monsterItemLevelDrop = 0;
                 monster.specialAtackPercent = 0;
@@ -24,13 +24,13 @@ var cServerDefinitionMonsters = (function () {
                 monster.experience = 10;
                 break;
             case 3 /* Wolf */:
-                monster.randomPower = 15;
-                monster.fixPower = 10;
+                monster.randomPower = 5;
+                monster.fixPower = 0;
                 monster.monsterLife = 120;
                 monster.monsterItemLevelDrop = 4;
                 monster.specialAtackPercent = 0.1;
                 monster.agresiveMonster = true;
-                monster.experience = 3;
+                monster.experience = 2;
                 break;
             case 4 /* RedWolf */:
                 monster.randomPower = 20;

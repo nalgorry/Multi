@@ -17,7 +17,7 @@ class cControlSounds {
     private volumePiker:Phaser.Sprite;
     private volumeBar:Phaser.Sprite;
 
-    private masterVolume:number = 1;
+    private masterVolume:number = 0.5;
 
     private game:Phaser.Game
     private soundReady:boolean = false;
@@ -58,12 +58,12 @@ class cControlSounds {
         parlante.fixedToCamera = true;
 
         //dibujo de la barra inferior
-        var barWidth:number = 100;
-        var barHeight:number = 10;
+        var barPrincipalWidth:number = 100;
+        var barPrincipalHeight:number = 10;
 
-        var bitmapVolumen = this.controlGame.game.add.bitmapData(barWidth, barHeight);
+        var bitmapVolumen = this.controlGame.game.add.bitmapData(barPrincipalWidth, barPrincipalHeight);
         bitmapVolumen.ctx.beginPath();
-        bitmapVolumen.ctx.rect(0, 0, barWidth, barHeight);
+        bitmapVolumen.ctx.rect(0, 0, barPrincipalWidth, barPrincipalHeight);
         bitmapVolumen.ctx.fillStyle = '#434444';
         bitmapVolumen.ctx.fill();
         this.volumeBar = this.controlGame.game.add.sprite(870 , 8  , bitmapVolumen);
@@ -80,7 +80,7 @@ class cControlSounds {
         bitmapVolumen.ctx.rect(0, 0, barWidth, barHeight);
         bitmapVolumen.ctx.fillStyle = '#050505';
         bitmapVolumen.ctx.fill();
-        this.volumePiker = this.controlGame.game.add.sprite(970 , 12, bitmapVolumen);
+        this.volumePiker = this.controlGame.game.add.sprite(970 - barPrincipalWidth/2 , 12, bitmapVolumen);
         this.volumePiker.anchor.setTo(0.5);
         this.volumePiker.fixedToCamera = true;
         this.volumePiker.inputEnabled = true;
@@ -117,7 +117,7 @@ class cControlSounds {
     }
 
     public startPlayerDie() {
-        //this.playerDie1.play(undefined, undefined, 0.5 * this.masterVolume);
+        this.playerDie1.play(undefined, undefined, 0.3 * this.masterVolume);
     }
 
     public startItemEquip() {

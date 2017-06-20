@@ -3,6 +3,8 @@
         principalMap = 1,
         fistMap = 2,
         tutorialMap = 3,
+        secondMap = 4,
+        thirdMap = 5,
     }
     
     declare enum enumMonsterAtackType {

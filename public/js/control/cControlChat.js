@@ -12,7 +12,7 @@ var cControlChat = (function () {
             font: '18px Arial',
             fill: '#212121',
             fontWeight: 'bold',
-            width: 984 - 315,
+            width: 300,
             height: 23,
             padding: 8,
             borderWidth: 0,
@@ -24,7 +24,7 @@ var cControlChat = (function () {
         this.inputTextChat.focusOutOnEnter = true;
         this.inputTextChat.blockInput = true;
         this.controlGame.spriteInterfaz.addChild(this.inputTextChat);
-        this.inputTextChat.position.set(-690, 625);
+        this.inputTextChat.position.set(-322, 633);
         Fabrique.Plugins.InputField.onPressEnter.add(this.enterPress, this);
         Fabrique.Plugins.InputField.onChatFocus.add(this.chatFocus, this);
         //registro el evento del teclado

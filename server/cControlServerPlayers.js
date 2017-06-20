@@ -110,7 +110,7 @@ var cServerControlPlayers = (function () {
                         //TODO sacar esto de aca... creo un nuevo monster aleatorio, excepto el cosmico que lo creo de nuevo
                         if (monster.monsterRespawn == true) {
                             if (monster.monsterType != 5 /* Cosmic */) {
-                                _this.controlMonster.createNewMonster(undefined, undefined, _this.randomIntFromInterval(1, 4), true);
+                                _this.controlMonster.createNewMonster(undefined, undefined, _this.controlMonster.getRandomMonster(), true);
                             }
                             else {
                                 _this.controlMonster.createNewMonster(undefined, undefined, 5 /* Cosmic */, true);

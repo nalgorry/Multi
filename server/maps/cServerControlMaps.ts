@@ -33,6 +33,7 @@ export class cServerControlMaps {
             this.arrayMapData.forEach(map => {
                 map.arrayPortals.forEach (portal => {
                     portal.mapName = this.arrayMapData[portal.idPortal].mapName;
+                    portal.pvspAllowed = this.arrayMapData[portal.idPortal].pvspAllowed;
                 })
             })
 
@@ -51,7 +52,8 @@ export class cServerControlMaps {
            this.socket,'room' + mapData.id, 
            controlPlayers,
            controlItems, 
-           mapData.monsterNumber, 
+           mapData.monsterNumber,
+           mapData.arrayMonsterTypes, 
            mapData.file,
            mapData.arrayMonster);
        controlPlayers.controlMonster = controlMonsters;

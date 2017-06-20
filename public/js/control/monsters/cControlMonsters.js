@@ -24,6 +24,7 @@ var cControlMonsters = (function () {
             //si fue el que lo mato, hago que aparezca un mensaje 
             if (data.idPlayer == this.controlGame.controlPlayer.idServer) {
                 this.controlGame.controlPlayer.youKillMonster(data);
+                this.controlGame.controlMissions.updateKillMonster(monster);
             }
         }
     };
@@ -60,6 +61,8 @@ var cControlMonsters = (function () {
         body.offset.y = -data.spellSize / 2;
         //lo dejo justo entre las capas de tiles y los objetos
         spriteAreaAtack.sendToBack();
+        spriteAreaAtack.moveUp();
+        spriteAreaAtack.moveUp();
         spriteAreaAtack.moveUp();
         spriteAreaAtack.moveUp();
         spriteAreaAtack.moveUp();

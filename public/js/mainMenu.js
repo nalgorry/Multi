@@ -14,6 +14,9 @@ var mainMenu = (function (_super) {
         this.game.add.plugin(Fabrique.Plugins.InputField);
         //para medir los tiempos
         this.game.time.advancedTiming = true;
+        //start the missions
+        this.controlMissions = new cControlMissions(this.controlGame);
+        this.controlGame.controlMissions = this.controlMissions;
         //inicio el jugador principal
         this.controlPlayer = new cControlPlayer(this.controlGame);
         this.controlGame.controlPlayer = this.controlPlayer;
@@ -37,7 +40,7 @@ var mainMenu = (function (_super) {
         this.controlGame.updateZDepth();
     };
     mainMenu.prototype.render = function () {
-        var showElements = false;
+        var showElements = true;
         if (showElements == true) {
             //this.game.debug.cameraInfo(this.game.camera, 50, 500);
             //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);

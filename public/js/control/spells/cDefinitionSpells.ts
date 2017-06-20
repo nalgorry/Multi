@@ -21,11 +21,11 @@ class cDefinitionSpells {
 
         newSpell.idSpell = enumSpells.BasicAtack;
         newSpell.spellName = "Bola de Fuego";
-        newSpell.manaCost = 30;
+        newSpell.manaCost = 5;
         newSpell.energyCost = 5;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 0;
-        newSpell.coolDownTimeSec = 0.8;
+        newSpell.coolDownTimeSec = 0.5;
         newSpell.explotionSprite = 'boom4';
         newSpell.tint = 0xFC0000;
         newSpell.explotionFrameRate = 100;

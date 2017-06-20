@@ -17,6 +17,7 @@ export class cServerControlMonster {
     public controlPlayer:cServerControlPlayers, 
     public controlItems:cServerControlItems,
     private monsterNumber:number,
+    public arrayMonsterTypes:enumMonsters[],
     private mapName:string,
     private arrayMonsters:cServerMonster[]) {
 
@@ -25,15 +26,12 @@ export class cServerControlMonster {
         //get the tiles where monsters can not move
         this.getMapHitTest(mapName) 
         
-        //create the random monsters.
+        //create the random monsters, if they are any monster in the map
+        if (this.arrayMonsterTypes == undefined) {return}
 
        for (var i=1; i<=monsterNumber; i++) {
 
-           var randmType = this.randomIntFromInterval(1, 2)
-           var monsterType = enumMonsters.FirstMonster
-           if(randmType == 2) {
-               var monsterType = enumMonsters.Wolf
-           }
+           var monsterType = this.getRandomMonster()
             
            this.createNewMonster(undefined, undefined, monsterType, true);
        }
@@ -42,6 +40,14 @@ export class cServerControlMonster {
            this.createNewMonster(monster.tileX, monster.tileY, monster.monsterType, monster.monsterRespawn);
        })
 
+    }
+
+    public getRandomMonster():number {
+
+            var randmType = this.randomIntFromInterval(0, this.arrayMonsterTypes.length -1)
+            var monsterType = this.arrayMonsterTypes[randmType];
+
+            return monsterType;
     }
 
     public getMapHitTest(mapFile:string) {

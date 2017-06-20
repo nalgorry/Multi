@@ -2,7 +2,7 @@ var cControlSounds = (function () {
     function cControlSounds(controlGame) {
         this.controlGame = controlGame;
         this.numberPlayerHit = 1;
-        this.masterVolume = 1;
+        this.masterVolume = 0.5;
         this.soundReady = false;
         this.game = controlGame.game;
         //cargo los sonidos
@@ -27,11 +27,11 @@ var cControlSounds = (function () {
         var parlante = this.controlGame.game.add.sprite(850, 5, 'parlante');
         parlante.fixedToCamera = true;
         //dibujo de la barra inferior
-        var barWidth = 100;
-        var barHeight = 10;
-        var bitmapVolumen = this.controlGame.game.add.bitmapData(barWidth, barHeight);
+        var barPrincipalWidth = 100;
+        var barPrincipalHeight = 10;
+        var bitmapVolumen = this.controlGame.game.add.bitmapData(barPrincipalWidth, barPrincipalHeight);
         bitmapVolumen.ctx.beginPath();
-        bitmapVolumen.ctx.rect(0, 0, barWidth, barHeight);
+        bitmapVolumen.ctx.rect(0, 0, barPrincipalWidth, barPrincipalHeight);
         bitmapVolumen.ctx.fillStyle = '#434444';
         bitmapVolumen.ctx.fill();
         this.volumeBar = this.controlGame.game.add.sprite(870, 8, bitmapVolumen);
@@ -46,7 +46,7 @@ var cControlSounds = (function () {
         bitmapVolumen.ctx.rect(0, 0, barWidth, barHeight);
         bitmapVolumen.ctx.fillStyle = '#050505';
         bitmapVolumen.ctx.fill();
-        this.volumePiker = this.controlGame.game.add.sprite(970, 12, bitmapVolumen);
+        this.volumePiker = this.controlGame.game.add.sprite(970 - barPrincipalWidth / 2, 12, bitmapVolumen);
         this.volumePiker.anchor.setTo(0.5);
         this.volumePiker.fixedToCamera = true;
         this.volumePiker.inputEnabled = true;
@@ -74,7 +74,7 @@ var cControlSounds = (function () {
         }
     };
     cControlSounds.prototype.startPlayerDie = function () {
-        //this.playerDie1.play(undefined, undefined, 0.5 * this.masterVolume);
+        this.playerDie1.play(undefined, undefined, 0.3 * this.masterVolume);
     };
     cControlSounds.prototype.startItemEquip = function () {
         this.itemDrop.play(undefined, undefined, 0.5 * this.masterVolume);

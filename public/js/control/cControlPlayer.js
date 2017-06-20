@@ -67,6 +67,8 @@ var cControlPlayer = (function (_super) {
         //para poder tirar poderes sobre si mismo.
         this.armorSprite.inputEnabled = true;
         this.armorSprite.events.onInputDown.add(this.youClickYou, this);
+        //lets put the name 'guest' for now
+        this.setNameText(this.playerName);
     };
     cControlPlayer.prototype.startPlayer = function () {
         //Cargo el sistema de controlFocus
@@ -81,8 +83,6 @@ var cControlPlayer = (function (_super) {
         this.controlLevel = new cControlLevel(this.controlGame);
         //lets start the player with all the animations
         this.startPlayerGraphics();
-        //lets put the name 'guest' for now
-        this.setNameText("Guest");
         //controlo el movimiento del jugador
         var W = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.W);
         var A = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -204,6 +204,7 @@ var cControlPlayer = (function (_super) {
         if (data.damage != 0) {
             this.monstersKills++;
             this.controlGame.controlConsole.newMessage(enumMessage.youKill, "You kill a monster (" + this.monstersKills + ")");
+            this.controlGame.controlPlayer.showMessage("KILL HIT!");
             this.controlLevel.addExperience(data.experience);
         }
     };
@@ -330,7 +331,7 @@ var cControlPlayer = (function (_super) {
         }
         //Me fijo si cambio la posicion y si es asi emito la nueva posicion
         this.tileX = this.controlGame.layer.getTileX(xOffset);
-        this.tileY = this.controlGame.layer.getTileY(yOffset) + 1;
+        this.tileY = this.controlGame.layer.getTileY(yOffset);
         if (this.tileX != this.lastSendTileX || this.tileY != this.lastSendTileY) {
             this.lastSendTileX = this.tileX;
             this.lastSendTileY = this.tileY;

@@ -3,10 +3,8 @@ class cControlGame {
     public game: Phaser.Game;
     public gridSize: number;
     public map: Phaser.Tilemap;
-    public land: Phaser.TileSprite;
     public layer: Phaser.TilemapLayer;
     public hitLayer: Phaser.TilemapLayer;
-    public cursors: Phaser.CursorKeys;
     
     public depthGroup:Phaser.Group;
     public groupInterface:Phaser.Group;
@@ -21,12 +19,15 @@ class cControlGame {
     public controlSounds:cControlSounds;
     public controlOtherPlayers:cControlOtherPlayers;
     public controlChat:cControlChat;
-    public spriteInterfaz:Phaser.Sprite;
+    public controlMissions: cControlMissions;
+
+    public pvspAllowed:boolean = false;
 
     private groupInitialHelp:Phaser.Group;
     private groupInitialHelpBotons:Phaser.Group;
     private tutorialNumber:number = 0;
 
+    public spriteInterfaz:Phaser.Sprite;
     public interfazWidth:number = 200;
 
     marker; //to get the mouse
@@ -88,16 +89,25 @@ class cControlGame {
         this.map.addTilesetImage('tiles', 'tiles');
 
         this.hitLayer = this.map.createLayer('HitTest',this.game.width - this.interfazWidth);
+        this.hitLayer.visible = false;
 
         this.groupMapLayers.add(this.hitLayer);
         var layer1 = this.map.createLayer('FirstFloor',this.game.width - this.interfazWidth);
+        layer1.cacheAsBitmap = true;
+        layer1.resizeWorld;
         this.groupMapLayers.add(layer1);
         var layer2 = this.map.createLayer('SecondFloor',this.game.width - this.interfazWidth);
+        layer2.cacheAsBitmap = true;
         this.groupMapLayers.add(layer2);
-        this.layer = this.map.createLayer('ThirdFloor',this.game.width - this.interfazWidth);
-        this.groupMapLayers.add(this.layer);
+        var layer3 = this.map.createLayer('ThirdFloor',this.game.width - this.interfazWidth);
+        layer3.cacheAsBitmap = true;
+        this.groupMapLayers.add(layer3);
 
+        this.layer = layer3;
+        
         this.game.world.sendToBack(this.map);
+
+        console.log(this.map.getTile(12,11,'HitTest'));
 
         this.map.setCollision(6, true, this.hitLayer );
         this.game.stage.disableVisibilityChange = true;
@@ -114,6 +124,7 @@ class cControlGame {
 
         //create special map features (for example, texts, etc.)
         this.createSpecialFeatures(idMap);
+
     }
 
     public createSpecialFeatures(mapId:enumMapNames) {
@@ -261,11 +272,6 @@ class cControlGame {
 
 
                 break;
-                
-               
-
-
-                
         
             default:
                 break;
@@ -300,7 +306,7 @@ class cControlGame {
 
     }
 
-    public changeMap(mapName, idMap:enumMapNames) {
+    public changeMap(mapName, idMap:enumMapNames, pvspAllowed:boolean) {
         //restart the map with the new data
         this.initMap(mapName, idMap);
 
@@ -309,6 +315,11 @@ class cControlGame {
 
         //lets put all the item elements to the top again
         this.game.world.bringToTop(this.controlPlayer.controlItems.itemsGroup);
+
+        //lets change the map settings
+        this.pvspAllowed = pvspAllowed;
+
+        console.log(this.pvspAllowed );
 
 
     }
