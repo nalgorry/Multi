@@ -71,53 +71,6 @@ class cControlSpells {
 
     }
 
-    public makeRay(spriteFrom:Phaser.Sprite, spriteTo:Phaser.Sprite, color:number) {
-
-
-        var from:Phaser.Point;
-        var to:Phaser.Point;
-
-        from = new Phaser.Point(spriteFrom.x, spriteFrom.y - 40);
-        to = new Phaser.Point(spriteTo.x, spriteTo.y - 40);
-
-        var graphics = this.controlGame.game.add.graphics(0, 0);
-        graphics.lineStyle(2, color, 1);
-
-        graphics.moveTo(from.x , from.y);
-
-        var maxLenght:number = 5;
-
-        var distance = from.distance(to);
-
-        var numberOfLines:number = Math.floor(distance/maxLenght);
-
-        var lastX = from.x;
-        var lastY = from.y;
-        var randomFactor = 3;
-        var fixX = (to.x - from.x) / numberOfLines ;
-        var fixY = (to.y - from.y) / numberOfLines;
-
-
-        for(var i = 0; i < numberOfLines ; i++) {
-            var randX = this.controlGame.game.rnd.integerInRange(-randomFactor, randomFactor);
-            var randY = this.controlGame.game.rnd.integerInRange(-randomFactor, randomFactor);
-
-            lastX += fixX + randX;
-            lastY += fixY + randY; 
-
-            graphics.lineTo(lastX, lastY);
-        }
-
-        var buletAnimation = this.controlGame.game.add.tween(graphics).to( { alpha: 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
-        buletAnimation.onComplete.add(this.destroyBulet,this,null,graphics);
-
-
-    }
-
-    public destroyBulet(bulet:Phaser.Graphics, tween:Phaser.Tween) {
-        bulet.destroy();
-    }
-
     public monsterClick(monster:cMonster) {
 
         this.selActorType = enumSelectedActor.monster;
@@ -471,7 +424,8 @@ class cControlSpells {
 
         //creo una mega rayo super mortal 
         if (fromSprite != null) {
-            this.makeRay(fromSprite, toSprite, rayColor);
+
+            new cControlRay(this.controlGame, fromSprite, toSprite, rayColor);
         }
 
 

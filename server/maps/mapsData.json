@@ -40,7 +40,8 @@
           {"idPortal": 1, "x": 14, "y": 10, "newMapTileX":24, "newMapTileY":24, "active": true }
       ],
       "monsters" : [ 
-        {"tileX": 62, "tileY" : 52, "monsterType": 6, "monsterRespawn" : false, "isPublic" : true}
+        {"tileX": 62, "tileY" : 52, "monsterType": 6, "monsterRespawn" : false, "isPublic" : true},
+        {"tileX": 7, "tileY" : 60, "monsterType": 6, "monsterRespawn" : false, "isPublic" : true}
       ]
       
       }
