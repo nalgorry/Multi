@@ -73,6 +73,19 @@ class cControlSpells {
 
     public monsterClick(monster:cMonster) {
 
+        //lets check if this monster was already focus
+        if (this.selActorType == enumSelectedActor.monster) {
+            var selMonster = <cMonster> this.selActor;
+
+            //lets do a basic atack if we click the monster twice
+            if (monster.idMonster == selMonster.idMonster)
+            {
+                this.selSpell = this.allSpells.arraySpells[enumSpells.BasicAtack];
+                this.selSpell.spellSelected();
+            }
+
+        }
+
         this.selActorType = enumSelectedActor.monster;
         this.selActor = monster;
         this.autoFocusUsed = false;
@@ -378,61 +391,18 @@ class cControlSpells {
 
     public onHit(data, fromSprite:Phaser.Sprite, toSprite:Phaser.Sprite, rayColor:number) {
        
-        //texto con el daño
-        if (data.damage != 0) {
-
-            if (data.damage > 0) { //daño real 
-                this.styleHit = { font: "18px Arial", fill: "#750303", fontWeight: 900 }
-            } else { //curacción
-                this.styleHit = { font: "18px Arial", fill: "#113d01", fontWeight: 900 }
-                data.damage = -data.damage;
-            };
-
-            //para cambiar la posicion del daño si te golpean muy rapido
-            if (this.hitTextPosition == -30) {
-                this.hitTextPosition = 10;
-            } else {
-                this.hitTextPosition = -30;
-            }
-
-            var completeText = this.controlGame.game.add.sprite(this.hitTextPosition , -40);
-            
-            //texto que se muestra
-            var hitText = this.controlGame.game.add.text(0,0, data.damage, this.styleHit);            
-
-            //hago un recuadro blanco abajo del texto
-            var rectangleBack = this.controlGame.game.add.bitmapData(hitText.width, 20);
-            rectangleBack.ctx.beginPath();
-            rectangleBack.ctx.rect(0, 0, hitText.width, 20);
-            rectangleBack.ctx.fillStyle = '#ffffff';
-            rectangleBack.ctx.fill();
-
-            var textBack = this.controlGame.game.add.sprite(0, 0, rectangleBack);
-            textBack.alpha = 0.6;
-
-            completeText.addChild(textBack);
-            completeText.addChild(hitText);
-            
-            toSprite.addChild(completeText);
-
-            var tweenText = this.controlGame.game.add.tween(completeText).to({y: '-40'}, 1000, Phaser.Easing.Cubic.Out, true);
-            tweenText.onComplete.add(this.removeTweenText,completeText);
+        //para cambiar la posicion del daño si te golpean muy rapido
+        if (this.hitTextPosition == -30) {
+            this.hitTextPosition = 10;
+        } else {
+            this.hitTextPosition = -30;
         }
 
-        //animacion de un sprite 
-        this.allSpells.arraySpells[data.idSpell].spellAnimation(toSprite);
+        var spell:cSpell = this.allSpells.arraySpells[data.idSpell]
 
-        //creo una mega rayo super mortal 
-        if (fromSprite != null) {
-
-            new cControlRay(this.controlGame, fromSprite, toSprite, rayColor);
-        }
+        new cControlRay(this.controlGame, fromSprite, toSprite, rayColor, data.damage, this.hitTextPosition, spell);
 
 
-    }
-
-    removeTweenText(sprite:Phaser.Sprite) {        
-        sprite.destroy();        
     }
     
 

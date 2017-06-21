@@ -141,7 +141,7 @@ class cControlSounds {
                 this.basicHit.play(undefined, undefined, 0.5 * this.masterVolume);
                 break;
             case enumSpells.CriticalBall:
-                this.basicHit.play(undefined, undefined, 0.5 * this.masterVolume);
+                this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);
                 break;
             case enumSpells.LightingStorm:
                 this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);

@@ -30,36 +30,6 @@ class cSpell {
         
     }
 
-    public spellAnimation(sprite:Phaser.Sprite) {
-        //animiacion de la bomba 
-        if (this.explotionFollowCharacter == true) {
-            var boomSprite = this.controlGame.game.add.sprite(0 , this.explotionYOffset,
-                this.explotionSprite);
-            sprite.addChild(boomSprite);
-        } else {
-            var boomSprite = this.controlGame.game.add.sprite(sprite.x , sprite.y + this.explotionYOffset,
-                this.explotionSprite);
-        }    
-
-        boomSprite.anchor.set(0.5,1);
-        
-        var animation = boomSprite.animations.add('boom');
-
-        //cambio el tint de la explosión si viene con 
-        if (this.tint != null) {boomSprite.tint =  this.tint;}
-
-        sprite.addChild(boomSprite);
-      
-        if (this.explotionTimeSeconds == 0) {
-            boomSprite.animations.play('boom',this.explotionFrameRate,false,true);
-        } else {
-            boomSprite.animations.play('boom',this.explotionFrameRate,true,true);
-            this.controlGame.game.time.events.add(Phaser.Timer.SECOND * this.explotionTimeSeconds, this.animationFinish, animation);
-        }
-
-
-    }
-
     public animationFinish() {
             var animation:any = this;
             animation.loop = false;

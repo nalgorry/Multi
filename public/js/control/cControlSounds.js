@@ -91,7 +91,7 @@ var cControlSounds = (function () {
                 this.basicHit.play(undefined, undefined, 0.5 * this.masterVolume);
                 break;
             case 2 /* CriticalBall */:
-                this.basicHit.play(undefined, undefined, 0.5 * this.masterVolume);
+                this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);
                 break;
             case 6 /* LightingStorm */:
                 this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);

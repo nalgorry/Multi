@@ -47,9 +47,6 @@ class cControlMonsters {
             
         }
 
-        
-
-
     }
 
     //esto es cuando el moustro le pega a alguien

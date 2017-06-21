@@ -21,8 +21,8 @@ class cDefinitionSpells {
 
         newSpell.idSpell = enumSpells.BasicAtack;
         newSpell.spellName = "Bola de Fuego";
-        newSpell.manaCost = 5;
-        newSpell.energyCost = 5;
+        newSpell.manaCost = 1;
+        newSpell.energyCost = 1;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 0;
         newSpell.coolDownTimeSec = 0.5;
