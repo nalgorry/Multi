@@ -19,6 +19,7 @@ var cDefinitionSpells = (function () {
         newSpell.explotionSprite = 'boom4';
         newSpell.tint = 0xFC0000;
         newSpell.explotionFrameRate = 100;
+        newSpell.rayAnimationType = enumRayAnimations.arrow;
         //CriticalBall
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[2 /* CriticalBall */] = newSpell;
@@ -31,7 +32,8 @@ var cDefinitionSpells = (function () {
         newSpell.coolDownTimeSec = 2;
         newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
-        //WeakBall
+        newSpell.rayAnimationType = enumRayAnimations.missile;
+        //firestorm
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[3 /* WeakBall */] = newSpell;
         newSpell.idSpell = 3 /* WeakBall */;
@@ -48,6 +50,7 @@ var cDefinitionSpells = (function () {
         newSpell.coolDownTimeSec = 10;
         newSpell.enabledTrowOtherPlayer = true;
         newSpell.enabledTrowThisPlayer = false;
+        newSpell.rayAnimationType = enumRayAnimations.ray;
         //ProtectField
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[4 /* ProtectField */] = newSpell;
@@ -65,6 +68,7 @@ var cDefinitionSpells = (function () {
         newSpell.enabledTrowOtherPlayer = false;
         newSpell.enabledTrowThisPlayer = true;
         newSpell.enabledTrowOnMonster = false;
+        newSpell.rayAnimationType = enumRayAnimations.ray;
         //HealHand
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[5 /* HealHand */] = newSpell;
@@ -80,6 +84,7 @@ var cDefinitionSpells = (function () {
         newSpell.posInSpritesheet = 4;
         newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
+        newSpell.rayAnimationType = enumRayAnimations.ray;
         //LightingStorm
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[6 /* LightingStorm */] = newSpell;
@@ -95,6 +100,7 @@ var cDefinitionSpells = (function () {
         newSpell.posInSpritesheet = 5;
         newSpell.explotionSprite = 'boom3';
         newSpell.explotionFrameRate = 100;
+        newSpell.rayAnimationType = enumRayAnimations.ray;
         //Explosion
         var newSpell = new cSpell(this.controlGame);
         newSpell.idSpell = 7 /* SelfExplosion */;

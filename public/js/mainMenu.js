@@ -7,13 +7,16 @@ var mainMenu = (function (_super) {
     __extends(mainMenu, _super);
     function mainMenu() {
         _super.apply(this, arguments);
+        this.showElements = true;
     }
     mainMenu.prototype.create = function () {
         //inicio todos los parametros dele juego
         this.controlGame = new cControlGame(this.game);
         this.game.add.plugin(Fabrique.Plugins.InputField);
         //para medir los tiempos
-        this.game.time.advancedTiming = true;
+        if (this.showElements == true) {
+            this.game.time.advancedTiming = true;
+        }
         //start the missions
         this.controlMissions = new cControlMissions(this.controlGame);
         this.controlGame.controlMissions = this.controlMissions;
@@ -40,8 +43,7 @@ var mainMenu = (function (_super) {
         this.controlGame.updateZDepth();
     };
     mainMenu.prototype.render = function () {
-        var showElements = true;
-        if (showElements == true) {
+        if (this.showElements == true) {
             //this.game.debug.cameraInfo(this.game.camera, 50, 500);
             //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
             var x = this.controlGame.layer.getTileX(this.controlPlayer.playerSprite.body.x);

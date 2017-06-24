@@ -17,6 +17,7 @@ class cSpell {
     public enabledTrowThisPlayer: boolean = false;
     public coolDownTimeSec:number = 2;
     public tint:number = null;
+    public rayAnimationType:enumRayAnimations
     
     
     //variables creadas por la clase
@@ -101,4 +102,10 @@ class cSpell {
     }
 
 
+}
+
+enum enumRayAnimations {
+    ray,
+    arrow,
+    missile
 }

@@ -60,3 +60,9 @@ var cSpell = (function () {
     };
     return cSpell;
 }());
+var enumRayAnimations;
+(function (enumRayAnimations) {
+    enumRayAnimations[enumRayAnimations["ray"] = 0] = "ray";
+    enumRayAnimations[enumRayAnimations["arrow"] = 1] = "arrow";
+    enumRayAnimations[enumRayAnimations["missile"] = 2] = "missile";
+})(enumRayAnimations || (enumRayAnimations = {}));

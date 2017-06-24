@@ -292,7 +292,7 @@ var cControlSpells = (function () {
             this.hitTextPosition = -30;
         }
         var spell = this.allSpells.arraySpells[data.idSpell];
-        new cControlRay(this.controlGame, fromSprite, toSprite, rayColor, data.damage, this.hitTextPosition, spell);
+        new cControlSpellAnim(this.controlGame, fromSprite, toSprite, rayColor, data.damage, this.hitTextPosition, spell);
     };
     return cControlSpells;
 }());

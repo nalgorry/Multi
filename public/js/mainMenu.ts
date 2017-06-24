@@ -7,6 +7,8 @@ class mainMenu extends Phaser.State {
     controlChat: cControlChat; //clase que controla el chat
     controlMonsters: cControlMonsters; //clase que controla los monstruos
     controlMissions: cControlMissions;
+
+    showElements = true;
  
     create() {
         
@@ -15,7 +17,9 @@ class mainMenu extends Phaser.State {
         this.game.add.plugin(Fabrique.Plugins.InputField);
 
         //para medir los tiempos
-        this.game.time.advancedTiming = true;
+        if (this.showElements == true) {
+            this.game.time.advancedTiming = true;
+        }
 
         //start the missions
         this.controlMissions = new cControlMissions(this.controlGame);
@@ -57,9 +61,7 @@ class mainMenu extends Phaser.State {
 
     render() {
 
-        var showElements = true;
-
-        if (showElements == true) {
+        if (this.showElements == true) {
             //this.game.debug.cameraInfo(this.game.camera, 50, 500);
             //this.game.debug.spriteCoords(this.controlPlayer.playerSprite, 50, 500);
             

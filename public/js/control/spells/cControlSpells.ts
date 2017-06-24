@@ -400,8 +400,7 @@ class cControlSpells {
 
         var spell:cSpell = this.allSpells.arraySpells[data.idSpell]
 
-        new cControlRay(this.controlGame, fromSprite, toSprite, rayColor, data.damage, this.hitTextPosition, spell);
-
+        new cControlSpellAnim(this.controlGame, fromSprite, toSprite, rayColor, data.damage, this.hitTextPosition, spell);
 
     }
     

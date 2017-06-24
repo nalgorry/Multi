@@ -29,6 +29,7 @@ class cDefinitionSpells {
         newSpell.explotionSprite = 'boom4';
         newSpell.tint = 0xFC0000;
         newSpell.explotionFrameRate = 100;
+        newSpell.rayAnimationType = enumRayAnimations.arrow;
 
         //CriticalBall
         var newSpell = new cSpell(this.controlGame);
@@ -43,8 +44,9 @@ class cDefinitionSpells {
         newSpell.coolDownTimeSec = 2;
         newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
+        newSpell.rayAnimationType = enumRayAnimations.missile;
 
-        //WeakBall
+        //firestorm
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[enumSpells.WeakBall] = newSpell;
         
@@ -62,6 +64,7 @@ class cDefinitionSpells {
         newSpell.coolDownTimeSec = 10;
         newSpell.enabledTrowOtherPlayer = true;
         newSpell.enabledTrowThisPlayer = false;
+        newSpell.rayAnimationType = enumRayAnimations.ray;
 
         //ProtectField
         var newSpell = new cSpell(this.controlGame);
@@ -81,6 +84,7 @@ class cDefinitionSpells {
         newSpell.enabledTrowOtherPlayer = false;
         newSpell.enabledTrowThisPlayer = true;
         newSpell.enabledTrowOnMonster = false;
+        newSpell.rayAnimationType = enumRayAnimations.ray;
 
         //HealHand
         var newSpell = new cSpell(this.controlGame);
@@ -98,6 +102,7 @@ class cDefinitionSpells {
         newSpell.posInSpritesheet = 4;
         newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
+        newSpell.rayAnimationType = enumRayAnimations.ray;
 
         //LightingStorm
         var newSpell = new cSpell(this.controlGame);
@@ -115,6 +120,7 @@ class cDefinitionSpells {
         newSpell.posInSpritesheet = 5;
         newSpell.explotionSprite = 'boom3';
         newSpell.explotionFrameRate = 100;
+        newSpell.rayAnimationType = enumRayAnimations.ray;
 
         //Explosion
         var newSpell = new cSpell(this.controlGame);

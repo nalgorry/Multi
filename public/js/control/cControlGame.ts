@@ -91,10 +91,11 @@ class cControlGame {
         this.hitLayer = this.map.createLayer('HitTest',this.game.width - this.interfazWidth);
         this.hitLayer.visible = false;
 
+        this.hitLayer.resizeWorld();
+
         this.groupMapLayers.add(this.hitLayer);
         var layer1 = this.map.createLayer('FirstFloor',this.game.width - this.interfazWidth);
         layer1.cacheAsBitmap = true;
-        layer1.resizeWorld;
         this.groupMapLayers.add(layer1);
         var layer2 = this.map.createLayer('SecondFloor',this.game.width - this.interfazWidth);
         layer2.cacheAsBitmap = true;

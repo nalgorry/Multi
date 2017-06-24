@@ -41,6 +41,8 @@ var preloader = (function (_super) {
         this.game.load.atlasJSONHash('pj', 'assets/pj.png', 'assets/pj.json');
         this.game.load.spritesheet('items', 'assets/items.png', 40, 40);
         this.game.load.image('atackDefense', 'assets/atack_defense.png');
+        this.game.load.image('arrow', 'assets/arrow.png');
+        this.game.load.image('rocket', 'assets/rocket.png');
         this.game.load.image('controls', 'assets/controls.png');
         this.game.load.image('help_arrow', 'assets/help_arrow.png');
         this.game.load.image('help_arrow_2', 'assets/help_arrow_2.png');
