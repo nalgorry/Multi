@@ -50,7 +50,7 @@ var cDefinitionSpells = (function () {
         newSpell.coolDownTimeSec = 10;
         newSpell.enabledTrowOtherPlayer = true;
         newSpell.enabledTrowThisPlayer = false;
-        newSpell.rayAnimationType = enumRayAnimations.ray;
+        newSpell.rayAnimationType = enumRayAnimations.arrow;
         //ProtectField
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[4 /* ProtectField */] = newSpell;
@@ -98,7 +98,7 @@ var cDefinitionSpells = (function () {
         newSpell.enabledTrowThisPlayer = false;
         newSpell.enabledTrowOnMonster = true;
         newSpell.posInSpritesheet = 5;
-        newSpell.explotionSprite = 'boom3';
+        newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
         newSpell.rayAnimationType = enumRayAnimations.ray;
         //Explosion

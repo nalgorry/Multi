@@ -28,7 +28,7 @@ class cControlPlayer extends cBasicActor {
     private seMueveX:boolean = false;
     private seMueveY:boolean = false;
     private playerIdle:boolean = false;
-    private lastAnimation:move = move.idleRight;
+    public lastAnimation:move = move.idleRight;
 
     public startTileX:number = 24;
     public startTileY:number = 24;

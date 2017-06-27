@@ -12,13 +12,28 @@ var cControlMissile = (function (_super) {
         this.SPEED = 250; // missile speed pixels/second
         this.TURN_RATE = 5; // turn rate in degrees/frame
         this.yOffset = -40;
+        this.WOBBLE_LIMIT = 8; //degress
+        this.WOBBLE_SPEED = 250; //miliseconds
         this.controlGame.game.physics.arcade.enable(this);
+        //to inform when the animation finish
         this.finish = new Phaser.Signal();
+        //lets check the orientation of the character to trow this spell 
+        if (this.controlGame.controlPlayer.lastAnimation == move.idleLeft) {
+            this.rotation = Math.PI;
+        }
+        // Create a variable called wobble that tweens back and forth between
+        // -this.WOBBLE_LIMIT and +this.WOBBLE_LIMIT forever
+        this.wobble = this.WOBBLE_LIMIT;
+        this.game.add.tween(this)
+            .to({ wobble: -this.WOBBLE_LIMIT }, this.WOBBLE_SPEED, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.POSITIVE_INFINITY, true);
         //to use the update loop 
         this.controlGame.game.add.existing(this);
     }
     cControlMissile.prototype.update = function () {
         var targetAngle = Phaser.Math.angleBetween(this.x, this.y, this.spriteTo.x, this.spriteTo.y + this.yOffset);
+        // Add our "wobble" factor to the targetAngle to make the missile wobble
+        // Remember that this.wobble is tweening (above)
+        targetAngle += Phaser.Math.degToRad(this.wobble);
         // Gradually (this.TURN_RATE) aim the missile towards the target angle
         if (this.rotation !== targetAngle) {
             // Calculate difference between the current angle and targetAngle

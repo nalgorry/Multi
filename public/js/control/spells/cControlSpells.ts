@@ -60,9 +60,6 @@ class cControlSpells {
 
     }
 
-    public spellAnimation(sprite:Phaser.Sprite, data) {
-        
-    }
 
     public reduceLifeBar(lifePercRemaining) {
         var newWidth = this.rectFocus.width * lifePercRemaining

@@ -39,8 +39,6 @@ var cControlSpells = (function () {
             this.selActorType = enumSelectedActor.nothing;
         }
     };
-    cControlSpells.prototype.spellAnimation = function (sprite, data) {
-    };
     cControlSpells.prototype.reduceLifeBar = function (lifePercRemaining) {
         var newWidth = this.rectFocus.width * lifePercRemaining;
         this.controlGame.game.add.tween(this.rectFocus).to({ width: newWidth }, 250, Phaser.Easing.Linear.None, true, 0, 0);

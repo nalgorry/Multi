@@ -186,6 +186,9 @@ var cControlGame = (function () {
         this.depthGroup = this.game.add.group();
         //lets restart all the portals
         this.controlPlayer.controlPortals.resetPortals();
+        //lets restart the focus sistem 
+        this.controlPlayer.controlSpells.selActor = null;
+        this.controlPlayer.controlSpells.selActorType = enumSelectedActor.nothing;
         //lets restart the player
         this.controlPlayer.startActor(newTileX * this.gridSize, newTileY * this.gridSize);
         this.controlPlayer.setInitialPosition(newTileX, newTileY);

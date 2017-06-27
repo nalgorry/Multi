@@ -176,7 +176,7 @@ var cServerMonster = (function () {
                             idPlayer: player.playerId,
                             monsterAtackType: 0,
                             damage: player.calculateDamage(Math.round(Math.random() * this.randomPower + 1) + this.fixPower),
-                            idSpell: 1 /* BasicAtack */,
+                            idSpell: 6 /* LightingStorm */,
                         };
                     }
                     else {
