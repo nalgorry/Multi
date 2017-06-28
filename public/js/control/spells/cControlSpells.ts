@@ -39,7 +39,7 @@ class cControlSpells {
 
          if (this.selActorType == enumSelectedActor.monster){
              var monster = this.selActor as cMonster
-             id = monster.idMonster;
+             id = monster.idServer;
          } else if (this.selActorType == enumSelectedActor.otherPlayer){
             var otherPlayer = this.selActor as cOtherPlayer
             id = otherPlayer.idServer;
@@ -75,7 +75,7 @@ class cControlSpells {
             var selMonster = <cMonster> this.selActor;
 
             //lets do a basic atack if we click the monster twice
-            if (monster.idMonster == selMonster.idMonster)
+            if (monster.idServer == selMonster.idServer)
             {
                 this.selSpell = this.allSpells.arraySpells[enumSpells.BasicAtack];
                 this.selSpell.spellSelected();
@@ -293,29 +293,24 @@ class cControlSpells {
                     if (this.checkSpellDistance() == true) {                 
                         if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
                             
-                            //mando al server laa accion (esto se puede unificar mas TODO)
+
+                            //mando al server la acción (esto se puede unificar mas TODO)
                             if (this.selActorType == enumSelectedActor.monster){
                                 var monster = this.selActor as cMonster
                                 this.controlGame.controlServer.socket.emit('monster click', 
                                 { 
-                                    idMonster:monster.idMonster,
+                                    idMonster:monster.idServer,
                                     idSpell: this.selSpell.idSpell,
                                 });
 
-                            } else if (this.selActorType == enumSelectedActor.otherPlayer){
+                            } else if (this.selActorType == enumSelectedActor.otherPlayer || this.selActorType == enumSelectedActor.thisPlayer){
                                 var otherplayer = this.selActor as cOtherPlayer
                                 this.controlGame.controlServer.socket.emit('player click', 
                                 { 
                                     idPlayerHit:otherplayer.idServer,
                                     idSpell: this.selSpell.idSpell,
                                 });
-                            } else if (this.selActorType == enumSelectedActor.thisPlayer){
-                                var thisPlayer = this.selActor as cControlPlayer
-                                this.controlGame.controlServer.socket.emit('player click', 
-                                { 
-                                    idPlayerHit:thisPlayer.idServer,
-                                    idSpell: this.selSpell.idSpell,
-                                });
+
                             }
                             
                             this.selSpell.spellColdDown();

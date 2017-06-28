@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var cControlMissile = (function (_super) {
     __extends(cControlMissile, _super);
     function cControlMissile(controlGame, spriteFrom, spriteTo) {
-        _super.call(this, controlGame.game, spriteFrom.x, spriteFrom.y, 'rocket');
+        _super.call(this, controlGame.game, spriteFrom.x, spriteFrom.y);
         this.controlGame = controlGame;
         this.spriteTo = spriteTo;
         this.SPEED = 250; // missile speed pixels/second
@@ -14,6 +14,9 @@ var cControlMissile = (function (_super) {
         this.yOffset = -40;
         this.WOBBLE_LIMIT = 8; //degress
         this.WOBBLE_SPEED = 250; //miliseconds
+        var missile = controlGame.game.add.sprite(0, 0, 'rocket');
+        missile.anchor.set(0.5);
+        this.addChild(missile);
         this.controlGame.game.physics.arcade.enable(this);
         //to inform when the animation finish
         this.finish = new Phaser.Signal();
@@ -24,8 +27,8 @@ var cControlMissile = (function (_super) {
         // Create a variable called wobble that tweens back and forth between
         // -this.WOBBLE_LIMIT and +this.WOBBLE_LIMIT forever
         this.wobble = this.WOBBLE_LIMIT;
-        this.game.add.tween(this)
-            .to({ wobble: -this.WOBBLE_LIMIT }, this.WOBBLE_SPEED, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.POSITIVE_INFINITY, true);
+        this.game.add.tween(this.children[0])
+            .to({ angle: 360 }, this.WOBBLE_SPEED, Phaser.Easing.Sinusoidal.InOut, true, 0, Number.POSITIVE_INFINITY, true);
         //to use the update loop 
         this.controlGame.game.add.existing(this);
     }

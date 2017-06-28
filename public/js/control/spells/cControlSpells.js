@@ -21,7 +21,7 @@ var cControlSpells = (function () {
         var id;
         if (this.selActorType == enumSelectedActor.monster) {
             var monster = this.selActor;
-            id = monster.idMonster;
+            id = monster.idServer;
         }
         else if (this.selActorType == enumSelectedActor.otherPlayer) {
             var otherPlayer = this.selActor;
@@ -48,7 +48,7 @@ var cControlSpells = (function () {
         if (this.selActorType == enumSelectedActor.monster) {
             var selMonster = this.selActor;
             //lets do a basic atack if we click the monster twice
-            if (monster.idMonster == selMonster.idMonster) {
+            if (monster.idServer == selMonster.idServer) {
                 this.selSpell = this.allSpells.arraySpells[1 /* BasicAtack */];
                 this.selSpell.spellSelected();
             }
@@ -207,25 +207,18 @@ var cControlSpells = (function () {
             if (spellAllowed == true) {
                 if (this.checkSpellDistance() == true) {
                     if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true) {
-                        //mando al server laa accion (esto se puede unificar mas TODO)
+                        //mando al server la acción (esto se puede unificar mas TODO)
                         if (this.selActorType == enumSelectedActor.monster) {
                             var monster = this.selActor;
                             this.controlGame.controlServer.socket.emit('monster click', {
-                                idMonster: monster.idMonster,
+                                idMonster: monster.idServer,
                                 idSpell: this.selSpell.idSpell,
                             });
                         }
-                        else if (this.selActorType == enumSelectedActor.otherPlayer) {
+                        else if (this.selActorType == enumSelectedActor.otherPlayer || this.selActorType == enumSelectedActor.thisPlayer) {
                             var otherplayer = this.selActor;
                             this.controlGame.controlServer.socket.emit('player click', {
                                 idPlayerHit: otherplayer.idServer,
-                                idSpell: this.selSpell.idSpell,
-                            });
-                        }
-                        else if (this.selActorType == enumSelectedActor.thisPlayer) {
-                            var thisPlayer = this.selActor;
-                            this.controlGame.controlServer.socket.emit('player click', {
-                                idPlayerHit: thisPlayer.idServer,
                                 idSpell: this.selSpell.idSpell,
                             });
                         }

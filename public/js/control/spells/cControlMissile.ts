@@ -12,7 +12,11 @@ class cControlMissile extends Phaser.Sprite {
     constructor(public controlGame: cControlGame, 
         spriteFrom:Phaser.Sprite, 
         public spriteTo:Phaser.Sprite ) {
-            super(controlGame.game, spriteFrom.x, spriteFrom.y, 'rocket');
+            super(controlGame.game, spriteFrom.x, spriteFrom.y);
+
+            var missile = controlGame.game.add.sprite(0, 0, 'rocket');
+            missile.anchor.set(0.5);
+            this.addChild(missile);
 
              this.controlGame.game.physics.arcade.enable(this);
 
@@ -27,9 +31,9 @@ class cControlMissile extends Phaser.Sprite {
             // Create a variable called wobble that tweens back and forth between
             // -this.WOBBLE_LIMIT and +this.WOBBLE_LIMIT forever
             this.wobble = this.WOBBLE_LIMIT;
-            this.game.add.tween(this)
+            this.game.add.tween(this.children[0])
                 .to(
-                    { wobble: -this.WOBBLE_LIMIT },
+                    { angle: 360 },
                     this.WOBBLE_SPEED, Phaser.Easing.Sinusoidal.InOut, true, 0,
                     Number.POSITIVE_INFINITY, true
                 );  

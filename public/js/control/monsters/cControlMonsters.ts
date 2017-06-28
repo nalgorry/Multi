@@ -34,7 +34,7 @@ class cControlMonsters {
             
             monster.killMonster();
             //borro el focus
-            this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idMonster);
+            this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idServer);
 
             delete this.arrayMonster[data.idMonster];
 

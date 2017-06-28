@@ -8,10 +8,8 @@ class cControlSpellAnim {
             public hitTextPosition,
             public spell: cSpell) {
 
-                if (spriteFrom == null) {return};
-
                 //lets check if we have to do a ray 
-                if (spriteTo != null) {
+                if (spriteFrom != null) {
 
                     //lets see wich ray we have to do 
                     switch (spell.rayAnimationType) {

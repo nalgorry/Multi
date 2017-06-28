@@ -5,12 +5,8 @@ var cControlSpellAnim = (function () {
         this.spellDamage = spellDamage;
         this.hitTextPosition = hitTextPosition;
         this.spell = spell;
-        if (spriteFrom == null) {
-            return;
-        }
-        ;
         //lets check if we have to do a ray 
-        if (spriteTo != null) {
+        if (spriteFrom != null) {
             //lets see wich ray we have to do 
             switch (spell.rayAnimationType) {
                 case enumRayAnimations.arrow:

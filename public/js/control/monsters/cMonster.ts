@@ -1,6 +1,6 @@
 class cMonster  {
 
-    public idMonster:string;
+    public idServer:string;
     public tileX:number;
     public tileY:number;
     public monsterSprite:Phaser.Sprite;
@@ -12,7 +12,7 @@ class cMonster  {
 
     constructor(public controlGame:cControlGame,data) {
 
-        this.idMonster = data.id;
+        this.idServer = data.id;
         this.tileX = data.tileX;
         this.tileY = data.tileY;
         this.monsterType = data.monsterType;

@@ -19,7 +19,7 @@ var cControlMonsters = (function () {
         if (monster != undefined) {
             monster.killMonster();
             //borro el focus
-            this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idMonster);
+            this.controlGame.controlPlayer.controlSpells.releaseFocus(monster.idServer);
             delete this.arrayMonster[data.idMonster];
             //si fue el que lo mato, hago que aparezca un mensaje 
             if (data.idPlayer == this.controlGame.controlPlayer.idServer) {

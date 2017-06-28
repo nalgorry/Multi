@@ -1,7 +1,7 @@
 var cMonster = (function () {
     function cMonster(controlGame, data) {
         this.controlGame = controlGame;
-        this.idMonster = data.id;
+        this.idServer = data.id;
         this.tileX = data.tileX;
         this.tileY = data.tileY;
         this.monsterType = data.monsterType;
