@@ -17,7 +17,8 @@ class cSpell {
     public enabledTrowThisPlayer: boolean = false;
     public coolDownTimeSec:number = 2;
     public tint:number = null;
-    public rayAnimationType:enumRayAnimations
+    public rayAnimationType:enumRayAnimations;
+    public afterAnimationSpell:enumSpells;
     
     
     //variables creadas por la clase
@@ -100,6 +101,7 @@ class cSpell {
         this.spriteFocusFixCool.visible = false;
         this.isSpellOnCoolDown = false;
     }
+
 
 
 }

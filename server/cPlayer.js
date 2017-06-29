@@ -93,6 +93,10 @@ var cPlayer = (function () {
                 resultado.monsterTargets =
                     this.controlMonster.findMonstersInArea(playerTileX, playerTileY, 5, 5);
                 resultado.spellAnimationMonster = 1 /* BasicAtack */;
+            case 8 /* fireballRelease */:
+                resultado.playerDamage = 0;
+            case 9 /* fireballHit */:
+                resultado.playerDamage = 1000;
             default:
                 break;
         }

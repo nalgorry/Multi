@@ -123,7 +123,11 @@ export class cPlayer {
                 resultado.playerTargets = [this.playerId];
                 resultado.monsterTargets = 
                     this.controlMonster.findMonstersInArea(playerTileX , playerTileY , 5, 5);
-                resultado.spellAnimationMonster = enumSpells.BasicAtack; 
+                resultado.spellAnimationMonster = enumSpells.BasicAtack;
+            case enumSpells.fireballRelease:
+                resultado.playerDamage = 0;
+            case enumSpells.fireballHit:
+                resultado.playerDamage = 1000;
             default:
                 break;
         }

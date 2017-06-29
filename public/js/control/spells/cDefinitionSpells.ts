@@ -126,7 +126,7 @@ class cDefinitionSpells {
         var newSpell = new cSpell(this.controlGame);
         
         newSpell.idSpell = enumSpells.SelfExplosion;
-        newSpell.spellName = "Self Explosion";
+        newSpell.spellName = "Fireball";
         newSpell.manaCost = 50;
         newSpell.energyCost = 50;
         newSpell.lifeCost = 30;
@@ -138,6 +138,25 @@ class cDefinitionSpells {
         newSpell.explotionSprite = 'boom3';
         newSpell.explotionFrameRate = 16;
         newSpell.explotionYOffset = 70;
+
+        //Fireball
+        var newSpell = new cSpell(this.controlGame);
+        
+        newSpell.idSpell = enumSpells.fireballRelease;
+        newSpell.spellName = "Fireball";
+        newSpell.manaCost = 20;
+        newSpell.energyCost = 20;
+        newSpell.lifeCost = 0;
+        newSpell.coolDownTimeSec = 1;
+        newSpell.enabledTrowOtherPlayer = true;
+        newSpell.enabledTrowThisPlayer = false;
+        newSpell.enabledTrowOnMonster = true;
+        newSpell.posInSpritesheet = 6;
+        newSpell.explotionSprite = undefined;
+        newSpell.explotionFrameRate = 16;
+        newSpell.explotionYOffset = 70;
+        newSpell.rayAnimationType = enumRayAnimations.missile;
+        newSpell.afterAnimationSpell = enumSpells.fireballHit;
 
         this.arraySpells[newSpell.idSpell] = newSpell;
 

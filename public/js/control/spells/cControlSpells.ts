@@ -196,7 +196,7 @@ class cControlSpells {
         newSpell.signalSpellSel.add(this.spellClick,this);
 
         //hechizo 6
-        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.SelfExplosion];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.fireballRelease];
         newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 2, 265), 2);
         
         this.arrayselSpells.push(newSpell);
@@ -282,43 +282,51 @@ class cControlSpells {
                 var spellInRange:boolean = this.checkSpellDistance();
 
                 //if autofocus was used, and the distance is too far, we allow the sistem to change targets
-                console.log(this.autoFocusUsed)
                 if (spellInRange == false && this.autoFocusUsed == true) {
                     this.selActorType = enumSelectedActor.nothing;
                     var spellAllowed:boolean = this.autoFocusSystem(sender);
-                    console.log("intenta esto")
                 }
 
                 if (spellAllowed == true) {
                     if (this.checkSpellDistance() == true) {                 
-                        if (this.controlGame.controlPlayer.controlFocus.SpellPosible(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
+                        if (this.controlGame.controlPlayer.controlFocus.enoughResourses(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
                             
-
-                            //mando al server la acción (esto se puede unificar mas TODO)
-                            if (this.selActorType == enumSelectedActor.monster){
-                                var monster = this.selActor as cMonster
-                                this.controlGame.controlServer.socket.emit('monster click', 
-                                { 
-                                    idMonster:monster.idServer,
-                                    idSpell: this.selSpell.idSpell,
-                                });
-
-                            } else if (this.selActorType == enumSelectedActor.otherPlayer || this.selActorType == enumSelectedActor.thisPlayer){
-                                var otherplayer = this.selActor as cOtherPlayer
-                                this.controlGame.controlServer.socket.emit('player click', 
-                                { 
-                                    idPlayerHit:otherplayer.idServer,
-                                    idSpell: this.selSpell.idSpell,
-                                });
-
-                            }
+                            //we cast the spell before the animation
+                            this.useSpell();
                             
+                            //we set the timer to use it again in some time.
                             this.selSpell.spellColdDown();
                         }
                     }
                 } 
 
             }
+
+    }
+
+    public useSpell() {
+
+        //lets check if we have to the efect when it is cast, or when it is finished.
+        var efect:enumSpells = this.selSpell.idSpell;
+        
+         //mando al server la acción (esto se puede unificar mas TODO)
+        if (this.selActorType == enumSelectedActor.monster){
+            var monster = this.selActor as cMonster
+            this.controlGame.controlServer.socket.emit('monster click', 
+            { 
+                idMonster:monster.idServer,
+                idSpell: efect,
+            });
+
+        } else if (this.selActorType == enumSelectedActor.otherPlayer || this.selActorType == enumSelectedActor.thisPlayer){
+            var player = this.selActor as cOtherPlayer
+            this.controlGame.controlServer.socket.emit('player click', 
+            { 
+                idPlayerHit:player.idServer,
+                idSpell: efect,
+            });
+
+        }
 
     }
 
@@ -365,16 +373,7 @@ class cControlSpells {
 
     public spellSelectKeyboard(sender:Phaser.Key) {
 
-            //selecciono el hechizo segun la tecla que toco
-            if (sender.keyCode == Phaser.Keyboard.ONE) {
-                var spell = this.arrayselSpells[0];
-            } else if (sender.keyCode == Phaser.Keyboard.TWO) {
-                var spell = this.arrayselSpells[1];
-            } else if (sender.keyCode == Phaser.Keyboard.THREE) {
-                var spell = this.arrayselSpells[2];
-            }  else if (sender.keyCode == Phaser.Keyboard.FOUR) {
-                var spell = this.arrayselSpells[3];
-            } 
+            var spell = this.arrayselSpells[sender.keyCode - Phaser.Keyboard.ONE]
 
             this.selSpell = spell;
             spell.spellSelected()

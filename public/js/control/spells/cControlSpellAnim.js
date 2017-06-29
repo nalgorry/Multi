@@ -5,8 +5,9 @@ var cControlSpellAnim = (function () {
         this.spellDamage = spellDamage;
         this.hitTextPosition = hitTextPosition;
         this.spell = spell;
+        console.log(spell);
         //lets check if we have to do a ray 
-        if (spriteFrom != null) {
+        if (spriteFrom != null || spell.rayAnimationType != undefined) {
             //lets see wich ray we have to do 
             switch (spell.rayAnimationType) {
                 case enumRayAnimations.arrow:
@@ -32,9 +33,16 @@ var cControlSpellAnim = (function () {
     cControlSpellAnim.prototype.rayFinish = function () {
         this.spellAnimation();
         this.showDamageText();
+        //lets check if we have to do something when the spell animation finish and send it to the server.
+        if (this.spell.afterAnimationSpell != undefined) {
+            console.log("aca termino el hechizo!!");
+        }
     };
     cControlSpellAnim.prototype.spellAnimation = function () {
-        //animiacion de la bomba 
+        //lets check if we need to use a explosion or not
+        if (this.spell.explotionSprite == undefined) {
+            return;
+        }
         if (this.spell.explotionFollowCharacter == true) {
             var boomSprite = this.controlGame.game.add.sprite(0, this.spell.explotionYOffset, this.spell.explotionSprite);
             this.spriteTo.addChild(boomSprite);
@@ -59,32 +67,33 @@ var cControlSpellAnim = (function () {
     };
     cControlSpellAnim.prototype.showDamageText = function () {
         //texto con el daño
-        if (this.spellDamage != 0) {
-            if (this.spellDamage > 0) {
-                var styleHit = { font: "18px Arial", fill: "#750303", fontWeight: 900 };
-            }
-            else {
-                var styleHit = { font: "18px Arial", fill: "#113d01", fontWeight: 900 };
-                this.spellDamage = -this.spellDamage;
-            }
-            ;
-            var completeText = this.controlGame.game.add.sprite(this.hitTextPosition, -40);
-            //texto que se muestra
-            var hitText = this.controlGame.game.add.text(0, 0, this.spellDamage.toString(), styleHit);
-            //hago un recuadro blanco abajo del texto
-            var rectangleBack = this.controlGame.game.add.bitmapData(hitText.width, 20);
-            rectangleBack.ctx.beginPath();
-            rectangleBack.ctx.rect(0, 0, hitText.width, 20);
-            rectangleBack.ctx.fillStyle = '#ffffff';
-            rectangleBack.ctx.fill();
-            var textBack = this.controlGame.game.add.sprite(0, 0, rectangleBack);
-            textBack.alpha = 0.6;
-            completeText.addChild(textBack);
-            completeText.addChild(hitText);
-            this.spriteTo.addChild(completeText);
-            var tweenText = this.controlGame.game.add.tween(completeText).to({ y: '-40' }, 1000, Phaser.Easing.Cubic.Out, true);
-            tweenText.onComplete.add(this.removeTweenText, completeText);
+        if (this.spellDamage == 0 || this.spellDamage == undefined) {
+            return;
         }
+        if (this.spellDamage > 0) {
+            var styleHit = { font: "18px Arial", fill: "#750303", fontWeight: 900 };
+        }
+        else {
+            var styleHit = { font: "18px Arial", fill: "#113d01", fontWeight: 900 };
+            this.spellDamage = -this.spellDamage;
+        }
+        ;
+        var completeText = this.controlGame.game.add.sprite(this.hitTextPosition, -40);
+        //texto que se muestra
+        var hitText = this.controlGame.game.add.text(0, 0, this.spellDamage.toString(), styleHit);
+        //hago un recuadro blanco abajo del texto
+        var rectangleBack = this.controlGame.game.add.bitmapData(hitText.width, 20);
+        rectangleBack.ctx.beginPath();
+        rectangleBack.ctx.rect(0, 0, hitText.width, 20);
+        rectangleBack.ctx.fillStyle = '#ffffff';
+        rectangleBack.ctx.fill();
+        var textBack = this.controlGame.game.add.sprite(0, 0, rectangleBack);
+        textBack.alpha = 0.6;
+        completeText.addChild(textBack);
+        completeText.addChild(hitText);
+        this.spriteTo.addChild(completeText);
+        var tweenText = this.controlGame.game.add.tween(completeText).to({ y: '-40' }, 1000, Phaser.Easing.Cubic.Out, true);
+        tweenText.onComplete.add(this.removeTweenText, completeText);
     };
     cControlSpellAnim.prototype.removeTweenText = function (sprite) {
         sprite.destroy();

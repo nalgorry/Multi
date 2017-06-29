@@ -145,7 +145,7 @@ var cControlFocus = (function () {
         spriteEnergy.inputEnabled = true;
         spriteEnergy.events.onInputDown.add(this.SelectEnergyFocus, this);
     };
-    cControlFocus.prototype.SpellPosible = function (spell) {
+    cControlFocus.prototype.enoughResourses = function (spell) {
         if (this.mana >= spell.manaCost) {
             if (this.energy >= spell.energyCost) {
                 if (this.life >= spell.lifeCost) {

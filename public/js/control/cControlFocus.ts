@@ -231,7 +231,7 @@ class cControlFocus {
 
     }
 
-    public SpellPosible(spell:cSpell):boolean {
+    public enoughResourses(spell:cSpell):boolean {
 
         if (this.mana >= spell.manaCost) {
             if (this.energy >= spell.energyCost) {

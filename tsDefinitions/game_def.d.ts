@@ -29,6 +29,8 @@
         HealHand = 5,
         LightingStorm = 6,
         SelfExplosion = 7,
+        fireballRelease = 8,
+        fireballHit = 9,
 
     }
 

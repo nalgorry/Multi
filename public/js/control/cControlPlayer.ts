@@ -160,6 +160,10 @@ class cControlPlayer extends cBasicActor {
         three.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
         var four = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
         four.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
+        var five = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        five.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
+        var six = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.SIX);
+        six.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
 
         //controles de focus
         var e = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.E);
