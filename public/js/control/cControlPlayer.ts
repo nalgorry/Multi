@@ -154,16 +154,22 @@ class cControlPlayer extends cBasicActor {
         //controles de Hechizos 
         var one = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
         one.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells); 
+        one.onUp.add(this.controlSpells.spellRelease,this.controlSpells);
         var two = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
-        two.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells); 
+        two.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
+        two.onUp.add(this.controlSpells.spellRelease,this.controlSpells); 
         var three = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
         three.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
+        three.onUp.add(this.controlSpells.spellRelease,this.controlSpells);
         var four = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
         four.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
+        four.onUp.add(this.controlSpells.spellRelease,this.controlSpells);
         var five = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
         five.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
+        five.onUp.add(this.controlSpells.spellRelease,this.controlSpells);
         var six = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.SIX);
         six.onDown.add(this.controlSpells.spellSelectKeyboard,this.controlSpells);
+        six.onUp.add(this.controlSpells.spellRelease,this.controlSpells);
 
         //controles de focus
         var e = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.E);
@@ -251,7 +257,7 @@ class cControlPlayer extends cBasicActor {
 
         if (data.damage > 0 ) {
             this.controlGame.controlConsole.newMessage(enumMessage.youWereHit,"You were hit for " + data.damage)
-            this.controlGame.controlSounds.startPlayerHit();
+            if (data.damage > 10) {this.controlGame.controlSounds.startPlayerHit();}
             //hago aparecer la animación del golpe
             this.controlGame.controlPlayer.controlSpells.onHit(data, fromSprite, toSprite, 0x5e0818); 
 

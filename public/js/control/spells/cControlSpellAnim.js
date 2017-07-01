@@ -1,21 +1,30 @@
 var cControlSpellAnim = (function () {
-    function cControlSpellAnim(controlGame, spriteFrom, spriteTo, color, spellDamage, hitTextPosition, spell) {
+    function cControlSpellAnim(controlGame, spriteFrom, spriteTo, color, spellDamage, hitTextPosition, spell, selActorType, selActor) {
         this.controlGame = controlGame;
         this.spriteTo = spriteTo;
         this.spellDamage = spellDamage;
         this.hitTextPosition = hitTextPosition;
         this.spell = spell;
-        console.log(spell);
+        this.selActorType = selActorType;
+        this.selActor = selActor;
+        if (spell.idSpell == 9 /* fireballHit */) {
+            console.log(spell);
+            console.log(spellDamage);
+        }
         //lets check if we have to do a ray 
-        if (spriteFrom != null || spell.rayAnimationType != undefined) {
+        if (spriteFrom != null && spell.rayAnimationType != undefined) {
             //lets see wich ray we have to do 
             switch (spell.rayAnimationType) {
                 case enumRayAnimations.arrow:
                     var ray3 = new cControlArrow(controlGame, spriteFrom, spriteTo);
                     ray3.finish.add(this.rayFinish, this);
                     break;
-                case enumRayAnimations.missile:
-                    var ray = new cControlMissile(controlGame, spriteFrom, spriteTo);
+                case enumRayAnimations.fireball:
+                    var ray = new cControlMissile(controlGame, spriteFrom, spriteTo, 'fireball', false, 250);
+                    ray.finish.add(this.rayFinish, this);
+                    break;
+                case enumRayAnimations.ninjaStar:
+                    var ray = new cControlMissile(controlGame, spriteFrom, spriteTo, 'ninja_star', true, 650);
                     ray.finish.add(this.rayFinish, this);
                     break;
                 case enumRayAnimations.ray:
@@ -35,7 +44,8 @@ var cControlSpellAnim = (function () {
         this.showDamageText();
         //lets check if we have to do something when the spell animation finish and send it to the server.
         if (this.spell.afterAnimationSpell != undefined) {
-            console.log("aca termino el hechizo!!");
+            var cSpell = this.controlGame.controlPlayer.controlSpells;
+            cSpell.useSpell(this.spell.afterAnimationSpell, this.selActorType, this.selActor);
         }
     };
     cControlSpellAnim.prototype.spellAnimation = function () {

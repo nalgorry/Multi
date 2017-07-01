@@ -206,7 +206,7 @@ var cControlSpells = (function () {
                 if (this.checkSpellDistance() == true) {
                     if (this.controlGame.controlPlayer.controlFocus.enoughResourses(this.selSpell) == true) {
                         //we cast the spell before the animation
-                        this.useSpell();
+                        this.useSpell(this.selSpell.idSpell, this.selActorType, this.selActor);
                         //we set the timer to use it again in some time.
                         this.selSpell.spellColdDown();
                     }
@@ -214,22 +214,18 @@ var cControlSpells = (function () {
             }
         }
     };
-    cControlSpells.prototype.useSpell = function () {
-        //lets check if we have to the efect when it is cast, or when it is finished.
-        var efect = this.selSpell.idSpell;
-        //mando al server la acción (esto se puede unificar mas TODO)
-        if (this.selActorType == enumSelectedActor.monster) {
-            var monster = this.selActor;
-            this.controlGame.controlServer.socket.emit('monster click', {
-                idMonster: monster.idServer,
-                idSpell: efect,
-            });
+    cControlSpells.prototype.useSpell = function (efect, selActorType, actor) {
+        var isMonster = false;
+        //check if we are hiting a monster or otrher player to send it to the server
+        if (selActorType == enumSelectedActor.monster) {
+            isMonster = true;
         }
-        else if (this.selActorType == enumSelectedActor.otherPlayer || this.selActorType == enumSelectedActor.thisPlayer) {
-            var player = this.selActor;
-            this.controlGame.controlServer.socket.emit('player click', {
-                idPlayerHit: player.idServer,
+        // lets check if the actor is not already dead!
+        if (actor != undefined) {
+            this.controlGame.controlServer.socket.emit('actor click', {
+                idServer: actor.idServer,
                 idSpell: efect,
+                isMonster: isMonster
             });
         }
     };
@@ -267,6 +263,10 @@ var cControlSpells = (function () {
         this.selSpell = spell;
         spell.spellSelected();
     };
+    cControlSpells.prototype.spellRelease = function (sender) {
+        var spell = this.arrayselSpells[sender.keyCode - Phaser.Keyboard.ONE];
+        spell.spellRelease();
+    };
     cControlSpells.prototype.onHit = function (data, fromSprite, toSprite, rayColor) {
         //para cambiar la posicion del daño si te golpean muy rapido
         if (this.hitTextPosition == -30) {
@@ -276,7 +276,7 @@ var cControlSpells = (function () {
             this.hitTextPosition = -30;
         }
         var spell = this.allSpells.arraySpells[data.idSpell];
-        new cControlSpellAnim(this.controlGame, fromSprite, toSprite, rayColor, data.damage, this.hitTextPosition, spell);
+        new cControlSpellAnim(this.controlGame, fromSprite, toSprite, rayColor, data.damage, this.hitTextPosition, spell, this.selActorType, this.selActor);
     };
     return cControlSpells;
 }());

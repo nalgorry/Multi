@@ -64,14 +64,14 @@ export class cPlayer {
 
         //veo que hechizo se activo 
         var damage:number = 0;
+        resultado.monsterDamage = 0;
+        resultado.playerDamage = 0;
 
         //defino los tarjets normales de los hechizos
-        if (data.idMonster != undefined) {
-            resultado.monsterTargets.push(data.idMonster);
-        }
-
-        if (data.idPlayerHit != undefined) {
-            resultado.playerTargets.push(data.idPlayerHit);
+        if (data.isMonster == true) {
+            resultado.monsterTargets.push(data.idServer);
+        } else {
+            resultado.playerTargets.push(data.idServer);
         }
 
         //analiso que hechizo se lanzo y calculo sus efectos
@@ -124,10 +124,14 @@ export class cPlayer {
                 resultado.monsterTargets = 
                     this.controlMonster.findMonstersInArea(playerTileX , playerTileY , 5, 5);
                 resultado.spellAnimationMonster = enumSpells.BasicAtack;
+                break;
             case enumSpells.fireballRelease:
-                resultado.playerDamage = 0;
+                //no need to set nothing here
+                break;
             case enumSpells.fireballHit:
-                resultado.playerDamage = 1000;
+                resultado.playerDamage = Math.round(Math.random() * 50 + 50);
+                resultado.monsterDamage = Math.round(Math.random() * 250 + 100);
+                break;
             default:
                 break;
         }

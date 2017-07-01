@@ -32,7 +32,7 @@ function onSocketConnection(client) {
     // Listen for move player message
     client.on('move player', onMovePlayer);
     //Listen for mouses click
-    client.on('player click', onPlayerClick);
+    client.on('actor click', onActorClick);
     //chat listener
     client.on('Chat Send', onChatSend);
     //te mataron :(
@@ -40,7 +40,6 @@ function onSocketConnection(client) {
     //Player Change
     client.on('you change', onYouChange);
     client.on('enter portal', onYouEnterPortal);
-    client.on('monster click', onYouClickMonster);
     client.on('you try get item', onYouTryGetItem);
     client.on('you equip item', onYouEquipItem);
     client.on('you drop item', onYouDropItem);
@@ -69,9 +68,6 @@ function onYouTryGetItem(data) {
 function onYouEnterPortal(data) {
     controlMaps.enterPortal(this, data);
 }
-function onYouClickMonster(data) {
-    controlMaps.spellCast(this, data);
-}
 function onYouChange(data) {
     controlMaps.youChange(this, data);
 }
@@ -81,7 +77,7 @@ function onYouDie(data) {
 function onChatSend(data) {
     controlMaps.chatSend(this, data);
 }
-function onPlayerClick(data) {
+function onActorClick(data) {
     //TODO VER SI ESTO AUN SE USA 
     controlMaps.spellCast(this, data);
 }

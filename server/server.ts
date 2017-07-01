@@ -48,7 +48,7 @@ function onSocketConnection (client) {
   client.on('move player', onMovePlayer)
 
   //Listen for mouses click
-  client.on('player click', onPlayerClick)
+  client.on('actor click', onActorClick)
 
   //chat listener
   client.on('Chat Send', onChatSend)
@@ -60,8 +60,6 @@ function onSocketConnection (client) {
   client.on('you change', onYouChange)
 
   client.on('enter portal',onYouEnterPortal);
-
-  client.on('monster click',onYouClickMonster);
 
   client.on('you try get item',onYouTryGetItem);
 
@@ -107,10 +105,6 @@ function onYouEnterPortal(data) {
 
 }
 
-function onYouClickMonster(data) {
-    controlMaps.spellCast(this, data);
-}
-
 function onYouChange(data) {
     controlMaps.youChange(this, data);
 }
@@ -123,7 +117,7 @@ function onChatSend(data) {
     controlMaps.chatSend(this, data);
 }
 
-function onPlayerClick(data) {
+function onActorClick(data) {
 
     //TODO VER SI ESTO AUN SE USA 
     controlMaps.spellCast(this, data);

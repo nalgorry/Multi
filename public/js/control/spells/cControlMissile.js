@@ -5,24 +5,31 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var cControlMissile = (function (_super) {
     __extends(cControlMissile, _super);
-    function cControlMissile(controlGame, spriteFrom, spriteTo) {
-        _super.call(this, controlGame.game, spriteFrom.x, spriteFrom.y);
+    function cControlMissile(controlGame, spriteFrom, spriteTo, sprite_name, perfect_angle, speed) {
+        _super.call(this, controlGame.game, spriteFrom.x, spriteFrom.y - 40);
         this.controlGame = controlGame;
-        this.spriteTo = spriteTo;
-        this.SPEED = 250; // missile speed pixels/second
         this.TURN_RATE = 5; // turn rate in degrees/frame
-        this.yOffset = -40;
+        this.yOffsetTo = -40;
         this.WOBBLE_LIMIT = 8; //degress
         this.WOBBLE_SPEED = 250; //miliseconds
-        var missile = controlGame.game.add.sprite(0, 0, 'rocket');
+        this.spriteTo = spriteTo;
+        this.speed = speed;
+        var missile = controlGame.game.add.sprite(0, 0, sprite_name);
         missile.anchor.set(0.5);
         this.addChild(missile);
         this.controlGame.game.physics.arcade.enable(this);
         //to inform when the animation finish
         this.finish = new Phaser.Signal();
-        //lets check the orientation of the character to trow this spell 
-        if (this.controlGame.controlPlayer.lastAnimation == move.idleLeft) {
-            this.rotation = Math.PI;
+        //lets check if we have to adjust the misile to the perfect angle of the character or not
+        if (perfect_angle == true) {
+            var targetAngle = Phaser.Math.angleBetween(this.x, this.y, this.spriteTo.x, this.spriteTo.y + this.yOffsetTo);
+            this.rotation = targetAngle;
+        }
+        else {
+            //lets check the orientation of the character to trow this spell 
+            if (this.controlGame.controlPlayer.lastAnimation == move.idleLeft) {
+                this.rotation = Math.PI;
+            }
         }
         // Create a variable called wobble that tweens back and forth between
         // -this.WOBBLE_LIMIT and +this.WOBBLE_LIMIT forever
@@ -33,7 +40,7 @@ var cControlMissile = (function (_super) {
         this.controlGame.game.add.existing(this);
     }
     cControlMissile.prototype.update = function () {
-        var targetAngle = Phaser.Math.angleBetween(this.x, this.y, this.spriteTo.x, this.spriteTo.y + this.yOffset);
+        var targetAngle = Phaser.Math.angleBetween(this.x, this.y, this.spriteTo.x, this.spriteTo.y + this.yOffsetTo);
         // Add our "wobble" factor to the targetAngle to make the missile wobble
         // Remember that this.wobble is tweening (above)
         targetAngle += Phaser.Math.degToRad(this.wobble);
@@ -60,11 +67,11 @@ var cControlMissile = (function (_super) {
             }
         }
         // Calculate velocity vector based on this.rotation and this.SPEED
-        this.body.velocity.x = Math.cos(this.rotation) * this.SPEED;
-        this.body.velocity.y = Math.sin(this.rotation) * this.SPEED;
+        this.body.velocity.x = Math.cos(this.rotation) * this.speed;
+        this.body.velocity.y = Math.sin(this.rotation) * this.speed;
         //lets chech distance
         var distance = Phaser.Math.distance(this.x, this.y, this.spriteTo.x, this.spriteTo.y);
-        if (distance < 50) {
+        if (distance < 40) {
             this.destroy();
             this.finish.dispatch();
         }

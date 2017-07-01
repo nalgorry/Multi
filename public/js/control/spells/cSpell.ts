@@ -19,6 +19,7 @@ class cSpell {
     public tint:number = null;
     public rayAnimationType:enumRayAnimations;
     public afterAnimationSpell:enumSpells;
+    public flagSpellSelected = true;
     
     
     //variables creadas por la clase
@@ -46,6 +47,7 @@ class cSpell {
         this.spellNumber = spellNumber
         
         this.spellSprite.events.onInputDown.add(this.spellSelected, this);
+        this.spellSprite.events.onInputUp.add(this.spellRelease, this);
 
         this.signalSpellSel = new Phaser.Signal();
 
@@ -77,7 +79,12 @@ class cSpell {
     spellSelected() {
         
         this.signalSpellSel.dispatch(this);
+        this.flagSpellSelected = true;
 
+    }
+
+    spellRelease() {
+        this.flagSpellSelected = false;
     }
 
     spriteFocusCool:Phaser.Graphics;
@@ -100,6 +107,11 @@ class cSpell {
         this.spriteFocusCool.visible = false;
         this.spriteFocusFixCool.visible = false;
         this.isSpellOnCoolDown = false;
+
+        //left check if the spell is still selected
+        if (this.flagSpellSelected == true) {
+            this.signalSpellSel.dispatch(this);
+        }
     }
 
 
@@ -109,5 +121,6 @@ class cSpell {
 enum enumRayAnimations {
     ray,
     arrow,
-    missile
+    fireball,
+    ninjaStar,
 }

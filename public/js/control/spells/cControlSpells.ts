@@ -292,7 +292,7 @@ class cControlSpells {
                         if (this.controlGame.controlPlayer.controlFocus.enoughResourses(this.selSpell) == true){ //esto se fija si es posible el hechizo y resta el mana
                             
                             //we cast the spell before the animation
-                            this.useSpell();
+                            this.useSpell(this.selSpell.idSpell, this.selActorType, this.selActor);
                             
                             //we set the timer to use it again in some time.
                             this.selSpell.spellColdDown();
@@ -304,28 +304,23 @@ class cControlSpells {
 
     }
 
-    public useSpell() {
+    public useSpell(efect:enumSpells, selActorType:enumSelectedActor, actor) {
 
-        //lets check if we have to the efect when it is cast, or when it is finished.
-        var efect:enumSpells = this.selSpell.idSpell;
-        
-         //mando al server la acción (esto se puede unificar mas TODO)
-        if (this.selActorType == enumSelectedActor.monster){
-            var monster = this.selActor as cMonster
-            this.controlGame.controlServer.socket.emit('monster click', 
+        var isMonster:Boolean = false;
+
+        //check if we are hiting a monster or otrher player to send it to the server
+        if (selActorType == enumSelectedActor.monster){
+            isMonster = true;
+        }
+    
+        // lets check if the actor is not already dead!
+        if (actor != undefined) {
+            this.controlGame.controlServer.socket.emit('actor click', 
             { 
-                idMonster:monster.idServer,
+                idServer: actor.idServer,
                 idSpell: efect,
+                isMonster: isMonster
             });
-
-        } else if (this.selActorType == enumSelectedActor.otherPlayer || this.selActorType == enumSelectedActor.thisPlayer){
-            var player = this.selActor as cOtherPlayer
-            this.controlGame.controlServer.socket.emit('player click', 
-            { 
-                idPlayerHit:player.idServer,
-                idSpell: efect,
-            });
-
         }
 
     }
@@ -376,8 +371,13 @@ class cControlSpells {
             var spell = this.arrayselSpells[sender.keyCode - Phaser.Keyboard.ONE]
 
             this.selSpell = spell;
-            spell.spellSelected()
+            spell.spellSelected();
 
+    }
+
+    public spellRelease(sender:Phaser.Key) {
+        var spell = this.arrayselSpells[sender.keyCode - Phaser.Keyboard.ONE]
+        spell.spellRelease();
     }
 
     public onHit(data, fromSprite:Phaser.Sprite, toSprite:Phaser.Sprite, rayColor:number) {
@@ -391,7 +391,8 @@ class cControlSpells {
 
         var spell:cSpell = this.allSpells.arraySpells[data.idSpell]
 
-        new cControlSpellAnim(this.controlGame, fromSprite, toSprite, rayColor, data.damage, this.hitTextPosition, spell);
+        new cControlSpellAnim(this.controlGame, fromSprite, toSprite, rayColor, data.damage, 
+            this.hitTextPosition, spell, this.selActorType, this.selActor);
 
     }
     

@@ -128,6 +128,8 @@ export class cServerControlPlayers {
             //calculo el efecto del hechizo, esto me dice que daño hace y a quien afecta
             var spellResult = player.spellResult(data);
 
+            console.log(spellResult.monsterDamage);
+
             //ataco todos los monstruos afectados por el hechizo
             spellResult.monsterTargets.forEach(idMonster => {
 

@@ -65,11 +65,11 @@ var cControlSounds = (function () {
     };
     cControlSounds.prototype.startPlayerHit = function () {
         if (this.numberPlayerHit == 1) {
-            //this.playerHit1.play(undefined, undefined, 0.5);
+            this.playerHit1.play(undefined, undefined, 0.2 * this.masterVolume);
             this.numberPlayerHit = 2;
         }
         else {
-            //this.playerHit2.play(undefined, undefined, 0.5);
+            this.playerHit2.play(undefined, undefined, 0.2 * this.masterVolume);
             this.numberPlayerHit = 1;
         }
     };
@@ -88,7 +88,7 @@ var cControlSounds = (function () {
     cControlSounds.prototype.startSoundHit = function (spellType) {
         switch (spellType) {
             case 1 /* BasicAtack */:
-                this.basicHit.play(undefined, undefined, 0.5 * this.masterVolume);
+                this.basicHit.play(undefined, undefined, 0.35 * this.masterVolume);
                 break;
             case 2 /* CriticalBall */:
                 this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);
@@ -102,8 +102,12 @@ var cControlSounds = (function () {
             case 4 /* ProtectField */:
                 this.shieldSpell.play(undefined, undefined, 0.6 * this.masterVolume);
                 break;
-            case 7 /* SelfExplosion */:
-                this.selfExplosionSpell.play(undefined, undefined, 0.6 * this.masterVolume);
+            case 9 /* fireballHit */:
+                this.selfExplosionSpell.play(undefined, undefined, 0.2 * this.masterVolume);
+                break;
+            case 8 /* fireballRelease */:
+                console.log("hola");
+                this.healSpell.play(undefined, undefined, 0.6 * this.masterVolume);
                 break;
             default:
                 break;

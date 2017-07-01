@@ -13,11 +13,15 @@ var cControlRay = (function (_super) {
         this.randomCorrectionFactor = 2;
         this.maxLenght = 5;
         this.numberOfUpdates = 6;
+        this.numberOfVisibleParts = 25;
+        this.graphics = [];
         this.rayNumber = 0;
         this.rayActive = true;
+        this.rayPartNumber = 0; //to control the part of the ray we are drawing
         this.acumX = 0;
         this.acumY = 0;
         this.finish = new Phaser.Signal();
+        this.groupGraphics = new Phaser.Group(this.controlGame.game);
         this.makeRay(spriteFrom, spriteTo, color);
     }
     cControlRay.prototype.makeRay = function (spriteFrom, spriteTo, color) {
@@ -25,12 +29,16 @@ var cControlRay = (function (_super) {
         var to;
         from = new Phaser.Point(spriteFrom.x, spriteFrom.y - 40);
         to = new Phaser.Point(spriteTo.x, spriteTo.y - 40);
-        this.graphics = this.controlGame.game.add.graphics(0, 0);
-        this.graphics.lineStyle(2, color, 1);
-        this.graphics.moveTo(from.x, from.y);
         var distance = from.distance(to);
         this.numberOfLines = Math.floor(distance / this.maxLenght);
         this.loopsInUpdate = Math.floor(this.numberOfLines / this.numberOfUpdates);
+        //lets create all the graphics where the lines will be draw
+        for (var i = 0; i < this.numberOfLines; i++) {
+            this.graphics[i] = this.controlGame.game.add.graphics(0, 0);
+            this.graphics[i].lineStyle(2, color, 1);
+            this.groupGraphics.add(this.graphics[i]);
+        }
+        this.graphics[0].moveTo(from.x, from.y);
         this.lastX = from.x;
         this.lastY = from.y;
         this.fixX = (to.x - from.x) / this.numberOfLines;
@@ -67,12 +75,12 @@ var cControlRay = (function (_super) {
                 this.lastY += this.fixY + randY;
                 this.acumX += randX;
                 this.acumY += randY;
-                this.graphics.lineTo(this.lastX, this.lastY);
+                this.graphics[this.rayPartNumber].lineTo(this.lastX, this.lastY);
                 this.rayNumber++;
             }
             else {
                 //lets make the ray disapear slowly
-                var buletAnimation = this.controlGame.game.add.tween(this.graphics).to({ alpha: 0 }, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+                var buletAnimation = this.controlGame.game.add.tween(this.groupGraphics).to({ alpha: 0 }, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
                 buletAnimation.onComplete.add(this.destroyBulet, this, null, this.graphics);
                 //lets kill the loops
                 this.rayActive = false;
@@ -80,10 +88,19 @@ var cControlRay = (function (_super) {
                 this.finish.dispatch();
                 return;
             }
+            //lets destroy the last part of the ray
+            if (this.rayPartNumber >= this.numberOfVisibleParts) {
+                this.graphics[this.rayPartNumber - this.numberOfVisibleParts].destroy();
+            }
+            //lets prepare the next part of the ray
+            if (this.rayPartNumber + 1 != this.numberOfLines) {
+                this.graphics[this.rayPartNumber + 1].moveTo(this.lastX, this.lastY);
+                this.rayPartNumber++;
+            }
         }
     };
     cControlRay.prototype.destroyBulet = function (bulet, tween) {
-        bulet.destroy();
+        this.groupGraphics.destroy();
         this.destroy();
     };
     return cControlRay;

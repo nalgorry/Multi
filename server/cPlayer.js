@@ -45,12 +45,14 @@ var cPlayer = (function () {
         resultado.spellAnimationMonster = data.idSpell;
         //veo que hechizo se activo 
         var damage = 0;
+        resultado.monsterDamage = 0;
+        resultado.playerDamage = 0;
         //defino los tarjets normales de los hechizos
-        if (data.idMonster != undefined) {
-            resultado.monsterTargets.push(data.idMonster);
+        if (data.isMonster == true) {
+            resultado.monsterTargets.push(data.idServer);
         }
-        if (data.idPlayerHit != undefined) {
-            resultado.playerTargets.push(data.idPlayerHit);
+        else {
+            resultado.playerTargets.push(data.idServer);
         }
         //analiso que hechizo se lanzo y calculo sus efectos
         switch (data.idSpell) {
@@ -93,10 +95,14 @@ var cPlayer = (function () {
                 resultado.monsterTargets =
                     this.controlMonster.findMonstersInArea(playerTileX, playerTileY, 5, 5);
                 resultado.spellAnimationMonster = 1 /* BasicAtack */;
+                break;
             case 8 /* fireballRelease */:
-                resultado.playerDamage = 0;
+                //no need to set nothing here
+                break;
             case 9 /* fireballHit */:
-                resultado.playerDamage = 1000;
+                resultado.playerDamage = Math.round(Math.random() * 50 + 50);
+                resultado.monsterDamage = Math.round(Math.random() * 250 + 100);
+                break;
             default:
                 break;
         }

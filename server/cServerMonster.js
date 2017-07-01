@@ -190,7 +190,7 @@ var cServerMonster = (function () {
                             tileY: playerTileY,
                             spellSize: 150,
                             coolDownTimeSec: 1,
-                            idSpell: 1 /* BasicAtack */,
+                            idSpell: 9 /* fireballHit */,
                         };
                     }
                     this.socket.in(this.room).emit('monster hit', data);

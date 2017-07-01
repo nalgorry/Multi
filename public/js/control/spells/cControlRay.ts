@@ -4,8 +4,10 @@ class cControlRay extends Phaser.Sprite {
     private randomCorrectionFactor = 2;
     private maxLenght:number = 5;
     private numberOfUpdates = 6;
+    private numberOfVisibleParts = 25;
 
-    private graphics:Phaser.Graphics;
+    private graphics:Phaser.Graphics[] = [];
+    private groupGraphics: Phaser.Group;
     private lastX: number;
     private lastY: number;
     private fixX: number;
@@ -13,6 +15,7 @@ class cControlRay extends Phaser.Sprite {
     private numberOfLines:number;
     private rayNumber:number = 0;
     private rayActive:boolean = true;
+    private rayPartNumber:number = 0; //to control the part of the ray we are drawing
 
     private acumX:number = 0;
     private acumY:number = 0;
@@ -29,6 +32,8 @@ class cControlRay extends Phaser.Sprite {
 
         this.finish = new Phaser.Signal();
 
+        this.groupGraphics = new Phaser.Group(this.controlGame.game);
+
         this.makeRay(spriteFrom, spriteTo, color);
 
     }
@@ -41,15 +46,19 @@ class cControlRay extends Phaser.Sprite {
             from = new Phaser.Point(spriteFrom.x, spriteFrom.y - 40);
             to = new Phaser.Point(spriteTo.x, spriteTo.y - 40);
 
-            this.graphics = this.controlGame.game.add.graphics(0, 0);
-            this.graphics.lineStyle(2, color, 1);
-
-            this.graphics.moveTo(from.x , from.y);
-
             var distance = from.distance(to);
 
             this.numberOfLines = Math.floor(distance/this.maxLenght);
             this.loopsInUpdate = Math.floor(this.numberOfLines/this.numberOfUpdates)
+
+            //lets create all the graphics where the lines will be draw
+            for (var i = 0; i< this.numberOfLines; i++) {
+                this.graphics[i] = this.controlGame.game.add.graphics(0, 0);
+                this.graphics[i].lineStyle(2, color, 1);
+                this.groupGraphics.add(this.graphics[i]);
+            }
+
+            this.graphics[0].moveTo(from.x , from.y);
 
             this.lastX = from.x;
             this.lastY = from.y;
@@ -95,14 +104,14 @@ class cControlRay extends Phaser.Sprite {
                 this.acumX += randX;
                 this.acumY += randY;
 
-                this.graphics.lineTo(this.lastX, this.lastY);
+                this.graphics[this.rayPartNumber].lineTo(this.lastX, this.lastY);
                 
                 this.rayNumber ++;
                 
             } else {
                 
                 //lets make the ray disapear slowly
-                var buletAnimation = this.controlGame.game.add.tween(this.graphics).to( { alpha: 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+                var buletAnimation = this.controlGame.game.add.tween(this.groupGraphics).to( { alpha: 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
                 buletAnimation.onComplete.add(this.destroyBulet,this,null,this.graphics);
 
                 //lets kill the loops
@@ -114,6 +123,18 @@ class cControlRay extends Phaser.Sprite {
                 return;
 
             }
+
+            //lets destroy the last part of the ray
+            if (this.rayPartNumber >= this.numberOfVisibleParts) {
+                this.graphics[this.rayPartNumber - this.numberOfVisibleParts].destroy();
+            }
+
+            //lets prepare the next part of the ray
+            if (this.rayPartNumber + 1 != this.numberOfLines) {
+                this.graphics[this.rayPartNumber + 1].moveTo(this.lastX, this.lastY)
+                this.rayPartNumber ++;
+            }
+
         
         }
 
@@ -121,7 +142,7 @@ class cControlRay extends Phaser.Sprite {
 
 
     private destroyBulet(bulet:Phaser.Graphics, tween:Phaser.Tween) {
-        bulet.destroy();
+        this.groupGraphics.destroy();
         this.destroy();
     }
 

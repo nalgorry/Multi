@@ -124,27 +124,22 @@ class cControlMonsters {
 
     public monsterWereHit(data) {
 
+        console.log(data);
+
         var playerThatHit:cBasicActor;
 
         if (data.idPlayer == this.controlGame.controlPlayer.idServer) { //este jugador golpea al monstruo
-            if (data.damage != 0 ) {
-                this.controlGame.controlConsole.newMessage(enumMessage.youHit,"You hit monster for " + data.damage);
-                this.controlGame.controlSounds.startSoundHit(data.idSpell);
-
-                playerThatHit = this.controlGame.controlPlayer;
-
-                //reduce the life bar of the enemy
-                this.controlGame.controlPlayer.controlSpells.reduceLifeBar(data.lifePercRemaining);
-                            }
+            playerThatHit = this.controlGame.controlPlayer;        
         } else { //otro jugador golpea al mounstro 
             playerThatHit = this.controlGame.controlOtherPlayers.playerById(data.idPlayer)
         } 
 
-        //Hago la animación y el rayo 
+        //Hago la animación y el rayo
         var monster = this.arrayMonster[data.idMonster];
         if (monster != undefined) {
             this.controlGame.controlPlayer.controlSpells.onHit(data, playerThatHit.playerSprite, monster.monsterSprite,0x081d5e);
-
+            this.controlGame.controlSounds.startSoundHit(data.idSpell);
+            this.controlGame.controlPlayer.controlSpells.reduceLifeBar(data.lifePercRemaining);
         }
 
     }

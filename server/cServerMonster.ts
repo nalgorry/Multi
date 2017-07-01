@@ -286,17 +286,14 @@ export class cServerMonster {
                                         tileY: playerTileY,
                                         spellSize: 150,
                                         coolDownTimeSec: 1,
-                                        idSpell: enumSpells.BasicAtack,
+                                        idSpell: enumSpells.fireballHit,
                                     }
                             }
 
                             this.socket.in(this.room).emit('monster hit', data );         
-                            
                     }
 
                 }
-
-       
         
             var timerAtack = setTimeout(() => this.monsterAtack(), 1200);
         }

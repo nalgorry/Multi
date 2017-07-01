@@ -31,7 +31,7 @@ class cDefinitionSpells {
         newSpell.explotionFrameRate = 100;
         newSpell.rayAnimationType = enumRayAnimations.arrow;
 
-        //CriticalBall
+        //Special atack
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[enumSpells.CriticalBall] = newSpell;
 
@@ -44,7 +44,7 @@ class cDefinitionSpells {
         newSpell.coolDownTimeSec = 2;
         newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
-        newSpell.rayAnimationType = enumRayAnimations.missile;
+        newSpell.rayAnimationType = enumRayAnimations.ninjaStar;
 
         //firestorm
         var newSpell = new cSpell(this.controlGame);
@@ -153,10 +153,20 @@ class cDefinitionSpells {
         newSpell.enabledTrowOnMonster = true;
         newSpell.posInSpritesheet = 6;
         newSpell.explotionSprite = undefined;
-        newSpell.explotionFrameRate = 16;
-        newSpell.explotionYOffset = 70;
-        newSpell.rayAnimationType = enumRayAnimations.missile;
+        newSpell.rayAnimationType = enumRayAnimations.fireball;
         newSpell.afterAnimationSpell = enumSpells.fireballHit;
+
+        this.arraySpells[newSpell.idSpell] = newSpell;
+
+        //Fireball finish, we only need the explosion deff for this one.
+        var newSpell = new cSpell(this.controlGame);
+        
+        newSpell.idSpell = enumSpells.fireballHit;
+        newSpell.spellName = "Fireball Hit";
+        newSpell.posInSpritesheet = 6;
+        newSpell.explotionSprite = "boom4";
+        newSpell.explotionFrameRate = 40;
+        
 
         this.arraySpells[newSpell.idSpell] = newSpell;
 

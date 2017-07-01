@@ -9,6 +9,7 @@ var cSpell = (function () {
         this.enabledTrowThisPlayer = false;
         this.coolDownTimeSec = 2;
         this.tint = null;
+        this.flagSpellSelected = true;
         this.isSpellOnCoolDown = false;
     }
     cSpell.prototype.animationFinish = function () {
@@ -21,6 +22,7 @@ var cSpell = (function () {
         this.spellSprite.inputEnabled = true;
         this.spellNumber = spellNumber;
         this.spellSprite.events.onInputDown.add(this.spellSelected, this);
+        this.spellSprite.events.onInputUp.add(this.spellRelease, this);
         this.signalSpellSel = new Phaser.Signal();
         //creo el recuadro para el coolDownTimeSec
         //circulo interior
@@ -44,6 +46,10 @@ var cSpell = (function () {
     };
     cSpell.prototype.spellSelected = function () {
         this.signalSpellSel.dispatch(this);
+        this.flagSpellSelected = true;
+    };
+    cSpell.prototype.spellRelease = function () {
+        this.flagSpellSelected = false;
     };
     cSpell.prototype.spellColdDown = function () {
         this.isSpellOnCoolDown = true;
@@ -57,6 +63,10 @@ var cSpell = (function () {
         this.spriteFocusCool.visible = false;
         this.spriteFocusFixCool.visible = false;
         this.isSpellOnCoolDown = false;
+        //left check if the spell is still selected
+        if (this.flagSpellSelected == true) {
+            this.signalSpellSel.dispatch(this);
+        }
     };
     return cSpell;
 }());
@@ -64,5 +74,6 @@ var enumRayAnimations;
 (function (enumRayAnimations) {
     enumRayAnimations[enumRayAnimations["ray"] = 0] = "ray";
     enumRayAnimations[enumRayAnimations["arrow"] = 1] = "arrow";
-    enumRayAnimations[enumRayAnimations["missile"] = 2] = "missile";
+    enumRayAnimations[enumRayAnimations["fireball"] = 2] = "fireball";
+    enumRayAnimations[enumRayAnimations["ninjaStar"] = 3] = "ninjaStar";
 })(enumRayAnimations || (enumRayAnimations = {}));

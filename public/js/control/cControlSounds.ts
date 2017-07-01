@@ -107,10 +107,10 @@ class cControlSounds {
     public startPlayerHit() {
 
         if (this.numberPlayerHit == 1) {
-            //this.playerHit1.play(undefined, undefined, 0.5);
+            this.playerHit1.play(undefined, undefined, 0.2 * this.masterVolume );
             this.numberPlayerHit = 2;
         } else {
-            //this.playerHit2.play(undefined, undefined, 0.5);
+            this.playerHit2.play(undefined, undefined, 0.2 * this.masterVolume);
             this.numberPlayerHit = 1;
         }
 
@@ -138,7 +138,7 @@ class cControlSounds {
 
         switch (spellType) {
             case enumSpells.BasicAtack:
-                this.basicHit.play(undefined, undefined, 0.5 * this.masterVolume);
+                this.basicHit.play(undefined, undefined, 0.35 * this.masterVolume);
                 break;
             case enumSpells.CriticalBall:
                 this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);
@@ -152,8 +152,12 @@ class cControlSounds {
             case enumSpells.ProtectField:
                 this.shieldSpell.play(undefined, undefined, 0.6 * this.masterVolume);
                 break;
-            case enumSpells.SelfExplosion:
-                this.selfExplosionSpell.play(undefined, undefined, 0.6 * this.masterVolume);
+            case enumSpells.fireballHit:
+                this.selfExplosionSpell.play(undefined, undefined, 0.2 * this.masterVolume);
+                break;
+            case enumSpells.fireballRelease:
+                console.log("hola"); 
+                this.healSpell.play(undefined, undefined, 0.6 * this.masterVolume);
                 break;
             default:
                 break;

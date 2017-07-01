@@ -324,7 +324,7 @@ class cControlGame {
         //lets change the map settings
         this.pvspAllowed = pvspAllowed;
 
-        console.log(this.pvspAllowed );
+        console.log(this.pvspAllowed);
 
 
     }
