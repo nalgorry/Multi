@@ -25,11 +25,11 @@ class cControlSpellAnim {
                             ray3.finish.add(this.rayFinish,this);
                             break;
                         case enumRayAnimations.fireball:
-                            var ray = new cControlMissile(controlGame,spriteFrom,spriteTo,'fireball',false,250);
+                            var ray = new cControlMissile(controlGame,spriteFrom,spriteTo,'fireball',false,250,5);
                             ray.finish.add(this.rayFinish,this);
                             break;
                         case enumRayAnimations.ninjaStar:
-                            var ray = new cControlMissile(controlGame,spriteFrom,spriteTo,'ninja_star',true,650);
+                            var ray = new cControlMissile(controlGame,spriteFrom,spriteTo,'ninja_star',true,650,30);
                             ray.finish.add(this.rayFinish,this);
                             break;
                         case enumRayAnimations.ray:

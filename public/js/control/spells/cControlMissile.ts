@@ -15,7 +15,8 @@ class cControlMissile extends Phaser.Sprite {
         spriteTo:Phaser.Sprite,
         sprite_name:string,
         perfect_angle:boolean, 
-        speed:number ) {
+        speed:number,
+        turn_rate ) {
             super(controlGame.game, spriteFrom.x, spriteFrom.y - 40);
 
             this.spriteTo = spriteTo;
@@ -60,10 +61,12 @@ class cControlMissile extends Phaser.Sprite {
         }
 
         public update() {
+
+        var yTo = this.spriteTo.y + this.yOffsetTo
         
         var targetAngle = Phaser.Math.angleBetween(
                 this.x, this.y,
-                this.spriteTo.x, this.spriteTo.y + this.yOffsetTo
+                this.spriteTo.x, yTo
             );
 
             // Add our "wobble" factor to the targetAngle to make the missile wobble
@@ -98,9 +101,9 @@ class cControlMissile extends Phaser.Sprite {
             this.body.velocity.y = Math.sin(this.rotation) * this.speed;
 
             //lets chech distance
-            var distance = Phaser.Math.distance(this.x, this.y, this.spriteTo.x, this.spriteTo.y);
+            var distance = Phaser.Math.distance(this.x, this.y, this.spriteTo.x, yTo);
 
-            if (distance < 40) {
+            if (distance < 20) {
                 this.destroy();
                 this.finish.dispatch();
             }

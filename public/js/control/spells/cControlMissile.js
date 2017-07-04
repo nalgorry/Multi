@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var cControlMissile = (function (_super) {
     __extends(cControlMissile, _super);
-    function cControlMissile(controlGame, spriteFrom, spriteTo, sprite_name, perfect_angle, speed) {
+    function cControlMissile(controlGame, spriteFrom, spriteTo, sprite_name, perfect_angle, speed, turn_rate) {
         _super.call(this, controlGame.game, spriteFrom.x, spriteFrom.y - 40);
         this.controlGame = controlGame;
         this.TURN_RATE = 5; // turn rate in degrees/frame
@@ -40,7 +40,8 @@ var cControlMissile = (function (_super) {
         this.controlGame.game.add.existing(this);
     }
     cControlMissile.prototype.update = function () {
-        var targetAngle = Phaser.Math.angleBetween(this.x, this.y, this.spriteTo.x, this.spriteTo.y + this.yOffsetTo);
+        var yTo = this.spriteTo.y + this.yOffsetTo;
+        var targetAngle = Phaser.Math.angleBetween(this.x, this.y, this.spriteTo.x, yTo);
         // Add our "wobble" factor to the targetAngle to make the missile wobble
         // Remember that this.wobble is tweening (above)
         targetAngle += Phaser.Math.degToRad(this.wobble);
@@ -70,8 +71,8 @@ var cControlMissile = (function (_super) {
         this.body.velocity.x = Math.cos(this.rotation) * this.speed;
         this.body.velocity.y = Math.sin(this.rotation) * this.speed;
         //lets chech distance
-        var distance = Phaser.Math.distance(this.x, this.y, this.spriteTo.x, this.spriteTo.y);
-        if (distance < 40) {
+        var distance = Phaser.Math.distance(this.x, this.y, this.spriteTo.x, yTo);
+        if (distance < 20) {
             this.destroy();
             this.finish.dispatch();
         }
