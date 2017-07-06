@@ -8,6 +8,7 @@ var cControlSounds = (function () {
         //cargo los sonidos
         this.run = this.game.add.audio('run');
         this.basicHit = this.game.add.audio('basic_hit');
+        this.arrow = this.game.add.audio('arrow_sound');
         this.healSpell = this.game.add.audio('heal_spell');
         this.ligthingSpell = this.game.add.audio('lighting_spell');
         this.shieldSpell = this.game.add.audio('shield_spell');
@@ -88,10 +89,10 @@ var cControlSounds = (function () {
     cControlSounds.prototype.startSoundHit = function (spellType) {
         switch (spellType) {
             case 1 /* BasicAtack */:
-                this.basicHit.play(undefined, undefined, 0.35 * this.masterVolume);
+                this.arrow.play(undefined, undefined, 0.25 * this.masterVolume);
                 break;
             case 2 /* CriticalBall */:
-                this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);
+                this.basicHit.play(undefined, undefined, 0.35 * this.masterVolume);
                 break;
             case 6 /* LightingStorm */:
                 this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);
@@ -106,7 +107,6 @@ var cControlSounds = (function () {
                 this.selfExplosionSpell.play(undefined, undefined, 0.2 * this.masterVolume);
                 break;
             case 8 /* fireballRelease */:
-                console.log("hola");
                 this.healSpell.play(undefined, undefined, 0.6 * this.masterVolume);
                 break;
             default:

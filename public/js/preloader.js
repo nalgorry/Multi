@@ -20,6 +20,10 @@ var preloader = (function (_super) {
         this.game.load.tilemap('secondMap', 'assets/maps/secondMap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.tilemap('thirdMap', 'assets/maps/thirdMap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.tilemap('tutorialMap', 'assets/maps/tutorialMap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('west_01', 'assets/maps/west_01.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('west_02', 'assets/maps/west_02.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('west_03', 'assets/maps/west_03.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.tilemap('west_04', 'assets/maps/west_04.json', null, Phaser.Tilemap.TILED_JSON);
         //all the objets
         this.game.load.image('tiles', 'assets/maps/tiles.png');
         this.game.load.spritesheet('boom', 'assets/explosion.png', 50, 50);
@@ -64,6 +68,7 @@ var preloader = (function (_super) {
         this.game.load.audio('hit1', 'assets/sounds/hit1.ogg');
         this.game.load.audio('hit2', 'assets/sounds/hit2.ogg');
         this.game.load.audio('die', 'assets/sounds/die1.ogg');
+        this.game.load.audio('arrow_sound', 'assets/sounds/arrow.ogg');
     };
     preloader.prototype.create = function () {
         var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);

@@ -2,6 +2,7 @@ class cControlSounds {
 
     private run:Phaser.Sound;
     private basicHit:Phaser.Sound;
+    private arrow:Phaser.Sound;
     private healSpell:Phaser.Sound;
     private ligthingSpell:Phaser.Sound;
     private shieldSpell:Phaser.Sound;
@@ -30,6 +31,7 @@ class cControlSounds {
         //cargo los sonidos
         this.run = this.game.add.audio('run');
         this.basicHit = this.game.add.audio('basic_hit');
+        this.arrow = this.game.add.audio('arrow_sound');
         this.healSpell = this.game.add.audio('heal_spell');
         this.ligthingSpell = this.game.add.audio('lighting_spell');
         this.shieldSpell = this.game.add.audio('shield_spell');
@@ -138,10 +140,10 @@ class cControlSounds {
 
         switch (spellType) {
             case enumSpells.BasicAtack:
-                this.basicHit.play(undefined, undefined, 0.35 * this.masterVolume);
+                this.arrow.play(undefined, undefined, 0.25 * this.masterVolume);
                 break;
             case enumSpells.CriticalBall:
-                this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);
+                this.basicHit.play(undefined, undefined, 0.35 * this.masterVolume);
                 break;
             case enumSpells.LightingStorm:
                 this.ligthingSpell.play(undefined, undefined, 0.2 * this.masterVolume);
@@ -156,7 +158,6 @@ class cControlSounds {
                 this.selfExplosionSpell.play(undefined, undefined, 0.2 * this.masterVolume);
                 break;
             case enumSpells.fireballRelease:
-                console.log("hola"); 
                 this.healSpell.play(undefined, undefined, 0.6 * this.masterVolume);
                 break;
             default:
