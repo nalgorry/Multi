@@ -1,7 +1,7 @@
 class cControlMonsters {
 
     private arrayMonster:cMonster[];
-    public spriteAreaAtack
+    public spriteAreaAtack:Phaser.Sprite;
 
     constructor(public controlGame: cControlGame) {
 
@@ -71,7 +71,7 @@ class cControlMonsters {
         //creo un circulo
         var spriteAreaAtack: Phaser.Sprite;
         
-        var bitmapAtack = this.controlGame.game.add.graphics(0,0);;
+        var bitmapAtack = this.controlGame.game.add.graphics(0,0);
         bitmapAtack.beginFill(0xe33133);
         bitmapAtack.drawCircle(0, 0, data.spellSize);
         
@@ -84,6 +84,7 @@ class cControlMonsters {
         spriteAreaAtack.alpha = 0.25;
 
         this.spriteAreaAtack = spriteAreaAtack;
+        this.controlGame.groupMapLayers.add(this.spriteAreaAtack);
 
         //configuro el hit test para ver si le pega o no el hechizo
         this.controlGame.game.physics.arcade.enable(spriteAreaAtack);
@@ -91,15 +92,6 @@ class cControlMonsters {
         body.setCircle(data.spellSize / 2);
         body.offset.x = -data.spellSize / 2;
         body.offset.y = -data.spellSize / 2;
-
-        //lo dejo justo entre las capas de tiles y los objetos
-        spriteAreaAtack.sendToBack();
-        spriteAreaAtack.moveUp();
-        spriteAreaAtack.moveUp();
-        spriteAreaAtack.moveUp();
-        spriteAreaAtack.moveUp();
-        spriteAreaAtack.moveUp();
-        spriteAreaAtack.moveUp();
 
         var a = this.controlGame.game.add.tween(spriteAreaAtack).to(
              { alpha: 1 }, data.coolDownTimeSec * 1000, Phaser.Easing.Cubic.In, true);
