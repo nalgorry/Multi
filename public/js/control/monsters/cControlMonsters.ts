@@ -124,8 +124,6 @@ class cControlMonsters {
 
     public monsterWereHit(data) {
 
-        console.log(data);
-
         var playerThatHit:cBasicActor;
 
         if (data.idPlayer == this.controlGame.controlPlayer.idServer) { //este jugador golpea al monstruo

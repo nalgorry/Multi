@@ -91,7 +91,7 @@ var cControlSounds = (function () {
             case 1 /* BasicAtack */:
                 this.arrow.play(undefined, undefined, 0.25 * this.masterVolume);
                 break;
-            case 2 /* CriticalBall */:
+            case 2 /* CriticalBallRelease */:
                 this.basicHit.play(undefined, undefined, 0.35 * this.masterVolume);
                 break;
             case 6 /* LightingStorm */:

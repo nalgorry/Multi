@@ -61,13 +61,16 @@ var cPlayer = (function () {
                 resultado.monsterDamage = damage;
                 resultado.playerDamage = damage;
                 break;
-            case 2 /* CriticalBall */:
+            case 10 /* CriticalBallHit */:
                 damage = Math.round(Math.random() * 60 + 15);
                 if (Math.random() < 0.15) {
                     damage = damage + 50;
                 }
                 resultado.monsterDamage = damage;
                 resultado.playerDamage = damage;
+                break;
+            case 2 /* CriticalBallRelease */:
+                //nothing to do here...
                 break;
             case 6 /* LightingStorm */:
                 damage = Math.round(Math.random() * 100 + 50);

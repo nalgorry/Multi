@@ -168,21 +168,21 @@ class cControlSpells {
         this.borderSpell.y = newSpell.spellSprite.y + newSpell.spellSprite.height/2;
 
         //hechizo 2
-        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.CriticalBall];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.CriticalBallRelease];
         newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 1, 205),2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);          
 
         //hechizo 3
-        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.LightingStorm];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.fireballRelease];
         newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 2, 205), 2);
         
         this.arrayselSpells.push(newSpell);
         newSpell.signalSpellSel.add(this.spellClick,this);                
 
         //hechizo 4
-        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.ProtectField];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.LightingStorm];
         newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 0, 265), 2);
         
         this.arrayselSpells.push(newSpell);
@@ -196,7 +196,7 @@ class cControlSpells {
         newSpell.signalSpellSel.add(this.spellClick,this);
 
         //hechizo 6
-        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.fireballRelease];
+        var newSpell:cSpell = this.allSpells.arraySpells[enumSpells.ProtectField];
         newSpell.iniciateSpell(new Phaser.Point(12 + 58 * 2, 265), 2);
         
         this.arrayselSpells.push(newSpell);
@@ -367,6 +367,19 @@ class cControlSpells {
     }
 
     public spellSelectKeyboard(sender:Phaser.Key) {
+
+        //lets set the letter Q and E to replace the number 5 and 6
+        switch (sender.keyCode) {
+            case Phaser.Keyboard.Q:
+                sender.keyCode = Phaser.Keyboard.FIVE
+                break;
+            case Phaser.Keyboard.E:
+                sender.keyCode = Phaser.Keyboard.SIX
+                break;
+        
+            default:
+                break;
+        }
 
             var spell = this.arrayselSpells[sender.keyCode - Phaser.Keyboard.ONE]
 

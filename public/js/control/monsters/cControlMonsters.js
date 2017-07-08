@@ -80,7 +80,6 @@ var cControlMonsters = (function () {
         sprite.destroy();
     };
     cControlMonsters.prototype.monsterWereHit = function (data) {
-        console.log(data);
         var playerThatHit;
         if (data.idPlayer == this.controlGame.controlPlayer.idServer) {
             playerThatHit = this.controlGame.controlPlayer;

@@ -5,6 +5,11 @@
         tutorialMap = 3,
         secondMap = 4,
         thirdMap = 5,
+        westone = 6,
+        west2 = 7,
+        west3 = 8,
+
+
     }
     
     declare enum enumMonsterAtackType {
@@ -23,7 +28,8 @@
 
     declare const enum enumSpells {
         BasicAtack = 1,
-        CriticalBall = 2,
+        CriticalBallRelease = 2,
+        CriticalBallHit = 10,
         WeakBall = 3,
         ProtectField = 4,
         HealHand = 5,

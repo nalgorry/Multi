@@ -151,11 +151,11 @@ class cControlGame {
                 var phaserText = this.game.add.bitmapText(55 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
                 this.groupMapLayers.add(phaserText);
 
-                var text = 'You have \n three defensive skills \n and \n three offensive skills.';
+                var text = 'You have \n two defensive skills \n and \n four offensive skills.';
                 var phaserText = this.game.add.bitmapText(50 * this.gridSize, 50 * this.gridSize, 'gotic', text, 16);
                 this.groupMapLayers.add(phaserText);
 
-                var text = 'To use them\n use numbers 1 to 6, \n or click over the \n spells in the right side.';
+                var text = 'Ofensive: Number 1 to 6 \n Defensive: "Q" and "E"';
                 var phaserText = this.game.add.bitmapText(50 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
                 this.groupMapLayers.add(phaserText);
 
@@ -323,9 +323,6 @@ class cControlGame {
 
         //lets change the map settings
         this.pvspAllowed = pvspAllowed;
-
-        console.log(this.pvspAllowed);
-
 
     }
 

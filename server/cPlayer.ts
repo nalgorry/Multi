@@ -84,7 +84,7 @@ export class cPlayer {
 
                 break;
 
-            case enumSpells.CriticalBall :
+            case enumSpells.CriticalBallHit:
                 damage = Math.round(Math.random() * 60 + 15);
                 if (Math.random() < 0.15) { //daño critico!
                     damage = damage + 50;
@@ -93,6 +93,9 @@ export class cPlayer {
                 resultado.monsterDamage = damage;
                 resultado.playerDamage = damage;
 
+                break;
+            case enumSpells.CriticalBallRelease:
+                //nothing to do here...
                 break;
             case enumSpells.LightingStorm :
                 damage = Math.round(Math.random() * 100 + 50);

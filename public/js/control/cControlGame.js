@@ -88,10 +88,10 @@ var cControlGame = (function () {
                 var text = 'War was inevitable… \n you need to be prepared.';
                 var phaserText = this.game.add.bitmapText(55 * this.gridSize, 65 * this.gridSize, 'gotic', text, 16);
                 this.groupMapLayers.add(phaserText);
-                var text = 'You have \n three defensive skills \n and \n three offensive skills.';
+                var text = 'You have \n two defensive skills \n and \n four offensive skills.';
                 var phaserText = this.game.add.bitmapText(50 * this.gridSize, 50 * this.gridSize, 'gotic', text, 16);
                 this.groupMapLayers.add(phaserText);
-                var text = 'To use them\n use numbers 1 to 6, \n or click over the \n spells in the right side.';
+                var text = 'Ofensive: Number 1 to 6 \n Defensive: "Q" and "E"';
                 var phaserText = this.game.add.bitmapText(50 * this.gridSize, 53 * this.gridSize, 'gotic', text, 16);
                 this.groupMapLayers.add(phaserText);
                 var text = 'Use yours spells\nto attack!';
@@ -207,7 +207,6 @@ var cControlGame = (function () {
         this.game.world.bringToTop(this.controlPlayer.controlItems.itemsGroup);
         //lets change the map settings
         this.pvspAllowed = pvspAllowed;
-        console.log(this.pvspAllowed);
     };
     cControlGame.prototype.addTutorial = function (tutorialNumber) {
         switch (tutorialNumber) {

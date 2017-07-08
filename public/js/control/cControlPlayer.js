@@ -115,10 +115,10 @@ var cControlPlayer = (function (_super) {
         var four = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
         four.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
         four.onUp.add(this.controlSpells.spellRelease, this.controlSpells);
-        var five = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.FIVE);
+        var five = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.Q);
         five.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
         five.onUp.add(this.controlSpells.spellRelease, this.controlSpells);
-        var six = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.SIX);
+        var six = this.controlGame.game.input.keyboard.addKey(Phaser.Keyboard.E);
         six.onDown.add(this.controlSpells.spellSelectKeyboard, this.controlSpells);
         six.onUp.add(this.controlSpells.spellRelease, this.controlSpells);
         //controles de focus

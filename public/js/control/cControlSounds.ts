@@ -142,7 +142,7 @@ class cControlSounds {
             case enumSpells.BasicAtack:
                 this.arrow.play(undefined, undefined, 0.25 * this.masterVolume);
                 break;
-            case enumSpells.CriticalBall:
+            case enumSpells.CriticalBallRelease:
                 this.basicHit.play(undefined, undefined, 0.35 * this.masterVolume);
                 break;
             case enumSpells.LightingStorm:

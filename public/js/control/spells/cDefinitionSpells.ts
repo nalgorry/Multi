@@ -21,37 +21,45 @@ class cDefinitionSpells {
 
         newSpell.idSpell = enumSpells.BasicAtack;
         newSpell.spellName = "Bola de Fuego";
-        newSpell.manaCost = 1;
-        newSpell.energyCost = 1;
+        newSpell.manaCost = 8;
+        newSpell.energyCost = 5;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 0;
-        newSpell.coolDownTimeSec = 0.5;
+        newSpell.coolDownTimeSec = 0.6;
         newSpell.explotionSprite = 'boom4';
         newSpell.tint = 0xFC0000;
         newSpell.explotionFrameRate = 100;
         newSpell.rayAnimationType = enumRayAnimations.arrow;
 
-        //Special atack
+        //Special atack release
         var newSpell = new cSpell(this.controlGame);
-        this.arraySpells[enumSpells.CriticalBall] = newSpell;
+        this.arraySpells[enumSpells.CriticalBallRelease] = newSpell;
 
-        newSpell.idSpell = enumSpells.CriticalBall;
-        newSpell.spellName = "Meteorito Mortal";
-        newSpell.manaCost = 20;
+        newSpell.idSpell = enumSpells.CriticalBallRelease;
+        newSpell.spellName = "Estrella Ninja";
+        newSpell.manaCost = 30;
         newSpell.energyCost = 5;
         newSpell.lifeCost = 0;
         newSpell.posInSpritesheet = 1;
-        newSpell.coolDownTimeSec = 2;
+        newSpell.coolDownTimeSec = 1.5;
+        newSpell.rayAnimationType = enumRayAnimations.ninjaStar;
+        newSpell.afterAnimationSpell = enumSpells.CriticalBallHit
+
+        //Special atack hit
+        var newSpell = new cSpell(this.controlGame);
+        this.arraySpells[enumSpells.CriticalBallHit] = newSpell;
+
+        newSpell.idSpell = enumSpells.CriticalBallHit;
+        newSpell.spellName = "Estrella Ninja HIT";
         newSpell.explotionSprite = 'boom4';
         newSpell.explotionFrameRate = 100;
-        newSpell.rayAnimationType = enumRayAnimations.ninjaStar;
 
         //firestorm
         var newSpell = new cSpell(this.controlGame);
         this.arraySpells[enumSpells.WeakBall] = newSpell;
         
         newSpell.idSpell = enumSpells.WeakBall;
-        newSpell.spellName = "Ataque Mortal";
+        newSpell.spellName = "Ataque de rayo";
         newSpell.manaCost = 50;
         newSpell.energyCost = 50;
         newSpell.lifeCost = 2;
@@ -113,7 +121,7 @@ class cDefinitionSpells {
         newSpell.manaCost = 30;
         newSpell.energyCost = 50;
         newSpell.lifeCost = 0;
-        newSpell.coolDownTimeSec = 4;
+        newSpell.coolDownTimeSec = 2;
         newSpell.enabledTrowOtherPlayer = true;
         newSpell.enabledTrowThisPlayer = false;
         newSpell.enabledTrowOnMonster = true;
@@ -147,7 +155,7 @@ class cDefinitionSpells {
         newSpell.manaCost = 20;
         newSpell.energyCost = 20;
         newSpell.lifeCost = 0;
-        newSpell.coolDownTimeSec = 1;
+        newSpell.coolDownTimeSec = 3;
         newSpell.enabledTrowOtherPlayer = true;
         newSpell.enabledTrowThisPlayer = false;
         newSpell.enabledTrowOnMonster = true;
@@ -163,7 +171,6 @@ class cDefinitionSpells {
         
         newSpell.idSpell = enumSpells.fireballHit;
         newSpell.spellName = "Fireball Hit";
-        newSpell.posInSpritesheet = 6;
         newSpell.explotionSprite = "boom4";
         newSpell.explotionFrameRate = 40;
         

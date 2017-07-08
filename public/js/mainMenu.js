@@ -7,7 +7,7 @@ var mainMenu = (function (_super) {
     __extends(mainMenu, _super);
     function mainMenu() {
         _super.apply(this, arguments);
-        this.showElements = true;
+        this.showElements = false;
     }
     mainMenu.prototype.create = function () {
         //inicio todos los parametros dele juego
