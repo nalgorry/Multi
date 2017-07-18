@@ -19,24 +19,33 @@ export class cServerItems {
 
     private maxNumberItems:number = 21;
 
-    constructor(itemID:string, itemType:enumItemType, itemLevel:number , tileX:number, tileY:number,
-                isPublic:boolean) {
+    constructor() {
 
-        this.itemID = itemID;
+        this.signalItemDelete = new Signal();
+
+        this.arrayItemProperties = [];
+
+    }
+
+    public defineItem(itemType:enumItemType, itemLevel:number , 
+                        tileX:number, tileY:number, isPublic:boolean) {
+    
         this.itemType = itemType;
         this.tileX = tileX;
         this.tileY = tileY;
         this.itemLevel = itemLevel;
         this.isPublic = isPublic;
 
-        this.signalItemDelete = new Signal();
-
-        this.arrayItemProperties = [];
-
-        if (itemType != enumItemType.gold) {
+         if (itemType != enumItemType.gold) {
             this.defineItemsProperties(this.itemLevel);
         }
+            
+    }
 
+    public defineId(itemId:string)  {
+        this.itemID = itemId;
+
+        //when the id is set it start to count the life time of this object in the map.
         var itemTime = setTimeout(() => this.deleteItem(), this.itemDeleteTime);
 
     }

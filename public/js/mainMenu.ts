@@ -8,7 +8,7 @@ class mainMenu extends Phaser.State {
     controlMonsters: cControlMonsters; //clase que controla los monstruos
     controlMissions: cControlMissions;
 
-    showElements = false;
+    showElements = true;
  
     create() {
         

@@ -8,12 +8,14 @@ export class cServerControlItems {
     public arrayItems:cServerItems[];
     private nextIdItems:number = 0;
 
-    constructor(public socket:SocketIO.Server, public room){
+    constructor(public socket:SocketIO.Server, public room, mapItems:cServerItems[]){
 
         this.arrayItems = [];
 
-        //defino todos los objetos
-        cServerItemDef.defineItems();
+        //put the map items in the map
+        mapItems.forEach(item => {
+            this.setItemId(item);
+        });
 
     }
 
@@ -75,42 +77,47 @@ export class cServerControlItems {
     }
 
     public createGoldItem(tileX, tileY) {
-        var itemId = "i" + this.nextIdItems;
 
         var gold = this.randomIntFromInterval(1,100);
 
-        var newItem = new cServerItems(itemId, enumItemType.gold, gold, tileX, tileY, true);
-
+        var newItem = new cServerItems();
+        newItem.defineItem(enumItemType.gold, gold, tileX, tileY, true)
         this.emitNewItem(newItem);
-        this.arrayItems[itemId] = newItem;
-        this.nextIdItems += 1;
+
     }
 
     public createNewItem(itemType:number, itemLevel, tileX:number, tileY:number,itemPublic:boolean, socket:SocketIO.Server = this.socket) {
 
-        var itemId = "i" + this.nextIdItems;
-        var newItem = new cServerItems(itemId, itemType, itemLevel, tileX, tileY,itemPublic);
-
+        var newItem = new cServerItems();
+        newItem.defineItem(itemType, itemLevel, tileX, tileY,itemPublic);
+        this.setItemId(newItem);
         this.emitNewItem(newItem);
-        this.arrayItems[itemId] = newItem;
-        this.nextIdItems += 1;
-
+        
         //agrego una señal para definir cuando el item se borra del juego
         newItem.signalItemDelete.add(this.itemDeleted,this);
     }
 
-        //this emit the item to all the players
-        public emitNewItem(item:cServerItems) {
+    private setItemId(item) {
+        //lets define a ID to indentify the item
+        var itemId = "i" + this.nextIdItems;
+        item.defineId(itemId);
+        this.nextIdItems += 1;
+        this.arrayItems[itemId] = item
+    }
 
-        if (item.onFloor == true) {
-            var itemData =  {
-                itemID:item.itemID,
-                tileX:item.tileX, 
-                tileY:item.tileY,
-                itemType:item.itemType,
-                maxRank: item.maxRank};
-            this.socket.in(this.room).emit('new item', itemData);
-        }
+        //this emit the item to all the players
+        public emitNewItem(item:cServerItems) {;
+
+            if (item.onFloor == true) {
+                var itemData =  {
+                    itemID:item.itemID,
+                    tileX:item.tileX, 
+                    tileY:item.tileY,
+                    itemType:item.itemType,
+                    maxRank: item.maxRank};
+                this.socket.in(this.room).emit('new item', itemData);
+
+            }
 
     }
     
@@ -139,14 +146,17 @@ export class cServerControlItems {
 
     public onNewPlayerConected(socket:SocketIO.Server) {
 
-        //le mando al nuevo cliente todos los moustros del mapa
+        console.log("entra aca?")  
+
+        //lets send the active items to the player
         for (var numItem in this.arrayItems) {
             
             var item:cServerItems = this.arrayItems[numItem];
 
             //controlo que el item sea para todos los jugadores.
             if (item.isPublic == true) {
-                this.emitNewItem(item);   
+                this.emitNewItem(item); 
+                
             } 
 
         }

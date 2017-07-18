@@ -72,9 +72,11 @@ var cControlMonsters = (function () {
         sprite.destroy();
     };
     cControlMonsters.prototype.monsterWereHit = function (data) {
+        var thisPlayerHit = false;
         var playerThatHit;
         if (data.idPlayer == this.controlGame.controlPlayer.idServer) {
             playerThatHit = this.controlGame.controlPlayer;
+            thisPlayerHit = true;
         }
         else {
             playerThatHit = this.controlGame.controlOtherPlayers.playerById(data.idPlayer);
@@ -84,7 +86,11 @@ var cControlMonsters = (function () {
         if (monster != undefined) {
             this.controlGame.controlPlayer.controlSpells.onHit(data, playerThatHit.playerSprite, monster.monsterSprite, 0x081d5e);
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
-            this.controlGame.controlPlayer.controlSpells.reduceLifeBar(data.lifePercRemaining);
+            //lets check if we need to reduce the life bar
+            if (thisPlayerHit == true) {
+                this.controlGame.controlPlayer.controlSpells.reduceLifeBar(data.lifePercRemaining);
+            }
+            ;
         }
     };
     cControlMonsters.prototype.getClosestMonsterInRange = function (maxRangeX, maxRangeY) {

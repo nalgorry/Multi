@@ -2,13 +2,16 @@
 var cServerItems_1 = require('./cServerItems');
 var cServerItemDef_1 = require('./cServerItemDef');
 var cServerControlItems = (function () {
-    function cServerControlItems(socket, room) {
+    function cServerControlItems(socket, room, mapItems) {
+        var _this = this;
         this.socket = socket;
         this.room = room;
         this.nextIdItems = 0;
         this.arrayItems = [];
-        //defino todos los objetos
-        cServerItemDef_1.cServerItemDef.defineItems();
+        //put the map items in the map
+        mapItems.forEach(function (item) {
+            _this.setItemId(item);
+        });
     }
     //crea los items iniciales para cada jugador
     cServerControlItems.prototype.createInitialItems = function (socket) {
@@ -52,25 +55,30 @@ var cServerControlItems = (function () {
         }
     };
     cServerControlItems.prototype.createGoldItem = function (tileX, tileY) {
-        var itemId = "i" + this.nextIdItems;
         var gold = this.randomIntFromInterval(1, 100);
-        var newItem = new cServerItems_1.cServerItems(itemId, 40 /* gold */, gold, tileX, tileY, true);
+        var newItem = new cServerItems_1.cServerItems();
+        newItem.defineItem(40 /* gold */, gold, tileX, tileY, true);
         this.emitNewItem(newItem);
-        this.arrayItems[itemId] = newItem;
-        this.nextIdItems += 1;
     };
     cServerControlItems.prototype.createNewItem = function (itemType, itemLevel, tileX, tileY, itemPublic, socket) {
         if (socket === void 0) { socket = this.socket; }
-        var itemId = "i" + this.nextIdItems;
-        var newItem = new cServerItems_1.cServerItems(itemId, itemType, itemLevel, tileX, tileY, itemPublic);
+        var newItem = new cServerItems_1.cServerItems();
+        newItem.defineItem(itemType, itemLevel, tileX, tileY, itemPublic);
+        this.setItemId(newItem);
         this.emitNewItem(newItem);
-        this.arrayItems[itemId] = newItem;
-        this.nextIdItems += 1;
         //agrego una señal para definir cuando el item se borra del juego
         newItem.signalItemDelete.add(this.itemDeleted, this);
     };
+    cServerControlItems.prototype.setItemId = function (item) {
+        //lets define a ID to indentify the item
+        var itemId = "i" + this.nextIdItems;
+        item.defineId(itemId);
+        this.nextIdItems += 1;
+        this.arrayItems[itemId] = item;
+    };
     //this emit the item to all the players
     cServerControlItems.prototype.emitNewItem = function (item) {
+        ;
         if (item.onFloor == true) {
             var itemData = {
                 itemID: item.itemID,
@@ -98,7 +106,8 @@ var cServerControlItems = (function () {
         delete this.arrayItems[itemID];
     };
     cServerControlItems.prototype.onNewPlayerConected = function (socket) {
-        //le mando al nuevo cliente todos los moustros del mapa
+        console.log("entra aca?");
+        //lets send the active items to the player
         for (var numItem in this.arrayItems) {
             var item = this.arrayItems[numItem];
             //controlo que el item sea para todos los jugadores.

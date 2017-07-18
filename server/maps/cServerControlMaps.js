@@ -2,6 +2,7 @@
 var cServerControlMonster_1 = require('./../cServerControlMonster');
 var cControlServerPlayers_1 = require('./../cControlServerPlayers');
 var cServerControlItems_1 = require('./../items/cServerControlItems');
+var cServerItemDef_1 = require('./../items/cServerItemDef');
 var cServerMap_1 = require('./cServerMap');
 var cServerControlMaps = (function () {
     function cServerControlMaps(socket) {
@@ -17,6 +18,8 @@ var cServerControlMaps = (function () {
         this.initialMapName = 1 /* principalMap */;
         //lets get the data of all the mapsData
         this.readMapData();
+        //lets start the items definitions
+        cServerItemDef_1.cServerItemDef.defineItems();
         //lets start all the maps in the server from the data of the JSON 
         this.mapsData.mapData.forEach(function (JSONmapData) {
             _this.initMap(JSONmapData);
@@ -35,7 +38,7 @@ var cServerControlMaps = (function () {
         this.arrayMapData[mapData.id] = mapData;
         //lets create the control componentes of the map
         var controlPlayers = new cControlServerPlayers_1.cServerControlPlayers(this.socket, 'room' + mapData.id);
-        var controlItems = new cServerControlItems_1.cServerControlItems(this.socket, 'room' + mapData.id);
+        var controlItems = new cServerControlItems_1.cServerControlItems(this.socket, 'room' + mapData.id, mapData.arrayItems);
         var controlMonsters = new cServerControlMonster_1.cServerControlMonster(this.socket, 'room' + mapData.id, controlPlayers, controlItems, mapData.monsterNumber, mapData.arrayMonsterTypes, mapData.file, mapData.arrayMonster);
         controlPlayers.controlMonster = controlMonsters;
         //stored them in the array
@@ -98,6 +101,7 @@ var cServerControlMaps = (function () {
         //we send all the data to the player
         controlPlayers.onNewPlayerConected(socketNewPlayer, data, playerData);
         controlMonsters.onNewPlayerConected(socketNewPlayer);
+        console.log("aca cuantas veces viene?");
         controlItems.onNewPlayerConected(socketNewPlayer);
         //we send all extra the information about the map (portals, etc.)
         this.sendMapObjects(socketNewPlayer, mapNumber);

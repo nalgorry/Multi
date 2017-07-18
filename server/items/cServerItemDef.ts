@@ -29,6 +29,8 @@ export class cServerItemDef {
         //me fijo que tipo de item es
         var itemDef:cItemDef = this.arrayItemsDeff[itemType]
 
+        console.log(itemDef);
+
         var arrayPropTypes = []; //aca se guardan todas las propiedades del item 
         
         //defino la propiedad principal segun el tipo de objeto que es

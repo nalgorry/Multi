@@ -1,10 +1,12 @@
 import {cServerPortals} from './cServerPortals';
 import {cServerMonster} from './../cServerMonster';
+import {cServerItems} from './../items/cServerItems';
 
 export class cServerMap {
 
     public arrayPortals:cServerPortals[] = [];
     public arrayMonster:cServerMonster[] =[];
+    public arrayItems:cServerItems[] =[];
     public arrayMonsterTypes:number[] = [];
     public id:number;
     public mapName:string; 
@@ -35,6 +37,8 @@ export class cServerMap {
                     ))
             });
 
+        }
+
         //lets get the fixed moster for the map
         if (JSONMapData.monsters != undefined) {
             JSONMapData.monsters.forEach (monsterData => {
@@ -53,9 +57,28 @@ export class cServerMap {
                                 
             });
         }
+        
+        //lets add the items of the map! NICE :)
+        if (JSONMapData.items != undefined) {
+            JSONMapData.items.forEach (itemData => {
+
+                var item = new cServerItems ();
+
+                item.defineItem(
+                    itemData.itemType,
+                    itemData.itemLevel,
+                    itemData.tileX,
+                    itemData.tileY,
+                    itemData.isPublic
+                )
+
+                this.arrayItems.push(item);
+                                
+            });
+
+        }
 
     }
 
-}
 
 }

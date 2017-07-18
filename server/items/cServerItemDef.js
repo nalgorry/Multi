@@ -19,6 +19,7 @@ var cServerItemDef = (function () {
         valuesItemsEfect[0 /* speedLife */] = new cValuesItemsEfect(6 /* atack */, 5, 20, 20, 30, 30, 40, 45, 50);
         //me fijo que tipo de item es
         var itemDef = this.arrayItemsDeff[itemType];
+        console.log(itemDef);
         var arrayPropTypes = []; //aca se guardan todas las propiedades del item 
         //defino la propiedad principal segun el tipo de objeto que es
         if (itemDef.itemFixEfect != -1) {

@@ -116,10 +116,12 @@ class cControlMonsters {
 
     public monsterWereHit(data) {
 
+        var thisPlayerHit:boolean = false;
         var playerThatHit:cBasicActor;
 
         if (data.idPlayer == this.controlGame.controlPlayer.idServer) { //este jugador golpea al monstruo
             playerThatHit = this.controlGame.controlPlayer;        
+            thisPlayerHit = true;
         } else { //otro jugador golpea al mounstro 
             playerThatHit = this.controlGame.controlOtherPlayers.playerById(data.idPlayer)
         } 
@@ -129,7 +131,11 @@ class cControlMonsters {
         if (monster != undefined) {
             this.controlGame.controlPlayer.controlSpells.onHit(data, playerThatHit.playerSprite, monster.monsterSprite,0x081d5e);
             this.controlGame.controlSounds.startSoundHit(data.idSpell);
-            this.controlGame.controlPlayer.controlSpells.reduceLifeBar(data.lifePercRemaining);
+
+            //lets check if we need to reduce the life bar
+            if (thisPlayerHit == true) {
+                this.controlGame.controlPlayer.controlSpells.reduceLifeBar(data.lifePercRemaining) 
+            };
         }
 
     }

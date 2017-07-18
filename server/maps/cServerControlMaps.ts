@@ -2,6 +2,7 @@
 import {cServerControlMonster} from './../cServerControlMonster';
 import {cServerControlPlayers} from './../cControlServerPlayers';
 import {cServerControlItems} from './../items/cServerControlItems';
+import {cServerItemDef} from './../items/cServerItemDef';
 import {cServerMap} from './cServerMap';
 
 export class cServerControlMaps {
@@ -23,6 +24,9 @@ export class cServerControlMaps {
 
             //lets get the data of all the mapsData
             this.readMapData();
+
+            //lets start the items definitions
+            cServerItemDef.defineItems();
 
             //lets start all the maps in the server from the data of the JSON 
             this.mapsData.mapData.forEach(JSONmapData => {
@@ -47,7 +51,7 @@ export class cServerControlMaps {
 
        //lets create the control componentes of the map
        var controlPlayers = new cServerControlPlayers(this.socket, 'room' + mapData.id );
-       var controlItems = new cServerControlItems(this.socket,'room' + mapData.id);
+       var controlItems = new cServerControlItems(this.socket,'room' + mapData.id, mapData.arrayItems);
        var controlMonsters = new cServerControlMonster(
            this.socket,'room' + mapData.id, 
            controlPlayers,
@@ -145,6 +149,7 @@ export class cServerControlMaps {
         controlPlayers.onNewPlayerConected(socketNewPlayer, data, playerData)
 
         controlMonsters.onNewPlayerConected(socketNewPlayer);
+        console.log("aca cuantas veces viene?")
         controlItems.onNewPlayerConected(socketNewPlayer);
 
         //we send all extra the information about the map (portals, etc.)
